@@ -17,6 +17,8 @@ assert.deepEqual(zeroPlayers, {
 
 assert.equal(parseListResponse("No entiendo esta respuesta", 20), null);
 assert.equal(parseWorldDayResponse("The time is 431"), 431);
+assert.equal(parseWorldDayResponse("Current day count: 466"), 466);
+assert.equal(parseWorldDayResponse("Timeline minecraft:day is at 1253 tick(s) TICKS!"), null);
 assert.equal(parseWorldDayResponse("Respuesta rara"), null);
 
 console.info("Parser tests OK");

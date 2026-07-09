@@ -25,7 +25,18 @@ export const parseListResponse = (response: string, fallbackMaxPlayers: number):
 };
 
 export const parseWorldDayResponse = (response: string): number | null => {
-  const match = response.match(/(?:The time is|time is)?\s*(-?\d+)/i);
+  if (/Timeline\s+minecraft:day\b/i.test(response)) {
+    return null;
+  }
+
+  const dayCountMatch = response.match(/Current day count:\s*(\d+)/i);
+
+  if (dayCountMatch) {
+    const dayCount = Number.parseInt(dayCountMatch[1], 10);
+    return Number.isFinite(dayCount) ? dayCount : null;
+  }
+
+  const match = response.match(/(?:The time is|time is)\s*(-?\d+)/i);
 
   if (!match) {
     return null;

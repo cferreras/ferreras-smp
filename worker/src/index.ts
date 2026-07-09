@@ -35,24 +35,37 @@ const queryTps = async (send: (command: string) => Promise<string>): Promise<num
   return null;
 };
 
+const queryWorldDay = async (send: (command: string) => Promise<string>): Promise<number | null> => {
+  for (const command of ["daycount", "time query day"]) {
+    try {
+      const response = await send(command);
+      const worldDay = parseWorldDayResponse(response);
+
+      if (worldDay !== null) {
+        return worldDay;
+      }
+
+      logger.warn(`No se pudo parsear la respuesta de /${command}`, response);
+    } catch (error) {
+      logger.warn(`No se pudo ejecutar /${command}`, error);
+    }
+  }
+
+  return null;
+};
+
 const queryMinecraftStatus = async (config: WorkerConfig): Promise<MinecraftStatus> => {
   const session = await connectRcon(config);
 
   try {
     const listResponse = await session.send("list");
-    const worldDayResponse = await session.send("time query day");
     const listStatus = parseListResponse(listResponse, config.minecraftMaxPlayers);
 
     if (!listStatus) {
       logger.warn("No se pudo parsear la respuesta de /list", listResponse);
     }
 
-    const worldDay = parseWorldDayResponse(worldDayResponse);
-
-    if (worldDay === null) {
-      logger.warn("No se pudo parsear la respuesta de /time query day", worldDayResponse);
-    }
-
+    const worldDay = await queryWorldDay((command) => session.send(command));
     const tps = await queryTps((command) => session.send(command));
 
     return {
