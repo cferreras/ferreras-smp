@@ -48,8 +48,9 @@ export const parseWorldDayResponse = (response: string): number | null => {
 };
 
 export const parseTpsResponse = (response: string): number | null => {
-  const cleanResponse = response.replace(/§[0-9a-fk-or]/gi, "");
-  const match = cleanResponse.match(/(?:TPS[^0-9]{0,20}|^)(20(?:\.0+)?|1?\d(?:\.\d+)?)/i);
+  const cleanResponse = response.replace(/§[0-9a-fk-or]/gi, "").replace(/\*/g, "");
+  const sparkMatch = cleanResponse.match(/TPS from last 5s,\s*10s,\s*1m,\s*5m,\s*15m:\D*(20(?:\.0+)?|1?\d(?:\.\d+)?)/i);
+  const match = sparkMatch ?? cleanResponse.match(/(?:TPS:\s*|TPS[^0-9:]*:\s*|^)(20(?:\.0+)?|1?\d(?:\.\d+)?)/i);
 
   if (!match) {
     return null;
