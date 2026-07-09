@@ -14,6 +14,7 @@ COPY public ./public
 COPY src ./src
 
 ENV ASTRO_ADAPTER=node
+ENV MINECRAFT_API_ONLY=true
 RUN pnpm build:dokploy
 
 ENV NODE_ENV=production

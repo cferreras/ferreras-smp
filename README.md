@@ -16,7 +16,7 @@ La arquitectura objetivo separa la web pública de la API que habla con DragonFl
 
 ```text
 mc.ferreras.dev      -> Vercel, frontend/web pública
-api.mc.ferreras.dev  -> Dokploy/VPS, API Minecraft Live
+mc-api.ferreras.dev  -> Dokploy/VPS, API Minecraft Live
 DragonFly            -> privado en Dokploy/VPS
 Worker RCON/logs     -> Dokploy/VPS
 Minecraft            -> Dokploy/VPS
@@ -27,7 +27,7 @@ Vercel no se conecta a DragonFly/Redis. El frontend consume una API configurable
 Variables para Vercel/frontend:
 
 ```env
-PUBLIC_MINECRAFT_API_URL=https://api.mc.ferreras.dev
+PUBLIC_MINECRAFT_API_URL=https://mc-api.ferreras.dev
 ```
 
 Si no se define `PUBLIC_MINECRAFT_API_URL`, el frontend usa rutas relativas
@@ -38,6 +38,7 @@ Variables para Dokploy/API:
 ```env
 REDIS_URL=redis://default:PASSWORD@dragonfly:6379
 IP_HASH_SALT=valor-secreto
+MINECRAFT_API_ONLY=true
 ```
 
 DragonFly no debe exponerse públicamente. Solo la API en Dokploy/VPS debe tener
@@ -45,7 +46,7 @@ acceso a `REDIS_URL`.
 
 #### API en Dokploy
 
-La API pública `api.mc.ferreras.dev` se despliega como una aplicación diferente
+La API pública `mc-api.ferreras.dev` se despliega como una aplicación diferente
 al worker. Usa el `Dockerfile` de la raíz del repo.
 
 Configuración recomendada en Dokploy:
@@ -56,7 +57,9 @@ Branch: main
 Build type: Dockerfile
 Dockerfile path: Dockerfile
 Port: 4321
-Domain: api.mc.ferreras.dev
+Domain: mc-api.ferreras.dev
+Path: /
+Internal Path: /
 ```
 
 Variables para esta aplicación:
@@ -64,11 +67,15 @@ Variables para esta aplicación:
 ```env
 REDIS_URL=redis://default:PASSWORD@dragonfly:6379
 IP_HASH_SALT=valor-secreto
+MINECRAFT_API_ONLY=true
 ```
 
 Esta aplicación sí expone HTTP hacia Traefik/Dokploy, pero no habla con RCON.
 Solo lee y escribe datos de DragonFly/Redis para los endpoints
-`/api/minecraft/...`.
+`/api/minecraft/...`. Con `MINECRAFT_API_ONLY=true`, cualquier ruta fuera de
+`/api/minecraft/...` responde 404 y `/health` responde un JSON ligero para
+checks de salud; así la instancia de Dokploy no sirve la landing completa en
+`/`.
 
 #### Desarrollo local
 
