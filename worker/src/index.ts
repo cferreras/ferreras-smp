@@ -137,6 +137,7 @@ const main = async () => {
     shouldStop = true;
     logger.info("Cerrando worker");
     redis.disconnect();
+    process.exit(0);
   };
 
   process.once("SIGINT", stop);

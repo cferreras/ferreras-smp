@@ -16,4 +16,4 @@ RUN pnpm --filter @ferreras/minecraft-live-worker build
 
 WORKDIR /app/worker
 
-CMD ["pnpm", "start"]
+CMD ["node", "dist/index.js"]
