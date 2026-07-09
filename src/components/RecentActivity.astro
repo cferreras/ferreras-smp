@@ -1,0 +1,49 @@
+---
+import type { MinecraftActivityEvent } from "../types/minecraft-live";
+
+interface Props {
+  events: MinecraftActivityEvent[];
+}
+
+const { events } = Astro.props;
+
+const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
+  join: "Entrada",
+  leave: "Salida",
+  death: "Muerte",
+  advancement: "Logro",
+  backup: "Backup",
+  system: "Sistema",
+};
+
+const formatActivityTime = (value: string) => {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return new Intl.DateTimeFormat("es-ES", {
+    hour: "2-digit",
+    minute: "2-digit",
+    timeZone: "Europe/Madrid",
+  }).format(date);
+};
+---
+
+<article class="live-card recent-activity" aria-labelledby="recent-activity-title">
+  <div class="live-card-heading">
+    <p class="live-card-kicker">Actividad reciente</p>
+    <h3 id="recent-activity-title">Lo último del mundo</h3>
+  </div>
+
+  <ul class="activity-list" data-activity-list>
+    {events.map((event) => (
+      <li class="activity-event" data-activity-type={event.type}>
+        <span class="activity-type">{eventLabels[event.type]}</span>
+        <p>{event.message}</p>
+        <time datetime={event.createdAt}>{formatActivityTime(event.createdAt)}</time>
+      </li>
+    ))}
+  </ul>
+</article>

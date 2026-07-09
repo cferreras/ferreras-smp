@@ -1,0 +1,21 @@
+{
+  "name": "@ferreras/minecraft-live-worker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test:parsers": "tsx src/parsers.test.ts"
+  },
+  "dependencies": {
+    "ioredis": "^5.11.1",
+    "rcon-client": "^4.2.5"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

@@ -1,0 +1,67 @@
+---
+import type { MinecraftStatus } from "../types/minecraft-live";
+
+interface Props {
+  status: MinecraftStatus;
+}
+
+const { status } = Astro.props;
+const statusLabel = status.online ? "Online" : "Offline";
+const statusClass = status.online ? "online" : "offline";
+const tpsLabel = status.tps === null ? "No disponible" : status.tps.toFixed(1);
+
+const getLastUpdatedLabel = (value: string) => {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return value;
+  }
+
+  return "hace unos segundos";
+};
+
+const metrics = [
+  {
+    label: "Jugadores",
+    value: `${status.playersOnline} / ${status.maxPlayers}`,
+  },
+  {
+    label: "Día del mundo",
+    value: status.worldDay === null ? "No disponible" : status.worldDay.toString(),
+  },
+  {
+    label: "TPS",
+    value: tpsLabel,
+  },
+];
+---
+
+<article class="live-card status-card" aria-labelledby="live-status-title">
+  <div class="status-card-header">
+    <div>
+      <p class="live-card-kicker">Ferreras SMP ahora</p>
+      <h3 id="live-status-title">Servidor en marcha</h3>
+    </div>
+    <span
+      class:list={["live-status-badge", statusClass]}
+      aria-label={`Estado: ${statusLabel}`}
+      data-status-badge
+    >
+      <span class="live-status-dot" aria-hidden="true"></span>
+      <span data-status-label>{statusLabel}</span>
+    </span>
+  </div>
+
+  <dl class="status-metrics">
+    {metrics.map((metric) => (
+      <div class="status-metric">
+        <dt>{metric.label}</dt>
+        <dd data-status-metric={metric.label}>{metric.value}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <p class="status-updated" data-status-updated>
+    Última actualización: {getLastUpdatedLabel(status.lastUpdated)}
+  </p>
+</article>

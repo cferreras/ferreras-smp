@@ -1,0 +1,43 @@
+---
+import CommunityPoll from "./CommunityPoll.astro";
+import OnlinePlayers from "./OnlinePlayers.astro";
+import RecentActivity from "./RecentActivity.astro";
+import ServerStatusCard from "./ServerStatusCard.astro";
+import { DEFAULT_MINECRAFT_SNAPSHOT } from "../lib/minecraft/constants";
+
+const { status, activity, poll } = DEFAULT_MINECRAFT_SNAPSHOT;
+const minecraftApiBase =
+  process.env.PUBLIC_MINECRAFT_API_URL || process.env.NEXT_PUBLIC_MINECRAFT_API_URL || "";
+---
+
+<section
+  class="section live-server"
+  id="directo"
+  aria-labelledby="live-server-title"
+  data-live-server
+  data-minecraft-api-base={minecraftApiBase.replace(/\/$/, "")}
+>
+  <div class="container">
+    <div class="section-heading live-server-heading">
+      <p class="section-kicker">Ferreras SMP en directo</p>
+      <h2 id="live-server-title">El mundo,<br />ahora mismo.</h2>
+      <p>
+        Un vistazo rápido a lo que está pasando en el servidor antes de entrar
+        a jugar.
+      </p>
+    </div>
+
+    <div class="live-server-grid">
+      <ServerStatusCard status={status} />
+      <OnlinePlayers players={status.players} />
+      <RecentActivity events={activity} />
+      {poll && <CommunityPoll poll={poll} />}
+    </div>
+
+    <p class="live-server-state" data-live-state aria-live="polite">Actualizando…</p>
+  </div>
+</section>
+
+<script>
+  import "../scripts/minecraft-live";
+</script>

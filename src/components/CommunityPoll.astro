@@ -1,0 +1,25 @@
+---
+import PollOption from "./PollOption.astro";
+import type { MinecraftPoll } from "../types/minecraft-live";
+
+interface Props {
+  poll: MinecraftPoll;
+}
+
+const { poll } = Astro.props;
+---
+
+<article class="live-card community-poll" aria-labelledby="community-poll-title" data-community-poll>
+  <div class="live-card-heading">
+    <p class="live-card-kicker">Votación comunitaria</p>
+    <h3 id="community-poll-title" data-poll-question>{poll.question}</h3>
+  </div>
+
+  <ul class="poll-list" data-poll-list>
+    {poll.options.map((option) => (
+      <PollOption option={option} />
+    ))}
+  </ul>
+
+  <p class="poll-feedback" data-poll-feedback aria-live="polite"></p>
+</article>
