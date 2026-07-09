@@ -21,3 +21,19 @@ export type PerformanceStatus = {
   tps: number | null;
   mspt: number | null;
 };
+
+export type MinecraftActivityEventType =
+  | "join"
+  | "leave"
+  | "death"
+  | "advancement"
+  | "backup"
+  | "system";
+
+export type MinecraftActivityEvent = {
+  id: string;
+  type: MinecraftActivityEventType;
+  player?: string;
+  message: string;
+  createdAt: string;
+};

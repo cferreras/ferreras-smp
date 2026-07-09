@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
-import { parseListResponse, parsePerformanceResponse, parseTpsResponse, parseWorldDayResponse } from "./parsers.js";
+import {
+  parseActivityLogLine,
+  parseListResponse,
+  parsePerformanceResponse,
+  parseTpsResponse,
+  parseWorldDayResponse,
+} from "./parsers.js";
 
 const twoPlayers = parseListResponse("There are 2 of a max of 20 players online: Carlos, Akawonder", 20);
 assert.deepEqual(twoPlayers, {
@@ -35,5 +41,18 @@ assert.deepEqual(
     mspt: 0.89,
   },
 );
+assert.equal(
+  parseActivityLogLine("[19:20:10] [Server thread/INFO]: Carlos joined the game")?.message,
+  "Carlos ha entrado al servidor",
+);
+assert.equal(
+  parseActivityLogLine("[19:21:10] [Server thread/INFO]: Akawonder has made the advancement [Diamonds!]")?.message,
+  "Akawonder consiguió Diamonds!",
+);
+assert.equal(
+  parseActivityLogLine("[19:22:10] [Server thread/INFO]: Laura was blown up by Creeper")?.type,
+  "death",
+);
+assert.equal(parseActivityLogLine("[19:23:10] [Server thread/INFO]: Nothing interesting"), null);
 
 console.info("Parser tests OK");

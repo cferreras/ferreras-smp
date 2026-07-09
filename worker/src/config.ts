@@ -8,6 +8,8 @@ export type WorkerConfig = {
   minecraftPollIntervalMs: number;
   rconConnectTimeoutMs: number;
   rconCommandTimeoutMs: number;
+  minecraftLogPath?: string;
+  minecraftLogPollIntervalMs: number;
 };
 
 const requiredString = (name: string): string => {
@@ -49,5 +51,7 @@ export const loadConfig = (): WorkerConfig => {
     minecraftPollIntervalMs: pollIntervalMs,
     rconConnectTimeoutMs: optionalInteger("RCON_CONNECT_TIMEOUT_MS", 5_000),
     rconCommandTimeoutMs: optionalInteger("RCON_COMMAND_TIMEOUT_MS", 5_000),
+    minecraftLogPath: process.env.MINECRAFT_LOG_PATH?.trim() || undefined,
+    minecraftLogPollIntervalMs: optionalInteger("MINECRAFT_LOG_POLL_INTERVAL_MS", 2_000),
   };
 };

@@ -1,4 +1,4 @@
-import type { ListStatus, PerformanceStatus } from "./types.js";
+import type { ListStatus, MinecraftActivityEvent, PerformanceStatus } from "./types.js";
 
 export const parseListResponse = (response: string, fallbackMaxPlayers: number): ListStatus | null => {
   const match = response.match(/There are\s+(\d+)\s+of\s+a\s+max\s+of\s+(\d+)\s+players online:?\s*(.*)$/i);
@@ -79,4 +79,62 @@ export const parsePerformanceResponse = (response: string): PerformanceStatus | 
     tps,
     mspt: Number.isFinite(mspt) ? mspt : null,
   };
+};
+
+const logMessagePattern = /^\[[^\]]+]\s+\[[^\]]+]:\s+(?:\[[^\]]+]\s+)?(.+)$/;
+
+const createActivityEvent = (
+  type: MinecraftActivityEvent["type"],
+  message: string,
+  player?: string,
+): MinecraftActivityEvent => ({
+  id: `evt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+  type,
+  player,
+  message,
+  createdAt: new Date().toISOString(),
+});
+
+export const parseActivityLogLine = (line: string): MinecraftActivityEvent | null => {
+  const message = line.match(logMessagePattern)?.[1]?.trim() || line.trim();
+
+  if (!message) {
+    return null;
+  }
+
+  const joinMatch = message.match(/^(.+?) joined the game$/i);
+
+  if (joinMatch) {
+    const player = joinMatch[1];
+    return createActivityEvent("join", `${player} ha entrado al servidor`, player);
+  }
+
+  const leaveMatch = message.match(/^(.+?) left the game$/i);
+
+  if (leaveMatch) {
+    const player = leaveMatch[1];
+    return createActivityEvent("leave", `${player} ha salido del servidor`, player);
+  }
+
+  const advancementMatch = message.match(/^(.+?) has (?:made the advancement|completed the challenge|reached the goal) \[(.+)]$/i);
+
+  if (advancementMatch) {
+    const [, player, advancement] = advancementMatch;
+    return createActivityEvent("advancement", `${player} consiguió ${advancement}`, player);
+  }
+
+  const backupMatch = message.match(/\bbackup\b/i);
+
+  if (backupMatch && /\b(done|complete|completed|correctly|success|successful|finalizado|completado)\b/i.test(message)) {
+    return createActivityEvent("backup", "El servidor ha hecho backup correctamente");
+  }
+
+  const deathMatch = message.match(/^([A-Za-z0-9_]{2,16})\s+(.+)$/);
+
+  if (deathMatch && /\b(was|died|fell|burned|blew|hit|shot|slain|killed|tried|went|starved|drowned|suffocated|discovered)\b/i.test(message)) {
+    const player = deathMatch[1];
+    return createActivityEvent("death", message, player);
+  }
+
+  return null;
 };

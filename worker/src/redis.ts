@@ -1,9 +1,10 @@
 import { Redis } from "ioredis";
 import type { WorkerConfig } from "./config.js";
 import { logger } from "./logger.js";
-import type { MinecraftStatus } from "./types.js";
+import type { MinecraftActivityEvent, MinecraftStatus } from "./types.js";
 
 export const MINECRAFT_STATUS_KEY = "mc:status";
+export const MINECRAFT_ACTIVITY_RECENT_KEY = "mc:activity:recent";
 
 export const createRedisClient = (config: WorkerConfig) => {
   const redis = new Redis(config.redisUrl, {
@@ -23,4 +24,12 @@ export const createRedisClient = (config: WorkerConfig) => {
 
 export const saveMinecraftStatus = async (redis: Redis, status: MinecraftStatus) => {
   await redis.set(MINECRAFT_STATUS_KEY, JSON.stringify(status));
+};
+
+export const saveActivityEvent = async (redis: Redis, event: MinecraftActivityEvent) => {
+  await redis
+    .multi()
+    .lpush(MINECRAFT_ACTIVITY_RECENT_KEY, JSON.stringify(event))
+    .ltrim(MINECRAFT_ACTIVITY_RECENT_KEY, 0, 24)
+    .exec();
 };

@@ -1,5 +1,6 @@
 import { loadConfig, type WorkerConfig } from "./config.js";
 import { logger } from "./logger.js";
+import { startLogReader } from "./log-reader.js";
 import { parseListResponse, parsePerformanceResponse, parseTpsResponse, parseWorldDayResponse } from "./parsers.js";
 import { createRedisClient, saveMinecraftStatus } from "./redis.js";
 import { connectRcon } from "./rcon.js";
@@ -164,11 +165,14 @@ const main = async () => {
   process.once("SIGTERM", stop);
 
   await connectRedisWithRetry(redis, () => shouldStop);
+  const stopLogReader = startLogReader(config, redis);
 
   while (!shouldStop) {
     await runOnce(config, redis);
     await sleep(config.minecraftPollIntervalMs);
   }
+
+  stopLogReader?.();
 };
 
 main().catch((error) => {

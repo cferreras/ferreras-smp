@@ -148,6 +148,7 @@ RCON_PASSWORD=...
 MINECRAFT_HOST_PUBLIC=mc.ferreras.dev
 MINECRAFT_MAX_PLAYERS=20
 MINECRAFT_POLL_INTERVAL_MS=10000
+MINECRAFT_LOG_PATH=/srv/minecraft/logs/latest.log
 ```
 
 Variables opcionales:
@@ -155,6 +156,15 @@ Variables opcionales:
 ```env
 RCON_CONNECT_TIMEOUT_MS=5000
 RCON_COMMAND_TIMEOUT_MS=5000
+MINECRAFT_LOG_POLL_INTERVAL_MS=2000
+```
+
+Para que `MINECRAFT_LOG_PATH` funcione, el contenedor del worker debe tener
+montada la carpeta de logs del servidor Minecraft. Si el host usa
+`/srv/minecraft/logs`, monta esa misma ruta en el worker como solo lectura:
+
+```text
+/srv/minecraft/logs:/srv/minecraft/logs:ro
 ```
 
 Ejecutar en local:
