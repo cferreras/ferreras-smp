@@ -19,13 +19,18 @@ const createOfflineStatus = (config: WorkerConfig): MinecraftStatus => ({
 });
 
 const queryTps = async (send: (command: string) => Promise<string>): Promise<number | null> => {
-  for (const command of ["tps", "spark tps"]) {
+  for (const command of ["spark tps", "tps"]) {
     try {
-      const response = await send(command);
+      const firstResponse = await send(command);
+      const response = firstResponse.trim() ? firstResponse : await send(command);
       const tps = parseTpsResponse(response);
 
       if (tps !== null) {
         return tps;
+      }
+
+      if (response.trim()) {
+        logger.warn(`No se pudo parsear la respuesta de /${command}`, response);
       }
     } catch {
       // TPS is optional. Some servers do not expose /tps or Spark.
