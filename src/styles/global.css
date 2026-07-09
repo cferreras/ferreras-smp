@@ -663,6 +663,10 @@ h1 span {
   color: var(--ink-soft);
 }
 
+.activity-empty {
+  margin-top: 14px;
+}
+
 .activity-list {
   display: grid;
   gap: 0;

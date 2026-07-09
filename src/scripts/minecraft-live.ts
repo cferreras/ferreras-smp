@@ -129,12 +129,18 @@ if (liveSection) {
 
   const updateActivity = (events: MinecraftActivityEvent[]) => {
     const list = liveSection.querySelector<HTMLUListElement>("[data-activity-list]");
+    const empty = liveSection.querySelector<HTMLElement>("[data-empty-activity]");
 
     if (!list) {
       return;
     }
 
     list.replaceChildren(...events.map(createActivityItem));
+    list.hidden = events.length === 0;
+
+    if (empty) {
+      empty.hidden = events.length > 0;
+    }
   };
 
   const createPollOption = (option: MinecraftPollOption) => {

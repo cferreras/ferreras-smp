@@ -46,4 +46,7 @@ const formatActivityTime = (value: string) => {
       </li>
     ))}
   </ul>
+  <p class="empty-live-message activity-empty" data-empty-activity hidden={events.length > 0}>
+    Aún no hay actividad reciente.
+  </p>
 </article>
