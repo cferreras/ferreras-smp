@@ -43,6 +43,33 @@ IP_HASH_SALT=valor-secreto
 DragonFly no debe exponerse públicamente. Solo la API en Dokploy/VPS debe tener
 acceso a `REDIS_URL`.
 
+#### API en Dokploy
+
+La API pública `api.mc.ferreras.dev` se despliega como una aplicación diferente
+al worker. Usa el `Dockerfile` de la raíz del repo.
+
+Configuración recomendada en Dokploy:
+
+```text
+Repository: cferreras/ferreras-smp
+Branch: main
+Build type: Dockerfile
+Dockerfile path: Dockerfile
+Port: 4321
+Domain: api.mc.ferreras.dev
+```
+
+Variables para esta aplicación:
+
+```env
+REDIS_URL=redis://default:PASSWORD@dragonfly:6379
+IP_HASH_SALT=valor-secreto
+```
+
+Esta aplicación sí expone HTTP hacia Traefik/Dokploy, pero no habla con RCON.
+Solo lee y escribe datos de DragonFly/Redis para los endpoints
+`/api/minecraft/...`.
+
 #### Desarrollo local
 
 En desarrollo local, la misma app puede servir frontend + API y leer Redis/DragonFly
@@ -159,6 +186,17 @@ En Dokploy, despliega `worker/Dockerfile` como servicio aparte, en la misma red
 que DragonFly y Minecraft. No publiques puertos para este servicio. Si
 `RCON_HOST=minecraft` no resuelve, usa el host o IP alcanzable desde la red del
 worker.
+
+Configuración recomendada en Dokploy:
+
+```text
+Repository: cferreras/ferreras-smp
+Branch: main
+Build type: Dockerfile
+Dockerfile path: worker/Dockerfile
+Domain: ninguno
+Ports: ninguno público
+```
 
 ## Generar la web
 
