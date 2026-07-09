@@ -1,0 +1,47 @@
+services:
+  mc-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 4321
+      REDIS_URL: ${REDIS_URL}
+      IP_HASH_SALT: ${IP_HASH_SALT}
+    expose:
+      - "4321"
+    networks:
+      - dokploy-network
+      - dragonfly-network
+    restart: unless-stopped
+
+  minecraft-live-worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    environment:
+      REDIS_URL: ${REDIS_URL}
+      RCON_HOST: ${RCON_HOST}
+      RCON_PORT: ${RCON_PORT:-25575}
+      RCON_PASSWORD: ${RCON_PASSWORD}
+      MINECRAFT_HOST_PUBLIC: ${MINECRAFT_HOST_PUBLIC:-mc.ferreras.dev}
+      MINECRAFT_MAX_PLAYERS: ${MINECRAFT_MAX_PLAYERS:-20}
+      MINECRAFT_POLL_INTERVAL_MS: ${MINECRAFT_POLL_INTERVAL_MS:-10000}
+      RCON_CONNECT_TIMEOUT_MS: ${RCON_CONNECT_TIMEOUT_MS:-5000}
+      RCON_COMMAND_TIMEOUT_MS: ${RCON_COMMAND_TIMEOUT_MS:-5000}
+    networks:
+      - dragonfly-network
+      - minecraft-network
+    restart: unless-stopped
+
+networks:
+  dokploy-network:
+    external: true
+    name: dokploy-network
+  dragonfly-network:
+    external: true
+    name: carlos-dragonflydb-nyvkm4
+  minecraft-network:
+    external: true
+    name: carlos-minecraft-z2cyvo_default

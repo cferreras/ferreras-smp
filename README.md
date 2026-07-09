@@ -198,6 +198,40 @@ Domain: ninguno
 Ports: ninguno público
 ```
 
+#### Compose de Dokploy con redes explícitas
+
+Si Dokploy recrea contenedores al hacer redeploy, las conexiones manuales con
+`docker network connect` se pierden. Para evitarlo, puedes desplegar API y worker
+con `docker-compose.dokploy.yml`, que declara las redes externas de forma
+explícita:
+
+```text
+API      -> dokploy-network + carlos-dragonflydb-nyvkm4
+Worker   -> carlos-dragonflydb-nyvkm4 + carlos-minecraft-z2cyvo_default
+DragonFly alias interno -> dragonflydb
+```
+
+Variables necesarias:
+
+```env
+REDIS_URL=redis://default:PASSWORD@dragonflydb:6379
+IP_HASH_SALT=valor-secreto
+RCON_HOST=minecraft
+RCON_PORT=25575
+RCON_PASSWORD=valor-rcon
+MINECRAFT_HOST_PUBLIC=mc.ferreras.dev
+MINECRAFT_MAX_PLAYERS=20
+MINECRAFT_POLL_INTERVAL_MS=10000
+```
+
+Si la red de Minecraft cambia, actualiza en `docker-compose.dokploy.yml`:
+
+```yaml
+minecraft-network:
+  external: true
+  name: carlos-minecraft-z2cyvo_default
+```
+
 ## Generar la web
 
 ```bash
