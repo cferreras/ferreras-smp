@@ -1,6 +1,6 @@
 import { loadConfig, type WorkerConfig } from "./config.js";
 import { logger } from "./logger.js";
-import { parseListResponse, parseTpsResponse, parseWorldDayResponse } from "./parsers.js";
+import { parseListResponse, parsePerformanceResponse, parseTpsResponse, parseWorldDayResponse } from "./parsers.js";
 import { createRedisClient, saveMinecraftStatus } from "./redis.js";
 import { connectRcon } from "./rcon.js";
 import type { MinecraftStatus } from "./types.js";
@@ -18,7 +18,26 @@ const createOfflineStatus = (config: WorkerConfig): MinecraftStatus => ({
   lastUpdated: new Date().toISOString(),
 });
 
-const queryTps = async (send: (command: string) => Promise<string>): Promise<number | null> => {
+const queryPerformance = async (
+  send: (command: string) => Promise<string>,
+): Promise<{ tps: number | null; mspt: number | null }> => {
+  for (const command of ["mspt", "tickinfo"]) {
+    try {
+      const response = await send(command);
+      const performance = parsePerformanceResponse(response);
+
+      if (performance) {
+        return performance;
+      }
+
+      if (response.trim()) {
+        logger.warn(`No se pudo parsear la respuesta de /${command}`, response);
+      }
+    } catch {
+      // TabTPS commands are optional.
+    }
+  }
+
   for (const command of ["spark tps", "tps"]) {
     try {
       const firstResponse = await send(command);
@@ -26,7 +45,7 @@ const queryTps = async (send: (command: string) => Promise<string>): Promise<num
       const tps = parseTpsResponse(response);
 
       if (tps !== null) {
-        return tps;
+        return { tps, mspt: null };
       }
 
       if (response.trim()) {
@@ -37,7 +56,7 @@ const queryTps = async (send: (command: string) => Promise<string>): Promise<num
     }
   }
 
-  return null;
+  return { tps: null, mspt: null };
 };
 
 const queryWorldDay = async (send: (command: string) => Promise<string>): Promise<number | null> => {
@@ -71,7 +90,7 @@ const queryMinecraftStatus = async (config: WorkerConfig): Promise<MinecraftStat
     }
 
     const worldDay = await queryWorldDay((command) => session.send(command));
-    const tps = await queryTps((command) => session.send(command));
+    const performance = await queryPerformance((command) => session.send(command));
 
     return {
       online: true,
@@ -80,7 +99,8 @@ const queryMinecraftStatus = async (config: WorkerConfig): Promise<MinecraftStat
       maxPlayers: listStatus?.maxPlayers ?? config.minecraftMaxPlayers,
       players: listStatus?.players ?? [],
       worldDay,
-      tps,
+      tps: performance.tps,
+      mspt: performance.mspt,
       lastUpdated: new Date().toISOString(),
     };
   } finally {

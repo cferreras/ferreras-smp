@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { parseListResponse, parseTpsResponse, parseWorldDayResponse } from "./parsers.js";
+import { parseListResponse, parsePerformanceResponse, parseTpsResponse, parseWorldDayResponse } from "./parsers.js";
 
 const twoPlayers = parseListResponse("There are 2 of a max of 20 players online: Carlos, Akawonder", 20);
 assert.deepEqual(twoPlayers, {
@@ -26,5 +26,14 @@ assert.equal(
 );
 assert.equal(parseTpsResponse("TPS: 19.84"), 19.84);
 assert.equal(parseTpsResponse("No TPS here"), null);
+assert.deepEqual(
+  parsePerformanceResponse(
+    "[TabTPS] Server Tick InformationTPS: 20.00 (5s), 20.00 (1m), 20.00 (5m), 20.00 (15m)MSPT - Average, Minimum, Maximum ├─ 5s - 0.89, 0.72, 1.67 ├─ 10s - 0.96, 0.72, 1.90 └─ 60s - 1.80, 0.72, 137.27",
+  ),
+  {
+    tps: 20,
+    mspt: 0.89,
+  },
+);
 
 console.info("Parser tests OK");

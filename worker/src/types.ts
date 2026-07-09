@@ -16,3 +16,8 @@ export type ListStatus = {
   maxPlayers: number | null;
   players: string[];
 };
+
+export type PerformanceStatus = {
+  tps: number | null;
+  mspt: number | null;
+};

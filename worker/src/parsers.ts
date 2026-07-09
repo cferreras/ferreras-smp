@@ -1,4 +1,4 @@
-import type { ListStatus } from "./types.js";
+import type { ListStatus, PerformanceStatus } from "./types.js";
 
 export const parseListResponse = (response: string, fallbackMaxPlayers: number): ListStatus | null => {
   const match = response.match(/There are\s+(\d+)\s+of\s+a\s+max\s+of\s+(\d+)\s+players online:?\s*(.*)$/i);
@@ -63,4 +63,20 @@ export const parseTpsResponse = (response: string): number | null => {
   }
 
   return Math.min(tps, 20);
+};
+
+export const parsePerformanceResponse = (response: string): PerformanceStatus | null => {
+  const cleanResponse = response.replace(/§[0-9a-fk-or]/gi, "").replace(/\*/g, "");
+  const tps = parseTpsResponse(cleanResponse);
+  const msptMatch = cleanResponse.match(/(?:├─|└─|-)?\s*5s\s*-\s*(\d+(?:\.\d+)?),\s*\d+(?:\.\d+)?,\s*\d+(?:\.\d+)?/i);
+  const mspt = msptMatch ? Number.parseFloat(msptMatch[1]) : null;
+
+  if (tps === null && mspt === null) {
+    return null;
+  }
+
+  return {
+    tps,
+    mspt: Number.isFinite(mspt) ? mspt : null,
+  };
 };
