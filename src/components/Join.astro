@@ -1,0 +1,21 @@
+---
+import Icon from "./Icon.astro";
+import ServerAddress from "./ServerAddress.astro";
+import { server } from "../data/server";
+---
+
+<section class="join">
+  <div class="container join-inner">
+    <div>
+      <p class="section-kicker">Cuando quieras</p>
+      <h2>El mundo ya está ahí.</h2>
+      <p>Entra por tu cuenta o pásate primero por Discord para saludar.</p>
+    </div>
+    <div class="join-actions">
+      <ServerAddress compact />
+      <a class="button dark" href={server.discord} target="_blank" rel="noreferrer">
+        <Icon name="discord" /> Abrir Discord
+      </a>
+    </div>
+  </div>
+</section>

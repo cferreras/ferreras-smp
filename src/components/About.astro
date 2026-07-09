@@ -1,0 +1,42 @@
+---
+const features = [
+  {
+    number: "01",
+    title: "Supervivencia sencilla",
+    text: "Una experiencia reconocible y cercana a vanilla, sin sistemas innecesarios.",
+  },
+  {
+    number: "02",
+    title: "Entra sin preparar nada",
+    text: "No necesitas instalar mods. Abre Minecraft, añade la IP y empieza a jugar.",
+  },
+  {
+    number: "03",
+    title: "Comunidad conectada",
+    text: "El chat, los avisos y la ayuda del servidor también están disponibles en Discord.",
+  },
+];
+---
+
+<section class="section about" id="servidor">
+  <div class="container">
+    <div class="section-heading">
+      <p class="section-kicker">El servidor</p>
+      <h2>Lo esencial,<br />bien cuidado.</h2>
+      <p>
+        Ferreras SMP busca que jugar sea fácil: un mundo de supervivencia,
+        mejoras discretas del lado servidor y una comunidad con sentido común.
+      </p>
+    </div>
+
+    <div class="feature-grid">
+      {features.map((feature) => (
+        <article class="feature">
+          <span>{feature.number}</span>
+          <h3>{feature.title}</h3>
+          <p>{feature.text}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

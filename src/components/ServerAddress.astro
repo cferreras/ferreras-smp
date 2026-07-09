@@ -1,0 +1,44 @@
+---
+import Icon from "./Icon.astro";
+import { server } from "../data/server";
+
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+<div class:list={["address-box", { compact }]}>
+  <div>
+    <span class="address-label">Dirección del servidor</span>
+    <strong>{server.address}</strong>
+  </div>
+  <button class="copy-button" type="button" data-copy={server.address}>
+    <span class="copy-default"><Icon name="copy" size={18} /> Copiar IP</span>
+    <span class="copy-success"><Icon name="check" size={18} /> Copiada</span>
+  </button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const value = button.dataset.copy;
+      if (!value) return;
+
+      try {
+        await navigator.clipboard.writeText(value);
+      } catch {
+        const input = document.createElement("textarea");
+        input.value = value;
+        document.body.appendChild(input);
+        input.select();
+        document.execCommand("copy");
+        input.remove();
+      }
+
+      button.classList.add("is-copied");
+      window.setTimeout(() => button.classList.remove("is-copied"), 2200);
+    });
+  });
+</script>

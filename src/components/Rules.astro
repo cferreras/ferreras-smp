@@ -1,0 +1,28 @@
+---
+import { rules } from "../data/server";
+---
+
+<section class="section rules" id="normas">
+  <div class="container rules-layout">
+    <div class="rules-intro">
+      <p class="section-kicker">Normas</p>
+      <h2>Juega como te gustaría que jugasen contigo.</h2>
+      <p>
+        No queremos un reglamento interminable. Estas bases y un poco de sentido
+        común son suficientes para convivir.
+      </p>
+    </div>
+
+    <ol class="rule-list">
+      {rules.map((rule, index) => (
+        <li>
+          <span>{String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <h3>{rule.title}</h3>
+            <p>{rule.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

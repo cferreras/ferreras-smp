@@ -1,0 +1,14 @@
+---
+import { server } from "../data/server";
+---
+
+<footer>
+  <div class="container footer-inner">
+    <a class="wordmark" href="#">
+      <span class="wordmark-mark" aria-hidden="true">F</span>
+      <span>{server.name}</span>
+    </a>
+    <p>Supervivencia sin complicaciones.</p>
+    <p>© {new Date().getFullYear()} · {server.address}</p>
+  </div>
+</footer>
