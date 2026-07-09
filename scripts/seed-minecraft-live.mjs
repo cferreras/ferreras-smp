@@ -10,8 +10,8 @@ if (!redisUrl) {
 const keys = {
   status: "mc:status",
   activityRecent: "mc:activity:recent",
-  pollVotes: "mc:poll:weekend-plan:votes",
-  pollMeta: "mc:poll:weekend-plan:meta",
+  pollVotes: "mc:poll:server-feedback:votes",
+  pollMeta: "mc:poll:server-feedback:meta",
 };
 
 const now = "2026-07-09T10:00:00.000Z";
@@ -60,10 +60,10 @@ const activity = [
 ];
 
 const votes = {
-  end: 12,
-  spawn: 8,
-  "ancient-city": 6,
-  fishing: 2,
+  great: 12,
+  good: 8,
+  improve: 6,
+  issues: 2,
 };
 
 const redis = new Redis(redisUrl, {
@@ -78,8 +78,8 @@ try {
   pipeline.set(
     keys.pollMeta,
     JSON.stringify({
-      id: "weekend-plan",
-      question: "¿Qué hacemos este finde?",
+      id: "server-feedback",
+      question: "¿Qué te parece el servidor?",
     }),
   );
 

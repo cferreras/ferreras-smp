@@ -500,14 +500,10 @@ h1 span {
 }
 
 .status-card {
-  grid-row: span 2;
-}
-
-.status-card {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 430px;
+  min-height: 0;
   padding: clamp(28px, 4.5vw, 46px);
 }
 
@@ -600,11 +596,15 @@ h1 span {
 }
 
 .status-updated {
-  margin: auto 0 0;
+  margin: 0;
   padding-top: 24px;
   border-top: 1px solid var(--line);
   color: var(--ink-soft);
   font-size: 14px;
+}
+
+.recent-activity {
+  grid-column: 2;
 }
 
 .online-players,
@@ -707,7 +707,8 @@ h1 span {
 }
 
 .community-poll {
-  grid-column: 1 / -1;
+  grid-column: 1;
+  grid-row: 2;
   background: var(--ink);
   color: var(--paper);
 }
@@ -718,7 +719,6 @@ h1 span {
 
 .poll-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 34px;
 }
@@ -1157,7 +1157,9 @@ footer {
   }
 
   .status-card,
+  .recent-activity,
   .community-poll {
+    grid-column: auto;
     grid-row: auto;
   }
 

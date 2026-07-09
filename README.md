@@ -111,8 +111,8 @@ No guardes contraseñas reales en el repo. Para producción también conviene de
 IP_HASH_SALT=valor-secreto
 ```
 
-El seed de desarrollo carga `mc:status`, `mc:activity:recent`, `mc:poll:weekend-plan:meta`
-y `mc:poll:weekend-plan:votes`:
+El seed de desarrollo carga `mc:status`, `mc:activity:recent`, `mc:poll:server-feedback:meta`
+y `mc:poll:server-feedback:votes`:
 
 ```bash
 pnpm seed:minecraft-live
