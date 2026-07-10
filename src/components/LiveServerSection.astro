@@ -17,24 +17,23 @@ const minecraftApiBase =
   data-live-server
   data-minecraft-api-base={minecraftApiBase.replace(/\/$/, "")}
 >
-  <div class="container">
+  <div class="shell">
     <div class="section-heading live-server-heading">
-      <p class="section-kicker">Ferreras SMP en directo</p>
-      <h2 id="live-server-title">El mundo,<br />ahora mismo.</h2>
-      <p>
-        Un vistazo rápido a lo que está pasando en el servidor antes de entrar
-        a jugar.
-      </p>
+      <div>
+        <p class="eyebrow">Ferreras SMP en directo</p>
+        <h2 id="live-server-title">El mundo,<br /><span>ahora mismo.</span></h2>
+      </div>
+      <p>Un vistazo rápido a lo que está pasando en el servidor antes de entrar a jugar.</p>
     </div>
 
-    <div class="live-server-grid">
+    <div class="live-grid">
       <ServerStatusCard status={status} />
       <OnlinePlayers players={status.players} />
       <RecentActivity events={activity} />
       {poll && <CommunityPoll poll={poll} />}
     </div>
 
-    <p class="live-server-state" data-live-state aria-live="polite">Actualizando…</p>
+    <p class="live-server-state mono" data-live-state aria-live="polite">Actualizando…</p>
   </div>
 </section>
 

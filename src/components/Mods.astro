@@ -3,29 +3,26 @@ import { modGroups } from "../data/server";
 ---
 
 <section class="section mods" id="mods">
-  <div class="container">
-    <div class="mods-heading">
+  <div class="shell">
+    <div class="section-heading mods-heading">
       <div>
-        <p class="section-kicker">Tecnología</p>
+        <p class="eyebrow">Tecnología</p>
         <h2>Mods del servidor</h2>
       </div>
-      <p>
-        Mejoras de rendimiento, administración y contenido ejecutadas en el
-        servidor. <strong>No necesitas instalar ninguna.</strong>
-      </p>
+      <p>Mejoras de rendimiento, administración y contenido ejecutadas en el servidor. <strong>No necesitas instalar ninguna.</strong></p>
     </div>
 
     <div class="mod-list">
       {modGroups.map((group, index) => (
         <details class="mod-group" open={index === 0}>
           <summary>
-            <span class="mod-index">{String(index + 1).padStart(2, "0")}</span>
+            <span class="mod-index mono">{String(index + 1).padStart(2, "0")}</span>
             <span class="mod-title">
               <strong>{group.name}</strong>
               <small>{group.description}</small>
             </span>
-            <span class="mod-count">{group.mods.length} elementos</span>
-            <span class="mod-toggle" aria-hidden="true"></span>
+            <span class="mod-count mono">{group.mods.length} elementos</span>
+            <span class="mod-action" aria-hidden="true">Abrir</span>
           </summary>
           <ul>
             {group.mods.map((mod) => <li>{mod}</li>)}

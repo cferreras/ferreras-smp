@@ -1,40 +1,23 @@
 ---
 import type { MinecraftActivityEvent } from "../types/minecraft-live";
 
-interface Props {
-  events: MinecraftActivityEvent[];
-}
-
+interface Props { events: MinecraftActivityEvent[]; }
 const { events } = Astro.props;
 
 const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
-  join: "Entrada",
-  leave: "Salida",
-  death: "Muerte",
-  advancement: "Logro",
-  backup: "Backup",
-  system: "Sistema",
+  join: "Entrada", leave: "Salida", death: "Muerte", advancement: "Logro", backup: "Backup", system: "Sistema",
 };
 
 const formatActivityTime = (value: string) => {
   const date = new Date(value);
-
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  return new Intl.DateTimeFormat("es-ES", {
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Europe/Madrid",
-  }).format(date);
+  if (Number.isNaN(date.getTime())) return value;
+  return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" }).format(date);
 };
 ---
 
 <article class="live-card recent-activity" aria-labelledby="recent-activity-title">
-  <div class="live-card-heading">
-    <p class="live-card-kicker">Actividad reciente</p>
-    <h3 id="recent-activity-title">Lo último del mundo</h3>
+  <div class="card-heading-row">
+    <div><p class="card-kicker">Actividad reciente</p><h3 id="recent-activity-title">Lo último del mundo</h3></div>
   </div>
 
   <ul class="activity-list" data-activity-list>
@@ -42,11 +25,9 @@ const formatActivityTime = (value: string) => {
       <li class="activity-event" data-activity-type={event.type}>
         <span class="activity-type">{eventLabels[event.type]}</span>
         <p>{event.message}</p>
-        <time datetime={event.createdAt}>{formatActivityTime(event.createdAt)}</time>
+        <time class="mono" datetime={event.createdAt}>{formatActivityTime(event.createdAt)}</time>
       </li>
     ))}
   </ul>
-  <p class="empty-live-message activity-empty" data-empty-activity hidden={events.length > 0}>
-    Aún no hay actividad reciente.
-  </p>
+  <p class="empty-live-message activity-empty" data-empty-activity hidden={events.length > 0}>Aún no hay actividad reciente.</p>
 </article>

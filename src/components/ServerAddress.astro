@@ -1,5 +1,4 @@
 ---
-import Icon from "./Icon.astro";
 import { server } from "../data/server";
 
 interface Props {
@@ -9,14 +8,14 @@ interface Props {
 const { compact = false } = Astro.props;
 ---
 
-<div class:list={["address-box", { compact }]}>
-  <div>
-    <span class="address-label">Dirección del servidor</span>
+<div class:list={["server-address", { compact }]}>
+  <div class="server-address-copy">
+    <span>Dirección del servidor</span>
     <strong>{server.address}</strong>
   </div>
   <button class="copy-button" type="button" data-copy={server.address}>
-    <span class="copy-default"><Icon name="copy" size={18} /> Copiar IP</span>
-    <span class="copy-success"><Icon name="check" size={18} /> Copiada</span>
+    <span class="copy-default">Copiar IP</span>
+    <span class="copy-success">Copiada</span>
   </button>
 </div>
 

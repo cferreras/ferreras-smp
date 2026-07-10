@@ -19,22 +19,23 @@ const features = [
 ---
 
 <section class="section about" id="servidor">
-  <div class="container">
+  <div class="shell">
     <div class="section-heading">
-      <p class="section-kicker">El servidor</p>
-      <h2>Lo esencial,<br />bien cuidado.</h2>
-      <p>
-        Ferreras SMP busca que jugar sea fácil: un mundo de supervivencia,
-        mejoras discretas del lado servidor y una comunidad con sentido común.
-      </p>
+      <div>
+        <p class="eyebrow">El servidor</p>
+        <h2>Lo esencial,<br /><span>bien cuidado.</span></h2>
+      </div>
+      <p>Ferreras SMP busca que jugar sea fácil: un mundo de supervivencia, mejoras discretas del lado servidor y una comunidad con sentido común.</p>
     </div>
 
     <div class="feature-grid">
       {features.map((feature) => (
-        <article class="feature">
-          <span>{feature.number}</span>
-          <h3>{feature.title}</h3>
-          <p>{feature.text}</p>
+        <article class="feature-card">
+          <span class="feature-index mono">{feature.number}</span>
+          <div>
+            <h3>{feature.title}</h3>
+            <p>{feature.text}</p>
+          </div>
         </article>
       ))}
     </div>

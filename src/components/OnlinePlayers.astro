@@ -1,32 +1,20 @@
 ---
-interface Props {
-  players: string[];
-}
-
+interface Props { players: string[]; }
 const { players } = Astro.props;
 ---
 
 <article class="live-card online-players" aria-labelledby="online-players-title">
-  <div class="live-card-heading">
-    <p class="live-card-kicker">Jugadores conectados</p>
-    <h3 id="online-players-title" data-players-heading>{players.length} ahora</h3>
+  <div class="card-heading-row">
+    <div>
+      <p class="card-kicker">Jugadores conectados</p>
+      <h3 id="online-players-title" data-players-heading>{players.length} ahora</h3>
+    </div>
   </div>
 
-  <ul
-    class="player-list"
-    aria-label="Jugadores conectados"
-    data-player-list
-    hidden={players.length === 0}
-  >
+  <ul class="player-list" aria-label="Jugadores conectados" data-player-list hidden={players.length === 0}>
     {players.map((player) => (
-      <li>
-        <span aria-hidden="true">{player.charAt(0)}</span>
-        <strong>{player}</strong>
-      </li>
+      <li><span aria-hidden="true">{player.charAt(0)}</span><strong>{player}</strong></li>
     ))}
   </ul>
-
-  <p class="empty-live-message" data-empty-players hidden={players.length > 0}>
-    No hay nadie conectado ahora mismo.
-  </p>
+  <p class="empty-live-message" data-empty-players hidden={players.length > 0}>No hay nadie conectado ahora mismo.</p>
 </article>

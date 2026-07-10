@@ -1,33 +1,16 @@
 ---
 import type { MinecraftPollOption } from "../types/minecraft-live";
-
-interface Props {
-  option: MinecraftPollOption;
-}
-
+interface Props { option: MinecraftPollOption; }
 const { option } = Astro.props;
 ---
 
 <li class="poll-option">
-  <button
-    type="button"
-    class="poll-option-button"
-    data-poll-option={option.id}
-    aria-label={`Votar por ${option.label}`}
-  >
+  <button type="button" class="poll-option-button" data-poll-option={option.id} aria-label={`Votar por ${option.label}`}>
     <span class="poll-option-copy">
       <strong data-poll-option-label>{option.label}</strong>
-      <span data-poll-option-percentage>{option.percentage}%</span>
+      <span class="mono" data-poll-option-percentage>{option.percentage}%</span>
     </span>
-    <span
-      class="poll-progress"
-      role="progressbar"
-      aria-label={`Apoyo actual para ${option.label}`}
-      aria-valuemin="0"
-      aria-valuemax="100"
-      aria-valuenow={option.percentage}
-      data-poll-progress
-    >
+    <span class="poll-progress" role="progressbar" aria-label={`Apoyo actual para ${option.label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={option.percentage} data-poll-progress>
       <span style={`width: ${option.percentage}%`} data-poll-progress-bar></span>
     </span>
   </button>
