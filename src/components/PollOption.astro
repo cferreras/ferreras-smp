@@ -13,5 +13,8 @@ const { option } = Astro.props;
     <span class="poll-progress" role="progressbar" aria-label={`Apoyo actual para ${option.label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={option.percentage} data-poll-progress>
       <span style={`width: ${option.percentage}%`} data-poll-progress-bar></span>
     </span>
+    <span class="poll-option-votes mono" data-poll-option-votes>
+      {option.votes} {option.votes === 1 ? "voto" : "votos"}
+    </span>
   </button>
 </li>

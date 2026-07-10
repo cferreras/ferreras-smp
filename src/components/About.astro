@@ -4,16 +4,22 @@ const features = [
     number: "01",
     title: "Supervivencia sencilla",
     text: "Una experiencia reconocible y cercana a vanilla, sin sistemas innecesarios.",
+    image: "/images/feature-simple-survival.webp",
+    imageAlt: "Pequeño refugio de supervivencia construido con bloques junto a un árbol y una antorcha",
   },
   {
     number: "02",
     title: "Entra sin preparar nada",
     text: "No necesitas instalar mods. Abre Minecraft, añade la IP y empieza a jugar.",
+    image: "/images/feature-ready-to-play.webp",
+    imageAlt: "Camino de bloques que conduce a una puerta abierta con herramientas preparadas",
   },
   {
     number: "03",
     title: "Comunidad conectada",
     text: "El chat, los avisos y la ayuda del servidor también están disponibles en Discord.",
+    image: "/images/feature-connected-community.webp",
+    imageAlt: "Tres aventureros de bloques conversando alrededor de una hoguera",
   },
 ];
 ---
@@ -32,6 +38,16 @@ const features = [
       {features.map((feature) => (
         <article class="feature-card">
           <span class="feature-index mono">{feature.number}</span>
+          <div class="feature-visual">
+            <img
+              src={feature.image}
+              alt={feature.imageAlt}
+              width="960"
+              height="400"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
           <div>
             <h3>{feature.title}</h3>
             <p>{feature.text}</p>

@@ -22,7 +22,14 @@ import { modGroups } from "../data/server";
               <small>{group.description}</small>
             </span>
             <span class="mod-count mono">{group.mods.length} elementos</span>
-            <span class="mod-action" aria-hidden="true">Abrir</span>
+            <span class="mod-action" aria-hidden="true">
+              <svg class="mod-icon mod-icon-plus" viewBox="0 0 20 20" fill="none">
+                <path d="M10 4.5v11M4.5 10h11" />
+              </svg>
+              <svg class="mod-icon mod-icon-minus" viewBox="0 0 20 20" fill="none">
+                <path d="M4.5 10h11" />
+              </svg>
+            </span>
           </summary>
           <ul>
             {group.mods.map((mod) => <li>{mod}</li>)}

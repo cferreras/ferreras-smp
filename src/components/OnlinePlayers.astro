@@ -1,4 +1,6 @@
 ---
+import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
+
 interface Props { players: string[]; }
 const { players } = Astro.props;
 ---
@@ -13,7 +15,19 @@ const { players } = Astro.props;
 
   <ul class="player-list" aria-label="Jugadores conectados" data-player-list hidden={players.length === 0}>
     {players.map((player) => (
-      <li><span aria-hidden="true">{player.charAt(0)}</span><strong>{player}</strong></li>
+      <li>
+        <img
+          class="player-avatar"
+          src={getPlayerAvatarUrl(player)}
+          data-player-avatar
+          data-fallback-src={STEVE_AVATAR_URL}
+          width="28"
+          height="28"
+          alt=""
+          aria-hidden="true"
+        />
+        <strong>{player}</strong>
+      </li>
     ))}
   </ul>
   <p class="empty-live-message" data-empty-players hidden={players.length > 0}>No hay nadie conectado ahora mismo.</p>

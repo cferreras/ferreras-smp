@@ -4,6 +4,7 @@ import type {
   MinecraftPoll,
   MinecraftPollOption,
 } from "../types/minecraft-live";
+import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
 
 type VoteResponse =
   | {
@@ -78,13 +79,32 @@ if (liveSection) {
     return "hace unos segundos";
   };
 
+  const formatVotes = (votes: number) => `${votes} ${votes === 1 ? "voto" : "votos"}`;
+
+  const applyAvatarFallback = (avatar: HTMLImageElement) => {
+    if (avatar.src === STEVE_AVATAR_URL) return;
+
+    avatar.src = avatar.dataset.fallbackSrc || STEVE_AVATAR_URL;
+  };
+
+  liveSection.querySelectorAll<HTMLImageElement>("[data-player-avatar]").forEach((avatar) => {
+    avatar.addEventListener("error", () => applyAvatarFallback(avatar), { once: true });
+  });
+
   const createPlayerItem = (player: string) => {
     const item = document.createElement("li");
-    const avatar = document.createElement("span");
+    const avatar = document.createElement("img");
     const name = document.createElement("strong");
 
+    avatar.className = "player-avatar";
+    avatar.src = getPlayerAvatarUrl(player);
+    avatar.dataset.playerAvatar = "";
+    avatar.dataset.fallbackSrc = STEVE_AVATAR_URL;
+    avatar.width = 28;
+    avatar.height = 28;
+    avatar.alt = "";
     avatar.setAttribute("aria-hidden", "true");
-    avatar.textContent = player.charAt(0);
+    avatar.addEventListener("error", () => applyAvatarFallback(avatar), { once: true });
     name.textContent = player;
 
     item.append(avatar, name);
@@ -151,6 +171,7 @@ if (liveSection) {
     const percentage = document.createElement("span");
     const progress = document.createElement("span");
     const progressBar = document.createElement("span");
+    const votes = document.createElement("span");
 
     item.className = "poll-option";
     button.type = "button";
@@ -175,9 +196,13 @@ if (liveSection) {
     progressBar.dataset.pollProgressBar = "";
     progressBar.style.width = `${option.percentage}%`;
 
+    votes.className = "poll-option-votes mono";
+    votes.dataset.pollOptionVotes = "";
+    votes.textContent = formatVotes(option.votes);
+
     progress.append(progressBar);
     copy.append(label, percentage);
-    button.append(copy, progress);
+    button.append(copy, progress, votes);
     item.append(button);
 
     return item;
@@ -188,6 +213,7 @@ if (liveSection) {
     const percentage = button.querySelector<HTMLElement>("[data-poll-option-percentage]");
     const progress = button.querySelector<HTMLElement>("[data-poll-progress]");
     const progressBar = button.querySelector<HTMLElement>("[data-poll-progress-bar]");
+    const votes = button.querySelector<HTMLElement>("[data-poll-option-votes]");
 
     button.dataset.pollOption = option.id;
     button.disabled = isVoting;
@@ -200,6 +226,7 @@ if (liveSection) {
       progress.setAttribute("aria-valuenow", option.percentage.toString());
     }
     if (progressBar) progressBar.style.width = `${option.percentage}%`;
+    if (votes) votes.textContent = formatVotes(option.votes);
   };
 
   const setPollButtonsDisabled = (disabled: boolean) => {

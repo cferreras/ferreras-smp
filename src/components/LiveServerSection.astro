@@ -7,7 +7,7 @@ import { DEFAULT_MINECRAFT_SNAPSHOT } from "../lib/minecraft/constants";
 
 const { status, activity, poll } = DEFAULT_MINECRAFT_SNAPSHOT;
 const minecraftApiBase =
-  process.env.PUBLIC_MINECRAFT_API_URL || process.env.NEXT_PUBLIC_MINECRAFT_API_URL || "";
+  import.meta.env.PUBLIC_MINECRAFT_API_URL || import.meta.env.NEXT_PUBLIC_MINECRAFT_API_URL || "";
 ---
 
 <section
