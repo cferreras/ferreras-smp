@@ -4,9 +4,10 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description } = Astro.props;
+const { title, description, structuredData: pageStructuredData } = Astro.props;
 const siteUrl = Astro.site ?? new URL("https://mc.ferreras.dev");
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
 const socialImageUrl = new URL("/images/og-ferreras-smp.jpg", siteUrl);
@@ -34,6 +35,12 @@ const structuredData = {
     },
   ],
 };
+
+const pageSchemas = pageStructuredData
+  ? Array.isArray(pageStructuredData) ? pageStructuredData : [pageStructuredData]
+  : [];
+
+structuredData["@graph"].push(...pageSchemas);
 ---
 
 <!doctype html>

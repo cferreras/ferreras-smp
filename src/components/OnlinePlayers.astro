@@ -1,5 +1,6 @@
 ---
 import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
+import { getRandomEmptyPlayerMessage } from "../lib/empty-player-messages";
 
 interface Props { players: string[]; }
 const { players } = Astro.props;
@@ -30,5 +31,5 @@ const { players } = Astro.props;
       </li>
     ))}
   </ul>
-  <p class="empty-live-message" data-empty-players hidden={players.length > 0}>No hay nadie conectado ahora mismo.</p>
+  <p class="empty-live-message" data-empty-players hidden={players.length > 0}>{getRandomEmptyPlayerMessage()}</p>
 </article>

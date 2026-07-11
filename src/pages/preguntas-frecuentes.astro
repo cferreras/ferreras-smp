@@ -1,0 +1,72 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { server } from "../data/server";
+import Layout from "../layouts/Layout.astro";
+
+const faqs = [
+  { question: "¿Cuál es la IP de Ferreras SMP?", answer: `La dirección del servidor es ${server.address}. También puedes escribirla en el navegador para volver a esta web.` },
+  { question: "¿Necesito instalar mods para jugar?", answer: "No. Puedes entrar desde Minecraft Java sin descargar un modpack. Xaero’s Minimap, Xaero’s World Map y Open Parties and Claims son opcionales, pero recomendables para reclamar y gestionar terrenos cómodamente desde el mapa." },
+  { question: "¿Qué tipo de servidor es?", answer: "Ferreras SMP es un servidor de supervivencia sencillo y cercano a la experiencia original, pensado para jugar con calma y en comunidad." },
+  { question: "¿Dónde puedo consultar las normas?", answer: "Las normas están publicadas en la portada. Se resumen en jugar limpio, respetar lo ajeno y convivir con sentido común." },
+  { question: "¿Cómo sé si el servidor está en línea?", answer: "La sección En directo de la portada muestra el estado, los jugadores conectados y la actividad reciente del servidor." },
+  { question: "¿Qué hago si no puedo conectarme?", answer: "Comprueba que has escrito bien la dirección y que estás usando Minecraft Java. Si el problema continúa, entra al Discord de Ferreras SMP para pedir ayuda." },
+];
+
+const faqSchema = {
+  "@type": "FAQPage",
+  "@id": "https://mc.ferreras.dev/preguntas-frecuentes#faq",
+  inLanguage: "es",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    acceptedAnswer: { "@type": "Answer", text: faq.answer },
+  })),
+};
+---
+
+<Layout
+  title={`Preguntas frecuentes sobre ${server.name}`}
+  description={`Respuestas sobre la IP, los mods, las normas y cómo jugar en el servidor de Minecraft ${server.name}.`}
+  structuredData={faqSchema}
+>
+  <Header />
+  <main id="contenido" class="guide-page">
+    <header class="guide-hero guide-hero-compact">
+      <div class="shell">
+        <p class="eyebrow">Ayuda</p>
+        <h1>Preguntas<br /><span>frecuentes.</span></h1>
+        <p>Lo importante para entrar y saber qué te vas a encontrar en Ferreras SMP.</p>
+      </div>
+    </header>
+
+    <section class="faq-section section" aria-label="Preguntas frecuentes">
+      <div class="shell faq-layout">
+        <aside>
+          <p class="eyebrow">Respuesta rápida</p>
+          <h2>Todo claro antes de entrar.</h2>
+          <a class="text-link" href="/como-entrar">Ver la guía para entrar <span aria-hidden="true">→</span></a>
+        </aside>
+        <div class="faq-list">
+          {faqs.map((faq, index) => (
+            <details open={index === 0}>
+              <summary><span>{faq.question}</span><span class="faq-action" aria-hidden="true">+</span></summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-callout">
+      <div class="shell guide-callout-inner">
+        <div><p class="eyebrow">Siguiente paso</p><h2>Ya sabes lo necesario.</h2></div>
+        <div class="guide-callout-actions">
+          <a class="button button-secondary" href="/#normas">Leer las normas</a>
+          <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer">Entrar al Discord</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

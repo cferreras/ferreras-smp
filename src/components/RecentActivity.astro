@@ -1,5 +1,6 @@
 ---
 import type { MinecraftActivityEvent } from "../types/minecraft-live";
+import { formatRelativeTime } from "../lib/format-relative-time";
 
 interface Props { events: MinecraftActivityEvent[]; }
 const { events } = Astro.props;
@@ -8,11 +9,6 @@ const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   join: "Entrada", leave: "Salida", death: "Muerte", advancement: "Logro", backup: "Backup", system: "Sistema",
 };
 
-const formatActivityTime = (value: string) => {
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Madrid" }).format(date);
-};
 ---
 
 <article class="live-card recent-activity" aria-labelledby="recent-activity-title">
@@ -25,7 +21,7 @@ const formatActivityTime = (value: string) => {
       <li class="activity-event" data-activity-type={event.type}>
         <span class="activity-type">{eventLabels[event.type]}</span>
         <p>{event.message}</p>
-        <time class="mono" datetime={event.createdAt}>{formatActivityTime(event.createdAt)}</time>
+        <time datetime={event.createdAt}>{formatRelativeTime(event.createdAt)}</time>
       </li>
     ))}
   </ul>

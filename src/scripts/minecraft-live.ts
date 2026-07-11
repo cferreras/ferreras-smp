@@ -4,6 +4,8 @@ import type {
   MinecraftPoll,
   MinecraftPollOption,
 } from "../types/minecraft-live";
+import { formatRelativeTime } from "../lib/format-relative-time";
+import { getRandomEmptyPlayerMessage } from "../lib/empty-player-messages";
 import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
 
 type VoteResponse =
@@ -55,30 +57,6 @@ if (liveSection) {
     pollFeedback.dataset.state = isError ? "error" : "ready";
   };
 
-  const formatDateTime = (value: string) => {
-    const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) {
-      return value;
-    }
-
-    return new Intl.DateTimeFormat("es-ES", {
-      hour: "2-digit",
-      minute: "2-digit",
-      timeZone: "Europe/Madrid",
-    }).format(date);
-  };
-
-  const formatLastUpdated = (value: string) => {
-    const date = new Date(value);
-
-    if (Number.isNaN(date.getTime())) {
-      return value;
-    }
-
-    return "hace unos segundos";
-  };
-
   const formatVotes = (votes: number) => `${votes} ${votes === 1 ? "voto" : "votos"}`;
 
   const applyAvatarFallback = (avatar: HTMLImageElement) => {
@@ -124,9 +102,15 @@ if (liveSection) {
       return;
     }
 
+    const wasEmpty = list.hidden;
+
     list.replaceChildren(...players.map(createPlayerItem));
     list.hidden = players.length === 0;
     empty.hidden = players.length > 0;
+
+    if (players.length === 0 && !wasEmpty) {
+      empty.textContent = getRandomEmptyPlayerMessage();
+    }
   };
 
   const createActivityItem = (event: MinecraftActivityEvent) => {
@@ -141,7 +125,7 @@ if (liveSection) {
     type.textContent = eventLabels[event.type];
     message.textContent = event.message;
     time.dateTime = event.createdAt;
-    time.textContent = formatDateTime(event.createdAt);
+    time.textContent = formatRelativeTime(event.createdAt);
 
     item.append(type, message, time);
     return item;
@@ -172,6 +156,7 @@ if (liveSection) {
     const progress = document.createElement("span");
     const progressBar = document.createElement("span");
     const votes = document.createElement("span");
+    const results = document.createElement("span");
 
     item.className = "poll-option";
     button.type = "button";
@@ -196,13 +181,14 @@ if (liveSection) {
     progressBar.dataset.pollProgressBar = "";
     progressBar.style.width = `${option.percentage}%`;
 
-    votes.className = "poll-option-votes mono";
+    results.className = "poll-option-results";
     votes.dataset.pollOptionVotes = "";
     votes.textContent = formatVotes(option.votes);
 
     progress.append(progressBar);
-    copy.append(label, percentage);
-    button.append(copy, progress, votes);
+    copy.append(label);
+    results.append(votes, percentage);
+    button.append(copy, progress, results);
     item.append(button);
 
     return item;
@@ -287,7 +273,6 @@ if (liveSection) {
       '[data-status-metric="Día del mundo"]',
     );
     const tpsMetric = liveSection.querySelector<HTMLElement>('[data-status-metric="TPS"]');
-    const updated = liveSection.querySelector<HTMLElement>("[data-status-updated]");
     const statusText = snapshot.status.online ? "Online" : "Offline";
 
     if (statusBadge) {
@@ -307,10 +292,6 @@ if (liveSection) {
       tpsMetric.textContent =
         snapshot.status.tps === null ? "No disponible" : snapshot.status.tps.toFixed(1);
     }
-    if (updated) {
-      updated.textContent = `Última actualización: ${formatLastUpdated(snapshot.status.lastUpdated)}`;
-    }
-
     updatePlayers(snapshot.status.players);
     updateActivity(snapshot.activity);
     updatePoll(snapshot.poll);

@@ -8,13 +8,13 @@ const { option } = Astro.props;
   <button type="button" class="poll-option-button" data-poll-option={option.id} aria-label={`Votar por ${option.label}`}>
     <span class="poll-option-copy">
       <strong data-poll-option-label>{option.label}</strong>
-      <span class="mono" data-poll-option-percentage>{option.percentage}%</span>
     </span>
     <span class="poll-progress" role="progressbar" aria-label={`Apoyo actual para ${option.label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={option.percentage} data-poll-progress>
       <span style={`width: ${option.percentage}%`} data-poll-progress-bar></span>
     </span>
-    <span class="poll-option-votes mono" data-poll-option-votes>
-      {option.votes} {option.votes === 1 ? "voto" : "votos"}
+    <span class="poll-option-results">
+      <span data-poll-option-votes>{option.votes} {option.votes === 1 ? "voto" : "votos"}</span>
+      <strong data-poll-option-percentage>{option.percentage}%</strong>
     </span>
   </button>
 </li>

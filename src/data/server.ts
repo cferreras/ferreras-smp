@@ -6,6 +6,21 @@ export const server = {
     "Un servidor de supervivencia sencillo, cuidado y cercano a la experiencia original.",
 };
 
+export const recommendedClientMods = [
+  {
+    name: "Xaero’s Minimap",
+    description: "Añade un minimapa discreto mientras exploras y construyes.",
+  },
+  {
+    name: "Xaero’s World Map",
+    description: "Permite consultar cómodamente el mundo que ya has recorrido.",
+  },
+  {
+    name: "Open Parties and Claims",
+    description: "Integra las reclamaciones de terreno con el mapa para crearlas y gestionarlas con más facilidad.",
+  },
+];
+
 export const rules = [
   {
     title: "Juega limpio",

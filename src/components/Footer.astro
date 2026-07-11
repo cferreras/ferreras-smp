@@ -4,10 +4,29 @@ import { server } from "../data/server";
 
 <footer class="site-footer">
   <div class="shell footer-shell">
-    <a class="brand" href="#contenido">
+    <a class="brand" href="/">
       <span class="brand-mark" aria-hidden="true">F</span>
       <span class="brand-copy"><strong>{server.name}</strong><small>Supervivencia sin complicaciones.</small></span>
     </a>
-    <p class="mono">© {new Date().getFullYear()} · {server.address}</p>
+    <nav class="footer-nav" aria-label="Navegación secundaria">
+      <div>
+        <strong>Servidor</strong>
+        <a href="/#servidor">Sobre Ferreras SMP</a>
+        <a href="/#directo">Estado en directo</a>
+      </div>
+      <div>
+        <strong>Guía</strong>
+        <a href="/como-entrar">Cómo entrar</a>
+        <a href="/preguntas-frecuentes">Preguntas frecuentes</a>
+        <a href="/#normas">Normas</a>
+      </div>
+      <div>
+        <strong>Comunidad</strong>
+        <a href={server.discord} target="_blank" rel="noreferrer">Entrar al Discord</a>
+      </div>
+    </nav>
+    <div class="footer-meta">
+      <p>© {new Date().getFullYear()} {server.name} · Hecho para jugar a tu ritmo.</p>
+    </div>
   </div>
 </footer>

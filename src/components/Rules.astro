@@ -11,9 +11,8 @@ import { rules } from "../data/server";
     </div>
 
     <ol class="rule-list">
-      {rules.map((rule, index) => (
+      {rules.map((rule) => (
         <li>
-          <span class="rule-number mono">{String(index + 1).padStart(2, "0")}</span>
           <div>
             <h3>{rule.title}</h3>
             <p>{rule.text}</p>

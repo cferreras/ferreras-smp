@@ -1,0 +1,97 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import ServerAddress from "../components/ServerAddress.astro";
+import { recommendedClientMods, server } from "../data/server";
+import Layout from "../layouts/Layout.astro";
+
+const steps = [
+  { title: "Abre Minecraft Java", text: "Inicia el juego desde tu launcher habitual. No necesitas instalar mods ni un cliente especial." },
+  { title: "Añade el servidor", text: `Entra en Multijugador, pulsa “Añadir servidor” y usa ${server.address} como dirección.` },
+  { title: "Conéctate", text: "Guarda el servidor y entra al mundo. Puedes pasar por Discord antes si quieres presentarte o pedir ayuda." },
+];
+
+const howToSchema = {
+  "@type": "HowTo",
+  "@id": "https://mc.ferreras.dev/como-entrar#howto",
+  name: "Cómo entrar a Ferreras SMP",
+  description: `Pasos para conectarte al servidor de Minecraft Ferreras SMP mediante ${server.address}.`,
+  inLanguage: "es",
+  totalTime: "PT2M",
+  step: steps.map((step, index) => ({
+    "@type": "HowToStep",
+    position: index + 1,
+    name: step.title,
+    text: step.text,
+  })),
+};
+---
+
+<Layout
+  title={`Cómo entrar a ${server.name} | Servidor Minecraft`}
+  description={`Aprende a entrar a ${server.name}: abre Minecraft Java, añade ${server.address} y juega sin instalar mods.`}
+  structuredData={howToSchema}
+>
+  <Header />
+  <main id="contenido" class="guide-page">
+    <header class="guide-hero">
+      <div class="shell guide-hero-layout">
+        <div>
+          <p class="eyebrow">Guía de acceso</p>
+          <h1>Cómo entrar a<br /><span>Ferreras SMP.</span></h1>
+          <p>Solo necesitas Minecraft Java y un par de minutos. No hay modpack ni configuración adicional.</p>
+        </div>
+        <aside class="guide-address" aria-label="Dirección del servidor">
+          <span class="mono">IP DEL SERVIDOR</span>
+          <ServerAddress />
+        </aside>
+      </div>
+    </header>
+
+    <section class="guide-content section" aria-labelledby="pasos-title">
+      <div class="shell guide-layout">
+        <div class="guide-section-heading">
+          <p class="eyebrow">En tres pasos</p>
+          <h2 id="pasos-title">Del menú al mundo.</h2>
+        </div>
+        <ol class="step-list">
+          {steps.map((step, index) => (
+            <li>
+              <span class="step-number" aria-hidden="true">{index + 1}</span>
+              <div><h3>{step.title}</h3><p>{step.text}</p></div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="optional-mods section" id="mods-opcionales" aria-labelledby="optional-mods-title">
+      <div class="shell guide-layout">
+        <div class="guide-section-heading">
+          <p class="eyebrow">Experiencia recomendada</p>
+          <h2 id="optional-mods-title">Opcionales, pero muy útiles.</h2>
+        </div>
+        <div>
+          <p class="optional-mods-intro">Puedes jugar sin instalar nada. Si quieres reclamar terrenos cómodamente desde el mapa, recomendamos estos tres mods de cliente:</p>
+          <ul class="optional-mod-list">
+            {recommendedClientMods.map((mod) => (
+              <li><strong>{mod.name}</strong><p>{mod.description}</p></li>
+            ))}
+          </ul>
+          <p class="optional-mod-note">Los tres son opcionales: no tenerlos instalados no impide entrar al servidor.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="guide-callout">
+      <div class="shell guide-callout-inner">
+        <div><p class="eyebrow">¿Alguna duda?</p><h2>Antes de quedarte atascado.</h2></div>
+        <div class="guide-callout-actions">
+          <a class="button button-secondary" href="/preguntas-frecuentes">Ver preguntas frecuentes</a>
+          <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer">Pedir ayuda en Discord</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

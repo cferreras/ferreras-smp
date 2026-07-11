@@ -1,5 +1,18 @@
 ---
-import { modGroups } from "../data/server";
+const improvements = [
+  {
+    title: "Rendimiento estable",
+    text: "Optimizaciones internas para mantener el mundo fluido, reducir el lag y cuidar los TPS.",
+  },
+  {
+    title: "Mundo protegido",
+    text: "Reclamaciones, registro de acciones y herramientas de moderación para proteger construcciones y pertenencias.",
+  },
+  {
+    title: "Vanilla mejorado",
+    text: "Pequeños ajustes de comodidad y comunidad sin convertir la supervivencia en una experiencia distinta.",
+  },
+];
 ---
 
 <section class="section mods" id="mods">
@@ -7,35 +20,26 @@ import { modGroups } from "../data/server";
     <div class="section-heading mods-heading">
       <div>
         <p class="eyebrow">Tecnología</p>
-        <h2>Mods del servidor</h2>
+        <h2>Mejoras que trabajan en segundo plano.</h2>
       </div>
-      <p>Mejoras de rendimiento, administración y contenido ejecutadas en el servidor. <strong>No necesitas instalar ninguna.</strong></p>
+      <p>La parte técnica está para que puedas olvidarte de ella. <strong>No necesitas instalar mods para entrar.</strong></p>
     </div>
 
-    <div class="mod-list">
-      {modGroups.map((group, index) => (
-        <details class="mod-group" open={index === 0}>
-          <summary>
-            <span class="mod-index mono">{String(index + 1).padStart(2, "0")}</span>
-            <span class="mod-title">
-              <strong>{group.name}</strong>
-              <small>{group.description}</small>
-            </span>
-            <span class="mod-count mono">{group.mods.length} elementos</span>
-            <span class="mod-action" aria-hidden="true">
-              <svg class="mod-icon mod-icon-plus" viewBox="0 0 20 20" fill="none">
-                <path d="M10 4.5v11M4.5 10h11" />
-              </svg>
-              <svg class="mod-icon mod-icon-minus" viewBox="0 0 20 20" fill="none">
-                <path d="M4.5 10h11" />
-              </svg>
-            </span>
-          </summary>
-          <ul>
-            {group.mods.map((mod) => <li>{mod}</li>)}
-          </ul>
-        </details>
+    <div class="improvement-grid">
+      {improvements.map((improvement) => (
+        <article>
+          <h3>{improvement.title}</h3>
+          <p>{improvement.text}</p>
+        </article>
       ))}
+    </div>
+
+    <div class="optional-mod-link">
+      <div>
+        <strong>¿Quieres gestionar reclamaciones desde el mapa?</strong>
+        <p>Hay tres mods de cliente opcionales que hacen el proceso mucho más cómodo.</p>
+      </div>
+      <a class="button button-secondary" href="/como-entrar#mods-opcionales">Ver mods recomendados</a>
     </div>
   </div>
 </section>
