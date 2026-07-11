@@ -463,29 +463,28 @@ dl {
 
 .hero-panel {
   position: relative;
-  padding: 10px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  background: var(--card-elevated);
-  box-shadow: var(--shadow);
+  display: grid;
+  min-height: 610px;
+  align-content: end;
 }
 
 .hero-media {
-  position: relative;
-  aspect-ratio: 16 / 10;
-  margin: 0 0 10px;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  background: var(--border-soft);
+  position: absolute;
+  right: 50%;
+  bottom: 76px;
+  width: min(670px, 55vw);
+  margin: 0;
+  transform: translateX(50%);
+  pointer-events: none;
 }
 
-.hero-media::after {
+.hero-media::before {
   position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(to top, rgb(0 0 0 / 0.52), transparent 56%),
-    color-mix(in srgb, var(--primary) 9%, transparent);
+  inset: 18% 14% 8%;
+  z-index: -1;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--primary) 14%, transparent);
+  filter: blur(65px);
   content: "";
   pointer-events: none;
 }
@@ -493,15 +492,19 @@ dl {
 .hero-media img {
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.08);
-  transition: filter 220ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 22px 28px rgb(0 0 0 / 0.34));
 }
 
-.hero-panel:hover .hero-media img {
-  filter: grayscale(0.82) contrast(1.1);
-  transform: scale(1.018);
+.hero-panel > .server-address,
+.hero-note {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-panel > .server-address {
+  box-shadow: 0 18px 54px rgb(0 0 0 / 0.58);
 }
 
 .server-address {
@@ -1260,7 +1263,19 @@ dl {
   }
 
   .hero-panel {
+    display: grid;
     max-width: 620px;
+    min-height: auto;
+    gap: 10px;
+  }
+
+  .hero-media {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: min(700px, 100%);
+    margin: -24px auto -30px;
+    transform: none;
   }
 
   .live-grid {
@@ -1332,7 +1347,9 @@ dl {
   }
 
   .hero-media {
-    aspect-ratio: 4 / 3;
+    width: min(520px, 112%);
+    margin: -12px -6% -20px;
+    justify-self: center;
   }
 
   .hero h1 {
