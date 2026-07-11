@@ -1774,6 +1774,197 @@ dl {
   }
 }
 
+@media (min-width: 1800px) {
+  :root {
+    --shell: 1440px;
+    --header-height: 80px;
+    font-size: 18px;
+  }
+
+  body {
+    font-size: 18px;
+  }
+
+  .header-shell {
+    gap: 32px;
+  }
+
+  .brand-mark {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brand-copy strong {
+    font-size: 16px;
+  }
+
+  .desktop-nav > a,
+  .guide-menu > summary,
+  .button {
+    font-size: 15px;
+  }
+
+  .eyebrow,
+  .card-kicker {
+    font-size: 12px;
+  }
+
+  .hero-layout {
+    grid-template-columns: minmax(0, 1.15fr) minmax(420px, 0.85fr);
+    gap: 140px;
+  }
+
+  .hero h1 {
+    max-width: 900px;
+    font-size: 8.7rem;
+  }
+
+  .hero-intro {
+    max-width: 690px;
+    font-size: 21px;
+  }
+
+  .hero-media {
+    width: min(790px, 55vw);
+  }
+
+  .section {
+    padding-block: 158px;
+  }
+
+  .section-heading {
+    gap: 90px;
+    margin-bottom: 72px;
+  }
+
+  .section-heading h2,
+  .live-server-heading h2 {
+    font-size: 5.2rem;
+  }
+
+  .section-heading > p,
+  .rules-intro > p:last-child,
+  .join-copy > p:last-child {
+    font-size: 18px;
+  }
+
+  .live-grid {
+    gap: 16px;
+  }
+
+  .live-card {
+    padding: 34px;
+  }
+
+  .live-card h3 {
+    font-size: 1.85rem;
+  }
+
+  .activity-event p,
+  .poll-option-copy,
+  .empty-live-message {
+    font-size: 14px;
+  }
+
+  .activity-event time,
+  .activity-type,
+  .status-metrics dt {
+    font-size: 12px;
+  }
+
+  .poll-option-results {
+    font-size: 13px;
+  }
+
+  .poll-option-results strong {
+    font-size: 14px;
+  }
+
+  .status-metrics > div {
+    padding: 22px;
+  }
+
+  .status-metrics dd {
+    font-size: 2rem;
+  }
+
+  .feature-card {
+    min-height: 420px;
+    padding: 32px;
+  }
+
+  .feature-visual {
+    min-height: 190px;
+  }
+
+  .feature-visual img {
+    height: 195px;
+  }
+
+  .feature-card h3 {
+    font-size: 22px;
+  }
+
+  .feature-card p,
+  .rule-list p,
+  .improvement-grid p,
+  .optional-mod-link p {
+    font-size: 16px;
+  }
+
+  .rule-list h3,
+  .improvement-grid h3 {
+    font-size: 21px;
+  }
+
+  .guide-hero-layout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(380px, 0.6fr);
+  }
+
+  .guide-hero h1 {
+    max-width: 980px;
+    font-size: 8.4rem;
+  }
+
+  .guide-hero p:last-child,
+  .optional-mods-intro {
+    font-size: 19px;
+  }
+
+  .guide-layout,
+  .faq-layout {
+    grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
+  }
+
+  .guide-section-heading h2,
+  .faq-layout aside h2 {
+    font-size: 3.7rem;
+  }
+
+  .step-list h3,
+  .faq-list summary {
+    font-size: 20px;
+  }
+
+  .step-list p,
+  .faq-list details > p,
+  .optional-mod-list strong,
+  .optional-mod-list p,
+  .optional-mod-note {
+    font-size: 16px;
+  }
+
+  .footer-nav strong,
+  .footer-nav a,
+  .footer-meta p {
+    font-size: 13px;
+  }
+
+  .join-card {
+    padding: 56px;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .hero-copy > *,
   .hero-panel {
