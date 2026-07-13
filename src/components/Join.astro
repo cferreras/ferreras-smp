@@ -11,8 +11,8 @@ import { server } from "../data/server";
       <p>Entra por tu cuenta o pásate primero por Discord para saludar.</p>
     </div>
     <div class="join-actions">
-      <ServerAddress compact />
-      <a class="button button-dark" href={server.discord} target="_blank" rel="noreferrer">Abrir Discord</a>
+      <ServerAddress compact placement="home_join" />
+      <a class="button button-dark" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="home_join">Abrir Discord</a>
     </div>
   </div>
 </section>

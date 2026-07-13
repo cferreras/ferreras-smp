@@ -1,7 +1,7 @@
 export const server = {
   name: "Ferreras SMP",
   address: "mc.ferreras.dev",
-  discord: "https://discord.gg/xW7yyHRJvE",
+  discord: "https://discord.gg/f8aBZ98EDT",
   description:
     "Un servidor de supervivencia sencillo, cuidado y cercano a la experiencia original.",
 };

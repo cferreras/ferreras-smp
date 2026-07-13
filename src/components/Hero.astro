@@ -11,7 +11,7 @@ import { server } from "../data/server";
       <h1>Un lugar tranquilo<br /><em>para jugar a tu ritmo.</em></h1>
       <p class="hero-intro">{server.description}</p>
       <div class="hero-actions">
-        <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer">Entrar al Discord</a>
+        <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="hero">Entrar al Discord</a>
         <a class="button button-secondary" href="#servidor">Conocer el servidor</a>
       </div>
     </div>
@@ -27,7 +27,7 @@ import { server } from "../data/server";
           fetchpriority="high"
         />
       </figure>
-      <ServerAddress />
+      <ServerAddress placement="hero" />
       <div class="hero-note">
         <p>Entra directamente desde Minecraft Java. Nosotros nos ocupamos de las mejoras técnicas.</p>
       </div>

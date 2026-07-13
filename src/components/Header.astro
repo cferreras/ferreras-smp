@@ -54,7 +54,7 @@ const isGuidePage = currentPath === "/como-entrar" || currentPath === "/pregunta
           <path d="M16.5 12.7A7 7 0 0 1 7.3 3.5a7 7 0 1 0 9.2 9.2Z" />
         </svg>
       </button>
-      <a class="button button-sm button-primary desktop-discord" href={server.discord} target="_blank" rel="noreferrer">
+      <a class="button button-sm button-primary desktop-discord" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="header_desktop">
         Discord
       </a>
       <details class="mobile-nav">
@@ -63,7 +63,7 @@ const isGuidePage = currentPath === "/como-entrar" || currentPath === "/pregunta
           {primaryLinks.map((link) => <a href={link.href}>{link.label}</a>)}
           <span class="mobile-nav-label">Guía</span>
           {guideLinks.map((link) => <a class="mobile-guide-link" href={link.href} aria-current={currentPath === link.href ? "page" : undefined}>{link.label}</a>)}
-          <a class="mobile-discord" href={server.discord} target="_blank" rel="noreferrer">Discord</a>
+          <a class="mobile-discord" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="header_mobile">Discord</a>
         </nav>
       </details>
     </div>

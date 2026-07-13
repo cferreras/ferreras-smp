@@ -162,10 +162,12 @@ No implementes todavía las correcciones encontradas.
 
 ### SEO-02 — Configurar medición del embudo
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semana 1  
 Dependencias: SEO-01  
 Responsable principal: ChatGPT + propietario
+
+Resultado: instrumentación y guía técnica completadas el 13 de julio de 2026; proveedor e invitación configurados el 14 de julio. Plausible está configurado localmente con el script proporcionado por el propietario y falta replicar sus variables en Vercel. La invitación web `f8aBZ98EDT` está aplicada y queda pendiente aprobar una app de atribución para Discord.
 
 #### Eventos que se deben medir
 
@@ -188,10 +190,10 @@ Responsable principal: ChatGPT + propietario
 
 #### Criterios de aceptación
 
-- [ ] Los eventos tienen nombres y propiedades consistentes.
-- [ ] La web sigue funcionando si el proveedor de analítica está bloqueado.
-- [ ] No se recogen datos personales de Minecraft.
-- [ ] Existe una guía de verificación.
+- [x] Los eventos tienen nombres y propiedades consistentes.
+- [x] La web sigue funcionando si el proveedor de analítica está bloqueado.
+- [x] No se recogen datos personales de Minecraft.
+- [x] Existe una guía de verificación.
 
 ## 6. Fase 2: portada y páginas fundamentales
 
@@ -660,7 +662,7 @@ Antes de ejecutar las tareas que dependan de estos datos, completar:
 - [ ] ¿Acepta cuentas no premium?: `____________________________`
 - [ ] Número máximo de jugadores: `____________________________`
 - [ ] ¿Existe whitelist o solicitud de acceso?: `____________________________`
-- [ ] Herramienta de analítica preferida: `____________________________`
+- [x] Herramienta de analítica preferida: `Plausible`
 - [ ] Acceso disponible a Google Search Console: `sí / no`
 - [ ] Acceso disponible a Bing Webmaster Tools: `sí / no`
 - [ ] Canales sociales oficiales: `____________________________`
@@ -672,7 +674,9 @@ ChatGPT no debe completar estos campos mediante suposiciones.
 
 ## 17. Siguiente acción recomendada
 
-Comenzar por `SEO-01`. La auditoría inicial confirmará el estado real de producción y permitirá ejecutar las siguientes tareas con una línea base verificable.
+`SEO-01` y `SEO-02` están completadas. La siguiente tarea es `SEO-03`, reorientar la portada, manteniendo los eventos ya instrumentados en sus CTA.
+
+En paralelo, se deben replicar las variables públicas de Plausible en Vercel cuando se autorice y crear sus seis objetivos. La invitación exclusiva de Discord ya está aplicada; la app de atribución se pospone hasta revisar y limitar sus permisos.
 
 Después, ejecutar en este orden:
 

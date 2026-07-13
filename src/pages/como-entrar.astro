@@ -31,6 +31,7 @@ const howToSchema = {
   title={`Cómo entrar a ${server.name} | Servidor Minecraft`}
   description={`Aprende a entrar a ${server.name}: abre Minecraft Java, añade ${server.address} y juega sin instalar mods.`}
   structuredData={howToSchema}
+  analyticsPage="join-guide"
 >
   <Header />
   <main id="contenido" class="guide-page">
@@ -43,7 +44,7 @@ const howToSchema = {
         </div>
         <aside class="guide-address" aria-label="Dirección del servidor">
           <span class="mono">IP DEL SERVIDOR</span>
-          <ServerAddress />
+          <ServerAddress placement="join_guide" />
         </aside>
       </div>
     </header>
@@ -88,7 +89,7 @@ const howToSchema = {
         <div><p class="eyebrow">¿Alguna duda?</p><h2>Antes de quedarte atascado.</h2></div>
         <div class="guide-callout-actions">
           <a class="button button-secondary" href="/preguntas-frecuentes">Ver preguntas frecuentes</a>
-          <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer">Pedir ayuda en Discord</a>
+          <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="join_guide_help">Pedir ayuda en Discord</a>
         </div>
       </div>
     </section>

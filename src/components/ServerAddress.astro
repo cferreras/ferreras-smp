@@ -3,9 +3,10 @@ import { server } from "../data/server";
 
 interface Props {
   compact?: boolean;
+  placement: string;
 }
 
-const { compact = false } = Astro.props;
+const { compact = false, placement } = Astro.props;
 ---
 
 <div class:list={["server-address", { compact }]}>
@@ -13,13 +14,15 @@ const { compact = false } = Astro.props;
     <span>Dirección del servidor</span>
     <strong>{server.address}</strong>
   </div>
-  <button class="copy-button" type="button" data-copy={server.address}>
+  <button class="copy-button" type="button" data-copy={server.address} data-copy-placement={placement}>
     <span class="copy-default">Copiar IP</span>
     <span class="copy-success">Copiada</span>
   </button>
 </div>
 
 <script>
+  import { trackAnalyticsEvent } from "../lib/analytics";
+
   document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((button) => {
     button.addEventListener("click", async () => {
       const value = button.dataset.copy;
@@ -38,6 +41,9 @@ const { compact = false } = Astro.props;
 
       button.classList.add("is-copied");
       window.setTimeout(() => button.classList.remove("is-copied"), 2200);
+      trackAnalyticsEvent("copy_server_ip", {
+        placement: button.dataset.copyPlacement || "server_address",
+      });
     });
   });
 </script>

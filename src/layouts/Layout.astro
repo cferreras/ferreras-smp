@@ -1,19 +1,41 @@
 ---
 import "../styles/global.css";
+import type { AnalyticsProvider } from "../lib/analytics";
+import { server } from "../data/server";
 
 interface Props {
   title: string;
   description: string;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
+  analyticsPage?: "join-guide" | "blog-post";
+  analyticsContentId?: string;
 }
 
-const { title, description, structuredData: pageStructuredData } = Astro.props;
+const {
+  title,
+  description,
+  structuredData: pageStructuredData,
+  analyticsPage,
+  analyticsContentId,
+} = Astro.props;
+const requestedAnalyticsProvider = import.meta.env.PUBLIC_ANALYTICS_PROVIDER;
+const plausibleScriptUrl = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_URL;
+const gaMeasurementId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID;
+const analyticsProvider: AnalyticsProvider =
+  requestedAnalyticsProvider === "plausible" && plausibleScriptUrl
+    ? "plausible"
+    : requestedAnalyticsProvider === "ga4" && gaMeasurementId
+      ? "ga4"
+      : "none";
 const siteUrl = Astro.site ?? new URL("https://mc.ferreras.dev");
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
 const socialImageUrl = new URL("/images/og-ferreras-smp.jpg", siteUrl);
 const organizationId = new URL("/#organization", siteUrl).href;
 
-const structuredData = {
+const structuredData: {
+  "@context": string;
+  "@graph": Record<string, unknown>[];
+} = {
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -22,7 +44,7 @@ const structuredData = {
       name: "Ferreras SMP",
       url: siteUrl.href,
       description,
-      sameAs: ["https://discord.gg/xW7yyHRJvE"],
+      sameAs: [server.discord],
     },
     {
       "@type": "WebSite",
@@ -68,6 +90,29 @@ structuredData["@graph"].push(...pageSchemas);
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImageUrl} />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+    {analyticsProvider === "plausible" && (
+      <>
+        <script
+          is:inline
+          defer
+          data-domain={siteUrl.hostname}
+          src={plausibleScriptUrl}
+        ></script>
+        <script
+          is:inline
+          set:html={'window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)};'}
+        />
+      </>
+    )}
+    {analyticsProvider === "ga4" && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaMeasurementId)}`}></script>
+        <script
+          is:inline
+          set:html={`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config',${JSON.stringify(gaMeasurementId)},{send_page_view:true});`}
+        />
+      </>
+    )}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -85,8 +130,15 @@ structuredData["@graph"].push(...pageSchemas);
     </script>
     <title>{title}</title>
   </head>
-  <body>
+  <body
+    data-analytics-provider={analyticsProvider}
+    data-analytics-page={analyticsPage}
+    data-analytics-content-id={analyticsContentId}
+  >
     <a class="skip-link" href="#contenido">Saltar al contenido</a>
     <slot />
+    <script>
+      import "../scripts/analytics";
+    </script>
   </body>
 </html>
