@@ -8,7 +8,7 @@ const isNodeAdapter = process.env.ASTRO_ADAPTER === "node" || process.env.npm_li
 export default defineConfig({
   site: "https://mc.ferreras.dev",
   output: "server",
-  adapter: isNodeAdapter ? node({ mode: "standalone" }) : vercel(),
+  adapter: isNodeAdapter ? node({ mode: "standalone" }) : vercel({ imageService: true }),
   integrations: [
     sitemap({
       namespaces: {
