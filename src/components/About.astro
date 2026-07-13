@@ -1,21 +1,26 @@
 ---
+import { Image } from "astro:assets";
+import connectedCommunity from "../assets/images/feature-connected-community.webp";
+import readyToPlay from "../assets/images/feature-ready-to-play.webp";
+import simpleSurvival from "../assets/images/feature-simple-survival.webp";
+
 const features = [
   {
     title: "Supervivencia sencilla",
     text: "Una experiencia reconocible y cercana a vanilla, sin sistemas innecesarios.",
-    image: "/images/feature-simple-survival.webp",
+    image: simpleSurvival,
     imageAlt: "Pequeño refugio de supervivencia construido con bloques junto a un árbol y una antorcha",
   },
   {
     title: "Entra sin preparar nada",
     text: "No necesitas instalar mods. Abre Minecraft, añade la IP y empieza a jugar.",
-    image: "/images/feature-ready-to-play.webp",
+    image: readyToPlay,
     imageAlt: "Camino de bloques que conduce a una puerta abierta con herramientas preparadas",
   },
   {
     title: "Comunidad conectada",
     text: "El chat, los avisos y la ayuda del servidor también están disponibles en Discord.",
-    image: "/images/feature-connected-community.webp",
+    image: connectedCommunity,
     imageAlt: "Tres aventureros de bloques conversando alrededor de una hoguera",
   },
 ];
@@ -35,7 +40,7 @@ const features = [
       {features.map((feature) => (
         <article class="feature-card">
           <div class="feature-visual">
-            <img
+            <Image
               src={feature.image}
               alt={feature.imageAlt}
               width="960"

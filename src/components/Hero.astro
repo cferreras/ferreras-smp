@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import heroCharacters from "../assets/images/hero-characters.webp";
 import ServerAddress from "./ServerAddress.astro";
 import { server } from "../data/server";
 ---
@@ -16,8 +18,8 @@ import { server } from "../data/server";
 
     <aside class="hero-panel" aria-label="Acceso al servidor">
       <figure class="hero-media">
-        <img
-          src="/images/hero-characters.webp"
+        <Image
+          src={heroCharacters}
           alt="Tres personajes de Minecraft preparados para explorar"
           width="1200"
           height="800"

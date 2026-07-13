@@ -1303,7 +1303,7 @@ dl {
   margin-bottom: 24px;
   font-size: clamp(3.5rem, 8vw, 7.2rem);
   line-height: 0.94;
-  letter-spacing: 0;
+  letter-spacing: -0.075em;
 }
 
 .guide-hero h1 span {
@@ -1347,6 +1347,10 @@ dl {
   max-width: 360px;
   font-size: clamp(2rem, 4vw, 3.4rem);
   line-height: 1.05;
+}
+
+.guide-section-heading h2 {
+  letter-spacing: -0.075em;
 }
 
 .step-list {
@@ -1499,6 +1503,7 @@ dl {
 .guide-callout h2 {
   margin: 0;
   font-size: clamp(1.8rem, 3vw, 2.8rem);
+  letter-spacing: -0.075em;
 }
 
 .guide-callout-actions {
@@ -1628,7 +1633,7 @@ dl {
   }
 
   .hero h1 {
-    font-size: clamp(3.5rem, 18vw, 5.5rem);
+    font-size: clamp(3.5rem, 16.5vw, 5.25rem);
   }
 
   .hero-actions .button {
