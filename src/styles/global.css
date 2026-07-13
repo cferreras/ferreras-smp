@@ -1349,7 +1349,8 @@ dl {
   line-height: 1.05;
 }
 
-.guide-section-heading h2 {
+.guide-section-heading h2,
+.faq-layout aside h2 {
   letter-spacing: -0.075em;
 }
 
