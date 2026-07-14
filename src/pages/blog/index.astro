@@ -1,0 +1,224 @@
+---
+import Footer from "../../components/Footer.astro";
+import Header from "../../components/Header.astro";
+import RssIcon from "../../components/RssIcon.astro";
+import { formatBlogDate, getBlogPostPath, getPublishedBlogPosts } from "../../lib/blog";
+import Layout from "../../layouts/Layout.astro";
+
+export const prerender = true;
+
+const posts = await getPublishedBlogPosts();
+---
+
+<Layout
+  title="Blog de Minecraft survival | Ferreras SMP"
+  description="Guías de Minecraft Java, survival, acceso a servidores, protección y mods recomendados por Ferreras SMP."
+>
+  <Header />
+  <main id="contenido" class="blog-index-page">
+    <header class="blog-index-hero">
+      <div class="shell blog-index-hero-layout">
+        <div>
+          <p class="eyebrow">Blog de Ferreras SMP</p>
+          <h1>Guías para jugar<br /><span>sin complicaciones.</span></h1>
+          <p>Respuestas claras sobre Minecraft Java, servidores survival, acceso, protección y herramientas opcionales.</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="section blog-list-section" aria-labelledby="posts-title">
+      <div class="shell">
+        <div class="blog-list-heading">
+          <div>
+            <p class="eyebrow">Publicaciones</p>
+            <h2 id="posts-title">Las últimas guías.</h2>
+          </div>
+          <a class="blog-rss-link" href="/rss.xml">
+            <RssIcon />
+            Seguir por RSS
+          </a>
+        </div>
+        <div class="blog-card-grid">
+          {posts.map((post) => (
+            <article class="blog-card">
+              <a class="blog-card-image" href={getBlogPostPath(post)} aria-hidden="true" tabindex="-1">
+                <img src={post.data.image} alt="" width="1200" height="630" loading="lazy" />
+              </a>
+              <div class="blog-card-copy">
+                <p class="card-kicker">{post.data.category} · {formatBlogDate(post.data.publishedAt)}</p>
+                <h2><a href={getBlogPostPath(post)}>{post.data.title}</a></h2>
+                <p>{post.data.description}</p>
+                <div class="blog-card-meta">
+                  <span>Por {post.data.author}</span>
+                  <a href={getBlogPostPath(post)} aria-label={`Leer ${post.data.title}`}>Leer guía <span aria-hidden="true">→</span></a>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .blog-index-page {
+    min-height: 70vh;
+  }
+
+  .blog-index-hero {
+    padding-block: clamp(80px, 10vw, 130px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .blog-index-hero-layout {
+    display: block;
+  }
+
+  .blog-index-hero h1 {
+    margin-bottom: 24px;
+    font-size: clamp(3.5rem, 7.5vw, 7rem);
+    line-height: 0.94;
+    letter-spacing: -0.075em;
+  }
+
+  .blog-index-hero h1 span {
+    color: var(--primary);
+  }
+
+  .blog-index-hero > .shell > div > p:last-child {
+    max-width: 660px;
+    margin-bottom: 0;
+    color: var(--muted-strong);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+  }
+
+  .blog-list-section {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .blog-list-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: clamp(46px, 7vw, 74px);
+  }
+
+  .blog-list-heading h2 {
+    margin-bottom: 0;
+    font-size: clamp(2.5rem, 5vw, 4.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.065em;
+  }
+
+  .blog-rss-link {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .blog-rss-link:hover {
+    color: var(--primary);
+  }
+
+  .blog-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .blog-card {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+
+  .blog-card-image {
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    aspect-ratio: 1200 / 630;
+  }
+
+  .blog-card-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 220ms ease;
+  }
+
+  .blog-card:hover .blog-card-image img {
+    transform: scale(1.025);
+  }
+
+  .blog-card-copy {
+    padding: clamp(24px, 4vw, 36px);
+  }
+
+  .blog-card-copy h2 {
+    margin-bottom: 16px;
+    font-size: clamp(1.55rem, 3vw, 2.35rem);
+    line-height: 1.14;
+    letter-spacing: -0.05em;
+  }
+
+  .blog-card-copy h2 a:hover {
+    color: var(--primary);
+  }
+
+  .blog-card-copy > p {
+    margin-bottom: 28px;
+    color: var(--muted);
+  }
+
+  .blog-card-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .blog-card-meta a {
+    color: var(--primary);
+    font-weight: 700;
+  }
+
+  @media (max-width: 860px) {
+    .blog-card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .blog-index-hero {
+      padding-block: 64px;
+    }
+
+    .blog-index-hero h1 {
+      font-size: clamp(3rem, 15vw, 4.7rem);
+    }
+
+    .blog-list-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .blog-rss-link {
+      margin-bottom: 0;
+    }
+  }
+</style>

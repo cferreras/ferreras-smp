@@ -244,6 +244,7 @@ dl {
 }
 
 .desktop-nav > a:hover,
+.desktop-nav > a[aria-current="page"],
 .guide-menu > summary:hover,
 .guide-menu > summary.active,
 .guide-menu[open] > summary {

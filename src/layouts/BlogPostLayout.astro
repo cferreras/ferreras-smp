@@ -1,0 +1,434 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import RssIcon from "../components/RssIcon.astro";
+import ServerAddress from "../components/ServerAddress.astro";
+import { server } from "../data/server";
+import { formatBlogDate, getBlogPostPath, type BlogPost } from "../lib/blog";
+import Layout from "./Layout.astro";
+
+interface Props {
+  post: BlogPost;
+}
+
+const { post } = Astro.props;
+const { data } = post;
+const siteUrl = Astro.site ?? new URL("https://mc.ferreras.dev");
+const postUrl = new URL(getBlogPostPath(post), siteUrl);
+const imageUrl = new URL(data.image, siteUrl);
+const organizationId = new URL("/#organization", siteUrl).href;
+const publishedIso = data.publishedAt.toISOString();
+const updatedIso = data.updatedAt.toISOString();
+const formatRelatedId = (href: string) => href.replace(/^\//, "").replace(/\/$/, "") || "home";
+
+const articleSchema = {
+  "@type": "BlogPosting",
+  "@id": `${postUrl.href}#article`,
+  headline: data.title,
+  description: data.description,
+  image: {
+    "@type": "ImageObject",
+    url: imageUrl.href,
+    width: 1200,
+    height: 630,
+  },
+  datePublished: publishedIso,
+  dateModified: updatedIso,
+  author: {
+    "@type": "Person",
+    name: data.author,
+  },
+  publisher: { "@id": organizationId },
+  mainEntityOfPage: postUrl.href,
+  inLanguage: "es",
+  keywords: data.tags.join(", "),
+};
+
+const breadcrumbSchema = {
+  "@type": "BreadcrumbList",
+  "@id": `${postUrl.href}#breadcrumb`,
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Blog", item: new URL("/blog", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: data.title, item: postUrl.href },
+  ],
+};
+---
+
+<Layout
+  title={`${data.title} | ${server.name}`}
+  description={data.description}
+  structuredData={[articleSchema, breadcrumbSchema]}
+  analyticsPage="blog-post"
+  analyticsContentId={post.id}
+  ogType="article"
+  socialImage={data.image}
+  socialImageAlt={data.imageAlt}
+  publishedTime={publishedIso}
+  modifiedTime={updatedIso}
+  author={data.author}
+>
+  <Header />
+  <main id="contenido" class="blog-post-page">
+    <div class="shell blog-breadcrumbs" aria-label="Migas de pan">
+      <ol>
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li aria-current="page">{data.title}</li>
+      </ol>
+    </div>
+
+    <article>
+      <header class="blog-post-header shell">
+        <p class="eyebrow">{data.category}</p>
+        <h1>{data.title}</h1>
+        <p class="blog-post-description">{data.description}</p>
+        <dl class="blog-post-meta">
+          <div><dt>Autor</dt><dd>{data.author}</dd></div>
+          <div><dt>Publicado</dt><dd><time datetime={publishedIso}>{formatBlogDate(data.publishedAt)}</time></dd></div>
+          <div><dt>Actualizado</dt><dd><time datetime={updatedIso}>{formatBlogDate(data.updatedAt)}</time></dd></div>
+        </dl>
+      </header>
+
+      <figure class="blog-post-image shell">
+        <img src={data.image} alt={data.imageAlt} width="1200" height="630" />
+      </figure>
+
+      <div class="shell blog-prose">
+        <slot />
+      </div>
+    </article>
+
+    <section class="blog-conversion" aria-labelledby="blog-conversion-title">
+      <div class="shell blog-conversion-inner">
+        <div>
+          <p class="eyebrow">Pruébalo en Ferreras SMP</p>
+          <h2 id="blog-conversion-title">Copia la IP y entra cuando quieras.</h2>
+          <p>Minecraft Java, survival sin modpack obligatorio y una comunidad para jugar a tu ritmo.</p>
+        </div>
+        <div class="blog-conversion-actions">
+          <ServerAddress compact placement={`blog_${post.id}`} />
+          <a class="button button-dark" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord={`blog_${post.id}`}>Abrir Discord</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section related-content" aria-labelledby="related-title">
+      <div class="shell">
+        <div class="related-heading">
+          <div><p class="eyebrow">Sigue aprendiendo</p><h2 id="related-title">Contenido relacionado.</h2></div>
+          <a class="text-link rss-link" href="/rss.xml"><RssIcon /> Suscribirse por RSS</a>
+        </div>
+        <div class="related-grid">
+          {data.relatedLinks.map((related) => (
+            <a href={related.href} data-analytics-related-article={formatRelatedId(related.href)}>
+              <h3>{related.title}</h3>
+              <p>{related.description}</p>
+              <span aria-hidden="true">→</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .blog-post-page {
+    min-height: 70vh;
+  }
+
+  .blog-breadcrumbs {
+    padding-top: 28px;
+  }
+
+  .blog-breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    list-style: none;
+  }
+
+  .blog-breadcrumbs li + li::before {
+    margin-right: 8px;
+    color: var(--border);
+    content: "/";
+  }
+
+  .blog-breadcrumbs a:hover {
+    color: var(--foreground);
+  }
+
+  .blog-breadcrumbs li[aria-current="page"] {
+    overflow: hidden;
+    max-width: 380px;
+    color: var(--muted-strong);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .blog-post-header {
+    max-width: 980px;
+    padding-block: clamp(70px, 9vw, 120px) clamp(48px, 6vw, 72px);
+    text-align: center;
+  }
+
+  .blog-post-header h1 {
+    margin-bottom: 28px;
+    font-size: clamp(3rem, 7vw, 6.4rem);
+    line-height: 0.96;
+    letter-spacing: -0.075em;
+  }
+
+  .blog-post-description {
+    max-width: 760px;
+    margin: 0 auto 34px;
+    color: var(--muted-strong);
+    font-size: clamp(1rem, 1.6vw, 1.2rem);
+  }
+
+  .blog-post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px 32px;
+  }
+
+  .blog-post-meta div {
+    display: flex;
+    gap: 7px;
+    font-size: 12px;
+  }
+
+  .blog-post-meta dt {
+    color: var(--muted);
+  }
+
+  .blog-post-meta dd {
+    margin: 0;
+    color: var(--muted-strong);
+  }
+
+  .blog-post-image {
+    overflow: hidden;
+    margin-top: 0;
+    margin-bottom: clamp(64px, 9vw, 112px);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    aspect-ratio: 1200 / 630;
+  }
+
+  .blog-post-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .blog-prose {
+    width: min(calc(100% - 40px), 760px);
+    padding-bottom: clamp(80px, 10vw, 130px);
+  }
+
+  .blog-prose :global(p),
+  .blog-prose :global(li) {
+    color: var(--muted-strong);
+    font-size: 17px;
+    line-height: 1.85;
+  }
+
+  .blog-prose :global(p) {
+    margin-bottom: 24px;
+  }
+
+  .blog-prose :global(h2) {
+    margin: 64px 0 22px;
+    font-size: clamp(2rem, 4vw, 3.15rem);
+    line-height: 1.08;
+    letter-spacing: -0.06em;
+  }
+
+  .blog-prose :global(h3) {
+    margin: 42px 0 14px;
+    font-size: 1.35rem;
+    letter-spacing: -0.03em;
+  }
+
+  .blog-prose :global(ul),
+  .blog-prose :global(ol) {
+    display: grid;
+    gap: 10px;
+    margin: 0 0 28px 22px;
+  }
+
+  .blog-prose :global(a) {
+    color: var(--primary);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .blog-prose :global(code) {
+    padding: 3px 7px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card-elevated);
+    color: var(--foreground);
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+  }
+
+  .blog-conversion {
+    padding-block: clamp(56px, 8vw, 88px);
+    background: var(--primary);
+    color: #fff;
+  }
+
+  .blog-conversion-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.62fr);
+    gap: clamp(48px, 8vw, 110px);
+    align-items: center;
+  }
+
+  .blog-conversion .eyebrow {
+    color: rgb(255 255 255 / 0.7);
+  }
+
+  .blog-conversion h2 {
+    margin-bottom: 16px;
+    font-size: clamp(2.2rem, 4.5vw, 4.2rem);
+    line-height: 1;
+    letter-spacing: -0.065em;
+  }
+
+  .blog-conversion p:last-child {
+    max-width: 650px;
+    margin-bottom: 0;
+    color: rgb(255 255 255 / 0.75);
+  }
+
+  .blog-conversion-actions {
+    display: grid;
+    gap: 10px;
+  }
+
+  .related-content {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .related-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 48px;
+  }
+
+  .related-heading h2 {
+    margin-bottom: 0;
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+    line-height: 1;
+    letter-spacing: -0.065em;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .related-grid > a {
+    position: relative;
+    min-height: 220px;
+    padding: 28px;
+    border-right: 1px solid var(--border);
+  }
+
+  .related-grid > a:last-child {
+    border-right: 0;
+  }
+
+  .related-grid > a:hover {
+    background: var(--card-elevated);
+  }
+
+  .related-grid h3 {
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+
+  .related-grid p {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .related-grid span {
+    position: absolute;
+    right: 28px;
+    bottom: 24px;
+    color: var(--primary);
+  }
+
+  @media (max-width: 860px) {
+    .blog-conversion-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .related-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .related-grid > a {
+      min-height: 170px;
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .related-grid > a:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .blog-breadcrumbs li[aria-current="page"] {
+      display: none;
+    }
+
+    .blog-post-header {
+      text-align: left;
+    }
+
+    .blog-post-header h1 {
+      font-size: clamp(2.8rem, 14vw, 4.5rem);
+    }
+
+    .blog-post-description {
+      margin-inline: 0;
+    }
+
+    .blog-post-meta {
+      justify-content: flex-start;
+    }
+
+    .blog-prose {
+      width: min(calc(100% - 28px), 760px);
+    }
+
+    .blog-prose :global(p),
+    .blog-prose :global(li) {
+      font-size: 16px;
+    }
+
+    .related-heading {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

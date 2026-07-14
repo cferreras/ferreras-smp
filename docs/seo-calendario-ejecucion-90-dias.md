@@ -260,9 +260,11 @@ La portada conservará un resumen y enlazará a la página completa. Los enlaces
 
 ### SEO-05 — Crear la página de mods recomendados
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semana 3  
 Dependencias: SEO-03
+
+Resultado: página `/mods-recomendados` creada y verificada el 14 de julio de 2026 con los tres mods opcionales, sus usos, fuentes oficiales, pautas de compatibilidad sin versiones fijas y enlaces desde navegación, portada, guía de acceso y footer.
 
 Ruta: `/mods-recomendados`
 
@@ -279,19 +281,21 @@ Ruta: `/mods-recomendados`
 
 #### Criterios de aceptación
 
-- [ ] No se presenta ningún mod como obligatorio.
-- [ ] Versiones y compatibilidades no se fijan en el texto si no pueden mantenerse.
-- [ ] Los enlaces externos proceden de fuentes oficiales o reconocidas.
-- [ ] La página está enlazada internamente y aparece en el sitemap.
+- [x] No se presenta ningún mod como obligatorio.
+- [x] Versiones y compatibilidades no se fijan en el texto si no pueden mantenerse.
+- [x] Los enlaces externos proceden de fuentes oficiales o reconocidas.
+- [x] La página está enlazada internamente y aparece en el sitemap.
 
 ## 7. Fase 3: infraestructura del blog
 
 ### SEO-06 — Implementar el blog con Astro Content Collections
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semana 4  
 Dependencias: SEO-01  
 Documentación: Content Collections, rutas dinámicas y RSS de Astro
+
+Resultado: blog nativo de Astro implementado y verificado el 14 de julio de 2026 con colección tipada, índice, plantilla de artículo, rutas prerenderizadas, RSS, sitemap y la primera guía no borrador firmada por Carlos Ferreras. La imagen social general se usa temporalmente hasta ejecutar SEO-07.
 
 #### Estructura objetivo
 
@@ -340,13 +344,13 @@ draft: false
 
 #### Criterios de aceptación
 
-- [ ] El índice muestra solo artículos no marcados como borrador.
-- [ ] Los artículos se ordenan por fecha descendente.
-- [ ] Una URL inexistente del blog devuelve 404.
-- [ ] El RSS contiene URLs absolutas y artículos publicados.
-- [ ] El sitemap incluye índice y artículos.
-- [ ] El build y `astro check` terminan correctamente.
-- [ ] Los datos estructurados validan sin errores críticos.
+- [x] El índice muestra solo artículos no marcados como borrador.
+- [x] Los artículos se ordenan por fecha descendente.
+- [x] Una URL inexistente del blog devuelve 404.
+- [x] El RSS contiene URLs absolutas y artículos publicados.
+- [x] El sitemap incluye índice y artículos.
+- [x] El build y `astro check` terminan correctamente.
+- [x] Los datos estructurados validan sin errores críticos.
 
 ### SEO-07 — Sistema de imágenes sociales
 
@@ -670,7 +674,7 @@ Antes de ejecutar las tareas que dependan de estos datos, completar:
 - [ ] Acceso disponible a Google Search Console: `sí / no`
 - [ ] Acceso disponible a Bing Webmaster Tools: `sí / no`
 - [ ] Canales sociales oficiales: `____________________________`
-- [ ] Persona o nombre de autor para el blog: `____________________________`
+- [x] Persona o nombre de autor para el blog: `Carlos Ferreras`
 - [ ] Carpeta o fuente de capturas aprobadas: `____________________________`
 - [ ] Política para testimonios de jugadores: `____________________________`
 
@@ -678,7 +682,7 @@ ChatGPT no debe completar estos campos mediante suposiciones.
 
 ## 17. Siguiente acción recomendada
 
-`SEO-01`, `SEO-02`, `SEO-03` y `SEO-04` están completadas. La siguiente tarea es `SEO-05`, crear la página de mods recomendados a partir del contenido ya presente en la portada.
+`SEO-01`, `SEO-02`, `SEO-03`, `SEO-04`, `SEO-05` y `SEO-06` están completadas. La siguiente tarea técnica es `SEO-10`, revisar schema y metadatos del conjunto ya creado; `SEO-07`, `SEO-08` y `SEO-09` pueden avanzar después en paralelo.
 
 En paralelo, se deben replicar las variables públicas de Plausible en Vercel cuando se autorice y crear sus seis objetivos. La invitación exclusiva de Discord ya está aplicada; la app de atribución se pospone hasta revisar y limitar sus permisos.
 

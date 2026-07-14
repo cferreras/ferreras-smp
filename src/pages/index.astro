@@ -6,6 +6,7 @@ import LiveServerSection from "../components/LiveServerSection.astro";
 import About from "../components/About.astro";
 import Rules from "../components/Rules.astro";
 import Mods from "../components/Mods.astro";
+import RecentBlogPosts from "../components/RecentBlogPosts.astro";
 import Join from "../components/Join.astro";
 import Footer from "../components/Footer.astro";
 import { server } from "../data/server";
@@ -16,12 +17,13 @@ import { server } from "../data/server";
   description={`${server.name} es un servidor Minecraft Java survival en español, sin modpack obligatorio, con comunidad tranquila y protección de terrenos. IP: ${server.address}.`}
 >
   <Header />
-  <main>
+  <main id="contenido">
     <Hero />
     <LiveServerSection />
     <About />
     <Rules />
     <Mods />
+    <RecentBlogPosts />
     <Join />
   </main>
   <Footer />

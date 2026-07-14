@@ -4,17 +4,19 @@ import { server } from "../data/server";
 const primaryLinks = [
   { href: "/#servidor", label: "Servidor" },
   { href: "/#directo", label: "En directo" },
+  { href: "/blog", label: "Blog" },
 ];
 
 const guideLinks = [
   { href: "/como-entrar", label: "Cómo entrar", description: "IP y pasos para empezar" },
   { href: "/preguntas-frecuentes", label: "Preguntas frecuentes", description: "Respuestas rápidas" },
   { href: "/normas", label: "Normas", description: "Las bases de convivencia" },
-  { href: "/#mods", label: "Mods y mejoras", description: "Tecnología del servidor" },
+  { href: "/mods-recomendados", label: "Mods recomendados", description: "Mapas y reclamaciones opcionales" },
 ];
 
 const currentPath = Astro.url.pathname;
 const isGuidePage = guideLinks.some((link) => link.href === currentPath);
+const isCurrentPrimaryLink = (href: string) => href === "/blog" && currentPath.startsWith("/blog");
 ---
 
 <header class="site-header">
@@ -27,7 +29,7 @@ const isGuidePage = guideLinks.some((link) => link.href === currentPath);
     </a>
 
     <nav class="desktop-nav" aria-label="Navegación principal">
-      {primaryLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      {primaryLinks.map((link) => <a href={link.href} aria-current={isCurrentPrimaryLink(link.href) ? "page" : undefined}>{link.label}</a>)}
       <details class="guide-menu">
         <summary class:list={{ active: isGuidePage }}>
           Guía
@@ -60,7 +62,7 @@ const isGuidePage = guideLinks.some((link) => link.href === currentPath);
       <details class="mobile-nav">
         <summary>Menú</summary>
         <nav aria-label="Navegación móvil">
-          {primaryLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+          {primaryLinks.map((link) => <a href={link.href} aria-current={isCurrentPrimaryLink(link.href) ? "page" : undefined}>{link.label}</a>)}
           <span class="mobile-nav-label">Guía</span>
           {guideLinks.map((link) => <a class="mobile-guide-link" href={link.href} aria-current={currentPath === link.href ? "page" : undefined}>{link.label}</a>)}
           <a class="mobile-discord" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="header_mobile">Discord</a>

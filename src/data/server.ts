@@ -10,14 +10,26 @@ export const recommendedClientMods = [
   {
     name: "Xaero’s Minimap",
     description: "Añade un minimapa discreto mientras exploras y construyes.",
+    sources: [
+      { label: "CurseForge", url: "https://www.curseforge.com/minecraft/mc-mods/xaeros-minimap" },
+      { label: "Modrinth", url: "https://modrinth.com/mod/xaeros-minimap" },
+    ],
   },
   {
     name: "Xaero’s World Map",
     description: "Permite consultar cómodamente el mundo que ya has recorrido.",
+    sources: [
+      { label: "CurseForge", url: "https://www.curseforge.com/minecraft/mc-mods/xaeros-world-map" },
+      { label: "Modrinth", url: "https://modrinth.com/mod/xaeros-world-map" },
+    ],
   },
   {
     name: "Open Parties and Claims",
     description: "Integra las reclamaciones de terreno con el mapa para crearlas y gestionarlas con más facilidad.",
+    sources: [
+      { label: "CurseForge", url: "https://www.curseforge.com/minecraft/mc-mods/open-parties-and-claims" },
+      { label: "Modrinth", url: "https://modrinth.com/mod/open-parties-and-claims" },
+    ],
   },
 ];
 

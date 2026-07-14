@@ -1,0 +1,197 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import Layout from "../layouts/Layout.astro";
+
+export const prerender = true;
+---
+
+<Layout
+  title="Página no encontrada | Ferreras SMP"
+  description="La página que buscas no existe. Vuelve al blog, consulta cómo entrar o regresa al inicio de Ferreras SMP."
+  noindex
+  includeCanonical={false}
+>
+  <Header />
+  <main id="contenido" class="not-found-page">
+    <section class="not-found-hero">
+      <div class="shell not-found-layout">
+        <div class="not-found-code mono" aria-hidden="true">404</div>
+        <div class="not-found-copy">
+          <p class="eyebrow">Página no encontrada</p>
+          <h1>Este camino no lleva a ninguna parte.</h1>
+          <p>Puede que el enlace esté incompleto o que el contenido ya no exista. El mundo de Ferreras SMP sigue justo donde lo dejaste.</p>
+          <div class="not-found-actions">
+            <a class="button button-primary" href="/blog">Volver al blog</a>
+            <a class="button button-secondary" href="/">Ir al inicio</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="not-found-options" aria-labelledby="options-title">
+      <div class="shell">
+        <p class="eyebrow">También puedes</p>
+        <h2 id="options-title">Retomar desde un lugar conocido.</h2>
+        <div class="not-found-grid">
+          <a href="/blog">
+            <span class="mono">01</span>
+            <div><h3>Leer las guías</h3><p>Consulta artículos sobre Minecraft Java, survival y acceso a servidores.</p></div>
+            <strong aria-hidden="true">→</strong>
+          </a>
+          <a href="/como-entrar">
+            <span class="mono">02</span>
+            <div><h3>Entrar al servidor</h3><p>Copia la IP y sigue los pasos para añadir Ferreras SMP.</p></div>
+            <strong aria-hidden="true">→</strong>
+          </a>
+          <a href="/preguntas-frecuentes">
+            <span class="mono">03</span>
+            <div><h3>Resolver una duda</h3><p>Revisa las respuestas rápidas sobre acceso, mods y servidor.</p></div>
+            <strong aria-hidden="true">→</strong>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .not-found-page {
+    min-height: 70vh;
+  }
+
+  .not-found-hero {
+    padding-block: clamp(80px, 12vw, 160px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .not-found-layout {
+    display: grid;
+    grid-template-columns: minmax(260px, 0.62fr) minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(48px, 9vw, 130px);
+  }
+
+  .not-found-code {
+    color: var(--primary);
+    font-size: clamp(8rem, 20vw, 16rem);
+    font-weight: 500;
+    letter-spacing: -0.1em;
+    line-height: 0.75;
+  }
+
+  .not-found-copy h1 {
+    max-width: 760px;
+    margin-bottom: 26px;
+    font-size: clamp(3rem, 6vw, 5.8rem);
+    line-height: 0.96;
+    letter-spacing: -0.075em;
+  }
+
+  .not-found-copy > p:last-of-type {
+    max-width: 650px;
+    margin-bottom: 32px;
+    color: var(--muted-strong);
+    font-size: clamp(1rem, 1.5vw, 1.15rem);
+  }
+
+  .not-found-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .not-found-options {
+    padding-block: clamp(72px, 9vw, 120px);
+    border-bottom: 1px solid var(--border-soft);
+    background: color-mix(in srgb, var(--card-elevated) 68%, var(--background));
+  }
+
+  .not-found-options h2 {
+    max-width: 680px;
+    margin-bottom: clamp(42px, 6vw, 68px);
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: -0.065em;
+  }
+
+  .not-found-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .not-found-grid > a {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 240px;
+    gap: 28px;
+    padding: 28px;
+    border-right: 1px solid var(--border);
+  }
+
+  .not-found-grid > a:last-child {
+    border-right: 0;
+  }
+
+  .not-found-grid > a:hover {
+    background: var(--card);
+  }
+
+  .not-found-grid > a > span {
+    color: var(--primary);
+    font-size: 11px;
+  }
+
+  .not-found-grid h3 {
+    margin-bottom: 10px;
+    font-size: 19px;
+  }
+
+  .not-found-grid p {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .not-found-grid strong {
+    position: absolute;
+    right: 28px;
+    bottom: 24px;
+    color: var(--primary);
+  }
+
+  @media (max-width: 900px) {
+    .not-found-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .not-found-code {
+      font-size: clamp(7rem, 30vw, 11rem);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .not-found-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .not-found-grid > a {
+      min-height: 190px;
+      border-right: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .not-found-grid > a:last-child {
+      border-bottom: 0;
+    }
+
+    .not-found-actions {
+      align-items: stretch;
+      flex-direction: column;
+    }
+  }
+</style>

@@ -1,0 +1,130 @@
+---
+import { formatBlogDate, getBlogPostPath, getPublishedBlogPosts } from "../lib/blog";
+
+const posts = (await getPublishedBlogPosts()).slice(0, 3);
+---
+
+{posts.length > 0 && (
+  <section class="section recent-blog" aria-labelledby="recent-blog-title">
+    <div class="shell">
+      <div class="recent-blog-heading">
+        <div>
+          <p class="eyebrow">Guías del blog</p>
+          <h2 id="recent-blog-title">Aprende antes de entrar.</h2>
+        </div>
+        <a class="text-link" href="/blog">Ver todas las publicaciones <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="recent-blog-grid">
+        {posts.map((post) => (
+          <article>
+            <a class="recent-blog-image" href={getBlogPostPath(post)} aria-hidden="true" tabindex="-1">
+              <img src={post.data.image} alt="" width="1200" height="630" loading="lazy" />
+            </a>
+            <div class="recent-blog-copy">
+              <p class="card-kicker">{post.data.category} · {formatBlogDate(post.data.publishedAt)}</p>
+              <h3><a href={getBlogPostPath(post)}>{post.data.title}</a></h3>
+              <p>{post.data.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .recent-blog {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .recent-blog-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: clamp(48px, 7vw, 76px);
+  }
+
+  .recent-blog-heading h2 {
+    margin-bottom: 0;
+    font-size: clamp(2.6rem, 5vw, 4.8rem);
+    line-height: 0.96;
+    letter-spacing: -0.065em;
+  }
+
+  .recent-blog-heading .text-link {
+    flex: none;
+    margin-bottom: 8px;
+  }
+
+  .recent-blog-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .recent-blog-grid article {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+
+  .recent-blog-image {
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+    aspect-ratio: 1200 / 630;
+  }
+
+  .recent-blog-image img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 220ms ease;
+  }
+
+  .recent-blog-grid article:hover img {
+    transform: scale(1.025);
+  }
+
+  .recent-blog-copy {
+    padding: 24px;
+  }
+
+  .recent-blog-copy h3 {
+    margin-bottom: 12px;
+    font-size: 20px;
+    line-height: 1.25;
+    letter-spacing: -0.035em;
+  }
+
+  .recent-blog-copy h3 a:hover {
+    color: var(--primary);
+  }
+
+  .recent-blog-copy > p:last-child {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 980px) {
+    .recent-blog-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 720px) {
+    .recent-blog-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .recent-blog-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

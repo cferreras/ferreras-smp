@@ -1,0 +1,474 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { recommendedClientMods, server } from "../data/server";
+import Layout from "../layouts/Layout.astro";
+
+const modDetails = [
+  {
+    eyebrow: "Orientación inmediata",
+    useCases: [
+      "Ver el terreno cercano sin abrir una pantalla aparte.",
+      "Guardar puntos de interés para volver a una base o construcción.",
+      "Consultar desde el mapa las reclamaciones integradas con Open Parties and Claims.",
+    ],
+  },
+  {
+    eyebrow: "Exploración a gran escala",
+    useCases: [
+      "Abrir un mapa a pantalla completa del terreno que ya has recorrido.",
+      "Ubicar zonas exploradas y planear rutas entre lugares conocidos.",
+      "Trabajar junto al minimapa para compartir la información cartográfica.",
+    ],
+  },
+  {
+    eyebrow: "Terrenos y grupos",
+    useCases: [
+      "Crear y gestionar reclamaciones de terreno mediante su interfaz.",
+      "Visualizar las zonas protegidas al combinarlo con los mapas de Xaero.",
+      "Organizar grupos de jugadores cuando quieras compartir una reclamación.",
+    ],
+  },
+];
+---
+
+<Layout
+  title={`Mods recomendados para Minecraft survival | ${server.name}`}
+  description={`Tres mods opcionales para jugar en ${server.name}: Xaero’s Minimap, Xaero’s World Map y Open Parties and Claims, con sus fuentes oficiales.`}
+>
+  <Header />
+  <main id="contenido" class="recommended-mods-page">
+    <header class="mods-page-hero">
+      <div class="shell mods-page-hero-layout">
+        <div>
+          <p class="eyebrow">Experiencia recomendada</p>
+          <h1>Mods útiles.<br /><span>Nunca obligatorios.</span></h1>
+          <p>Puedes entrar a Ferreras SMP con Minecraft Java sin instalar un modpack. Estas herramientas de cliente solo hacen más cómodos el mapa y las reclamaciones.</p>
+        </div>
+        <aside class="optional-notice" aria-labelledby="optional-title">
+          <span class="optional-marker" aria-hidden="true">✓</span>
+          <div>
+            <p class="mono">IMPORTANTE</p>
+            <h2 id="optional-title">Puedes jugar sin instalar ninguno.</h2>
+            <p>No tener estos mods no impide conectarte al servidor ni disfrutar del survival.</p>
+          </div>
+        </aside>
+      </div>
+    </header>
+
+    <section class="section mod-catalog" aria-labelledby="catalog-title">
+      <div class="shell">
+        <div class="catalog-heading">
+          <p class="eyebrow">Tres herramientas</p>
+          <h2 id="catalog-title">Elige solo lo que te resulte útil.</h2>
+          <p>Las funciones se complementan, pero puedes usar únicamente las que encajen con tu forma de jugar.</p>
+        </div>
+
+        <div class="mod-card-list">
+          {recommendedClientMods.map((mod, index) => (
+            <article class="mod-card">
+              <div class="mod-card-number mono" aria-hidden="true">{String(index + 1).padStart(2, "0")}</div>
+              <div class="mod-card-main">
+                <p class="card-kicker">{modDetails[index].eyebrow}</p>
+                <h3>{mod.name}</h3>
+                <p class="mod-summary">{mod.description}</p>
+              </div>
+              <div class="mod-card-details">
+                <strong>¿Para qué sirve?</strong>
+                <ul>
+                  {modDetails[index].useCases.map((useCase) => <li>{useCase}</li>)}
+                </ul>
+                <div class="source-links" aria-label={`Fuentes oficiales de ${mod.name}`}>
+                  {mod.sources.map((source) => (
+                    <a
+                      class="source-link"
+                      href={source.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      aria-label={`Abrir ${mod.name} en ${source.label}`}
+                    >
+                      <span>{source.label}</span>
+                      <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M6 3h7v7M13 3 5 11" />
+                        <path d="M11 9.5V13H3V5h3.5" />
+                      </svg>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section install-guide" aria-labelledby="install-title">
+      <div class="shell install-layout">
+        <div class="install-heading">
+          <p class="eyebrow">Antes de descargar</p>
+          <h2 id="install-title">Comprueba la compatibilidad en la fuente.</h2>
+        </div>
+        <ol class="install-steps">
+          <li>
+            <span class="mono">01</span>
+            <div><h3>Abre la página oficial</h3><p>Usa los enlaces de esta guía y evita sitios de descarga o mirrors no vinculados por el autor.</p></div>
+          </li>
+          <li>
+            <span class="mono">02</span>
+            <div><h3>Elige el archivo correcto</h3><p>Comprueba en la ficha del archivo que coincide con tu versión de Minecraft, tu cargador de mods y las dependencias que indique el proyecto.</p></div>
+          </li>
+          <li>
+            <span class="mono">03</span>
+            <div><h3>Sigue las instrucciones de tu launcher</h3><p>Añade el archivo al perfil con el que juegas y reinicia Minecraft. Si algo no carga, retira el mod y revisa de nuevo la compatibilidad publicada.</p></div>
+          </li>
+        </ol>
+      </div>
+      <div class="shell install-note">
+        <strong>Sin versiones fijas en esta guía.</strong>
+        <p>Los mods y Minecraft se actualizan. La ficha oficial de cada archivo es la referencia para requisitos y compatibilidad.</p>
+      </div>
+    </section>
+
+    <section class="guide-callout">
+      <div class="shell guide-callout-inner">
+        <div><p class="eyebrow">Lo esencial</p><h2>Los mods pueden esperar. Entrar es fácil.</h2></div>
+        <div class="guide-callout-actions">
+          <a class="button button-secondary" href="/como-entrar">Ver cómo entrar</a>
+          <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="recommended_mods_help">Pedir ayuda en Discord</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .recommended-mods-page {
+    min-height: 70vh;
+  }
+
+  .mods-page-hero {
+    padding-block: clamp(80px, 10vw, 130px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .mods-page-hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.65fr);
+    align-items: end;
+    gap: clamp(48px, 8vw, 110px);
+  }
+
+  .mods-page-hero h1 {
+    max-width: 900px;
+    margin-bottom: 24px;
+    font-size: clamp(3.5rem, 7.5vw, 7rem);
+    line-height: 0.94;
+    letter-spacing: -0.075em;
+  }
+
+  .mods-page-hero h1 span {
+    color: var(--primary);
+  }
+
+  .mods-page-hero > .shell > div > p:last-child {
+    max-width: 680px;
+    margin-bottom: 0;
+    color: var(--muted-strong);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+  }
+
+  .optional-notice {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 18px;
+    padding: 28px;
+    border: 1px solid color-mix(in srgb, var(--success) 35%, var(--border));
+    border-radius: var(--radius-md);
+    background: var(--card-elevated);
+  }
+
+  .optional-marker {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--success) 14%, var(--card));
+    color: var(--success);
+    font-weight: 800;
+  }
+
+  .optional-notice .mono {
+    margin-bottom: 10px;
+    color: var(--success);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .optional-notice h2 {
+    margin-bottom: 12px;
+    font-size: clamp(1.35rem, 2.5vw, 1.9rem);
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+  }
+
+  .optional-notice p:last-child {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .mod-catalog {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .catalog-heading {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 0.5fr);
+    gap: 24px 80px;
+    align-items: end;
+    margin-bottom: clamp(48px, 7vw, 80px);
+  }
+
+  .catalog-heading .eyebrow {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
+  .catalog-heading h2 {
+    max-width: 700px;
+    margin-bottom: 0;
+    font-size: clamp(2.5rem, 5vw, 4.8rem);
+    line-height: 0.98;
+    letter-spacing: -0.065em;
+  }
+
+  .catalog-heading > p:last-child {
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+
+  .mod-card-list {
+    border-top: 1px solid var(--border);
+  }
+
+  .mod-card {
+    display: grid;
+    grid-template-columns: 48px minmax(220px, 0.65fr) minmax(0, 1fr);
+    gap: clamp(24px, 5vw, 72px);
+    padding-block: clamp(34px, 5vw, 56px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mod-card-number {
+    padding-top: 5px;
+    color: var(--primary);
+    font-size: 11px;
+  }
+
+  .mod-card-main h3 {
+    margin-bottom: 14px;
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+  }
+
+  .mod-summary {
+    max-width: 430px;
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+
+  .mod-card-details > strong {
+    display: block;
+    margin-bottom: 14px;
+    font-size: 13px;
+  }
+
+  .mod-card-details ul {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 24px;
+    list-style: none;
+  }
+
+  .mod-card-details li {
+    position: relative;
+    padding-left: 18px;
+    color: var(--muted-strong);
+    font-size: 14px;
+  }
+
+  .mod-card-details li::before {
+    position: absolute;
+    top: 0.65em;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--primary);
+    content: "";
+  }
+
+  .source-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding-inline: 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--card-elevated);
+    color: var(--muted-strong);
+    font-size: 13px;
+    font-weight: 700;
+    transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, transform 150ms ease;
+  }
+
+  .source-link:hover {
+    border-color: color-mix(in srgb, var(--primary) 58%, var(--border));
+    background: color-mix(in srgb, var(--primary) 8%, var(--card-elevated));
+    color: var(--foreground);
+    transform: translateY(-1px);
+  }
+
+  .source-link svg {
+    width: 15px;
+    height: 15px;
+    color: var(--primary);
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+  }
+
+  .install-guide {
+    border-bottom: 1px solid var(--border-soft);
+    background: color-mix(in srgb, var(--card-elevated) 68%, var(--background));
+  }
+
+  .install-layout {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.52fr) minmax(0, 1fr);
+    gap: clamp(48px, 9vw, 140px);
+  }
+
+  .install-heading h2 {
+    max-width: 430px;
+    font-size: clamp(2rem, 4vw, 3.6rem);
+    line-height: 1.05;
+    letter-spacing: -0.065em;
+  }
+
+  .install-steps {
+    border-top: 1px solid var(--border);
+    list-style: none;
+  }
+
+  .install-steps li {
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr);
+    gap: 20px;
+    padding-block: 26px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .install-steps > li > span {
+    padding-top: 4px;
+    color: var(--primary);
+    font-size: 11px;
+  }
+
+  .install-steps h3 {
+    margin-bottom: 7px;
+    font-size: 18px;
+  }
+
+  .install-steps p {
+    max-width: 680px;
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  .install-note {
+    display: grid;
+    grid-template-columns: minmax(180px, 0.35fr) minmax(0, 1fr);
+    gap: 30px;
+    margin-top: 44px;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card);
+  }
+
+  .install-note strong {
+    font-size: 13px;
+  }
+
+  .install-note p {
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  @media (max-width: 980px) {
+    .mods-page-hero-layout,
+    .install-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .optional-notice {
+      max-width: 600px;
+    }
+
+    .mod-card {
+      grid-template-columns: 40px minmax(200px, 0.65fr) minmax(0, 1fr);
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .mods-page-hero {
+      padding-block: 64px;
+    }
+
+    .mods-page-hero h1 {
+      font-size: clamp(3rem, 15vw, 4.7rem);
+    }
+
+    .catalog-heading,
+    .mod-card {
+      grid-template-columns: 1fr;
+    }
+
+    .catalog-heading .eyebrow {
+      grid-column: auto;
+    }
+
+    .mod-card {
+      gap: 14px;
+    }
+
+    .mod-card-number {
+      padding: 0;
+    }
+
+    .mod-card-details {
+      margin-top: 8px;
+    }
+
+    .install-note {
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+  }
+</style>
