@@ -3,7 +3,7 @@ export const server = {
   address: "mc.ferreras.dev",
   discord: "https://discord.gg/f8aBZ98EDT",
   description:
-    "Un servidor de supervivencia sencillo, cuidado y cercano a la experiencia original.",
+    "Ferreras SMP es un servidor de Minecraft Java survival en español, sin modpack obligatorio, con una comunidad tranquila y protección de terrenos.",
 };
 
 export const recommendedClientMods = [

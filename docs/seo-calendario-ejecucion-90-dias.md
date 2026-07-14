@@ -199,9 +199,11 @@ Resultado: instrumentación y guía técnica completadas el 13 de julio de 2026;
 
 ### SEO-03 — Reorientar la portada
 
-Estado: `[ ]`  
-Calendario: semana 2  
+Estado: `[x]`
+Calendario: semana 2
 Dependencias: confirmación del posicionamiento
+
+Resultado: portada reorientada y verificada el 14 de julio de 2026 con title, descripción, H1, introducción y acceso a la guía actualizados; la IP copiable y la medición del CTA principal se mantienen en el primer bloque visual.
 
 #### Texto propuesto
 
@@ -223,10 +225,10 @@ El texto debe ajustarse si “en español”, “protección de terrenos” o cu
 
 #### Criterios de aceptación
 
-- [ ] Minecraft, survival y Ferreras SMP aparecen de forma natural en title, H1 y texto visible.
-- [ ] La IP puede copiarse sin buscarla por la página.
-- [ ] El CTA principal tiene medición.
-- [ ] No se rompe la jerarquía visual ni la accesibilidad.
+- [x] Minecraft, survival y Ferreras SMP aparecen de forma natural en title, H1 y texto visible.
+- [x] La IP puede copiarse sin buscarla por la página.
+- [x] El CTA principal tiene medición.
+- [x] No se rompe la jerarquía visual ni la accesibilidad.
 
 ### SEO-04 — Crear la página de normas
 
@@ -674,7 +676,7 @@ ChatGPT no debe completar estos campos mediante suposiciones.
 
 ## 17. Siguiente acción recomendada
 
-`SEO-01` y `SEO-02` están completadas. La siguiente tarea es `SEO-03`, reorientar la portada, manteniendo los eventos ya instrumentados en sus CTA.
+`SEO-01`, `SEO-02` y `SEO-03` están completadas. Las siguientes tareas son `SEO-04` y `SEO-05`, crear las páginas de normas y mods recomendados a partir del contenido ya presente en la portada.
 
 En paralelo, se deben replicar las variables públicas de Plausible en Vercel cuando se autorice y crear sus seis objetivos. La invitación exclusiva de Discord ya está aplicada; la app de atribución se pospone hasta revisar y limitar sus permisos.
 
