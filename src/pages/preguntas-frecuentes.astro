@@ -8,7 +8,7 @@ const faqs = [
   { question: "¿Cuál es la IP de Ferreras SMP?", answer: `La dirección del servidor es ${server.address}. También puedes escribirla en el navegador para volver a esta web.` },
   { question: "¿Necesito instalar mods para jugar?", answer: "No. Puedes entrar desde Minecraft Java sin descargar un modpack. Xaero’s Minimap, Xaero’s World Map y Open Parties and Claims son opcionales, pero recomendables para reclamar y gestionar terrenos cómodamente desde el mapa." },
   { question: "¿Qué tipo de servidor es?", answer: "Ferreras SMP es un servidor de supervivencia sencillo y cercano a la experiencia original, pensado para jugar con calma y en comunidad." },
-  { question: "¿Dónde puedo consultar las normas?", answer: "Las normas están publicadas en la portada. Se resumen en jugar limpio, respetar lo ajeno y convivir con sentido común." },
+  { question: "¿Dónde puedo consultar las normas?", answer: "Las normas completas están en la página de normas. Se resumen en jugar limpio, respetar lo ajeno y convivir con sentido común." },
   { question: "¿Cómo sé si el servidor está en línea?", answer: "La sección En directo de la portada muestra el estado, los jugadores conectados y la actividad reciente del servidor." },
   { question: "¿Qué hago si no puedo conectarme?", answer: "Comprueba que has escrito bien la dirección y que estás usando Minecraft Java. Si el problema continúa, entra al Discord de Ferreras SMP para pedir ayuda." },
 ];
@@ -62,7 +62,7 @@ const faqSchema = {
       <div class="shell guide-callout-inner">
         <div><p class="eyebrow">Siguiente paso</p><h2>Ya sabes lo necesario.</h2></div>
         <div class="guide-callout-actions">
-          <a class="button button-secondary" href="/#normas">Leer las normas</a>
+          <a class="button button-secondary" href="/normas">Leer las normas</a>
           <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="faq_callout">Entrar al Discord</a>
         </div>
       </div>

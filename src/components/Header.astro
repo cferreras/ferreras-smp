@@ -9,12 +9,12 @@ const primaryLinks = [
 const guideLinks = [
   { href: "/como-entrar", label: "Cómo entrar", description: "IP y pasos para empezar" },
   { href: "/preguntas-frecuentes", label: "Preguntas frecuentes", description: "Respuestas rápidas" },
-  { href: "/#normas", label: "Normas", description: "Las bases de convivencia" },
+  { href: "/normas", label: "Normas", description: "Las bases de convivencia" },
   { href: "/#mods", label: "Mods y mejoras", description: "Tecnología del servidor" },
 ];
 
 const currentPath = Astro.url.pathname;
-const isGuidePage = currentPath === "/como-entrar" || currentPath === "/preguntas-frecuentes";
+const isGuidePage = guideLinks.some((link) => link.href === currentPath);
 ---
 
 <header class="site-header">

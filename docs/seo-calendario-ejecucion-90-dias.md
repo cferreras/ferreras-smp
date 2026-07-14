@@ -232,9 +232,11 @@ El texto debe ajustarse si “en español”, “protección de terrenos” o cu
 
 ### SEO-04 — Crear la página de normas
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semana 3  
 Dependencias: SEO-03
+
+Resultado: página `/normas` creada y verificada el 14 de julio de 2026 con las seis normas de `src/data/server.ts`, ejemplos aclaratorios, canal de aviso por Discord, CTA hacia la guía de acceso y enlaces desde navegación, portada y footer.
 
 Ruta: `/normas`
 
@@ -251,10 +253,10 @@ La portada conservará un resumen y enlazará a la página completa. Los enlaces
 
 #### Criterios de aceptación
 
-- [ ] Página con title, descripción, canonical y H1 propios.
-- [ ] Enlace desde header o menú de guía, portada y footer.
-- [ ] No se contradicen las reglas almacenadas en `src/data/server.ts`.
-- [ ] La página aparece en el sitemap.
+- [x] Página con title, descripción, canonical y H1 propios.
+- [x] Enlace desde header o menú de guía, portada y footer.
+- [x] No se contradicen las reglas almacenadas en `src/data/server.ts`.
+- [x] La página aparece en el sitemap.
 
 ### SEO-05 — Crear la página de mods recomendados
 
@@ -676,7 +678,7 @@ ChatGPT no debe completar estos campos mediante suposiciones.
 
 ## 17. Siguiente acción recomendada
 
-`SEO-01`, `SEO-02` y `SEO-03` están completadas. Las siguientes tareas son `SEO-04` y `SEO-05`, crear las páginas de normas y mods recomendados a partir del contenido ya presente en la portada.
+`SEO-01`, `SEO-02`, `SEO-03` y `SEO-04` están completadas. La siguiente tarea es `SEO-05`, crear la página de mods recomendados a partir del contenido ya presente en la portada.
 
 En paralelo, se deben replicar las variables públicas de Plausible en Vercel cuando se autorice y crear sus seis objetivos. La invitación exclusiva de Discord ya está aplicada; la app de atribución se pospone hasta revisar y limitar sus permisos.
 

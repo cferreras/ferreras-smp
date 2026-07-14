@@ -1,0 +1,286 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { rules, server } from "../data/server";
+import Layout from "../layouts/Layout.astro";
+
+const ruleExamples = [
+  "Por ejemplo: no uses herramientas que revelen recursos ocultos o automaticen acciones para darte ventaja.",
+  "Por ejemplo: si descubres un error, avisa al equipo en lugar de repetirlo o aprovecharlo.",
+  "Por ejemplo: no cojas objetos de cofres ajenos ni alteres una construcción sin permiso.",
+  "Por ejemplo: pregunta antes de levantar tu base junto a una zona que otra persona ya está usando.",
+  "Por ejemplo: evita los insultos, los mensajes repetidos y cualquier conducta dirigida a incomodar a alguien.",
+  "Por ejemplo: si no sabes si algo está permitido, consulta al equipo por Discord antes de hacerlo.",
+];
+---
+
+<Layout
+  title={`Normas del servidor Minecraft | ${server.name}`}
+  description={`Consulta las normas de ${server.name}, servidor Minecraft survival: juego limpio, respeto, convivencia y cómo informar de un problema.`}
+>
+  <Header />
+  <main id="contenido" class="rules-page">
+    <header class="rules-page-hero">
+      <div class="shell rules-page-hero-layout">
+        <div>
+          <p class="eyebrow">Convivencia</p>
+          <h1>Normas de<br /><span>Ferreras SMP.</span></h1>
+          <p>Queremos un survival tranquilo donde cada persona pueda construir, explorar y compartir sin complicaciones.</p>
+        </div>
+        <aside class="rules-philosophy" aria-labelledby="philosophy-title">
+          <p class="mono">LA IDEA ES SENCILLA</p>
+          <h2 id="philosophy-title">Juega como te gustaría que jugasen contigo.</h2>
+          <p>Estas bases y un poco de sentido común son suficientes para cuidar el mundo y a quienes juegan en él.</p>
+        </aside>
+      </div>
+    </header>
+
+    <section class="section rules-page-content" aria-labelledby="rules-title">
+      <div class="shell rules-page-layout">
+        <div class="rules-page-heading">
+          <p class="eyebrow">Las reglas</p>
+          <h2 id="rules-title">Seis bases para jugar bien.</h2>
+          <p>Los ejemplos aclaran situaciones habituales; la norma que encabeza cada bloque es la referencia.</p>
+        </div>
+        <ol class="rules-page-list">
+          {rules.map((rule, index) => (
+            <li>
+              <span class="rules-page-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              <div>
+                <h3>{rule.title}</h3>
+                <p>{rule.text}</p>
+                <p class="rule-example">{ruleExamples[index]}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="rules-report" aria-labelledby="report-title">
+      <div class="shell rules-report-inner">
+        <div>
+          <p class="eyebrow">¿Ha ocurrido algo?</p>
+          <h2 id="report-title">Cuéntanos el problema por Discord.</h2>
+          <p>Explica qué ha pasado y aporta el contexto que tengas. El equipo podrá revisar el caso y darte indicaciones.</p>
+        </div>
+        <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="rules_report">Avisar en Discord</a>
+      </div>
+    </section>
+
+    <section class="guide-callout">
+      <div class="shell guide-callout-inner">
+        <div><p class="eyebrow">Siguiente paso</p><h2>Entra y juega a tu ritmo.</h2></div>
+        <div class="guide-callout-actions">
+          <a class="button button-secondary" href="/como-entrar">Ver cómo entrar</a>
+          <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="rules_callout">Entrar al Discord</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .rules-page {
+    min-height: 70vh;
+  }
+
+  .rules-page-hero {
+    padding-block: clamp(80px, 10vw, 130px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .rules-page-hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.65fr);
+    align-items: end;
+    gap: clamp(48px, 8vw, 110px);
+  }
+
+  .rules-page-hero h1 {
+    max-width: 850px;
+    margin-bottom: 24px;
+    font-size: clamp(3.5rem, 8vw, 7.2rem);
+    line-height: 0.94;
+    letter-spacing: -0.075em;
+  }
+
+  .rules-page-hero h1 span {
+    color: var(--primary);
+  }
+
+  .rules-page-hero > .shell > div > p:last-child,
+  .rules-philosophy > p:last-child {
+    margin-bottom: 0;
+    color: var(--muted-strong);
+  }
+
+  .rules-page-hero > .shell > div > p:last-child {
+    max-width: 650px;
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+  }
+
+  .rules-philosophy {
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--card-elevated);
+  }
+
+  .rules-philosophy > p:first-child {
+    margin-bottom: 16px;
+    color: var(--primary);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+  }
+
+  .rules-philosophy h2 {
+    margin-bottom: 16px;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.05em;
+  }
+
+  .rules-philosophy > p:last-child {
+    font-size: 14px;
+  }
+
+  .rules-page-content {
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  .rules-page-layout {
+    display: grid;
+    grid-template-columns: minmax(230px, 0.48fr) minmax(0, 1fr);
+    gap: clamp(48px, 9vw, 140px);
+  }
+
+  .rules-page-heading {
+    position: sticky;
+    top: calc(var(--header-height) + 48px);
+    align-self: start;
+  }
+
+  .rules-page-heading h2 {
+    max-width: 370px;
+    margin-bottom: 20px;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    line-height: 1.05;
+    letter-spacing: -0.075em;
+  }
+
+  .rules-page-heading > p:last-child {
+    max-width: 370px;
+    margin-bottom: 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .rules-page-list {
+    border-top: 1px solid var(--border);
+    list-style: none;
+  }
+
+  .rules-page-list li {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 22px;
+    padding-block: 30px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .rules-page-number {
+    padding-top: 4px;
+    color: var(--primary);
+    font-family: var(--font-mono);
+    font-size: 11px;
+  }
+
+  .rules-page-list h3 {
+    margin-bottom: 8px;
+    font-size: 20px;
+    letter-spacing: -0.025em;
+  }
+
+  .rules-page-list p {
+    max-width: 720px;
+    margin-bottom: 0;
+    color: var(--muted-strong);
+  }
+
+  .rules-page-list .rule-example {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .rules-report {
+    padding-block: clamp(64px, 8vw, 96px);
+    border-bottom: 1px solid var(--border-soft);
+    background: color-mix(in srgb, var(--card-elevated) 68%, var(--background));
+  }
+
+  .rules-report-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+  }
+
+  .rules-report h2 {
+    margin-bottom: 14px;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.075em;
+  }
+
+  .rules-report p:last-child {
+    max-width: 700px;
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+
+  .rules-report .button {
+    flex: none;
+  }
+
+  @media (max-width: 980px) {
+    .rules-page-hero-layout,
+    .rules-page-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .rules-philosophy {
+      max-width: 580px;
+    }
+
+    .rules-page-heading {
+      position: static;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .rules-page-hero {
+      padding-block: 64px;
+    }
+
+    .rules-page-hero h1 {
+      font-size: clamp(3rem, 16vw, 4.8rem);
+    }
+
+    .rules-page-list li {
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .rules-report-inner {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .rules-report .button {
+      width: 100%;
+    }
+  }
+</style>
