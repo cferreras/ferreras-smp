@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import ServerAddress from "../components/ServerAddress.astro";
@@ -11,9 +12,14 @@ const steps = [
   { title: "Conéctate", text: "Guarda el servidor y entra al mundo. Puedes pasar por Discord antes si quieres presentarte o pedir ayuda." },
 ];
 
+const breadcrumbs = [
+  { label: "Inicio", href: "/" },
+  { label: "Cómo entrar", href: "/como-entrar" },
+];
+
 const howToSchema = {
   "@type": "HowTo",
-  "@id": "https://mc.ferreras.dev/como-entrar#howto",
+  "@id": new URL(`${Astro.url.pathname}#howto`, Astro.site).href,
   name: "Cómo entrar a Ferreras SMP",
   description: `Pasos para conectarte al servidor de Minecraft Ferreras SMP mediante ${server.address}.`,
   inLanguage: "es",
@@ -32,8 +38,10 @@ const howToSchema = {
   description={`Aprende a entrar a ${server.name}: abre Minecraft Java, añade ${server.address} y juega sin instalar mods.`}
   structuredData={howToSchema}
   analyticsPage="join-guide"
+  breadcrumbs={breadcrumbs}
 >
   <Header />
+  <Breadcrumbs items={breadcrumbs} />
   <main id="contenido" class="guide-page">
     <header class="guide-hero">
       <div class="shell guide-hero-layout">
@@ -76,7 +84,10 @@ const howToSchema = {
           <p class="optional-mods-intro">Puedes jugar sin instalar nada. Si quieres reclamar terrenos cómodamente desde el mapa, recomendamos estos tres mods de cliente:</p>
           <ul class="optional-mod-list">
             {recommendedClientMods.map((mod) => (
-              <li><strong>{mod.name}</strong><p>{mod.description}</p></li>
+              <li>
+                <a href={`/mods-recomendados#${mod.slug}`}><strong>{mod.name}</strong></a>
+                <p>{mod.description}</p>
+              </li>
             ))}
           </ul>
           <p class="optional-mod-note">Los tres son opcionales: no tenerlos instalados no impide entrar al servidor.</p>
@@ -89,6 +100,7 @@ const howToSchema = {
       <div class="shell guide-callout-inner">
         <div><p class="eyebrow">¿Alguna duda?</p><h2>Antes de quedarte atascado.</h2></div>
         <div class="guide-callout-actions">
+          <a class="button button-secondary" href="/blog/como-entrar-servidor-minecraft-java#qué-revisar-si-no-puedes-entrar">Resolver problemas de conexión</a>
           <a class="button button-secondary" href="/preguntas-frecuentes">Ver preguntas frecuentes</a>
           <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="join_guide_help">Pedir ayuda en Discord</a>
         </div>

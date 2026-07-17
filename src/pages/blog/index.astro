@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../../components/Breadcrumbs.astro";
 import Footer from "../../components/Footer.astro";
 import Header from "../../components/Header.astro";
 import RssIcon from "../../components/RssIcon.astro";
@@ -8,13 +9,20 @@ import Layout from "../../layouts/Layout.astro";
 export const prerender = true;
 
 const posts = await getPublishedBlogPosts();
+const breadcrumbs = [
+  { label: "Inicio", href: "/" },
+  { label: "Blog", href: "/blog" },
+];
 ---
 
 <Layout
   title="Blog de Minecraft survival | Ferreras SMP"
   description="Guías de Minecraft Java, survival, acceso a servidores, protección y mods recomendados por Ferreras SMP."
+  breadcrumbs={breadcrumbs}
+  pageType="CollectionPage"
 >
   <Header />
+  <Breadcrumbs items={breadcrumbs} />
   <main id="contenido" class="blog-index-page">
     <header class="blog-index-hero">
       <div class="shell blog-index-hero-layout">
@@ -208,7 +216,7 @@ const posts = await getPublishedBlogPosts();
     }
 
     .blog-index-hero h1 {
-      font-size: clamp(3rem, 15vw, 4.7rem);
+      font-size: clamp(2.5rem, 12.5vw, 4.7rem);
     }
 
     .blog-list-heading {

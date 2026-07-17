@@ -8,6 +8,7 @@ export const server = {
 
 export const recommendedClientMods = [
   {
+    slug: "xaeros-minimap",
     name: "Xaero’s Minimap",
     description: "Añade un minimapa discreto mientras exploras y construyes.",
     sources: [
@@ -16,6 +17,7 @@ export const recommendedClientMods = [
     ],
   },
   {
+    slug: "xaeros-world-map",
     name: "Xaero’s World Map",
     description: "Permite consultar cómodamente el mundo que ya has recorrido.",
     sources: [
@@ -24,6 +26,7 @@ export const recommendedClientMods = [
     ],
   },
   {
+    slug: "open-parties-and-claims",
     name: "Open Parties and Claims",
     description: "Integra las reclamaciones de terreno con el mapa para crearlas y gestionarlas con más facilidad.",
     sources: [

@@ -1,0 +1,55 @@
+---
+interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  items: BreadcrumbItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav class="page-breadcrumbs shell" aria-label="Migas de pan">
+  <ol>
+    {items.map((item, index) => (
+      <li aria-current={index === items.length - 1 ? "page" : undefined}>
+        {index === items.length - 1 ? item.label : <a href={item.href}>{item.label}</a>}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+  .page-breadcrumbs {
+    padding-top: 28px;
+  }
+
+  .page-breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    list-style: none;
+  }
+
+  .page-breadcrumbs li + li::before {
+    margin-right: 8px;
+    color: var(--border);
+    content: "/";
+  }
+
+  .page-breadcrumbs a:hover {
+    color: var(--foreground);
+  }
+
+  .page-breadcrumbs li[aria-current="page"] {
+    overflow: hidden;
+    max-width: min(60vw, 520px);
+    color: var(--muted-strong);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>

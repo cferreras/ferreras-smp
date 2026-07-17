@@ -1416,6 +1416,14 @@ dl {
   border-bottom: 1px solid var(--border);
 }
 
+.optional-mod-list a {
+  color: var(--primary);
+}
+
+.optional-mod-list a:hover {
+  color: var(--foreground);
+}
+
 .optional-mod-list strong {
   font-size: 14px;
 }

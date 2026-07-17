@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { recommendedClientMods, server } from "../data/server";
@@ -30,13 +31,20 @@ const modDetails = [
     ],
   },
 ];
+
+const breadcrumbs = [
+  { label: "Inicio", href: "/" },
+  { label: "Mods recomendados", href: "/mods-recomendados" },
+];
 ---
 
 <Layout
   title={`Mods recomendados para Minecraft survival | ${server.name}`}
   description={`Tres mods opcionales para jugar en ${server.name}: Xaero’s Minimap, Xaero’s World Map y Open Parties and Claims, con sus fuentes oficiales.`}
+  breadcrumbs={breadcrumbs}
 >
   <Header />
+  <Breadcrumbs items={breadcrumbs} />
   <main id="contenido" class="recommended-mods-page">
     <header class="mods-page-hero">
       <div class="shell mods-page-hero-layout">
@@ -64,9 +72,15 @@ const modDetails = [
           <p>Las funciones se complementan, pero puedes usar únicamente las que encajen con tu forma de jugar.</p>
         </div>
 
+        <nav class="source-links mod-jump-links" aria-label="Ir a la información de cada mod">
+          {recommendedClientMods.map((mod) => (
+            <a class="source-link" href={`#${mod.slug}`}>{mod.name}</a>
+          ))}
+        </nav>
+
         <div class="mod-card-list">
           {recommendedClientMods.map((mod, index) => (
-            <article class="mod-card">
+            <article class="mod-card" id={mod.slug}>
               <div class="mod-card-number mono" aria-hidden="true">{String(index + 1).padStart(2, "0")}</div>
               <div class="mod-card-main">
                 <p class="card-kicker">{modDetails[index].eyebrow}</p>
@@ -247,6 +261,10 @@ const modDetails = [
   .catalog-heading > p:last-child {
     margin-bottom: 0;
     color: var(--muted);
+  }
+
+  .mod-jump-links {
+    margin-bottom: 24px;
   }
 
   .mod-card-list {

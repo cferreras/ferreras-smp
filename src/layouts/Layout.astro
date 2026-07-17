@@ -3,6 +3,11 @@ import "../styles/global.css";
 import type { AnalyticsProvider } from "../lib/analytics";
 import { server } from "../data/server";
 
+interface BreadcrumbItem {
+  label: string;
+  href: string;
+}
+
 interface Props {
   title: string;
   description: string;
@@ -17,6 +22,8 @@ interface Props {
   author?: string;
   noindex?: boolean;
   includeCanonical?: boolean;
+  breadcrumbs?: BreadcrumbItem[];
+  pageType?: "WebPage" | "CollectionPage";
 }
 
 const {
@@ -31,6 +38,8 @@ const {
   publishedTime,
   modifiedTime,
   author,
+  breadcrumbs = [],
+  pageType = "WebPage",
   noindex = false,
   includeCanonical = true,
 } = Astro.props;
@@ -47,7 +56,9 @@ const siteUrl = Astro.site ?? new URL("https://mc.ferreras.dev");
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl);
 const socialImageUrl = new URL(socialImage, siteUrl);
 const organizationId = new URL("/#organization", siteUrl).href;
-
+const websiteId = new URL("/#website", siteUrl).href;
+const webPageId = `${canonicalUrl.href}#webpage`;
+const breadcrumbId = `${canonicalUrl.href}#breadcrumb`;
 const structuredData: {
   "@context": string;
   "@graph": Record<string, unknown>[];
@@ -59,18 +70,39 @@ const structuredData: {
       "@id": organizationId,
       name: "Ferreras SMP",
       url: siteUrl.href,
-      description,
+      description: server.description,
       sameAs: [server.discord],
     },
     {
       "@type": "WebSite",
-      "@id": new URL("/#website", siteUrl).href,
+      "@id": websiteId,
       url: siteUrl.href,
       name: "Ferreras SMP",
-      description,
+      description: server.description,
       inLanguage: "es",
       publisher: { "@id": organizationId },
     },
+    ...(!noindex ? [{
+      "@type": pageType,
+      "@id": webPageId,
+      url: canonicalUrl.href,
+      name: title,
+      description,
+      inLanguage: "es",
+      isPartOf: { "@id": websiteId },
+      publisher: { "@id": organizationId },
+      ...(breadcrumbs.length > 1 ? { breadcrumb: { "@id": breadcrumbId } } : {}),
+    }] : []),
+    ...(breadcrumbs.length > 1 ? [{
+      "@type": "BreadcrumbList",
+      "@id": breadcrumbId,
+      itemListElement: breadcrumbs.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.label,
+        item: new URL(item.href, siteUrl).href,
+      })),
+    }] : []),
   ],
 };
 

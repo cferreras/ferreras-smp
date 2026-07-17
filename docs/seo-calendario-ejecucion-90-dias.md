@@ -295,7 +295,7 @@ Calendario: semana 4
 Dependencias: SEO-01  
 Documentación: Content Collections, rutas dinámicas y RSS de Astro
 
-Resultado: blog nativo de Astro implementado y verificado el 14 de julio de 2026 con colección tipada, índice, plantilla de artículo, rutas prerenderizadas, RSS, sitemap y la primera guía no borrador firmada por Carlos Ferreras. La imagen social general se usa temporalmente hasta ejecutar SEO-07.
+Resultado: blog nativo de Astro implementado y verificado el 14 de julio de 2026 con colección tipada, índice, plantilla de artículo, rutas prerenderizadas, RSS, sitemap y la primera guía no borrador firmada por Carlos Ferreras. La imagen social específica se incorporó al ejecutar SEO-07.
 
 #### Estructura objetivo
 
@@ -354,7 +354,7 @@ draft: false
 
 ### SEO-07 — Sistema de imágenes sociales
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semanas 4–6  
 Dependencias: SEO-06
 
@@ -368,6 +368,8 @@ Dependencias: SEO-06
 - WebP, AVIF o JPG optimizado según el caso.
 
 Si una imagen no existe, se utilizará temporalmente la imagen social general; no se bloqueará la publicación, pero se creará una tarea para sustituirla.
+
+Resultado: portada social original para la guía prioritaria de acceso, optimizada como WebP de 1200 × 630, con alt descriptivo y sin texto añadido.
 
 ## 8. Calendario editorial
 
@@ -389,6 +391,11 @@ Si una imagen no existe, se utilizará temporalmente la imagen social general; n
 | 15 | Comunidad | Así mejoramos el rendimiento sin cambiar la experiencia survival | Confianza técnica → portada |
 
 Las fechas y títulos se podrán ajustar usando consultas reales de Search Console. No se cambiará el slug de una entrada publicada sin crear una redirección permanente.
+
+#### Estado de publicaciones
+
+- [x] `Cómo entrar a un servidor de Minecraft Java paso a paso`: integrada y verificada el 14 de julio de 2026.
+- [x] `Qué es un servidor SMP de Minecraft y cómo funciona`: integrada y verificada localmente el 17 de julio de 2026 en `/blog/que-es-servidor-smp-minecraft`, con portada específica WebP de 1200 × 630; pendiente de despliegue externo.
 
 ### Backlog editorial adicional
 
@@ -498,9 +505,11 @@ sitemap, astro check y build. No despliegues ni publiques externamente.
 
 ### SEO-08 — Construir la red de enlaces
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semanas 5–8  
 Dependencias: SEO-04, SEO-05 y SEO-06
+
+Resultado: red actual completada y verificada el 17 de julio de 2026. Las siete páginas indexables reciben enlaces HTML desde otras páginas, `/como-entrar` conecta con el diagnóstico del artículo publicado, la FAQ y las secciones específicas de cada mod, y el artículo mantiene enlaces contextuales hacia acceso, normas y ayuda. El rastreo local no encontró páginas huérfanas, destinos rotos ni fragmentos inexistentes. Las futuras entradas deberán conservar estas reglas al publicarse.
 
 #### Reglas
 
@@ -514,18 +523,22 @@ Dependencias: SEO-04, SEO-05 y SEO-06
 
 #### Criterios de aceptación
 
-- [ ] No existen páginas importantes huérfanas.
-- [ ] Los enlaces son HTML rastreable con `href`.
-- [ ] No hay enlaces internos rotos.
-- [ ] Los artículos relacionados guardan relación real con el contenido.
+- [x] No existen páginas importantes huérfanas.
+- [x] Los enlaces son HTML rastreable con `href`.
+- [x] No hay enlaces internos rotos.
+- [x] Los artículos relacionados guardan relación real con el contenido.
 
 ## 11. Rendimiento e imágenes
 
 ### SEO-09 — Optimizar recursos visuales
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semana 6  
 Dependencias: SEO-01
+
+Resultado: inventario y optimización completados el 17 de julio de 2026. Se eliminaron tres recursos sin referencias (`minecraft-doodles-join.png`, `minecraft-doodles-rules.png` y `hero-background.jpg`) en lugar de convertirlos. El artefacto estático pasó de 4.287.637 a 561.472 bytes: 3.726.165 bytes menos (3,55 MiB; 86,9 %). Las imágenes visibles conservan dimensiones y alt; el hero mantiene carga prioritaria y las imágenes posteriores usan carga diferida.
+
+Línea base sintética de producción con Lighthouse: móvil 93/100, LCP 2,94 s, CLS 0,0023 y TBT 0 ms; escritorio 98/100, LCP 0,87 s, CLS 0,0061 y TBT 0 ms. INP no está disponible en una prueba de laboratorio. Como los tres recursos eliminados no se solicitaban durante la navegación, la transferencia y las métricas de página no cambian por esta limpieza; el ahorro se produce en el artefacto desplegable. El LCP móvil queda ligeramente por encima del objetivo de referencia y deberá contrastarse con datos de campo tras el próximo despliegue.
 
 En la revisión inicial del repositorio se detectaron dos PNG decorativos de aproximadamente 1,6 MB y 1,8 MB. Deben medirse en la página real antes de elegir la solución.
 
@@ -548,18 +561,20 @@ En la revisión inicial del repositorio se detectaron dos PNG decorativos de apr
 
 #### Criterios de aceptación
 
-- [ ] No hay regresiones visuales perceptibles.
-- [ ] Se documenta el ahorro total de bytes.
-- [ ] Las imágenes conservan alt adecuado.
-- [ ] Se comparan las métricas antes y después.
+- [x] No hay regresiones visuales perceptibles.
+- [x] Se documenta el ahorro total de bytes.
+- [x] Las imágenes conservan alt adecuado.
+- [x] Se comparan las métricas antes y después.
 
 ## 12. Datos estructurados y apariencia en buscadores
 
 ### SEO-10 — Revisar schema y metadatos
 
-Estado: `[ ]`  
+Estado: `[x]`
 Calendario: semana 5  
 Dependencias: SEO-04, SEO-05 y SEO-06
+
+Resultado: revisión completada y verificada el 17 de julio de 2026. Todas las páginas indexables declaran `WebPage` o `CollectionPage`, las rutas secundarias muestran breadcrumbs rastreables y publican `BreadcrumbList`, y los schemas específicos (`HowTo`, `FAQPage` y `BlogPosting`) se mantienen vinculados al contenido visible. `Organization` y `WebSite` usan una descripción estable. Los siete títulos y descripciones son únicos, y Schema Markup Validator validó el conjunto con 0 errores y 0 advertencias.
 
 #### Tipos recomendados
 
@@ -573,10 +588,10 @@ FAQ y HowTo no deben tratarse como fuente asegurada de resultados enriquecidos. 
 
 #### Criterios de aceptación
 
-- [ ] No existe schema que describa contenido no visible.
-- [ ] URLs, imágenes, fechas y autor son válidos.
-- [ ] Se valida con Rich Results Test o Schema Markup Validator.
-- [ ] Cada página tiene title y descripción únicos.
+- [x] No existe schema que describa contenido no visible.
+- [x] URLs, imágenes, fechas y autor son válidos.
+- [x] Se valida con Rich Results Test o Schema Markup Validator.
+- [x] Cada página tiene title y descripción únicos.
 
 ## 13. Distribución y autoridad
 
@@ -682,15 +697,14 @@ ChatGPT no debe completar estos campos mediante suposiciones.
 
 ## 17. Siguiente acción recomendada
 
-`SEO-01`, `SEO-02`, `SEO-03`, `SEO-04`, `SEO-05` y `SEO-06` están completadas. La siguiente tarea técnica es `SEO-10`, revisar schema y metadatos del conjunto ya creado; `SEO-07`, `SEO-08` y `SEO-09` pueden avanzar después en paralelo.
+`SEO-01` a `SEO-10` están completadas. El siguiente trabajo interno es mantener las publicaciones semanales: cada nueva entrada debe incorporar enlaces contextuales, imagen optimizada y medición desde su creación. `SEO-11` queda como siguiente bloque específico después de disponer de más contenido propio.
 
 En paralelo, se deben replicar las variables públicas de Plausible en Vercel cuando se autorice y crear sus seis objetivos. La invitación exclusiva de Discord ya está aplicada; la app de atribución se pospone hasta revisar y limitar sus permisos.
 
 Después, ejecutar en este orden:
 
 ```text
-SEO-01 → SEO-02 → SEO-03 → SEO-04 + SEO-05 → SEO-06 → SEO-10
-       → SEO-07 + SEO-08 + SEO-09 → publicaciones semanales → SEO-11
+publicaciones semanales → SEO-11
 ```
 
 Las acciones manuales externas pueden avanzar en paralelo, pero nunca deben bloquear la mejora de contenido, arquitectura y conversión del sitio.

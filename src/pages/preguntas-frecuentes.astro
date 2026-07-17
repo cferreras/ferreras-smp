@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { server } from "../data/server";
@@ -13,9 +14,14 @@ const faqs = [
   { question: "¿Qué hago si no puedo conectarme?", answer: "Comprueba que has escrito bien la dirección y que estás usando Minecraft Java. Si el problema continúa, entra al Discord de Ferreras SMP para pedir ayuda." },
 ];
 
+const breadcrumbs = [
+  { label: "Inicio", href: "/" },
+  { label: "Preguntas frecuentes", href: "/preguntas-frecuentes" },
+];
+
 const faqSchema = {
   "@type": "FAQPage",
-  "@id": "https://mc.ferreras.dev/preguntas-frecuentes#faq",
+  "@id": new URL(`${Astro.url.pathname}#webpage`, Astro.site).href,
   inLanguage: "es",
   mainEntity: faqs.map((faq) => ({
     "@type": "Question",
@@ -29,8 +35,10 @@ const faqSchema = {
   title={`Preguntas frecuentes sobre ${server.name}`}
   description={`Respuestas sobre la IP, los mods, las normas y cómo jugar en el servidor de Minecraft ${server.name}.`}
   structuredData={faqSchema}
+  breadcrumbs={breadcrumbs}
 >
   <Header />
+  <Breadcrumbs items={breadcrumbs} />
   <main id="contenido" class="guide-page">
     <header class="guide-hero guide-hero-compact">
       <div class="shell">

@@ -9,8 +9,8 @@ tags:
   - minecraft-java
   - servidores-minecraft
   - survival
-image: "/images/og-ferreras-smp.jpg"
-imageAlt: "Presentación de Ferreras SMP, servidor Minecraft Java survival"
+image: "/images/blog/como-entrar-servidor-minecraft-java.webp"
+imageAlt: "Jugador de Minecraft frente a una baliza púrpura que representa la conexión a un servidor"
 draft: false
 relatedLinks:
   - title: "Cómo entrar a Ferreras SMP"

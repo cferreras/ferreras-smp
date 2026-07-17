@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import RssIcon from "../components/RssIcon.astro";
@@ -15,6 +16,11 @@ const { post } = Astro.props;
 const { data } = post;
 const siteUrl = Astro.site ?? new URL("https://mc.ferreras.dev");
 const postUrl = new URL(getBlogPostPath(post), siteUrl);
+const breadcrumbs = [
+  { label: "Inicio", href: "/" },
+  { label: "Blog", href: "/blog" },
+  { label: data.title, href: getBlogPostPath(post) },
+];
 const imageUrl = new URL(data.image, siteUrl);
 const organizationId = new URL("/#organization", siteUrl).href;
 const publishedIso = data.publishedAt.toISOString();
@@ -39,26 +45,17 @@ const articleSchema = {
     name: data.author,
   },
   publisher: { "@id": organizationId },
-  mainEntityOfPage: postUrl.href,
+  mainEntityOfPage: { "@id": `${postUrl.href}#webpage` },
   inLanguage: "es",
   keywords: data.tags.join(", "),
 };
 
-const breadcrumbSchema = {
-  "@type": "BreadcrumbList",
-  "@id": `${postUrl.href}#breadcrumb`,
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Inicio", item: siteUrl.href },
-    { "@type": "ListItem", position: 2, name: "Blog", item: new URL("/blog", siteUrl).href },
-    { "@type": "ListItem", position: 3, name: data.title, item: postUrl.href },
-  ],
-};
 ---
 
 <Layout
   title={`${data.title} | ${server.name}`}
   description={data.description}
-  structuredData={[articleSchema, breadcrumbSchema]}
+  structuredData={articleSchema}
   analyticsPage="blog-post"
   analyticsContentId={post.id}
   ogType="article"
@@ -67,16 +64,11 @@ const breadcrumbSchema = {
   publishedTime={publishedIso}
   modifiedTime={updatedIso}
   author={data.author}
+  breadcrumbs={breadcrumbs}
 >
   <Header />
   <main id="contenido" class="blog-post-page">
-    <div class="shell blog-breadcrumbs" aria-label="Migas de pan">
-      <ol>
-        <li><a href="/">Inicio</a></li>
-        <li><a href="/blog">Blog</a></li>
-        <li aria-current="page">{data.title}</li>
-      </ol>
-    </div>
+    <Breadcrumbs items={breadcrumbs} />
 
     <article>
       <header class="blog-post-header shell">
@@ -139,36 +131,6 @@ const breadcrumbSchema = {
     min-height: 70vh;
   }
 
-  .blog-breadcrumbs {
-    padding-top: 28px;
-  }
-
-  .blog-breadcrumbs ol {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    color: var(--muted);
-    font-size: 12px;
-    list-style: none;
-  }
-
-  .blog-breadcrumbs li + li::before {
-    margin-right: 8px;
-    color: var(--border);
-    content: "/";
-  }
-
-  .blog-breadcrumbs a:hover {
-    color: var(--foreground);
-  }
-
-  .blog-breadcrumbs li[aria-current="page"] {
-    overflow: hidden;
-    max-width: 380px;
-    color: var(--muted-strong);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
 
   .blog-post-header {
     max-width: 980px;
@@ -397,9 +359,6 @@ const breadcrumbSchema = {
   }
 
   @media (max-width: 720px) {
-    .blog-breadcrumbs li[aria-current="page"] {
-      display: none;
-    }
 
     .blog-post-header {
       text-align: left;

@@ -1,4 +1,5 @@
 ---
+import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { rules, server } from "../data/server";
@@ -12,13 +13,20 @@ const ruleExamples = [
   "Por ejemplo: evita los insultos, los mensajes repetidos y cualquier conducta dirigida a incomodar a alguien.",
   "Por ejemplo: si no sabes si algo está permitido, consulta al equipo por Discord antes de hacerlo.",
 ];
+
+const breadcrumbs = [
+  { label: "Inicio", href: "/" },
+  { label: "Normas", href: "/normas" },
+];
 ---
 
 <Layout
   title={`Normas del servidor Minecraft | ${server.name}`}
   description={`Consulta las normas de ${server.name}, servidor Minecraft survival: juego limpio, respeto, convivencia y cómo informar de un problema.`}
+  breadcrumbs={breadcrumbs}
 >
   <Header />
+  <Breadcrumbs items={breadcrumbs} />
   <main id="contenido" class="rules-page">
     <header class="rules-page-hero">
       <div class="shell rules-page-hero-layout">
