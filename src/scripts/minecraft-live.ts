@@ -5,6 +5,10 @@ import type {
   MinecraftPollOption,
 } from "../types/minecraft-live";
 import { formatRelativeTime } from "../lib/format-relative-time";
+import {
+  getVisibleActivityEvents,
+  type GroupedMinecraftActivityEvent,
+} from "../lib/group-activity-events";
 import { getRandomEmptyPlayerMessage } from "../lib/empty-player-messages";
 import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
 
@@ -113,19 +117,28 @@ if (liveSection) {
     }
   };
 
-  const createActivityItem = (event: MinecraftActivityEvent) => {
+  const createActivityItem = (event: GroupedMinecraftActivityEvent) => {
     const item = document.createElement("li");
     const type = document.createElement("span");
     const message = document.createElement("p");
+    const copy = document.createElement("span");
     const time = document.createElement("time");
+    const count = event.count > 1 ? document.createElement("strong") : undefined;
 
     item.className = "activity-event";
     item.dataset.activityType = event.type;
     type.className = "activity-type";
     type.textContent = eventLabels[event.type];
-    message.textContent = event.message;
+    copy.textContent = event.message;
     time.dateTime = event.createdAt;
     time.textContent = formatRelativeTime(event.createdAt);
+    message.append(copy);
+    if (count) {
+      count.className = "activity-count";
+      count.setAttribute("aria-label", `${event.count} veces`);
+      count.textContent = `x${event.count}`;
+      message.append(count);
+    }
 
     item.append(type, message, time);
     return item;
@@ -139,7 +152,7 @@ if (liveSection) {
       return;
     }
 
-    list.replaceChildren(...events.map(createActivityItem));
+    list.replaceChildren(...getVisibleActivityEvents(events).map(createActivityItem));
     list.hidden = events.length === 0;
 
     if (empty) {

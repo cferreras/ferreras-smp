@@ -1,9 +1,11 @@
 ---
 import type { MinecraftActivityEvent } from "../types/minecraft-live";
 import { formatRelativeTime } from "../lib/format-relative-time";
+import { getVisibleActivityEvents } from "../lib/group-activity-events";
 
 interface Props { events: MinecraftActivityEvent[]; }
 const { events } = Astro.props;
+const groupedEvents = getVisibleActivityEvents(events);
 
 const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   join: "Entrada", leave: "Salida", death: "Muerte", advancement: "Logro", backup: "Backup", system: "Sistema",
@@ -17,10 +19,13 @@ const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   </div>
 
   <ul class="activity-list" data-activity-list>
-    {events.map((event) => (
+    {groupedEvents.map((event) => (
       <li class="activity-event" data-activity-type={event.type}>
         <span class="activity-type">{eventLabels[event.type]}</span>
-        <p>{event.message}</p>
+        <p>
+          <span>{event.message}</span>
+          {event.count > 1 && <strong class="activity-count" aria-label={`${event.count} veces`}>x{event.count}</strong>}
+        </p>
         <time datetime={event.createdAt}>{formatRelativeTime(event.createdAt)}</time>
       </li>
     ))}

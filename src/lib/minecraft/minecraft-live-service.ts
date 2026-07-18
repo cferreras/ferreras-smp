@@ -4,6 +4,7 @@ import type {
   MinecraftPoll,
   MinecraftStatus,
 } from "../../types/minecraft-live";
+import { ACTIVITY_EVENT_LOOKBACK_LIMIT } from "../group-activity-events";
 import { getRedis } from "../redis";
 import {
   DEFAULT_MINECRAFT_POLL,
@@ -71,7 +72,7 @@ export const minecraftLiveService = {
   async getSnapshot(): Promise<MinecraftLiveSnapshot> {
     const [status, activity, poll] = await Promise.all([
       this.getStatus(),
-      this.getActivity(),
+      this.getActivity(ACTIVITY_EVENT_LOOKBACK_LIMIT),
       this.getPoll(),
     ]);
 
@@ -89,9 +90,9 @@ export const minecraftLiveService = {
     return normalizeStatus(status);
   },
 
-  async getActivity(): Promise<MinecraftActivityEvent[]> {
+  async getActivity(limit: number): Promise<MinecraftActivityEvent[]> {
     const redis = getRedis();
-    const values = await redis.lrange(MINECRAFT_REDIS_KEYS.activityRecent, 0, 9);
+    const values = await redis.lrange(MINECRAFT_REDIS_KEYS.activityRecent, 0, limit - 1);
 
     return values
       .map((value) => parseJson<Partial<MinecraftActivityEvent>>(value))

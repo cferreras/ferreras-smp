@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { ACTIVITY_EVENT_LOOKBACK_LIMIT } from "../../../lib/group-activity-events";
 import {
   corsPreflightResponse,
   jsonResponse,
@@ -10,7 +11,11 @@ export const prerender = false;
 
 export const GET = (async ({ request }) => {
   try {
-    return jsonResponse(await minecraftLiveService.getActivity(), {}, request);
+    return jsonResponse(
+      await minecraftLiveService.getActivity(ACTIVITY_EVENT_LOOKBACK_LIMIT),
+      {},
+      request,
+    );
   } catch (error) {
     return serviceUnavailableResponse(error, request);
   }
