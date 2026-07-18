@@ -30,6 +30,6 @@ export const saveActivityEvent = async (redis: Redis, event: MinecraftActivityEv
   await redis
     .multi()
     .lpush(MINECRAFT_ACTIVITY_RECENT_KEY, JSON.stringify(event))
-    .ltrim(MINECRAFT_ACTIVITY_RECENT_KEY, 0, 24)
+    .ltrim(MINECRAFT_ACTIVITY_RECENT_KEY, 0, 49)
     .exec();
 };
