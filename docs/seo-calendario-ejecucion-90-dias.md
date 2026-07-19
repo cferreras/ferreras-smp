@@ -396,6 +396,7 @@ Las fechas y títulos se podrán ajustar usando consultas reales de Search Conso
 
 - [x] `Cómo entrar a un servidor de Minecraft Java paso a paso`: integrada y verificada el 14 de julio de 2026.
 - [x] `Qué es un servidor SMP de Minecraft y cómo funciona`: integrada y verificada localmente el 17 de julio de 2026 en `/blog/que-es-servidor-smp-minecraft`, con portada específica WebP de 1200 × 630; pendiente de despliegue externo.
+- [x] `Qué mods hay en Ferreras SMP y cómo mantenemos una experiencia cercana a vanilla`: integrada y verificada localmente el 19 de julio de 2026 en `/blog/que-mods-hay-ferreras-smp`, con portada específica WebP de 1200 × 630. Sustituye el enfoque genérico de `Servidor de Minecraft sin mods: qué necesitas para empezar` y conserva su intención de reducir la fricción de acceso.
 
 ### Backlog editorial adicional
 
