@@ -108,12 +108,13 @@ Estas dependencias forman parte de la instalación, pero no tendría sentido pre
 
 ## Qué datapacks utiliza Ferreras SMP
 
-Los datapacks aprovechan el sistema de datos incorporado en Minecraft para añadir recetas, funciones o ajustes al mundo. Ferreras SMP utiliza cuatro:
+Los datapacks aprovechan el sistema de datos incorporado en Minecraft para añadir recetas, funciones o ajustes al mundo. Ferreras SMP utiliza cinco:
 
 - [All Mob Heads](https://modrinth.com/datapack/amh) permite obtener cabezas de las criaturas del juego.
 - [Server Sleep](https://modrinth.com/datapack/serversleep) adapta el descanso a una partida multijugador para que no sea necesario coordinar a todo el servidor cada noche.
 - [Craftable Elytra](https://modrinth.com/datapack/craft-elytra) añade una receta para fabricar élitros.
 - [SMP Starter](https://modrinth.com/datapack/smp-starter) automatiza parte de la preparación inicial de un mundo SMP.
+- [Elytra Vaults](https://modrinth.com/datapack/elytra-vaults-atlasplays) sustituye el élitro de los barcos del End por bóvedas para que varias personas puedan conseguirlo.
 
 Los datapacks son la parte que más se acerca a añadir contenido, pero siguen siendo cambios concretos. No incorporan una campaña, árboles de habilidades, máquinas ni una progresión diferente de la habitual.
 

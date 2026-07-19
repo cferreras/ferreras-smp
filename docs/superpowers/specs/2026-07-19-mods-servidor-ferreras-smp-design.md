@@ -17,7 +17,7 @@ El texto se dirigirá a jugadores, no a administradores. Abrirá con una respues
 3. Mods visibles para el jugador: protección, comunidad y pequeños ajustes de juego.
 4. Mods de rendimiento, estabilidad, seguridad y administración.
 5. Librerías y dependencias técnicas, resumidas sin convertirlas en catálogo.
-6. Datapacks: All Mob Heads, Server Sleep, Craftable Elytra y SMP Starter.
+6. Datapacks: All Mob Heads, Server Sleep, Craftable Elytra, SMP Starter y Elytra Vaults de Atlas.
 7. Qué tiene que instalar el jugador y por qué el resultado sigue siendo cercano a vanilla.
 8. CTA hacia `/como-entrar`, `/mods-recomendados` y `/normas`.
 
