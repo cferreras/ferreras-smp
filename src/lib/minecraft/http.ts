@@ -4,6 +4,7 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:3000",
   "http://localhost:4321",
   "http://127.0.0.1:4321",
+  "http://100.104.46.124:4321",
 ]);
 
 export const corsHeaders = (request: Request): HeadersInit => {
