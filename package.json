@@ -11,18 +11,31 @@
     "deploy": "node .agents/skills/discord-blog-deploy/scripts/deploy.mjs",
     "preview": "astro preview",
     "check": "astro check",
+    "test:security": "node --experimental-strip-types src/lib/minecraft/security.test.mjs",
     "seed:minecraft-live": "node scripts/seed-minecraft-live.mjs"
   },
   "dependencies": {
-    "@astrojs/node": "^11.0.2",
-    "@astrojs/rss": "^4.0.19",
-    "@astrojs/sitemap": "^3.7.3",
-    "@astrojs/vercel": "^11.0.2",
-    "astro": "^7.0.7",
     "ioredis": "^5.11.1"
   },
   "devDependencies": {
+    "@astrojs/node": "^11.0.2",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.3",
+    "@astrojs/vercel": "^11.0.3",
+    "astro": "^7.1.3",
     "@astrojs/check": "^0.9.9",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vercel": "56.4.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "@tootallnate/once@<2.0.1": "2.0.1",
+      "js-yaml@>=4.0.0 <4.3.0": "4.3.0",
+      "minimatch@>=10.0.0 <10.2.3": "10.2.5",
+      "path-to-regexp@>=8.0.0 <8.4.0": "8.4.2",
+      "smol-toml@<1.6.1": "1.7.0",
+      "tar@<=7.5.18": "7.5.20",
+      "undici@<6.27.0": "6.27.0"
+    }
   }
 }

@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
@@ -16,10 +16,20 @@ COPY src ./src
 ENV ASTRO_ADAPTER=node
 ENV MINECRAFT_API_ONLY=true
 RUN pnpm build:dokploy
+RUN pnpm --filter ferreras-smp deploy --prod --legacy /runtime
+
+FROM node:22-alpine AS runtime
+
+WORKDIR /app
 
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV PORT=4321
+
+COPY --from=build --chown=node:node /app/dist ./dist
+COPY --from=build --chown=node:node /runtime/node_modules ./node_modules
+
+USER node
 
 EXPOSE 4321
 

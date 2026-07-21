@@ -1,3 +1,5 @@
+import { isIP } from "node:net";
+
 const ALLOWED_ORIGINS = new Set([
   "https://mc.ferreras.dev",
   "http://localhost:3000",
@@ -6,6 +8,17 @@ const ALLOWED_ORIGINS = new Set([
   "http://127.0.0.1:4321",
   "http://100.104.46.124:4321",
 ]);
+
+export const MAX_REQUEST_BODY_BYTES = 8 * 1024;
+
+export const isAllowedOrigin = (request: Request) => {
+  const origin = request.headers.get("origin");
+  return Boolean(origin && ALLOWED_ORIGINS.has(origin));
+};
+
+export const isJsonRequest = (request: Request) =>
+  request.headers.get("content-type")?.split(";", 1)[0]?.trim().toLowerCase() ===
+  "application/json";
 
 export const corsHeaders = (request: Request): HeadersInit => {
   const origin = request.headers.get("origin");
@@ -26,7 +39,7 @@ export const corsHeaders = (request: Request): HeadersInit => {
 
 export const corsPreflightResponse = (request: Request) =>
   new Response(null, {
-    status: 204,
+    status: isAllowedOrigin(request) ? 204 : 403,
     headers: corsHeaders(request),
   });
 
@@ -41,29 +54,21 @@ export const jsonResponse = (body: unknown, init: ResponseInit = {}, request?: R
     },
   });
 
-export const getClientIp = (request: Request): string => {
-  const cloudflareIp = request.headers.get("cf-connecting-ip");
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  const realIp = request.headers.get("x-real-ip");
-  const requestWithIp = request as Request & { ip?: string };
+export const getClientIp = (request: Request, fallbackIp: string): string => {
+  const cloudflareIp = request.headers.get("cf-connecting-ip")?.trim();
 
-  return (
-    cloudflareIp?.trim() ||
-    realIp?.trim() ||
-    forwardedFor?.split(",")[0]?.trim() ||
-    requestWithIp.ip ||
-    "unknown"
-  );
+  if (cloudflareIp && isIP(cloudflareIp)) {
+    return cloudflareIp;
+  }
+
+  return isIP(fallbackIp) ? fallbackIp : "unknown";
 };
 
-export const serviceUnavailableResponse = (error: unknown, request?: Request) =>
+export const serviceUnavailableResponse = (_error: unknown, request?: Request) =>
   jsonResponse(
     {
       ok: false,
-      error:
-        error instanceof Error && error.name === "MissingRedisUrlError"
-          ? "REDIS_URL no configurada"
-          : "DragonFly/Redis no disponible temporalmente",
+      error: "Servicio no disponible temporalmente",
     },
     { status: 503 },
     request,

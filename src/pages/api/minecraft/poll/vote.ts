@@ -2,7 +2,10 @@ import type { APIRoute } from "astro";
 import {
   corsPreflightResponse,
   getClientIp,
+  isAllowedOrigin,
+  isJsonRequest,
   jsonResponse,
+  MAX_REQUEST_BODY_BYTES,
   serviceUnavailableResponse,
 } from "../../../../lib/minecraft/http";
 import { pollService } from "../../../../lib/minecraft/poll-service";
@@ -13,7 +16,25 @@ type VoteRequestBody = {
   optionId?: unknown;
 };
 
-export const POST = (async ({ request }) => {
+export const POST = (async ({ request, clientAddress }) => {
+  if (!isAllowedOrigin(request)) {
+    return jsonResponse({ ok: false, error: "Origen no permitido" }, { status: 403 }, request);
+  }
+
+  if (!isJsonRequest(request)) {
+    return jsonResponse(
+      { ok: false, error: "Content-Type debe ser application/json" },
+      { status: 415 },
+      request,
+    );
+  }
+
+  const contentLength = Number(request.headers.get("content-length"));
+
+  if (Number.isFinite(contentLength) && contentLength > MAX_REQUEST_BODY_BYTES) {
+    return jsonResponse({ ok: false, error: "Cuerpo demasiado grande" }, { status: 413 }, request);
+  }
+
   let body: VoteRequestBody;
 
   try {
@@ -43,7 +64,7 @@ export const POST = (async ({ request }) => {
   let result;
 
   try {
-    result = await pollService.vote(body.optionId, getClientIp(request));
+    result = await pollService.vote(body.optionId, getClientIp(request, clientAddress));
   } catch (error) {
     return serviceUnavailableResponse(error, request);
   }

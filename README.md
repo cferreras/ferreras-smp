@@ -77,6 +77,12 @@ Solo lee y escribe datos de DragonFly/Redis para los endpoints
 checks de salud; así la instancia de Dokploy no sirve la landing completa en
 `/`.
 
+El origen de `mc-api.ferreras.dev` debe aceptar tráfico público únicamente desde
+las redes de Cloudflare. La API usa `CF-Connecting-IP` para limitar votos y esa
+cabecera solo es confiable cuando no se puede acceder directamente al origen.
+Configura también rate limiting en Cloudflare para `/api/minecraft/*`, con un
+límite más estricto para `/api/minecraft/poll/vote`.
+
 #### Desarrollo local
 
 En desarrollo local, la misma app puede servir frontend + API y leer Redis/DragonFly
@@ -132,10 +138,10 @@ curl http://localhost:4321/api/minecraft/live
 curl http://localhost:4321/api/minecraft/status
 curl http://localhost:4321/api/minecraft/activity
 curl http://localhost:4321/api/minecraft/poll
-curl -N http://localhost:4321/api/minecraft/stream
 curl -X POST http://localhost:4321/api/minecraft/poll/vote \
+  -H "Origin: http://localhost:4321" \
   -H "Content-Type: application/json" \
-  -d '{"optionId":"end"}'
+  -d '{"optionId":"great"}'
 ```
 
 ### Worker RCON de Minecraft
@@ -203,6 +209,10 @@ En Dokploy, despliega `worker/Dockerfile` como servicio aparte, en la misma red
 que DragonFly y Minecraft. No publiques puertos para este servicio. Si
 `RCON_HOST=minecraft` no resuelve, usa el host o IP alcanzable desde la red del
 worker.
+
+RCON y las conexiones `redis://` no cifran el tráfico. Mantén ambos puertos en
+esa red privada; si el tráfico cruza hosts o una red no confiable, protégelo con
+WireGuard/Tailscale y usa `rediss://` para Redis cuando esté disponible.
 
 Configuración recomendada en Dokploy:
 

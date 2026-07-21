@@ -23,7 +23,6 @@ type VoteResponse =
     };
 
 const LIVE_ENDPOINT = "/api/minecraft/live";
-const STREAM_ENDPOINT = "/api/minecraft/stream";
 const VOTE_ENDPOINT = "/api/minecraft/poll/vote";
 const POLLING_INTERVAL_MS = 10_000;
 
@@ -43,7 +42,6 @@ if (liveSection) {
   const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
   const liveState = liveSection.querySelector<HTMLElement>("[data-live-state]");
   const pollFeedback = liveSection.querySelector<HTMLElement>("[data-poll-feedback]");
-  let eventSource: EventSource | undefined;
   let pollingId: number | undefined;
   let isVoting = false;
 
@@ -345,30 +343,6 @@ if (liveSection) {
     }, POLLING_INTERVAL_MS);
   };
 
-  const startStream = () => {
-    if (!("EventSource" in window)) {
-      startPolling();
-      return;
-    }
-
-    eventSource = new EventSource(apiUrl(STREAM_ENDPOINT));
-
-    eventSource.addEventListener("snapshot", (event) => {
-      try {
-        applySnapshot(JSON.parse(event.data) as MinecraftLiveSnapshot);
-        stopPolling();
-      } catch {
-        setLiveState("Estado no disponible temporalmente", true);
-      }
-    });
-
-    eventSource.onerror = () => {
-      eventSource?.close();
-      eventSource = undefined;
-      startPolling();
-    };
-  };
-
   const vote = async (optionId: string) => {
     if (isVoting) {
       return;
@@ -419,14 +393,8 @@ if (liveSection) {
   });
 
   window.addEventListener("beforeunload", () => {
-    eventSource?.close();
     stopPolling();
   });
 
-  void loadSnapshot()
-    .then(startStream)
-    .catch(() => {
-      setLiveState("Estado no disponible temporalmente", true);
-      startPolling();
-    });
+  startPolling();
 }
