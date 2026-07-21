@@ -8,7 +8,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "build:dokploy": "astro build",
-    "deploy": "pnpm dlx vercel deploy --prod --yes",
+    "deploy": "node .agents/skills/discord-blog-deploy/scripts/deploy.mjs",
     "preview": "astro preview",
     "check": "astro check",
     "seed:minecraft-live": "node scripts/seed-minecraft-live.mjs"

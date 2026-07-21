@@ -1,7 +1,7 @@
 export const server = {
   name: "Ferreras SMP",
   address: "mc.ferreras.dev",
-  discord: "https://discord.gg/f8aBZ98EDT",
+  discord: "https://link.ferreras.dev/discord",
   description:
     "Ferreras SMP es un servidor de Minecraft Java survival en español, sin modpack obligatorio, con una comunidad tranquila y protección de terrenos.",
 };
