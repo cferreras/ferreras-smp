@@ -1,4 +1,6 @@
 ---
+import { Image } from "astro:assets";
+import joinGuideCharacters from "../assets/images/como-entrar-characters.webp";
 import Breadcrumbs from "../components/Breadcrumbs.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
@@ -50,8 +52,18 @@ const howToSchema = {
           <h1>Cómo entrar&nbsp;a<br /><span>Ferreras SMP.</span></h1>
           <p>Solo necesitas Minecraft Java y un par de minutos. No hay modpack ni configuración adicional.</p>
         </div>
-        <aside class="guide-address" aria-label="Dirección del servidor">
-          <span class="mono">IP DEL SERVIDOR</span>
+        <aside class="guide-address hero-panel" aria-label="Dirección del servidor">
+          <div class="guide-address-media">
+            <Image
+              class="guide-address-art"
+              src={joinGuideCharacters}
+              alt=""
+              aria-hidden="true"
+              layout="full-width"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </div>
           <ServerAddress placement="join_guide" />
         </aside>
       </div>
