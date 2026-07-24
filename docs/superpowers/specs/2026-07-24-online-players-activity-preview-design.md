@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Permitir consultar “Lo último del mundo” desde la celda `0 / 20 · JUGADORES ONLINE` del `live-status-strip`, sin eliminar todavía la tarjeta independiente de actividad reciente.
+Permitir consultar la actividad reciente desde la celda `0 / 20 · JUGADORES ONLINE` del `live-status-strip`, sin eliminar todavía la tarjeta independiente de actividad reciente.
 
 ## Escritorio
 
@@ -31,6 +31,7 @@ Permitir consultar “Lo último del mundo” desde la celda `0 / 20 · JUGADORE
 ## Layout y accesibilidad
 
 - Envolver el strip y el desplegable en un contenedor común de ancho máximo `1000px`.
+- Usar “Actividad reciente” como único encabezado visible, acompañado por su indicador; no mostrar “Lo último del mundo”.
 - Mantener el strip alineado justo encima del divisor del hero.
 - Mostrar el desplegable únicamente por encima de 720 px y el modal hasta 720 px.
 - Usar un `<button>` real de superficie completa dentro de la primera métrica.
