@@ -27,23 +27,7 @@ export type MinecraftActivityEvent = {
   createdAt: string;
 };
 
-export type MinecraftPollOption = {
-  id: string;
-  label: string;
-  votes: number;
-  percentage: number;
-};
-
-export type MinecraftPoll = {
-  id: string;
-  question: string;
-  options: MinecraftPollOption[];
-  totalVotes: number;
-  hasVoted?: boolean;
-};
-
 export type MinecraftLiveSnapshot = {
   status: MinecraftStatus;
   activity: MinecraftActivityEvent[];
-  poll?: MinecraftPoll;
 };

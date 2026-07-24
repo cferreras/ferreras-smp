@@ -3,7 +3,6 @@ import { server } from "../data/server";
 
 const primaryLinks = [
   { href: "/#servidor", label: "Servidor" },
-  { href: "/#directo", label: "En directo" },
   { href: "/blog", label: "Blog" },
 ];
 
@@ -22,7 +21,7 @@ const isCurrentPrimaryLink = (href: string) => href === "/blog" && currentPath.s
 <header class="site-header">
   <div class="shell header-shell">
     <a class="brand" href="/" aria-label={`${server.name}, inicio`}>
-      <span class="brand-mark" aria-hidden="true">F</span>
+      <img class="brand-mark" src="/brand-mark.svg" alt="" draggable="false" />
       <span class="brand-copy">
         <strong>{server.name}</strong>
       </span>

@@ -2,7 +2,12 @@
 import { Image } from "astro:assets";
 import heroCharacters from "../assets/images/hero-characters.webp";
 import ServerAddress from "./ServerAddress.astro";
+import ServerStatusStrip from "./ServerStatusStrip.astro";
 import { server } from "../data/server";
+import { DEFAULT_MINECRAFT_SNAPSHOT } from "../lib/minecraft/constants";
+
+const minecraftApiBase =
+  import.meta.env.PUBLIC_MINECRAFT_API_URL || import.meta.env.NEXT_PUBLIC_MINECRAFT_API_URL || "";
 ---
 
 <section class="hero" id="contenido">
@@ -33,4 +38,17 @@ import { server } from "../data/server";
       </div>
     </aside>
   </div>
+
+  <div
+    class="shell hero-status"
+    data-minecraft-live
+    data-minecraft-api-base={minecraftApiBase.replace(/\/$/, "")}
+  >
+    <ServerStatusStrip status={DEFAULT_MINECRAFT_SNAPSHOT.status} events={DEFAULT_MINECRAFT_SNAPSHOT.activity} />
+    <p class="sr-only" data-live-state aria-live="polite">Actualizando el estado del servidor.</p>
+  </div>
 </section>
+
+<script>
+  import "../scripts/minecraft-live";
+</script>

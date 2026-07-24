@@ -37,7 +37,6 @@ Variables para Dokploy/API:
 
 ```env
 REDIS_URL=redis://default:PASSWORD@dragonfly:6379
-IP_HASH_SALT=valor-secreto
 MINECRAFT_API_ONLY=true
 ```
 
@@ -66,7 +65,6 @@ Variables para esta aplicación:
 
 ```env
 REDIS_URL=redis://default:PASSWORD@dragonfly:6379
-IP_HASH_SALT=valor-secreto
 MINECRAFT_API_ONLY=true
 ```
 
@@ -78,10 +76,8 @@ checks de salud; así la instancia de Dokploy no sirve la landing completa en
 `/`.
 
 El origen de `mc-api.ferreras.dev` debe aceptar tráfico público únicamente desde
-las redes de Cloudflare. La API usa `CF-Connecting-IP` para limitar votos y esa
-cabecera solo es confiable cuando no se puede acceder directamente al origen.
-Configura también rate limiting en Cloudflare para `/api/minecraft/*`, con un
-límite más estricto para `/api/minecraft/poll/vote`.
+las redes de Cloudflare. Configura también rate limiting en Cloudflare para
+`/api/minecraft/*`.
 
 #### Desarrollo local
 
@@ -118,14 +114,9 @@ Producción con password:
 REDIS_URL=redis://default:PASSWORD@dragonfly:6379
 ```
 
-No guardes contraseñas reales en el repo. Para producción también conviene definir:
+No guardes contraseñas reales en el repo.
 
-```env
-IP_HASH_SALT=valor-secreto
-```
-
-El seed de desarrollo carga `mc:status`, `mc:activity:recent`, `mc:poll:server-feedback:meta`
-y `mc:poll:server-feedback:votes`:
+El seed de desarrollo carga `mc:status` y `mc:activity:recent`:
 
 ```bash
 pnpm seed:minecraft-live
@@ -137,11 +128,6 @@ Comprobar endpoints:
 curl http://localhost:4321/api/minecraft/live
 curl http://localhost:4321/api/minecraft/status
 curl http://localhost:4321/api/minecraft/activity
-curl http://localhost:4321/api/minecraft/poll
-curl -X POST http://localhost:4321/api/minecraft/poll/vote \
-  -H "Origin: http://localhost:4321" \
-  -H "Content-Type: application/json" \
-  -d '{"optionId":"great"}'
 ```
 
 ### Worker RCON de Minecraft
