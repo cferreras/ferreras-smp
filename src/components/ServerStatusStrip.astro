@@ -27,14 +27,14 @@ const metrics = [
       <dt class="sr-only">Jugadores online</dt>
       <dd>
         <button
-          class="status-activity-trigger"
+          class="status-preview-trigger"
           type="button"
           aria-expanded="false"
-          aria-controls="server-activity-dropdown"
-          data-status-activity-trigger
+          aria-controls="server-players-dropdown"
+          data-status-players-trigger
         >
-          <span class="status-activity-value" data-status-metric="Jugadores">{status.playersOnline} / {status.maxPlayers}</span>
-          <span class="status-activity-label">Jugadores online</span>
+          <span class="status-preview-value" data-status-metric="Jugadores">{status.playersOnline} / {status.maxPlayers}</span>
+          <span class="status-preview-label">Jugadores online</span>
         </button>
       </dd>
     </div>
@@ -49,18 +49,18 @@ const metrics = [
     <div class:list={["live-status-state", statusClass]} data-status-badge aria-label={`Estado: ${statusLabel}`}>
       <dt class="sr-only">Estado</dt>
       <dd>
+        <span class="status-state-value">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span data-status-label>{statusLabel}</span>
+        </span>
         <button
-          class="status-players-trigger"
+          class="status-activity-trigger"
           type="button"
           aria-expanded="false"
-          aria-controls="server-players-dropdown"
-          data-status-players-trigger
+          aria-controls="server-activity-dropdown"
+          data-status-activity-trigger
         >
-          <span class="status-players-value">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span data-status-label>{statusLabel}</span>
-          </span>
-          <span class="status-players-label">Estado</span>
+          Actividad reciente
         </button>
       </dd>
     </div>

@@ -9,6 +9,7 @@ import {
 } from "../lib/group-activity-events";
 import { getRandomEmptyPlayerMessage } from "../lib/empty-player-messages";
 import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
+import { getLiveFailureFeedback } from "../lib/minecraft/live-feedback";
 
 const LIVE_ENDPOINT = "/api/minecraft/live";
 const POLLING_INTERVAL_MS = 10_000;
@@ -28,13 +29,21 @@ if (liveRoot) {
   const apiBaseUrl = liveRoot.dataset.minecraftApiBase?.replace(/\/$/, "") || "";
   const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
   const liveState = liveRoot.querySelector<HTMLElement>("[data-live-state]");
+  const retryButton = liveRoot.querySelector<HTMLButtonElement>("[data-live-retry]");
   let pollingId: number | undefined;
+  let lastUpdatedLabel = "";
+  let loading = false;
 
-  const setLiveState = (message: string, isError = false) => {
+  const setLiveState = (
+    message: string,
+    state: "loading" | "ready" | "stale" | "error",
+    canRetry = false,
+  ) => {
     if (!liveState) return;
 
     liveState.textContent = message;
-    liveState.dataset.state = isError ? "error" : "ready";
+    liveState.dataset.state = state;
+    if (retryButton) retryButton.hidden = !canRetry;
   };
 
   const applyAvatarFallback = (avatar: HTMLImageElement) => {
@@ -130,6 +139,28 @@ if (liveRoot) {
     });
   };
 
+  const setUnavailableSnapshot = () => {
+    const statusBadge = document.querySelector<HTMLElement>("[data-status-badge]");
+    const statusLabel = document.querySelector<HTMLElement>("[data-status-label]");
+    const playersMetric = document.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
+    const worldDayMetric = document.querySelector<HTMLElement>(
+      '[data-status-metric="Día del mundo"]',
+    );
+    const tpsMetric = document.querySelector<HTMLElement>('[data-status-metric="TPS"]');
+
+    if (statusBadge) {
+      statusBadge.classList.remove("online", "offline");
+      statusBadge.classList.add("unavailable");
+      statusBadge.setAttribute("aria-label", "Estado no disponible");
+    }
+    if (statusLabel) statusLabel.textContent = "Sin datos";
+    if (playersMetric) playersMetric.textContent = "No disponible";
+    if (worldDayMetric) worldDayMetric.textContent = "No disponible";
+    if (tpsMetric) tpsMetric.textContent = "No disponible";
+    updatePlayers([]);
+    updateActivity([]);
+  };
+
   const applySnapshot = (snapshot: MinecraftLiveSnapshot) => {
     const statusBadge = document.querySelector<HTMLElement>("[data-status-badge]");
     const statusLabel = document.querySelector<HTMLElement>("[data-status-label]");
@@ -141,6 +172,7 @@ if (liveRoot) {
     const statusText = snapshot.status.online ? "Online" : "Offline";
 
     if (statusBadge) {
+      statusBadge.classList.remove("unavailable");
       statusBadge.classList.toggle("online", snapshot.status.online);
       statusBadge.classList.toggle("offline", !snapshot.status.online);
       statusBadge.setAttribute("aria-label", `Estado: ${statusText}`);
@@ -159,7 +191,13 @@ if (liveRoot) {
     }
     updatePlayers(snapshot.status.players);
     updateActivity(snapshot.activity);
-    setLiveState("Actualizado en directo");
+
+    const serverUpdatedAt = new Date(snapshot.status.lastUpdated);
+    lastUpdatedLabel = new Intl.DateTimeFormat("es", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(Number.isNaN(serverUpdatedAt.getTime()) ? new Date() : serverUpdatedAt);
+    setLiveState(`Actualizado ${lastUpdatedLabel}`, "ready");
   };
 
   const loadSnapshot = async () => {
@@ -183,18 +221,44 @@ if (liveRoot) {
     }
   };
 
+  const handleLoadFailure = () => {
+    const feedback = getLiveFailureFeedback(lastUpdatedLabel);
+    if (feedback.state === "error") setUnavailableSnapshot();
+    setLiveState(feedback.message, feedback.state, true);
+  };
+
+  const refreshSnapshot = async () => {
+    if (loading) return;
+    loading = true;
+    if (retryButton) retryButton.disabled = true;
+    if (!lastUpdatedLabel) setLiveState("Actualizando…", "loading");
+
+    try {
+      await loadSnapshot();
+    } catch {
+      handleLoadFailure();
+    } finally {
+      loading = false;
+      if (retryButton) retryButton.disabled = false;
+    }
+  };
+
   const startPolling = () => {
     if (pollingId) {
       return;
     }
 
-    setLiveState("Actualizando…");
-    void loadSnapshot().catch(() => setLiveState("Estado no disponible temporalmente", true));
+    setUnavailableSnapshot();
+    void refreshSnapshot();
 
     pollingId = window.setInterval(() => {
-      void loadSnapshot().catch(() => setLiveState("Estado no disponible temporalmente", true));
+      void refreshSnapshot();
     }, POLLING_INTERVAL_MS);
   };
+
+  retryButton?.addEventListener("click", () => {
+    void refreshSnapshot();
+  });
 
   window.addEventListener("beforeunload", () => {
     stopPolling();

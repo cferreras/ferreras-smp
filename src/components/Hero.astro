@@ -10,14 +10,15 @@ const minecraftApiBase =
   import.meta.env.PUBLIC_MINECRAFT_API_URL || import.meta.env.NEXT_PUBLIC_MINECRAFT_API_URL || "";
 ---
 
-<section class="hero" id="contenido">
+<section class="hero">
   <div class="shell hero-layout">
     <div class="hero-copy">
       <h1>Servidor Minecraft survival<br /><em>para jugar a tu ritmo.</em></h1>
       <p class="hero-intro">{server.description}</p>
+      <p class="hero-technical">Construye granjas y automatizaciones sencillas o de complejidad media en un survival cercano a vanilla.</p>
       <div class="hero-actions">
-        <a class="button button-primary" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="hero">Entrar al Discord</a>
         <a class="button button-secondary" href="/como-entrar">Cómo entrar</a>
+        <a class="text-link hero-discord-link" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="hero">Discord (opcional) <span aria-hidden="true">→</span></a>
       </div>
     </div>
 
@@ -45,7 +46,10 @@ const minecraftApiBase =
     data-minecraft-api-base={minecraftApiBase.replace(/\/$/, "")}
   >
     <ServerStatusStrip status={DEFAULT_MINECRAFT_SNAPSHOT.status} events={DEFAULT_MINECRAFT_SNAPSHOT.activity} />
-    <p class="sr-only" data-live-state aria-live="polite">Actualizando el estado del servidor.</p>
+    <div class="live-feedback" data-live-feedback>
+      <p data-live-state aria-live="polite">Actualizando el estado del servidor…</p>
+      <button type="button" data-live-retry hidden>Reintentar</button>
+    </div>
   </div>
 </section>
 

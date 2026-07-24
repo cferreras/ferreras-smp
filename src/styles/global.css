@@ -585,16 +585,32 @@ dl {
 .hero-intro {
   max-width: 580px;
   font-family: var(--font-mono);
-  margin-bottom: 34px;
+  margin-bottom: 14px;
   color: var(--muted);
   font-size: 14px;
   line-height: 1.65;
 }
 
+.hero-technical {
+  max-width: 580px;
+  margin-bottom: 28px;
+  color: var(--muted-strong);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
 .hero-actions {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 10px;
+}
+
+.hero-discord-link {
+  min-height: 46px;
+  align-items: center;
+  margin-top: 0;
 }
 
 .hero-panel {
@@ -669,9 +685,9 @@ dl {
 }
 
 .copy-button {
-  min-width: 92px;
+  min-width: 126px;
   border-radius: 2px;
-  min-height: 38px;
+  min-height: 44px;
   padding: 0 12px;
   border: 1px solid var(--border);
   background: var(--border-soft);
@@ -679,20 +695,45 @@ dl {
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;
+  transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
 }
 
-.copy-button:hover {
+.server-address:not(.compact) .copy-button {
   border-color: var(--primary);
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.server-address:not(.compact) .copy-button:hover {
+  border-color: var(--primary-strong);
+  background: var(--primary-strong);
+}
+
+.copy-button:disabled {
+  cursor: progress;
+  opacity: 0.72;
 }
 
 .copy-success,
-.copy-button.is-copied .copy-default {
+.copy-error,
+.copy-button.is-copied .copy-default,
+.copy-button.has-copy-error .copy-default {
   display: none;
 }
 
 .copy-button.is-copied .copy-success {
   display: inline;
-  color: var(--success);
+  color: inherit;
+}
+
+.server-address:not(.compact) .copy-button.has-copy-error {
+  border-color: var(--danger);
+  background: var(--card);
+  color: var(--danger);
+}
+
+.copy-button.has-copy-error .copy-error {
+  display: inline;
 }
 
 .hero-note {
@@ -824,8 +865,7 @@ main > section > .shell {
   margin: 0;
 }
 
-.status-activity-trigger,
-.status-players-trigger {
+.status-preview-trigger {
   display: flex;
   width: 100%;
   height: 100%;
@@ -839,13 +879,13 @@ main > section > .shell {
   cursor: pointer;
 }
 
-.status-activity-trigger:focus-visible,
-.status-players-trigger:focus-visible {
+.status-preview-trigger:focus-visible,
+.status-activity-trigger:focus-visible {
   outline: 2px solid var(--ring);
   outline-offset: -3px;
 }
 
-.status-activity-value {
+.status-preview-value {
   margin-bottom: 6px;
   font-family: var(--font-display);
   font-size: 14px;
@@ -853,7 +893,7 @@ main > section > .shell {
   line-height: 1.1;
 }
 
-.status-activity-label {
+.status-preview-label {
   color: var(--muted);
   font-family: var(--font-mono);
   font-size: 10px;
@@ -938,29 +978,38 @@ main > section > .shell {
 .live-status-state > dd {
   position: absolute;
   inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   margin: 0;
 }
 
-.status-players-trigger {
-  color: inherit;
-}
-
-.status-players-value {
+.status-state-value {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 6px;
   font-family: var(--font-display);
   font-size: 14px;
   line-height: 1.1;
 }
 
-.status-players-label {
+.status-activity-trigger {
+  min-height: 32px;
+  padding: 0 8px;
+  border: 0;
+  background: transparent;
   color: var(--muted);
+  cursor: pointer;
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.status-activity-trigger:hover {
+  color: var(--foreground);
 }
 
 .live-status-state .status-dot {
@@ -983,6 +1032,61 @@ main > section > .shell {
 
 .live-status-state.offline .status-dot {
   background: var(--danger);
+}
+
+.live-status-state.unavailable dd {
+  color: var(--muted);
+}
+
+.live-status-state.unavailable .status-dot {
+  background: var(--muted);
+}
+
+.live-feedback {
+  display: flex;
+  width: min(100%, 1000px);
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto;
+  padding: 6px 12px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  background: var(--background);
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.live-feedback p {
+  margin: 0;
+}
+
+.live-feedback p[data-state="stale"] {
+  color: var(--muted-strong);
+}
+
+.live-feedback p[data-state="error"] {
+  color: var(--danger);
+}
+
+.live-feedback button {
+  min-height: 28px;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--primary);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.live-feedback button:disabled {
+  cursor: progress;
+  opacity: 0.65;
 }
 
 .card-kicker {
@@ -1317,6 +1421,12 @@ main > section > .shell {
 .server-address.compact .copy-button {
   border-color: rgb(255 255 255 / 0.18);
   background: rgb(255 255 255 / 0.12);
+  color: white;
+}
+
+.server-address.compact .copy-button.has-copy-error {
+  border-color: rgb(255 255 255 / 0.6);
+  background: rgb(0 0 0 / 0.36);
   color: white;
 }
 
@@ -1718,6 +1828,10 @@ samp {
     gap: 10px;
   }
 
+  .hero-panel > .server-address {
+    order: -1;
+  }
+
   .hero-media {
     position: relative;
     right: auto;
@@ -1774,13 +1888,13 @@ samp {
 
   .theme-toggle,
   .mobile-nav > summary {
-    min-height: 36px;
+    min-height: 44px;
     padding-inline: 10px;
     font-size: 11px;
   }
 
   .theme-toggle {
-    width: 36px;
+    width: 44px;
     padding: 0;
   }
 
@@ -1819,6 +1933,11 @@ samp {
 
   .copy-button {
     width: 100%;
+  }
+
+  .status-activity-trigger,
+  .live-feedback button {
+    min-height: 44px;
   }
 
   .section-heading {
@@ -2135,8 +2254,7 @@ samp {
   *::before,
   *::after {
     scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
+    transition: none !important;
+    animation: none !important;
   }
 }
