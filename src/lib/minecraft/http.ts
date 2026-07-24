@@ -1,5 +1,3 @@
-import { isIP } from "node:net";
-
 const ALLOWED_ORIGINS = new Set([
   "https://mc.ferreras.dev",
   "http://localhost:3000",
@@ -9,16 +7,10 @@ const ALLOWED_ORIGINS = new Set([
   "http://100.104.46.124:4321",
 ]);
 
-export const MAX_REQUEST_BODY_BYTES = 8 * 1024;
-
 export const isAllowedOrigin = (request: Request) => {
   const origin = request.headers.get("origin");
   return Boolean(origin && ALLOWED_ORIGINS.has(origin));
 };
-
-export const isJsonRequest = (request: Request) =>
-  request.headers.get("content-type")?.split(";", 1)[0]?.trim().toLowerCase() ===
-  "application/json";
 
 export const corsHeaders = (request: Request): HeadersInit => {
   const origin = request.headers.get("origin");
@@ -31,7 +23,7 @@ export const corsHeaders = (request: Request): HeadersInit => {
 
   return {
     "Access-Control-Allow-Origin": origin,
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, Accept",
     Vary: "Origin",
   };
@@ -53,16 +45,6 @@ export const jsonResponse = (body: unknown, init: ResponseInit = {}, request?: R
       ...init.headers,
     },
   });
-
-export const getClientIp = (request: Request, fallbackIp: string): string => {
-  const cloudflareIp = request.headers.get("cf-connecting-ip")?.trim();
-
-  if (cloudflareIp && isIP(cloudflareIp)) {
-    return cloudflareIp;
-  }
-
-  return isIP(fallbackIp) ? fallbackIp : "unknown";
-};
 
 export const serviceUnavailableResponse = (_error: unknown, request?: Request) =>
   jsonResponse(

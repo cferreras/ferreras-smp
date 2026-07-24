@@ -3,22 +3,24 @@ import type { MinecraftActivityEvent } from "../types/minecraft-live";
 import { formatRelativeTime } from "../lib/format-relative-time";
 import { getVisibleActivityEvents } from "../lib/group-activity-events";
 
-interface Props { events: MinecraftActivityEvent[]; }
+interface Props {
+  events: MinecraftActivityEvent[];
+}
+
 const { events } = Astro.props;
 const groupedEvents = getVisibleActivityEvents(events);
-
 const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
-  join: "Entrada", leave: "Salida", death: "Muerte", advancement: "Logro", backup: "Backup", system: "Sistema",
+  join: "Entrada",
+  leave: "Salida",
+  death: "Muerte",
+  advancement: "Logro",
+  backup: "Backup",
+  system: "Sistema",
 };
-
 ---
 
-<article class="live-card recent-activity" aria-labelledby="recent-activity-title">
-  <div class="card-heading-row">
-    <div><p class="card-kicker">Actividad reciente</p><h3 id="recent-activity-title">Lo último del mundo</h3></div>
-  </div>
-
-  <ul class="activity-list" data-activity-list>
+<div class="activity-feed">
+  <ul class="activity-list" aria-label="Actividad reciente" data-activity-list hidden={events.length === 0}>
     {groupedEvents.map((event) => (
       <li class="activity-event" data-activity-type={event.type}>
         <span class="activity-type">{eventLabels[event.type]}</span>
@@ -31,4 +33,4 @@ const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
     ))}
   </ul>
   <p class="empty-live-message activity-empty" data-empty-activity hidden={events.length > 0}>Aún no hay actividad reciente.</p>
-</article>
+</div>

@@ -1,0 +1,225 @@
+---
+import ActivityFeed from "./ActivityFeed.astro";
+import PlayerList from "./PlayerList.astro";
+import type { MinecraftActivityEvent, MinecraftStatus } from "../types/minecraft-live";
+
+interface Props {
+  status: MinecraftStatus;
+  events: MinecraftActivityEvent[];
+}
+
+const { status, events } = Astro.props;
+const statusLabel = status.online ? "Online" : "Offline";
+const statusClass = status.online ? "online" : "offline";
+const metrics = [
+  { label: "Día del mundo", selector: "Día del mundo", value: status.worldDay === null ? "No disponible" : status.worldDay.toString() },
+  { label: "TPS", selector: "TPS", value: status.tps === null ? "No disponible" : status.tps.toFixed(1) },
+];
+---
+
+<div class="live-status-shell" data-status-activity>
+  <dl
+    class="live-status-strip"
+    aria-label="Estado actual de Ferreras SMP"
+    data-analytics-server-status="home_live_status_strip"
+  >
+    <div class="live-status-players">
+      <dt class="sr-only">Jugadores online</dt>
+      <dd>
+        <button
+          class="status-activity-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="server-activity-dropdown"
+          data-status-activity-trigger
+        >
+          <span class="status-activity-value" data-status-metric="Jugadores">{status.playersOnline} / {status.maxPlayers}</span>
+          <span class="status-activity-label">Jugadores online</span>
+        </button>
+      </dd>
+    </div>
+
+    {metrics.map((metric) => (
+      <div>
+        <dt>{metric.label}</dt>
+        <dd data-status-metric={metric.selector}>{metric.value}</dd>
+      </div>
+    ))}
+
+    <div class:list={["live-status-state", statusClass]} data-status-badge aria-label={`Estado: ${statusLabel}`}>
+      <dt class="sr-only">Estado</dt>
+      <dd>
+        <button
+          class="status-players-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="server-players-dropdown"
+          data-status-players-trigger
+        >
+          <span class="status-players-value">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span data-status-label>{statusLabel}</span>
+          </span>
+          <span class="status-players-label">Estado</span>
+        </button>
+      </dd>
+    </div>
+  </dl>
+
+  <section
+    class="status-activity-dropdown"
+    id="server-activity-dropdown"
+    aria-labelledby="server-activity-title"
+    aria-hidden="true"
+    data-status-activity-dropdown
+  >
+    <div class="status-activity-heading">
+      <p class="card-kicker" id="server-activity-title">Actividad reciente</p>
+    </div>
+    <ActivityFeed events={events} />
+  </section>
+
+  <section
+    class="status-players-dropdown"
+    id="server-players-dropdown"
+    aria-labelledby="server-players-title"
+    aria-hidden="true"
+    data-status-players-dropdown
+  >
+    <div class="status-activity-heading">
+      <p class="card-kicker" id="server-players-title">Jugadores conectados</p>
+    </div>
+    <PlayerList players={status.players} />
+  </section>
+
+  <dialog
+    class="activity-dialog"
+    id="server-activity-dialog"
+    aria-labelledby="server-activity-dialog-title"
+    data-status-activity-dialog
+  >
+    <div class="activity-dialog-panel">
+      <div class="activity-dialog-heading">
+        <p class="card-kicker" id="server-activity-dialog-title">Actividad reciente</p>
+        <form method="dialog">
+          <button class="button button-sm button-secondary" type="submit">Cerrar</button>
+        </form>
+      </div>
+      <ActivityFeed events={events} />
+    </div>
+  </dialog>
+
+  <dialog
+    class="activity-dialog"
+    id="server-players-dialog"
+    aria-labelledby="server-players-dialog-title"
+    data-status-players-dialog
+  >
+    <div class="activity-dialog-panel">
+      <div class="activity-dialog-heading">
+        <p class="card-kicker" id="server-players-dialog-title">Jugadores conectados</p>
+        <form method="dialog">
+          <button class="button button-sm button-secondary" type="submit">Cerrar</button>
+        </form>
+      </div>
+      <PlayerList players={status.players} />
+    </div>
+  </dialog>
+</div>
+
+<script>
+  const initStatusActivity = () => {
+    const mobileQuery = window.matchMedia("(max-width: 720px)");
+
+    document.querySelectorAll<HTMLElement>("[data-status-activity]").forEach((root) => {
+      if (root.dataset.enhanced === "true") return;
+      root.dataset.enhanced = "true";
+
+      const activityTrigger = root.querySelector<HTMLButtonElement>("[data-status-activity-trigger]");
+      const activityDropdown = root.querySelector<HTMLElement>("[data-status-activity-dropdown]");
+      const activityDialog = root.querySelector<HTMLDialogElement>("[data-status-activity-dialog]");
+      const playersTrigger = root.querySelector<HTMLButtonElement>("[data-status-players-trigger]");
+      const playersDropdown = root.querySelector<HTMLElement>("[data-status-players-dropdown]");
+      const playersDialog = root.querySelector<HTMLDialogElement>("[data-status-players-dialog]");
+      if (!activityTrigger || !activityDropdown || !activityDialog || !playersTrigger || !playersDropdown || !playersDialog) return;
+
+      const previews = [
+        { trigger: activityTrigger, dropdown: activityDropdown, dialog: activityDialog, openClass: "is-activity-open" },
+        { trigger: playersTrigger, dropdown: playersDropdown, dialog: playersDialog, openClass: "is-players-open" },
+      ];
+      let activeTrigger: HTMLButtonElement | undefined;
+
+      const closeAll = () => {
+        previews.forEach(({ trigger, dropdown, openClass }) => {
+          root.classList.remove(openClass);
+          trigger.setAttribute("aria-expanded", "false");
+          dropdown.setAttribute("aria-hidden", "true");
+        });
+        activeTrigger = undefined;
+      };
+
+      const setDropdownOpen = (preview: (typeof previews)[number], open: boolean) => {
+        const nextOpen = open && !mobileQuery.matches;
+        if (nextOpen) closeAll();
+        root.classList.toggle(preview.openClass, nextOpen);
+        preview.trigger.setAttribute("aria-expanded", String(nextOpen));
+        preview.dropdown.setAttribute("aria-hidden", String(!nextOpen));
+        activeTrigger = nextOpen ? preview.trigger : undefined;
+      };
+
+      const syncMode = () => {
+        closeAll();
+        previews.forEach(({ trigger, dropdown, dialog }) => {
+          trigger.setAttribute("aria-controls", mobileQuery.matches ? dialog.id : dropdown.id);
+          if (!mobileQuery.matches && dialog.open) dialog.close();
+        });
+      };
+
+      previews.forEach((preview) => {
+        const { trigger, dropdown, dialog } = preview;
+        trigger.addEventListener("pointerenter", () => setDropdownOpen(preview, true));
+        trigger.addEventListener("pointerleave", (event) => {
+          if (!(event.relatedTarget instanceof Node) || !dropdown.contains(event.relatedTarget)) {
+            setDropdownOpen(preview, false);
+          }
+        });
+        dropdown.addEventListener("pointerleave", (event) => {
+          if (!(event.relatedTarget instanceof Node) || !trigger.contains(event.relatedTarget)) {
+            setDropdownOpen(preview, false);
+          }
+        });
+        trigger.addEventListener("focus", () => setDropdownOpen(preview, true));
+        trigger.addEventListener("click", () => {
+          if (mobileQuery.matches) {
+            if (!dialog.open) dialog.showModal();
+          } else {
+            setDropdownOpen(preview, true);
+          }
+        });
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog) dialog.close();
+        });
+        dialog.addEventListener("close", () => trigger.focus());
+      });
+
+      root.addEventListener("focusout", (event) => {
+        if (!(event.relatedTarget instanceof Node) || !root.contains(event.relatedTarget)) {
+          closeAll();
+        }
+      });
+      root.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && !previews.some(({ dialog }) => dialog.open)) {
+          const trigger = activeTrigger;
+          closeAll();
+          trigger?.focus();
+        }
+      });
+
+      mobileQuery.addEventListener("change", syncMode);
+      syncMode();
+    });
+  };
+
+  document.addEventListener("astro:page-load", initStatusActivity);
+  initStatusActivity();
+</script>

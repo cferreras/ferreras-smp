@@ -1,8 +1,6 @@
 import type {
   MinecraftActivityEvent,
   MinecraftLiveSnapshot,
-  MinecraftPoll,
-  MinecraftPollOption,
 } from "../types/minecraft-live";
 import { formatRelativeTime } from "../lib/format-relative-time";
 import {
@@ -12,18 +10,7 @@ import {
 import { getRandomEmptyPlayerMessage } from "../lib/empty-player-messages";
 import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
 
-type VoteResponse =
-  | {
-      ok: true;
-      poll: MinecraftPoll;
-    }
-  | {
-      ok: false;
-      error: string;
-    };
-
 const LIVE_ENDPOINT = "/api/minecraft/live";
-const VOTE_ENDPOINT = "/api/minecraft/poll/vote";
 const POLLING_INTERVAL_MS = 10_000;
 
 const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
@@ -35,15 +22,13 @@ const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   system: "Sistema",
 };
 
-const liveSection = document.querySelector<HTMLElement>("[data-live-server]");
+const liveRoot = document.querySelector<HTMLElement>("[data-minecraft-live]");
 
-if (liveSection) {
-  const apiBaseUrl = liveSection.dataset.minecraftApiBase?.replace(/\/$/, "") || "";
+if (liveRoot) {
+  const apiBaseUrl = liveRoot.dataset.minecraftApiBase?.replace(/\/$/, "") || "";
   const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
-  const liveState = liveSection.querySelector<HTMLElement>("[data-live-state]");
-  const pollFeedback = liveSection.querySelector<HTMLElement>("[data-poll-feedback]");
+  const liveState = liveRoot.querySelector<HTMLElement>("[data-live-state]");
   let pollingId: number | undefined;
-  let isVoting = false;
 
   const setLiveState = (message: string, isError = false) => {
     if (!liveState) return;
@@ -52,22 +37,13 @@ if (liveSection) {
     liveState.dataset.state = isError ? "error" : "ready";
   };
 
-  const setPollFeedback = (message: string, isError = false) => {
-    if (!pollFeedback) return;
-
-    pollFeedback.textContent = message;
-    pollFeedback.dataset.state = isError ? "error" : "ready";
-  };
-
-  const formatVotes = (votes: number) => `${votes} ${votes === 1 ? "voto" : "votos"}`;
-
   const applyAvatarFallback = (avatar: HTMLImageElement) => {
     if (avatar.src === STEVE_AVATAR_URL) return;
 
     avatar.src = avatar.dataset.fallbackSrc || STEVE_AVATAR_URL;
   };
 
-  liveSection.querySelectorAll<HTMLImageElement>("[data-player-avatar]").forEach((avatar) => {
+  document.querySelectorAll<HTMLImageElement>("[data-player-avatar]").forEach((avatar) => {
     avatar.addEventListener("error", () => applyAvatarFallback(avatar), { once: true });
   });
 
@@ -92,27 +68,24 @@ if (liveSection) {
   };
 
   const updatePlayers = (players: string[]) => {
-    const heading = liveSection.querySelector<HTMLElement>("[data-players-heading]");
-    const list = liveSection.querySelector<HTMLUListElement>("[data-player-list]");
-    const empty = liveSection.querySelector<HTMLElement>("[data-empty-players]");
-
-    if (heading) {
+    document.querySelectorAll<HTMLElement>("[data-players-heading]").forEach((heading) => {
       heading.textContent = `${players.length} ahora`;
-    }
+    });
 
-    if (!list || !empty) {
-      return;
-    }
+    document.querySelectorAll<HTMLElement>("[data-player-feed]").forEach((feed) => {
+      const list = feed.querySelector<HTMLUListElement>("[data-player-list]");
+      const empty = feed.querySelector<HTMLElement>("[data-empty-players]");
+      if (!list || !empty) return;
 
-    const wasEmpty = list.hidden;
+      const wasEmpty = list.hidden;
+      list.replaceChildren(...players.map(createPlayerItem));
+      list.hidden = players.length === 0;
+      empty.hidden = players.length > 0;
 
-    list.replaceChildren(...players.map(createPlayerItem));
-    list.hidden = players.length === 0;
-    empty.hidden = players.length > 0;
-
-    if (players.length === 0 && !wasEmpty) {
-      empty.textContent = getRandomEmptyPlayerMessage();
-    }
+      if (players.length === 0 && !wasEmpty) {
+        empty.textContent = getRandomEmptyPlayerMessage();
+      }
+    });
   };
 
   const createActivityItem = (event: GroupedMinecraftActivityEvent) => {
@@ -143,147 +116,28 @@ if (liveSection) {
   };
 
   const updateActivity = (events: MinecraftActivityEvent[]) => {
-    const list = liveSection.querySelector<HTMLUListElement>("[data-activity-list]");
-    const empty = liveSection.querySelector<HTMLElement>("[data-empty-activity]");
+    const lists = document.querySelectorAll<HTMLUListElement>("[data-activity-list]");
+    const emptyStates = document.querySelectorAll<HTMLElement>("[data-empty-activity]");
+    const visibleEvents = getVisibleActivityEvents(events);
 
-    if (!list) {
-      return;
-    }
+    lists.forEach((list) => {
+      list.replaceChildren(...visibleEvents.map(createActivityItem));
+      list.hidden = events.length === 0;
+    });
 
-    list.replaceChildren(...getVisibleActivityEvents(events).map(createActivityItem));
-    list.hidden = events.length === 0;
-
-    if (empty) {
+    emptyStates.forEach((empty) => {
       empty.hidden = events.length > 0;
-    }
-  };
-
-  const createPollOption = (option: MinecraftPollOption) => {
-    const item = document.createElement("li");
-    const button = document.createElement("button");
-    const copy = document.createElement("span");
-    const label = document.createElement("strong");
-    const percentage = document.createElement("span");
-    const progress = document.createElement("span");
-    const progressBar = document.createElement("span");
-    const votes = document.createElement("span");
-    const results = document.createElement("span");
-
-    item.className = "poll-option";
-    button.type = "button";
-    button.className = "poll-option-button";
-    button.dataset.pollOption = option.id;
-    button.setAttribute("aria-label", `Votar por ${option.label}`);
-
-    copy.className = "poll-option-copy";
-    label.dataset.pollOptionLabel = "";
-    label.textContent = option.label;
-    percentage.dataset.pollOptionPercentage = "";
-    percentage.textContent = `${option.percentage}%`;
-
-    progress.className = "poll-progress";
-    progress.dataset.pollProgress = "";
-    progress.setAttribute("role", "progressbar");
-    progress.setAttribute("aria-label", `Apoyo actual para ${option.label}`);
-    progress.setAttribute("aria-valuemin", "0");
-    progress.setAttribute("aria-valuemax", "100");
-    progress.setAttribute("aria-valuenow", option.percentage.toString());
-
-    progressBar.dataset.pollProgressBar = "";
-    progressBar.style.width = `${option.percentage}%`;
-
-    results.className = "poll-option-results";
-    votes.dataset.pollOptionVotes = "";
-    votes.textContent = formatVotes(option.votes);
-
-    progress.append(progressBar);
-    copy.append(label);
-    results.append(votes, percentage);
-    button.append(copy, progress, results);
-    item.append(button);
-
-    return item;
-  };
-
-  const updatePollOption = (button: HTMLButtonElement, option: MinecraftPollOption) => {
-    const label = button.querySelector<HTMLElement>("[data-poll-option-label]");
-    const percentage = button.querySelector<HTMLElement>("[data-poll-option-percentage]");
-    const progress = button.querySelector<HTMLElement>("[data-poll-progress]");
-    const progressBar = button.querySelector<HTMLElement>("[data-poll-progress-bar]");
-    const votes = button.querySelector<HTMLElement>("[data-poll-option-votes]");
-
-    button.dataset.pollOption = option.id;
-    button.disabled = isVoting;
-    button.setAttribute("aria-label", `Votar por ${option.label}`);
-
-    if (label) label.textContent = option.label;
-    if (percentage) percentage.textContent = `${option.percentage}%`;
-    if (progress) {
-      progress.setAttribute("aria-label", `Apoyo actual para ${option.label}`);
-      progress.setAttribute("aria-valuenow", option.percentage.toString());
-    }
-    if (progressBar) progressBar.style.width = `${option.percentage}%`;
-    if (votes) votes.textContent = formatVotes(option.votes);
-  };
-
-  const setPollButtonsDisabled = (disabled: boolean) => {
-    liveSection
-      .querySelectorAll<HTMLButtonElement>("[data-poll-option]")
-      .forEach((button) => {
-        button.disabled = disabled;
-      });
-  };
-
-  const updatePoll = (poll?: MinecraftPoll) => {
-    const pollCard = liveSection.querySelector<HTMLElement>("[data-community-poll]");
-    const question = liveSection.querySelector<HTMLElement>("[data-poll-question]");
-    const list = liveSection.querySelector<HTMLUListElement>("[data-poll-list]");
-
-    if (!pollCard || !list) {
-      return;
-    }
-
-    pollCard.hidden = !poll;
-
-    if (!poll) {
-      list.replaceChildren();
-      return;
-    }
-
-    if (question) {
-      question.textContent = poll.question;
-    }
-
-    const existingButtons = new Map(
-      Array.from(list.querySelectorAll<HTMLButtonElement>("[data-poll-option]")).map((button) => [
-        button.dataset.pollOption,
-        button,
-      ]),
-    );
-
-    if (existingButtons.size !== poll.options.length) {
-      list.replaceChildren(...poll.options.map(createPollOption));
-    } else {
-      poll.options.forEach((option) => {
-        const button = existingButtons.get(option.id);
-
-        if (button) {
-          updatePollOption(button, option);
-        }
-      });
-    }
-
-    setPollButtonsDisabled(isVoting);
+    });
   };
 
   const applySnapshot = (snapshot: MinecraftLiveSnapshot) => {
-    const statusBadge = liveSection.querySelector<HTMLElement>("[data-status-badge]");
-    const statusLabel = liveSection.querySelector<HTMLElement>("[data-status-label]");
-    const playersMetric = liveSection.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
-    const worldDayMetric = liveSection.querySelector<HTMLElement>(
+    const statusBadge = document.querySelector<HTMLElement>("[data-status-badge]");
+    const statusLabel = document.querySelector<HTMLElement>("[data-status-label]");
+    const playersMetric = document.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
+    const worldDayMetric = document.querySelector<HTMLElement>(
       '[data-status-metric="Día del mundo"]',
     );
-    const tpsMetric = liveSection.querySelector<HTMLElement>('[data-status-metric="TPS"]');
+    const tpsMetric = document.querySelector<HTMLElement>('[data-status-metric="TPS"]');
     const statusText = snapshot.status.online ? "Online" : "Offline";
 
     if (statusBadge) {
@@ -305,7 +159,6 @@ if (liveSection) {
     }
     updatePlayers(snapshot.status.players);
     updateActivity(snapshot.activity);
-    updatePoll(snapshot.poll);
     setLiveState("Actualizado en directo");
   };
 
@@ -342,55 +195,6 @@ if (liveSection) {
       void loadSnapshot().catch(() => setLiveState("Estado no disponible temporalmente", true));
     }, POLLING_INTERVAL_MS);
   };
-
-  const vote = async (optionId: string) => {
-    if (isVoting) {
-      return;
-    }
-
-    isVoting = true;
-    setPollButtonsDisabled(true);
-    setPollFeedback("Enviando voto…");
-
-    try {
-      const response = await fetch(apiUrl(VOTE_ENDPOINT), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ optionId }),
-      });
-      const result = (await response.json()) as VoteResponse;
-
-      if (!response.ok || !result.ok) {
-        throw new Error(result.ok ? "No se pudo votar" : result.error);
-      }
-
-      updatePoll(result.poll);
-      setPollFeedback("Voto registrado");
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "No se pudo votar";
-      setPollFeedback(message, true);
-    } finally {
-      isVoting = false;
-      setPollButtonsDisabled(false);
-    }
-  };
-
-  liveSection.addEventListener("click", (event) => {
-    const button = (event.target as Element | null)?.closest<HTMLButtonElement>("[data-poll-option]");
-
-    if (!button || !liveSection.contains(button)) {
-      return;
-    }
-
-    const optionId = button.dataset.pollOption;
-
-    if (optionId) {
-      void vote(optionId);
-    }
-  });
 
   window.addEventListener("beforeunload", () => {
     stopPolling();

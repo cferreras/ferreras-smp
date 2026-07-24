@@ -42,36 +42,4 @@ export const liveServerSnapshot: MinecraftLiveSnapshot = {
       createdAt: "2026-07-09T09:18:00.000Z",
     },
   ],
-  poll: {
-    id: "server-feedback",
-    question: "¿Qué te parece el servidor?",
-    totalVotes: 28,
-    hasVoted: false,
-    options: [
-      {
-        id: "great",
-        label: "Me encanta",
-        votes: 12,
-        percentage: 43,
-      },
-      {
-        id: "good",
-        label: "Está bien",
-        votes: 8,
-        percentage: 29,
-      },
-      {
-        id: "improve",
-        label: "Puede mejorar",
-        votes: 6,
-        percentage: 21,
-      },
-      {
-        id: "issues",
-        label: "He tenido problemas",
-        votes: 2,
-        percentage: 7,
-      },
-    ],
-  },
 };

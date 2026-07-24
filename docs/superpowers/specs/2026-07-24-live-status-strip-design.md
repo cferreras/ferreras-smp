@@ -7,15 +7,15 @@ Reemplazar la tarjeta “Servidor en marcha” por una banda horizontal de métr
 ## Diseño
 
 - Crear un componente `ServerStatusStrip` con cuatro celdas: jugadores conectados, día del mundo, TPS y estado.
-- Mostrar los valores centrados en Geist Mono y las etiquetas en mayúsculas pequeñas.
+- Mostrar los valores centrados a 14 px en Geist Pixel y las etiquetas en mayúsculas pequeñas.
 - Usar los bordes finos, colores y espaciado del sistema visual existente.
 - Distribuir las celdas en cuatro columnas en escritorio y en una cuadrícula de dos por dos en móvil.
 - Representar el estado Online/Offline con el color semántico actual.
 
 ## Integración
 
-- Renderizar la banda dentro de `LiveServerSection`, antes del encabezado de la sección, para conservar el alcance de `data-live-server`.
-- Reutilizar los selectores `data-status-*` y el polling existente; no añadir peticiones ni otra fuente de estado.
+- Renderizar la banda dentro de `Hero`, anclada justo encima del divisor con `LiveServerSection`. La banda se alinea además con una línea divisoria superior de ancho completo.
+- Reutilizar los selectores `data-status-*` y el polling existente desde el documento; no añadir peticiones ni otra fuente de estado.
 - Eliminar `ServerStatusCard` de la cuadrícula.
 - Distribuir `OnlinePlayers`, `RecentActivity` y `CommunityPoll` en tres columnas iguales en escritorio y apilarlas en pantallas estrechas.
 
