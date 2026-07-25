@@ -23,13 +23,13 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
   data-slug={slug}
   data-api-base={apiBase}
   data-turnstile-site-key={turnstileSiteKey}
+  data-body-max-length={COMMENT_BODY_MAX_LENGTH}
 >
   <div class="comments-heading">
     <div>
       <h2 id="comments-title">Comentarios</h2>
       <p>Comparte una duda o algo que añadirías a esta guía. No necesitas cuenta.</p>
     </div>
-    <p class="comments-count mono" data-comments-count aria-live="polite">Cargando…</p>
   </div>
 
   <form class="comment-form" data-comment-form novalidate>
@@ -77,18 +77,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     )}
 
     <div class="comment-form-footer">
-      <div class="comment-identity" data-comment-identity hidden>
-        <span class="comment-avatar" data-comment-avatar aria-hidden="true">
-          <span class="avatar-hair"></span>
-          <span class="avatar-eyes"></span>
-          <span class="avatar-shirt"></span>
-        </span>
-        <span>
-          <small>Publicas como</small>
-          <strong class="mono" data-comment-author-code>-----</strong>
-        </span>
-      </div>
-
       <button class="comment-submit" type="submit" disabled>Publicar</button>
     </div>
 
@@ -102,7 +90,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     </div>
     <ol class="comments-list" data-comments-list aria-live="polite"></ol>
     <div class="comments-empty" data-comments-empty hidden>
-      <p>Todavía no hay comentarios. Puedes abrir la conversación.</p>
+      <p>Todavía no hay comentarios. Puedes comenzar la conversación.</p>
     </div>
     <div class="comments-unavailable" data-comments-unavailable hidden>
       <p>No hemos podido cargar la conversación. Prueba de nuevo en unos instantes.</p>
@@ -130,7 +118,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     nickname: string;
     body: string;
     createdAt: string;
+    editedAt: string;
     reportCount: number;
+    canDelete: boolean;
   }
 
   interface CommentsResponse {
@@ -159,6 +149,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     kai: "Kai",
     efe: "Efe",
   };
+  const getAvatarSkin = (skin: string) => skin in skinNames ? skin : "steve";
+  const getAvatarUrl = (skin: string) =>
+    `/images/comment-avatars/${getAvatarSkin(skin)}.png`;
 
   const makeElement = <K extends keyof HTMLElementTagNameMap>(
     tag: K,
@@ -172,13 +165,14 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
   };
 
   const makeAvatar = (skin: string) => {
-    const avatar = makeElement("span", "comment-avatar");
-    avatar.dataset.skin = skin;
-    avatar.title = `Avatar de ${skinNames[skin] || "Minecraft"}`;
+    const safeSkin = getAvatarSkin(skin);
+    const avatar = makeElement("img", "comment-avatar");
+    avatar.src = getAvatarUrl(safeSkin);
+    avatar.width = 36;
+    avatar.height = 36;
+    avatar.alt = "";
+    avatar.title = `Avatar de ${skinNames[safeSkin]}`;
     avatar.setAttribute("aria-hidden", "true");
-    ["avatar-hair", "avatar-eyes", "avatar-shirt"].forEach((className) => {
-      avatar.append(makeElement("span", className));
-    });
     return avatar;
   };
 
@@ -194,6 +188,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     const slug = root.dataset.slug;
     const apiBase = root.dataset.apiBase?.replace(/\/$/, "") || "";
     const siteKey = root.dataset.turnstileSiteKey;
+    const bodyMaxLength = Number.parseInt(root.dataset.bodyMaxLength || "1200", 10);
     const form = root.querySelector<HTMLFormElement>("[data-comment-form]");
     const list = root.querySelector<HTMLOListElement>("[data-comments-list]");
     const loading = root.querySelector<HTMLElement>("[data-comments-loading]");
@@ -202,31 +197,17 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     const more = root.querySelector<HTMLButtonElement>("[data-comments-more]");
     const submit = root.querySelector<HTMLButtonElement>("[type='submit']");
     const status = root.querySelector<HTMLElement>("[data-comment-form-status]");
-    const countLabel = root.querySelector<HTMLElement>("[data-comments-count]");
     const body = form?.elements.namedItem("body") as HTMLTextAreaElement | null;
     const length = root.querySelector<HTMLOutputElement>("[data-comment-length]");
-    const identity = root.querySelector<HTMLElement>("[data-comment-identity]");
-    const identityCode = root.querySelector<HTMLElement>("[data-comment-author-code]");
-    const identityAvatar = root.querySelector<HTMLElement>("[data-comment-avatar]");
     let cursor: string | null = null;
     let count = 0;
+    let submissionIdempotencyKey = makeIdempotencyKey();
 
     if (!slug || !form || !list || !submit) return;
     const endpoint = `${apiBase}/api/comments/${encodeURIComponent(slug)}`;
 
     const setCount = (value: number) => {
       count = value;
-      if (countLabel) {
-        countLabel.textContent = value === 1 ? "1 comentario" : `${value} comentarios`;
-      }
-    };
-
-    const setViewer = (viewer?: CommentsResponse["viewer"]) => {
-      if (!viewer || !identity || !identityCode || !identityAvatar) return;
-      identity.hidden = false;
-      identityCode.textContent = viewer.authorCode;
-      identityAvatar.dataset.skin = viewer.avatar;
-      identityAvatar.title = `Avatar de ${skinNames[viewer.avatar] || "Minecraft"}`;
     };
 
     const reportComment = async (button: HTMLButtonElement, id: string) => {
@@ -245,6 +226,128 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       }
     };
 
+    const deleteComment = async (
+      button: HTMLButtonElement,
+      item: HTMLLIElement,
+      id: string,
+    ) => {
+      if (!window.confirm("¿Eliminar este comentario? No se puede deshacer.")) return;
+      button.disabled = true;
+      button.textContent = "Eliminando…";
+
+      try {
+        const response = await fetch(
+          `${apiBase}/api/comments/own/${encodeURIComponent(id)}`,
+          { method: "DELETE", credentials: "include" },
+        );
+        const result = await response.json() as CommentsResponse;
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || "No se pudo eliminar el comentario.");
+        }
+
+        item.remove();
+        setCount(Math.max(0, count - 1));
+        if (empty) empty.hidden = list.children.length > 0;
+      } catch (error) {
+        button.disabled = false;
+        button.textContent = "Eliminar";
+        if (status) {
+          status.textContent = error instanceof Error
+            ? error.message
+            : "No se pudo eliminar el comentario.";
+        }
+      }
+    };
+
+    const editComment = (
+      item: HTMLLIElement,
+      comment: CommentItem,
+      message: HTMLParagraphElement,
+      actions: HTMLDivElement,
+    ) => {
+      if (item.querySelector(".comment-editor")) return;
+
+      const editor = makeElement("form", "comment-editor");
+      const textarea = makeElement("textarea", "comment-edit-textarea");
+      textarea.value = comment.body;
+      textarea.rows = 4;
+      textarea.minLength = 2;
+      textarea.maxLength = bodyMaxLength;
+      textarea.required = true;
+      textarea.setAttribute("aria-label", "Editar comentario");
+
+      const editorActions = makeElement("div", "comment-editor-actions");
+      const cancel = makeElement("button", "comment-action", "Cancelar");
+      cancel.type = "button";
+      const save = makeElement("button", "comment-action comment-action-save", "Guardar");
+      save.type = "submit";
+      editorActions.append(cancel, save);
+      editor.append(textarea, editorActions);
+
+      const closeEditor = () => {
+        editor.remove();
+        message.hidden = false;
+        actions.hidden = false;
+      };
+
+      cancel.addEventListener("click", closeEditor);
+      editor.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (!editor.reportValidity()) return;
+        save.disabled = true;
+        cancel.disabled = true;
+        save.textContent = "Guardando…";
+
+        try {
+          const response = await fetch(
+            `${apiBase}/api/comments/own/${encodeURIComponent(comment.id)}`,
+            {
+              method: "PATCH",
+              credentials: "include",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ body: textarea.value }),
+            },
+          );
+          const result = await response.json() as CommentsResponse;
+          if (!response.ok || !result.ok) {
+            throw new Error(result.error || "No se pudo editar el comentario.");
+          }
+
+          if (!result.comment) {
+            item.remove();
+            setCount(Math.max(0, count - 1));
+            if (empty) empty.hidden = list.children.length > 0;
+            if (status) status.textContent = result.message || "Cambio pendiente de revisión.";
+            return;
+          }
+
+          comment.body = result.comment.body;
+          comment.editedAt = result.comment.editedAt;
+          message.textContent = comment.body;
+          const meta = item.querySelector(".comment-meta");
+          if (meta && !meta.querySelector(".comment-edited")) {
+            meta.append(makeElement("span", "comment-edited", "editado"));
+          }
+          closeEditor();
+        } catch (error) {
+          save.disabled = false;
+          cancel.disabled = false;
+          save.textContent = "Guardar";
+          if (status) {
+            status.textContent = error instanceof Error
+              ? error.message
+              : "No se pudo editar el comentario.";
+          }
+        }
+      });
+
+      message.hidden = true;
+      actions.hidden = true;
+      message.insertAdjacentElement("afterend", editor);
+      textarea.focus();
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    };
+
     const renderComment = (comment: CommentItem) => {
       const item = makeElement("li", "comment-item");
       const content = makeElement("div", "comment-content");
@@ -252,6 +355,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       const byline = makeElement("p", "comment-byline");
       const nickname = makeElement("strong", "", comment.nickname);
       const code = makeElement("span", "mono comment-code", comment.authorCode);
+      const meta = makeElement("div", "comment-meta");
       const time = makeElement("time");
       time.dateTime = comment.createdAt;
       time.textContent = new Intl.DateTimeFormat("es-ES", {
@@ -263,14 +367,41 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       }).format(new Date(comment.createdAt));
 
       byline.append(nickname, code);
-      header.append(byline, time);
+      meta.append(time);
+      if (comment.editedAt) {
+        meta.append(makeElement("span", "comment-edited", "editado"));
+      }
+      header.append(byline, meta);
 
       const message = makeElement("p", "comment-body", comment.body);
-      const report = makeElement("button", "comment-report", "Denunciar");
-      report.type = "button";
-      report.addEventListener("click", () => void reportComment(report, comment.id));
+      const actions = makeElement("div", "comment-actions");
 
-      content.append(header, message, report);
+      if (comment.canDelete) {
+        const edit = makeElement("button", "comment-action", "Editar");
+        edit.type = "button";
+        edit.addEventListener(
+          "click",
+          () => editComment(item, comment, message, actions),
+        );
+        const remove = makeElement(
+          "button",
+          "comment-action comment-action-delete",
+          "Eliminar",
+        );
+        remove.type = "button";
+        remove.addEventListener(
+          "click",
+          () => void deleteComment(remove, item, comment.id),
+        );
+        actions.append(edit, remove);
+      } else {
+        const report = makeElement("button", "comment-action comment-action-delete", "Denunciar");
+        report.type = "button";
+        report.addEventListener("click", () => void reportComment(report, comment.id));
+        actions.append(report);
+      }
+
+      content.append(header, message, actions);
       item.append(makeAvatar(comment.avatar), content);
       list.append(item);
     };
@@ -288,7 +419,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
         (result.comments || []).forEach(renderComment);
         cursor = result.nextCursor || null;
         setCount(result.count || 0);
-        setViewer(result.viewer);
         if (empty) empty.hidden = list.children.length > 0;
         if (unavailable) unavailable.hidden = true;
         if (more) {
@@ -299,7 +429,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       } catch {
         if (unavailable) unavailable.hidden = false;
         if (empty) empty.hidden = true;
-        if (countLabel) countLabel.textContent = "";
       } finally {
         if (loading) loading.hidden = true;
       }
@@ -323,6 +452,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 
       submit.disabled = true;
       if (status) status.textContent = "Publicando…";
+      let responseConfirmed = false;
 
       try {
         const response = await fetch(endpoint, {
@@ -334,10 +464,11 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
             body: data.get("body"),
             website: data.get("website"),
             turnstileToken,
-            idempotencyKey: makeIdempotencyKey(),
+            idempotencyKey: submissionIdempotencyKey,
           }),
         });
         const result = await response.json() as CommentsResponse;
+        responseConfirmed = true;
         if (!response.ok || !result.ok) {
           throw new Error(result.error || "No se pudo publicar el comentario.");
         }
@@ -350,7 +481,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
         if (status) status.textContent = result.message || "Comentario recibido.";
         if (body) body.value = "";
         if (length) length.value = "0";
-        setViewer(result.viewer);
       } catch (error) {
         if (status) {
           status.textContent = error instanceof Error
@@ -358,6 +488,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
             : "No se pudo publicar el comentario.";
         }
       } finally {
+        if (responseConfirmed) submissionIdempotencyKey = makeIdempotencyKey();
         submit.disabled = false;
         const turnstile = (window as TurnstileWindow).turnstile;
         const widget = root.querySelector(".cf-turnstile");

@@ -126,3 +126,13 @@ export const validateSubmission = (value: unknown) => {
     idempotencyKey: record.idempotencyKey,
   };
 };
+
+export const validateCommentEdit = (value: unknown) => {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    throw new CommentValidationError("La solicitud no es válida.", "request");
+  }
+
+  return {
+    body: normalizeCommentBody((value as Record<string, unknown>).body),
+  };
+};

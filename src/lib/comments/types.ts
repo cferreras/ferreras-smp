@@ -5,6 +5,7 @@ export type CommentStatus = "published" | "pending" | "rejected" | "deleted";
 export interface CommentRecord {
   id: string;
   postSlug: string;
+  authorIdentityHash: string;
   authorCode: string;
   avatar: DefaultSkin;
   nickname: string;
@@ -12,6 +13,7 @@ export interface CommentRecord {
   status: CommentStatus;
   riskScore: number;
   createdAt: string;
+  editedAt: string;
   moderatedAt: string;
   moderationReason: string;
   reportCount: number;
@@ -24,7 +26,9 @@ export interface PublicComment {
   nickname: string;
   body: string;
   createdAt: string;
+  editedAt: string;
   reportCount: number;
+  canDelete: boolean;
 }
 
 export interface ViewerIdentity {

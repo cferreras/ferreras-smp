@@ -18,7 +18,7 @@ export const commentsCorsHeaders = (request: Request) => {
   if (origin && isAllowedCommentsOrigin(request)) {
     headers.set("Access-Control-Allow-Origin", origin);
     headers.set("Access-Control-Allow-Credentials", "true");
-    headers.set("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+    headers.set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
     headers.set(
       "Access-Control-Allow-Headers",
       "Content-Type, Accept, X-Idempotency-Key",

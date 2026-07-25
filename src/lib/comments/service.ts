@@ -13,7 +13,7 @@ import {
 } from "./store.ts";
 import { verifyTurnstileToken } from "./turnstile.ts";
 import type { PublicComment } from "./types.ts";
-import { validateSubmission } from "./validation.ts";
+import { validateCommentEdit, validateSubmission } from "./validation.ts";
 
 let publishedSlugsPromise: Promise<Set<string>> | undefined;
 
@@ -35,15 +35,18 @@ const publicComment = (comment: {
   nickname: string;
   body: string;
   createdAt: string;
+  editedAt: string;
   reportCount: number;
-}): PublicComment => ({
+}, canDelete: boolean): PublicComment => ({
   id: comment.id,
   authorCode: comment.authorCode,
   avatar: comment.avatar,
   nickname: comment.nickname,
   body: comment.body,
   createdAt: comment.createdAt,
+  editedAt: comment.editedAt,
   reportCount: comment.reportCount,
+  canDelete,
 });
 
 export class UnknownBlogPostError extends Error {
@@ -67,6 +70,20 @@ export class IdempotencyInProgressError extends Error {
   }
 }
 
+export class OwnCommentNotFoundError extends Error {
+  constructor() {
+    super("Own comment not found");
+    this.name = "OwnCommentNotFoundError";
+  }
+}
+
+export class CommentEditRejectedError extends Error {
+  constructor() {
+    super("Comment edit rejected");
+    this.name = "CommentEditRejectedError";
+  }
+}
+
 export class CommentsService {
   constructor(private readonly store = new CommentStore()) {}
 
@@ -78,7 +95,8 @@ export class CommentsService {
     const config = getCommentsConfig();
     await this.assertPublishedSlug(slug);
     const identity = getIdentityFromRequest(request, config.identitySecret);
-    const page = await this.store.listPublished(slug, cursor, limit);
+    const identityHash = hashIdentity(config.identitySecret, identity.identityId);
+    const page = await this.store.listPublished(slug, cursor, limit, identityHash);
 
     return {
       ...page,
@@ -144,6 +162,7 @@ export class CommentsService {
 
       const comment = await this.store.createComment({
         postSlug: slug,
+        authorIdentityHash: identityHash,
         authorCode: identity.viewer.authorCode,
         avatar: identity.viewer.avatar,
         nickname: submission.nickname,
@@ -156,7 +175,7 @@ export class CommentsService {
             ok: true,
             state: "published",
             message: "Comentario publicado.",
-            comment: publicComment(comment),
+            comment: publicComment(comment, true),
             viewer: identity.viewer,
           }
         : {
@@ -194,10 +213,14 @@ export class CommentsService {
     const config = getCommentsConfig();
     const identity = getIdentityFromRequest(request, config.identitySecret);
     const identityHash = hashIdentity(config.identitySecret, identity.identityId);
-    await this.store.consumeReportLimit(identityHash);
+    const networkHash = hashNetworkAddress(
+      config.identitySecret,
+      getClientAddress(request),
+    );
+    await this.store.consumeReportLimit(identityHash, networkHash);
     const result = await this.store.reportComment(id, identityHash);
 
-    if (result?.comment && !result.duplicate && result.comment.reportCount >= 2) {
+    if (result?.comment && !result.duplicate && result.thresholdCrossed) {
       await notifyOrQueue(
         this.store,
         result.comment,
@@ -213,6 +236,72 @@ export class CommentsService {
           ? "Ya habías denunciado este comentario."
           : "Gracias. Revisaremos el comentario.",
       },
+      cookie: identity.cookie,
+    };
+  }
+
+  async deleteOwn(request: Request, id: string) {
+    const config = getCommentsConfig();
+    const identity = getIdentityFromRequest(request, config.identitySecret);
+    const identityHash = hashIdentity(config.identitySecret, identity.identityId);
+    const deleted = await this.store.deleteOwnComment(id, identityHash);
+    if (!deleted) throw new OwnCommentNotFoundError();
+
+    return {
+      result: {
+        ok: true,
+        message: "Comentario eliminado.",
+      },
+      cookie: identity.cookie,
+    };
+  }
+
+  async editOwn(request: Request, id: string, input: unknown) {
+    const config = getCommentsConfig();
+    const edit = validateCommentEdit(input);
+    const identity = getIdentityFromRequest(request, config.identitySecret);
+    const identityHash = hashIdentity(config.identitySecret, identity.identityId);
+    const ratePressure = await this.store.consumeEditLimit(identityHash);
+    const risk = assessCommentRisk({
+      body: edit.body,
+      duplicate: false,
+      ratePressure,
+      blockedTerms: config.blockedTerms,
+    });
+
+    if (risk.decision === "reject") {
+      throw new CommentEditRejectedError();
+    }
+
+    const comment = await this.store.updateOwnComment(id, identityHash, {
+      body: edit.body,
+      status: risk.decision === "publish" ? "published" : "pending",
+      riskScore: risk.score,
+    });
+    if (!comment) throw new OwnCommentNotFoundError();
+
+    if (comment.status === "pending") {
+      await notifyOrQueue(
+        this.store,
+        comment,
+        config.discordWebhookUrl,
+        config.publicApiUrl,
+      );
+    }
+
+    return {
+      result: comment.status === "published"
+        ? {
+            ok: true,
+            state: "published",
+            message: "Comentario actualizado.",
+            comment: publicComment(comment, true),
+          }
+        : {
+            ok: true,
+            state: "pending",
+            message: "El cambio ha quedado pendiente de revisión.",
+          },
       cookie: identity.cookie,
     };
   }
