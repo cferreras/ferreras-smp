@@ -11,7 +11,9 @@
     "deploy": "node .agents/skills/discord-blog-deploy/scripts/deploy.mjs",
     "preview": "astro preview",
     "check": "astro check",
+    "test": "pnpm test:security && pnpm test:live-feedback",
     "test:security": "node --experimental-strip-types src/lib/minecraft/security.test.mjs",
+    "test:live-feedback": "node --experimental-strip-types src/lib/minecraft/live-feedback.test.mjs",
     "seed:minecraft-live": "node scripts/seed-minecraft-live.mjs"
   },
   "dependencies": {

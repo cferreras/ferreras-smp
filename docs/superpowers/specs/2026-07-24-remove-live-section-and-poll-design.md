@@ -1,5 +1,7 @@
 # Retirada de la sección en directo y la encuesta
 
+> **Estado: parcialmente vigente.** La retirada de la encuesta y de sus endpoints sigue vigente. La decisión de concentrar los datos en una franja quedó reemplazada por la [sección en directo dividida](./2026-07-25-live-section-split-design.md). Esta especificación sustituyó en su momento la [banda de estado](./2026-07-24-live-status-strip-design.md) y el [diseño en cajas](./2026-07-24-boxed-interface-design.md).
+
 ## Objetivo
 
 Eliminar de la portada la sección `Ferreras SMP en directo · El mundo, ahora mismo` y retirar completamente la encuesta comunitaria del frontend y la API, conservando el estado, los jugadores y la actividad en directo de la franja del hero.

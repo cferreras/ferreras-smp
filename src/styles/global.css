@@ -2215,7 +2215,7 @@ dl {
   height: 8px;
   flex: none;
   border-radius: 50%;
-  background: currentColor;
+  background: currentcolor;
 }
 
 .live-section-state.online {

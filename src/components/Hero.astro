@@ -6,8 +6,7 @@ import ServerStatusStrip from "./ServerStatusStrip.astro";
 import { server } from "../data/server";
 import { DEFAULT_MINECRAFT_SNAPSHOT } from "../lib/minecraft/constants";
 
-const minecraftApiBase =
-  import.meta.env.PUBLIC_MINECRAFT_API_URL || import.meta.env.NEXT_PUBLIC_MINECRAFT_API_URL || "";
+const minecraftApiBase = import.meta.env.PUBLIC_MINECRAFT_API_URL || "";
 ---
 
 <section class="hero">

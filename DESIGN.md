@@ -39,6 +39,8 @@ spacing:
 
 # Sistema visual de Ferreras SMP
 
+> **Fuente de verdad actual.** Este documento define la tipografía, la forma y la dirección visual vigentes. Las especificaciones fechadas en `docs/superpowers/specs` conservan decisiones históricas y deben señalar explícitamente cuando han sido reemplazadas.
+
 ## Dirección
 
 Ferreras SMP usa el lenguaje visual anterior a la migración a Geist. La interfaz combina una base clara o AMOLED, superficies redondeadas, sombras suaves y un acento violeta reconocible.

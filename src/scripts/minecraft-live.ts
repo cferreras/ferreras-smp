@@ -13,6 +13,7 @@ import { getLiveFailureFeedback } from "../lib/minecraft/live-feedback";
 
 const LIVE_ENDPOINT = "/api/minecraft/live";
 const POLLING_INTERVAL_MS = 10_000;
+const REQUEST_TIMEOUT_MS = POLLING_INTERVAL_MS - 1_000;
 
 const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   join: "Entrada",
@@ -30,6 +31,14 @@ if (liveRoot) {
   const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
   const liveState = liveRoot.querySelector<HTMLElement>("[data-live-state]");
   const retryButton = liveRoot.querySelector<HTMLButtonElement>("[data-live-retry]");
+  const statusBadge = liveRoot.querySelector<HTMLElement>("[data-status-badge]");
+  const statusLabel = liveRoot.querySelector<HTMLElement>("[data-status-label]");
+  const playersMetric = liveRoot.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
+  const worldDayMetric = liveRoot.querySelector<HTMLElement>(
+    '[data-status-metric="Día del mundo"]',
+  );
+  const tpsMetric = liveRoot.querySelector<HTMLElement>('[data-status-metric="TPS"]');
+  const tpsUnit = liveRoot.querySelector<HTMLElement>('[data-status-unit="TPS"]');
   let pollingId: number | undefined;
   let lastUpdatedLabel = "";
   let loading = false;
@@ -52,7 +61,7 @@ if (liveRoot) {
     avatar.src = avatar.dataset.fallbackSrc || STEVE_AVATAR_URL;
   };
 
-  document.querySelectorAll<HTMLImageElement>("[data-player-avatar]").forEach((avatar) => {
+  liveRoot.querySelectorAll<HTMLImageElement>("[data-player-avatar]").forEach((avatar) => {
     avatar.addEventListener("error", () => applyAvatarFallback(avatar), { once: true });
   });
 
@@ -77,11 +86,11 @@ if (liveRoot) {
   };
 
   const updatePlayers = (players: string[]) => {
-    document.querySelectorAll<HTMLElement>("[data-players-heading]").forEach((heading) => {
+    liveRoot.querySelectorAll<HTMLElement>("[data-players-heading]").forEach((heading) => {
       heading.textContent = `${players.length} ahora`;
     });
 
-    document.querySelectorAll<HTMLElement>("[data-player-feed]").forEach((feed) => {
+    liveRoot.querySelectorAll<HTMLElement>("[data-player-feed]").forEach((feed) => {
       const list = feed.querySelector<HTMLUListElement>("[data-player-list]");
       const empty = feed.querySelector<HTMLElement>("[data-empty-players]");
       if (!list || !empty) return;
@@ -125,8 +134,8 @@ if (liveRoot) {
   };
 
   const updateActivity = (events: MinecraftActivityEvent[]) => {
-    const lists = document.querySelectorAll<HTMLUListElement>("[data-activity-list]");
-    const emptyStates = document.querySelectorAll<HTMLElement>("[data-empty-activity]");
+    const lists = liveRoot.querySelectorAll<HTMLUListElement>("[data-activity-list]");
+    const emptyStates = liveRoot.querySelectorAll<HTMLElement>("[data-empty-activity]");
     const visibleEvents = getVisibleActivityEvents(events);
 
     lists.forEach((list) => {
@@ -140,15 +149,6 @@ if (liveRoot) {
   };
 
   const setUnavailableSnapshot = () => {
-    const statusBadge = document.querySelector<HTMLElement>("[data-status-badge]");
-    const statusLabel = document.querySelector<HTMLElement>("[data-status-label]");
-    const playersMetric = document.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
-    const worldDayMetric = document.querySelector<HTMLElement>(
-      '[data-status-metric="Día del mundo"]',
-    );
-    const tpsMetric = document.querySelector<HTMLElement>('[data-status-metric="TPS"]');
-    const tpsUnit = document.querySelector<HTMLElement>('[data-status-unit="TPS"]');
-
     if (statusBadge) {
       statusBadge.classList.remove("online", "offline");
       statusBadge.classList.add("unavailable");
@@ -164,14 +164,6 @@ if (liveRoot) {
   };
 
   const applySnapshot = (snapshot: MinecraftLiveSnapshot) => {
-    const statusBadge = document.querySelector<HTMLElement>("[data-status-badge]");
-    const statusLabel = document.querySelector<HTMLElement>("[data-status-label]");
-    const playersMetric = document.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
-    const worldDayMetric = document.querySelector<HTMLElement>(
-      '[data-status-metric="Día del mundo"]',
-    );
-    const tpsMetric = document.querySelector<HTMLElement>('[data-status-metric="TPS"]');
-    const tpsUnit = document.querySelector<HTMLElement>('[data-status-unit="TPS"]');
     const statusText = snapshot.status.online ? "Online" : "Offline";
 
     if (statusBadge) {
@@ -204,11 +196,12 @@ if (liveRoot) {
     setLiveState(`Actualizado ${lastUpdatedLabel}`, "ready");
   };
 
-  const loadSnapshot = async () => {
+  const loadSnapshot = async (signal?: AbortSignal) => {
     const response = await fetch(apiUrl(LIVE_ENDPOINT), {
       headers: {
         Accept: "application/json",
       },
+      signal,
     });
 
     if (!response.ok) {
@@ -238,7 +231,7 @@ if (liveRoot) {
     if (!lastUpdatedLabel) setLiveState("Actualizando…", "loading");
 
     try {
-      await loadSnapshot();
+      await loadSnapshot(AbortSignal.timeout(REQUEST_TIMEOUT_MS));
     } catch {
       handleLoadFailure();
     } finally {
@@ -248,11 +241,10 @@ if (liveRoot) {
   };
 
   const startPolling = () => {
-    if (pollingId) {
+    if (pollingId || document.hidden) {
       return;
     }
 
-    setUnavailableSnapshot();
     void refreshSnapshot();
 
     pollingId = window.setInterval(() => {
@@ -264,9 +256,20 @@ if (liveRoot) {
     void refreshSnapshot();
   });
 
-  window.addEventListener("beforeunload", () => {
-    stopPolling();
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopPolling();
+      return;
+    }
+
+    startPolling();
   });
 
+  window.addEventListener("pagehide", stopPolling);
+  window.addEventListener("pageshow", startPolling);
+
+  window.addEventListener("beforeunload", stopPolling);
+
+  setUnavailableSnapshot();
   startPolling();
 }

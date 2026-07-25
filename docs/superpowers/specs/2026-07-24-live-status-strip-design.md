@@ -1,5 +1,7 @@
 # Banda de estado en directo
 
+> **Estado: reemplazada.** La banda horizontal y la encuesta dejaron paso a la [sección en directo dividida](./2026-07-25-live-section-split-design.md), que es la especificación vigente para jugadores, métricas y actividad reciente.
+
 ## Objetivo
 
 Reemplazar la tarjeta “Servidor en marcha” por una banda horizontal de métricas, inspirada en la referencia proporcionada, situada antes del encabezado “El mundo, ahora mismo”.

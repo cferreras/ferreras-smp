@@ -29,7 +29,7 @@ La dirección aprobada se llama «editorial técnico». Combina fotografía de M
 
 El tema claro utiliza un blanco cálido, texto casi negro y superficies neutras. El tema oscuro utiliza negro carbón, texto blanco suave y superficies ligeramente elevadas. Ambos temas comparten un violeta reconocible como acento. Los colores verde y rojo se reservan para disponibilidad y error.
 
-La tipografía sans serif organiza titulares, navegación y lectura. Geist Mono identifica la IP, datos en vivo y etiquetas funcionales. Geist Pixel Square se limita a la marca y a detalles breves.
+Manrope organiza la marca, los titulares, la navegación y la lectura. IBM Plex Mono identifica la IP, los datos en vivo y las etiquetas funcionales.
 
 Las composiciones alternan imagen y texto con proporciones asimétricas. Las imágenes pueden ocupar el ancho completo o sobrepasar la cuadrícula de contenido cuando esto refuerce el ritmo editorial. Los bordes, radios y sombras deben ser discretos.
 
