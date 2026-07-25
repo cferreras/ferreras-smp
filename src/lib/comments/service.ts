@@ -213,10 +213,14 @@ export class CommentsService {
     const config = getCommentsConfig();
     const identity = getIdentityFromRequest(request, config.identitySecret);
     const identityHash = hashIdentity(config.identitySecret, identity.identityId);
-    await this.store.consumeReportLimit(identityHash);
+    const networkHash = hashNetworkAddress(
+      config.identitySecret,
+      getClientAddress(request),
+    );
+    await this.store.consumeReportLimit(identityHash, networkHash);
     const result = await this.store.reportComment(id, identityHash);
 
-    if (result?.comment && !result.duplicate && result.comment.reportCount >= 2) {
+    if (result?.comment && !result.duplicate && result.thresholdCrossed) {
       await notifyOrQueue(
         this.store,
         result.comment,

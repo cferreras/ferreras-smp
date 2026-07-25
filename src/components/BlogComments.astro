@@ -201,6 +201,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     const length = root.querySelector<HTMLOutputElement>("[data-comment-length]");
     let cursor: string | null = null;
     let count = 0;
+    let submissionIdempotencyKey = makeIdempotencyKey();
 
     if (!slug || !form || !list || !submit) return;
     const endpoint = `${apiBase}/api/comments/${encodeURIComponent(slug)}`;
@@ -451,6 +452,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 
       submit.disabled = true;
       if (status) status.textContent = "Publicando…";
+      let responseConfirmed = false;
 
       try {
         const response = await fetch(endpoint, {
@@ -462,10 +464,11 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
             body: data.get("body"),
             website: data.get("website"),
             turnstileToken,
-            idempotencyKey: makeIdempotencyKey(),
+            idempotencyKey: submissionIdempotencyKey,
           }),
         });
         const result = await response.json() as CommentsResponse;
+        responseConfirmed = true;
         if (!response.ok || !result.ok) {
           throw new Error(result.error || "No se pudo publicar el comentario.");
         }
@@ -485,6 +488,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
             : "No se pudo publicar el comentario.";
         }
       } finally {
+        if (responseConfirmed) submissionIdempotencyKey = makeIdempotencyKey();
         submit.disabled = false;
         const turnstile = (window as TurnstileWindow).turnstile;
         const widget = root.querySelector(".cf-turnstile");

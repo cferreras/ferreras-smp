@@ -11,6 +11,12 @@ import {
 } from "./http.ts";
 import { assessCommentRisk } from "./risk.ts";
 import {
+  CommentRateLimitError,
+  CommentStore,
+  decodeCommentCursor,
+  encodeCommentCursor,
+} from "./store.ts";
+import {
   CommentValidationError,
   normalizeCommentBody,
   normalizeNickname,
@@ -102,5 +108,85 @@ assert.match(
   commentsOptionsResponse(allowed).headers.get("Access-Control-Allow-Methods") ?? "",
   /PATCH, DELETE/,
 );
+
+const cursor = encodeCommentCursor({
+  score: 1_753_440_000_000,
+  id: "5391b648-7603-4a4b-9444-5a838de7253e",
+});
+assert.deepEqual(decodeCommentCursor(cursor), {
+  score: 1_753_440_000_000,
+  id: "5391b648-7603-4a4b-9444-5a838de7253e",
+});
+assert.equal(decodeCommentCursor("invalid"), null);
+
+const reportLimitKeys = [];
+const reportLimitStore = new CommentStore({
+  eval: async (_script, _keys, key) => {
+    reportLimitKeys.push(key);
+    return key.includes(":network:") ? [11, 120] : [1, 120];
+  },
+});
+await assert.rejects(
+  reportLimitStore.consumeReportLimit("identity-hash", "network-hash"),
+  (error) => error instanceof CommentRateLimitError && error.retryAfter === 120,
+);
+assert.deepEqual(reportLimitKeys, [
+  "comments:rate:report:identity:day:identity-hash",
+  "comments:rate:report:network:day:network-hash",
+]);
+
+let paginationEntries = [
+  { id: "a", score: 1 },
+  { id: "b", score: 2 },
+  { id: "c", score: 3 },
+  { id: "d", score: 4 },
+];
+const withScores = (entries) =>
+  entries.flatMap(({ id, score }) => [id, String(score)]);
+const paginationStore = new CommentStore({
+  zrange: async (_key, start, end) =>
+    withScores(paginationEntries.slice(start, end + 1)),
+  zrangebyscore: async (_key, min, max, ...options) => {
+    const exclusive = String(min).startsWith("(");
+    const minimum = Number.parseFloat(String(min).replace("(", ""));
+    const maximum = max === "+inf" ? Number.POSITIVE_INFINITY : Number(max);
+    let entries = paginationEntries.filter(({ score }) =>
+      (exclusive ? score > minimum : score >= minimum) && score <= maximum
+    );
+    const limitIndex = options.indexOf("LIMIT");
+    if (limitIndex >= 0) {
+      const offset = Number(options[limitIndex + 1]);
+      const count = Number(options[limitIndex + 2]);
+      entries = entries.slice(offset, offset + count);
+    }
+    return withScores(entries);
+  },
+  hgetall: async (_key) => ({
+    postSlug: "post",
+    authorIdentityHash: "viewer",
+    authorCode: "ABCDE",
+    avatar: "steve",
+    nickname: "Jugador",
+    body: "Comentario",
+    status: "published",
+    riskScore: "0",
+    createdAt: new Date().toISOString(),
+    editedAt: "",
+    moderatedAt: "",
+    moderationReason: "",
+    reportCount: "0",
+  }),
+  zcard: async () => paginationEntries.length,
+});
+const firstPage = await paginationStore.listPublished("post", null, 2, "viewer");
+assert.deepEqual(firstPage.comments.map(({ id }) => id), ["a", "b"]);
+paginationEntries = paginationEntries.filter(({ id }) => id !== "a");
+const secondPage = await paginationStore.listPublished(
+  "post",
+  firstPage.nextCursor,
+  2,
+  "viewer",
+);
+assert.deepEqual(secondPage.comments.map(({ id }) => id), ["c", "d"]);
 
 console.log("Comment security checks OK");

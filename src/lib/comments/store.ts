@@ -31,18 +31,39 @@ const publishedKey = (slug: string) => `${PUBLISHED_PREFIX}${slug}:published`;
 const moderationTokenKey = (hash: string) => `comments:moderation-token:${hash}`;
 const moderationTokenSetKey = (commentId: string) => `comments:moderation-tokens:${commentId}`;
 
-const encodeCursor = (offset: number) =>
-  Buffer.from(String(offset), "utf8").toString("base64url");
+interface CommentCursor {
+  score: number;
+  id: string;
+}
 
-const decodeCursor = (cursor: string | null) => {
-  if (!cursor) return 0;
+export const encodeCommentCursor = (cursor: CommentCursor) =>
+  Buffer.from(JSON.stringify(cursor), "utf8").toString("base64url");
+
+export const decodeCommentCursor = (cursor: string | null): CommentCursor | null => {
+  if (!cursor) return null;
 
   try {
-    const value = Number.parseInt(Buffer.from(cursor, "base64url").toString("utf8"), 10);
-    return Number.isSafeInteger(value) && value >= 0 ? value : 0;
+    const value = JSON.parse(
+      Buffer.from(cursor, "base64url").toString("utf8"),
+    ) as Partial<CommentCursor>;
+    return Number.isFinite(value.score)
+      && typeof value.id === "string"
+      && value.id.length > 0
+      ? { score: value.score as number, id: value.id }
+      : null;
   } catch {
-    return 0;
+    return null;
   }
+};
+
+const scoredEntries = (values: string[]) => {
+  const entries: CommentCursor[] = [];
+  for (let index = 0; index < values.length; index += 2) {
+    const id = values[index];
+    const score = Number.parseFloat(values[index + 1]);
+    if (id && Number.isFinite(score)) entries.push({ id, score });
+  }
+  return entries;
 };
 
 const parseComment = (id: string, data: Record<string, string>): CommentRecord | null => {
@@ -85,14 +106,21 @@ const toPublicComment = (
 });
 
 export class CommentRateLimitError extends Error {
-  constructor(public readonly retryAfter: number) {
+  readonly retryAfter: number;
+
+  constructor(retryAfter: number) {
     super("Comment rate limit exceeded");
     this.name = "CommentRateLimitError";
+    this.retryAfter = retryAfter;
   }
 }
 
 export class CommentStore {
-  constructor(private readonly redis: Redis = getRedis()) {}
+  private readonly redis: Redis;
+
+  constructor(redis: Redis = getRedis()) {
+    this.redis = redis;
+  }
 
   async listPublished(
     slug: string,
@@ -100,14 +128,47 @@ export class CommentStore {
     requestedLimit: number | null,
     viewerIdentityHash: string,
   ) {
-    const offset = decodeCursor(cursor);
+    const decodedCursor = decodeCommentCursor(cursor);
     const limit = Math.min(
       Math.max(requestedLimit || COMMENT_PAGE_DEFAULT, 1),
       COMMENT_PAGE_MAX,
     );
-    const ids = await this.redis.zrange(publishedKey(slug), offset, offset + limit);
-    const hasMore = ids.length > limit;
-    const pageIds = ids.slice(0, limit);
+    const key = publishedKey(slug);
+    let entries: CommentCursor[];
+
+    if (!decodedCursor) {
+      entries = scoredEntries(
+        await this.redis.zrange(key, 0, limit, "WITHSCORES"),
+      );
+    } else {
+      const sameScore = scoredEntries(
+        await this.redis.zrangebyscore(
+          key,
+          decodedCursor.score,
+          decodedCursor.score,
+          "WITHSCORES",
+        ),
+      ).filter((entry) => entry.id > decodedCursor.id);
+      const remaining = Math.max(0, limit + 1 - sameScore.length);
+      const later = remaining
+        ? scoredEntries(
+            await this.redis.zrangebyscore(
+              key,
+              `(${decodedCursor.score}`,
+              "+inf",
+              "WITHSCORES",
+              "LIMIT",
+              0,
+              remaining,
+            ),
+          )
+        : [];
+      entries = [...sameScore, ...later].slice(0, limit + 1);
+    }
+
+    const hasMore = entries.length > limit;
+    const pageEntries = entries.slice(0, limit);
+    const pageIds = pageEntries.map((entry) => entry.id);
     const rows = pageIds.length
       ? await Promise.all(pageIds.map((id) => this.redis.hgetall(commentKey(id))))
       : [];
@@ -118,8 +179,10 @@ export class CommentStore {
 
     return {
       comments,
-      nextCursor: hasMore ? encodeCursor(offset + limit) : null,
-      count: await this.redis.zcard(publishedKey(slug)),
+      nextCursor: hasMore && pageEntries.length
+        ? encodeCommentCursor(pageEntries.at(-1) as CommentCursor)
+        : null,
+      count: await this.redis.zcard(key),
     };
   }
 
@@ -354,17 +417,35 @@ export class CommentStore {
     const count = await this.redis.hincrby(commentKey(id), "reportCount", 1);
     comment.reportCount = count;
     if (count >= 2) await this.redis.zadd(REPORTED_KEY, Date.now(), id);
-    return { comment, duplicate: false };
+    return {
+      comment,
+      duplicate: false,
+      thresholdCrossed: count === 2,
+    };
   }
 
-  async consumeReportLimit(identityHash: string) {
-    const [count, ttl] = await this.redis.eval(
-      RATE_SCRIPT,
-      1,
-      `comments:rate:report:day:${identityHash}`,
-      60 * 60 * 24,
-    ) as [number, number];
-    if (count > 10) throw new CommentRateLimitError(Math.max(ttl, 1));
+  async consumeReportLimit(identityHash: string, networkHash: string) {
+    const results = await Promise.all([
+      this.redis.eval(
+        RATE_SCRIPT,
+        1,
+        `comments:rate:report:identity:day:${identityHash}`,
+        60 * 60 * 24,
+      ),
+      this.redis.eval(
+        RATE_SCRIPT,
+        1,
+        `comments:rate:report:network:day:${networkHash}`,
+        60 * 60 * 24,
+      ),
+    ]) as [number, number][];
+    const retryAfter = results.reduce(
+      (current, [count, ttl]) => count > 10 ? Math.max(current, ttl) : current,
+      0,
+    );
+    if (retryAfter > 0) {
+      throw new CommentRateLimitError(Math.max(retryAfter, 1));
+    }
   }
 
   async createModerationToken(commentId: string, action: ModerationAction) {
