@@ -94,8 +94,8 @@
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--card);
-  font-size: 15px;
-  line-height: 1.65;
+  font-size: 17px;
+  line-height: 1.7;
   resize: vertical;
 }
 
@@ -417,6 +417,7 @@
 
   .comment-message textarea {
     min-height: 180px;
+    font-size: 16px;
   }
 
   .comment-content header {
