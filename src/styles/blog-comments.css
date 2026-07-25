@@ -247,7 +247,7 @@
 }
 
 .comment-byline strong {
-  font-size: 13px;
+  font-size: 16px;
 }
 
 .comment-code {
@@ -255,14 +255,14 @@
   border: 1px solid var(--border);
   border-radius: 4px;
   color: var(--muted-strong);
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.06em;
 }
 
 .comment-content time,
 .comment-edited {
   color: var(--muted);
-  font-size: 9px;
+  font-size: 12px;
 }
 
 .comment-meta,
