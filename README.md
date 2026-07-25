@@ -28,6 +28,8 @@ Variables para Vercel/frontend:
 
 ```env
 PUBLIC_MINECRAFT_API_URL=https://mc-api.ferreras.dev
+PUBLIC_COMMENTS_API_URL=https://mc-api.ferreras.dev
+PUBLIC_TURNSTILE_SITE_KEY=<site-key-de-turnstile>
 ```
 
 Si no se define `PUBLIC_MINECRAFT_API_URL`, el frontend usa rutas relativas
@@ -38,6 +40,12 @@ Variables para Dokploy/API:
 ```env
 REDIS_URL=redis://default:PASSWORD@dragonfly:6379
 MINECRAFT_API_ONLY=true
+COMMENTS_ALLOWED_ORIGIN=https://mc.ferreras.dev
+COMMENTS_PUBLIC_API_URL=https://mc-api.ferreras.dev
+COMMENTS_IDENTITY_SECRET=<secreto-aleatorio-de-al-menos-32-caracteres>
+TURNSTILE_SECRET_KEY=<secret-key-de-turnstile>
+COMMENTS_DISCORD_WEBHOOK_URL=<webhook-privado-de-discord>
+COMMENTS_BLOCKED_TERMS=
 ```
 
 DragonFly no debe exponerse públicamente. Solo la API en Dokploy/VPS debe tener
@@ -70,10 +78,36 @@ MINECRAFT_API_ONLY=true
 
 Esta aplicación sí expone HTTP hacia Traefik/Dokploy, pero no habla con RCON.
 Solo lee y escribe datos de DragonFly/Redis para los endpoints
-`/api/minecraft/...`. Con `MINECRAFT_API_ONLY=true`, cualquier ruta fuera de
-`/api/minecraft/...` responde 404 y `/health` responde un JSON ligero para
+`/api/minecraft/...` y `/api/comments/...`. Con `MINECRAFT_API_ONLY=true`,
+cualquier ruta fuera de esos prefijos responde 404 y `/health` responde un JSON ligero para
 checks de salud; así la instancia de Dokploy no sirve la landing completa en
 `/`.
+
+#### Comentarios del blog
+
+Los artículos siguen prerenderizados y cargan sus comentarios desde
+`PUBLIC_COMMENTS_API_URL`. La API usa Dragonfly para comentarios, índices,
+moderación y límites temporales. Turnstile se valida siempre en el servidor y
+los comentarios sospechosos se envían al webhook de Discord con enlaces de
+moderación de un solo uso.
+
+La cookie anónima se firma con `COMMENTS_IDENTITY_SECRET`; genera un código y
+un avatar estables para ese navegador. El código visible permite distinguir a
+dos personas aunque hayan elegido el mismo nick. No reutilices ese secreto en
+otros servicios.
+
+Dragonfly debe tener un volumen persistente en `/data` y snapshots periódicos,
+por ejemplo:
+
+```yaml
+environment:
+  - "DFLY_snapshot_cron=*/15 * * * *"
+  - DFLY_dir=/data
+```
+
+Dokploy realiza además un backup diario del volumen a Cloudflare R2. El backup
+debe detener temporalmente el contenedor para no copiar un snapshot mientras
+se está escribiendo.
 
 El origen de `mc-api.ferreras.dev` debe aceptar tráfico público únicamente desde
 las redes de Cloudflare. Configura también rate limiting en Cloudflare para

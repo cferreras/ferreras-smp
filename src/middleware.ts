@@ -1,6 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
 
-const API_PREFIX = "/api/minecraft";
+const API_PREFIXES = ["/api/minecraft", "/api/comments"];
 const isApiOnly = import.meta.env.MINECRAFT_API_ONLY === "true";
 const isProduction = import.meta.env.PROD;
 
@@ -44,7 +44,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return addSecurityHeaders(json({ ok: true, service: "minecraft-live-api" }, { status: 200 }));
   }
 
-  if (pathname === API_PREFIX || pathname.startsWith(`${API_PREFIX}/`)) {
+  if (API_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`))) {
     return addSecurityHeaders(await next());
   }
 
