@@ -147,6 +147,7 @@ if (liveRoot) {
       '[data-status-metric="Día del mundo"]',
     );
     const tpsMetric = document.querySelector<HTMLElement>('[data-status-metric="TPS"]');
+    const tpsUnit = document.querySelector<HTMLElement>('[data-status-unit="TPS"]');
 
     if (statusBadge) {
       statusBadge.classList.remove("online", "offline");
@@ -157,6 +158,7 @@ if (liveRoot) {
     if (playersMetric) playersMetric.textContent = "No disponible";
     if (worldDayMetric) worldDayMetric.textContent = "No disponible";
     if (tpsMetric) tpsMetric.textContent = "No disponible";
+    if (tpsUnit) tpsUnit.hidden = true;
     updatePlayers([]);
     updateActivity([]);
   };
@@ -169,6 +171,7 @@ if (liveRoot) {
       '[data-status-metric="Día del mundo"]',
     );
     const tpsMetric = document.querySelector<HTMLElement>('[data-status-metric="TPS"]');
+    const tpsUnit = document.querySelector<HTMLElement>('[data-status-unit="TPS"]');
     const statusText = snapshot.status.online ? "Online" : "Offline";
 
     if (statusBadge) {
@@ -189,6 +192,7 @@ if (liveRoot) {
       tpsMetric.textContent =
         snapshot.status.tps === null ? "No disponible" : snapshot.status.tps.toFixed(1);
     }
+    if (tpsUnit) tpsUnit.hidden = snapshot.status.tps === null;
     updatePlayers(snapshot.status.players);
     updateActivity(snapshot.activity);
 

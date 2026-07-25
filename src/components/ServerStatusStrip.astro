@@ -42,7 +42,10 @@ const statusClass = status.online ? "online" : "offline";
     </div>
     <div>
       <dt>Rendimiento</dt>
-      <dd><span data-status-metric="TPS">{status.tps === null ? "No disponible" : status.tps.toFixed(1)}</span>{status.tps !== null && <small> TPS</small>}</dd>
+      <dd>
+        <span data-status-metric="TPS">{status.tps === null ? "No disponible" : status.tps.toFixed(1)}</span>
+        <small data-status-unit="TPS" hidden={status.tps === null}> TPS</small>
+      </dd>
     </div>
   </dl>
 
