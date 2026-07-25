@@ -17,7 +17,7 @@ export const prerender = false;
 const service = new CommentsService();
 const ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
-export const POST = (async ({ params, request }) => {
+export const POST = (async ({ params, request, clientAddress }) => {
   try {
     requireCommentsWriteOrigin(request);
     const id = params.id ?? "";
@@ -25,7 +25,7 @@ export const POST = (async ({ params, request }) => {
       return commentsErrorResponse(request, 404, "Comentario no encontrado.");
     }
 
-    const response = await service.report(request, id);
+    const response = await service.report(request, id, clientAddress);
     return commentsJsonResponse(request, response.result, { cookie: response.cookie });
   } catch (error) {
     if (error instanceof Response) return error;

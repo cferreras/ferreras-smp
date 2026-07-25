@@ -80,21 +80,13 @@ export const GET = (async ({ params }) => {
 export const POST = (async ({ params }) => {
   try {
     const token = params.token ?? "";
-    const record = await service.moderationStore.readModerationToken(token);
-    if (!record) {
+    const comment = await service.moderationStore.moderateCommentWithToken(token);
+    if (!comment) {
       return page(
         "Enlace caducado",
         "<h1>Este enlace ya no es válido.</h1><p>Puede haber caducado o haberse utilizado anteriormente.</p>",
         410,
       );
-    }
-
-    const comment = await service.moderationStore.moderateComment(
-      record.commentId,
-      record.action,
-    );
-    if (!comment) {
-      return page("Comentario no encontrado", "<h1>Comentario no encontrado.</h1>", 404);
     }
 
     return page(

@@ -6,6 +6,7 @@ import {
   hashIdentity,
   hashNetworkAddress,
 } from "./identity.ts";
+import { getTrustedClientAddress } from "./http.ts";
 import { assessCommentRisk } from "./risk.ts";
 import {
   CommentRateLimitError,
@@ -23,10 +24,13 @@ const getPublishedSlugs = () => {
   return publishedSlugsPromise;
 };
 
-const getClientAddress = (request: Request) =>
-  request.headers.get("cf-connecting-ip")
-  || request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
-  || "unknown";
+const getTurnstileHostnames = (allowedOrigin: string) => {
+  const hostnames = [new URL(allowedOrigin).hostname];
+  if (process.env.NODE_ENV !== "production") {
+    hostnames.push("localhost", "127.0.0.1", "dummy-key-pass.example.com");
+  }
+  return hostnames;
+};
 
 const publicComment = (comment: {
   id: string;
@@ -85,7 +89,11 @@ export class CommentEditRejectedError extends Error {
 }
 
 export class CommentsService {
-  constructor(private readonly store = new CommentStore()) {}
+  private readonly store: CommentStore;
+
+  constructor(store = new CommentStore()) {
+    this.store = store;
+  }
 
   async assertPublishedSlug(slug: string) {
     if (!(await getPublishedSlugs()).has(slug)) throw new UnknownBlogPostError();
@@ -105,7 +113,7 @@ export class CommentsService {
     };
   }
 
-  async submit(request: Request, slug: string, input: unknown) {
+  async submit(request: Request, slug: string, input: unknown, fallbackAddress?: string) {
     const config = getCommentsConfig();
     await this.assertPublishedSlug(slug);
     const submission = validateSubmission(input);
@@ -127,16 +135,22 @@ export class CommentsService {
     }
 
     try {
+      const clientAddress = getTrustedClientAddress(request, fallbackAddress);
       const turnstileValid = await verifyTurnstileToken(
         submission.turnstileToken,
         config.turnstileSecret,
+        {
+          remoteIp: clientAddress,
+          expectedAction: "blog-comment",
+          expectedHostnames: getTurnstileHostnames(config.allowedOrigin),
+        },
       );
       if (!turnstileValid) throw new TurnstileValidationError();
 
       const identityHash = hashIdentity(config.identitySecret, identity.identityId);
       const networkHash = hashNetworkAddress(
         config.identitySecret,
-        getClientAddress(request),
+        clientAddress,
       );
       const [ratePressure, duplicate] = await Promise.all([
         this.store.consumeRateLimits(identityHash, networkHash),
@@ -209,13 +223,13 @@ export class CommentsService {
     }
   }
 
-  async report(request: Request, id: string) {
+  async report(request: Request, id: string, fallbackAddress?: string) {
     const config = getCommentsConfig();
     const identity = getIdentityFromRequest(request, config.identitySecret);
     const identityHash = hashIdentity(config.identitySecret, identity.identityId);
     const networkHash = hashNetworkAddress(
       config.identitySecret,
-      getClientAddress(request),
+      getTrustedClientAddress(request, fallbackAddress),
     );
     await this.store.consumeReportLimit(identityHash, networkHash);
     const result = await this.store.reportComment(id, identityHash);

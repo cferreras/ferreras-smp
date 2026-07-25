@@ -6,9 +6,13 @@ import {
   readIdentityToken,
 } from "./identity.ts";
 import {
+  CommentsRequestError,
   commentsOptionsResponse,
+  getTrustedClientAddress,
   isAllowedCommentsOrigin,
+  readCommentsJson,
 } from "./http.ts";
+import { notifyOrQueue, retryQueuedNotifications } from "./discord.ts";
 import { assessCommentRisk } from "./risk.ts";
 import {
   CommentRateLimitError,
@@ -16,6 +20,7 @@ import {
   decodeCommentCursor,
   encodeCommentCursor,
 } from "./store.ts";
+import { verifyTurnstileToken } from "./turnstile.ts";
 import {
   CommentValidationError,
   normalizeCommentBody,
@@ -40,6 +45,10 @@ const identity = getIdentityFromRequest(request, secret);
 assert.equal(identity.identityId, "fixed-identity");
 assert.equal(identity.cookie, undefined);
 assert.deepEqual(identity.viewer, viewer);
+assert.doesNotThrow(() => getIdentityFromRequest(new Request(
+  "https://mc-api.ferreras.dev/api/comments/example",
+  { headers: { cookie: "ferreras_commenter=%E0%A4%A" } },
+), secret));
 
 assert.equal(normalizeNickname("  Jugador_7  "), "Jugador_7");
 assert.throws(
@@ -109,6 +118,117 @@ assert.match(
   /PATCH, DELETE/,
 );
 
+const previousNodeEnvironment = process.env.NODE_ENV;
+process.env.NODE_ENV = "production";
+assert.equal(isAllowedCommentsOrigin(new Request(
+  "https://mc-api.ferreras.dev/api/comments/post",
+  { headers: { origin: "http://localhost:4321" } },
+)), false);
+if (previousNodeEnvironment === undefined) {
+  delete process.env.NODE_ENV;
+} else {
+  process.env.NODE_ENV = previousNodeEnvironment;
+}
+
+assert.deepEqual(
+  await readCommentsJson(new Request(
+    "https://mc-api.ferreras.dev/api/comments/post",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json; charset=utf-8" },
+      body: JSON.stringify({ body: "Seguro" }),
+    },
+  )),
+  { body: "Seguro" },
+);
+await assert.rejects(
+  readCommentsJson(new Request(
+    "https://mc-api.ferreras.dev/api/comments/post",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/jsonp" },
+      body: "{}",
+    },
+  )),
+  (error) => error instanceof CommentsRequestError && error.status === 415,
+);
+await assert.rejects(
+  readCommentsJson(new Request(
+    "https://mc-api.ferreras.dev/api/comments/post",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: "x".repeat(8 * 1024 + 1),
+    },
+  )),
+  (error) => error instanceof CommentsRequestError && error.status === 413,
+);
+
+const forwardedRequest = new Request(
+  "https://mc-api.ferreras.dev/api/comments/post",
+  {
+    headers: {
+      "cf-connecting-ip": "203.0.113.8",
+      "x-forwarded-for": "198.51.100.4",
+    },
+  },
+);
+assert.equal(getTrustedClientAddress(forwardedRequest, "192.0.2.10"), "192.0.2.10");
+assert.equal(
+  getTrustedClientAddress(new Request(
+    "https://mc-api.ferreras.dev/api/comments/post",
+    { headers: { "x-forwarded-for": "198.51.100.4" } },
+  ), "192.0.2.10"),
+  "192.0.2.10",
+);
+assert.equal(
+  getTrustedClientAddress(new Request(
+    "https://mc-api.ferreras.dev/api/comments/post",
+    { headers: { "cf-connecting-ip": "not-an-ip" } },
+  ), "not-an-ip"),
+  "unknown",
+);
+
+let turnstileBody;
+const validTurnstile = await verifyTurnstileToken(
+  "valid-token",
+  "secret",
+  {
+    remoteIp: "203.0.113.8",
+    expectedAction: "blog-comment",
+    expectedHostnames: ["mc.ferreras.dev"],
+  },
+  async (_url, init) => {
+    turnstileBody = new URLSearchParams(init.body);
+    return Response.json({
+      success: true,
+      action: "blog-comment",
+      hostname: "mc.ferreras.dev",
+    });
+  },
+);
+assert.equal(validTurnstile, true);
+assert.equal(turnstileBody.get("remoteip"), "203.0.113.8");
+assert.equal(await verifyTurnstileToken(
+  "valid-token",
+  "secret",
+  { expectedHostnames: ["mc.ferreras.dev"] },
+  async () => Response.json({ success: true, hostname: "example.invalid" }),
+), false);
+assert.equal(await verifyTurnstileToken(
+  "valid-token",
+  "secret",
+  {
+    expectedAction: "blog-comment",
+    expectedHostnames: ["mc.ferreras.dev"],
+  },
+  async () => Response.json({
+    success: true,
+    action: "otro-formulario",
+    hostname: "mc.ferreras.dev",
+  }),
+), false);
+
 const cursor = encodeCommentCursor({
   score: 1_753_440_000_000,
   id: "5391b648-7603-4a4b-9444-5a838de7253e",
@@ -118,6 +238,7 @@ assert.deepEqual(decodeCommentCursor(cursor), {
   id: "5391b648-7603-4a4b-9444-5a838de7253e",
 });
 assert.equal(decodeCommentCursor("invalid"), null);
+assert.equal(decodeCommentCursor("a".repeat(257)), null);
 
 const reportLimitKeys = [];
 const reportLimitStore = new CommentStore({
@@ -188,5 +309,143 @@ const secondPage = await paginationStore.listPublished(
   "viewer",
 );
 assert.deepEqual(secondPage.comments.map(({ id }) => id), ["c", "d"]);
+
+const tokenMapStore = new CommentStore({
+  eval: async () => 1,
+});
+const tokenMap = await tokenMapStore.createModerationTokens(
+  "5391b648-7603-4a4b-9444-5a838de7253e",
+);
+assert.deepEqual(Object.keys(tokenMap), ["approve", "reject", "delete"]);
+for (const value of Object.values(tokenMap)) {
+  assert.match(value, /^[A-Za-z0-9_-]{32}$/);
+}
+
+const queuedNotifications = new Set();
+const deletedTokens = [];
+let tokenGeneration = 0;
+let webhookRequests = 0;
+const notificationComment = {
+  id: "5391b648-7603-4a4b-9444-5a838de7253e",
+  postSlug: "post",
+  authorIdentityHash: "viewer",
+  authorCode: "ABCDE",
+  avatar: "steve",
+  nickname: "Jugador",
+  body: "Comentario",
+  status: "pending",
+  riskScore: 5,
+  createdAt: new Date().toISOString(),
+  editedAt: "",
+  moderatedAt: "",
+  moderationReason: "",
+  reportCount: 0,
+};
+const notificationStore = {
+  createModerationTokens: async () => {
+    tokenGeneration += 1;
+    return Object.fromEntries(
+      ["approve", "reject", "delete"].map((action) => [
+        action,
+        `${action[0]}${String(tokenGeneration).repeat(31)}`,
+      ]),
+    );
+  },
+  deleteModerationToken: async (value) => deletedTokens.push(value),
+  queueNotification: async (id) => queuedNotifications.add(id),
+  clearNotification: async (id) => queuedNotifications.delete(id),
+  getQueuedNotifications: async () => [...queuedNotifications],
+  getComment: async () => notificationComment,
+};
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => {
+  webhookRequests += 1;
+  return new Response(null, { status: webhookRequests === 1 ? 503 : 204 });
+};
+try {
+  assert.equal(await notifyOrQueue(
+    notificationStore,
+    notificationComment,
+    "https://discord.invalid/webhook",
+    "https://mc-api.ferreras.dev",
+  ), false);
+  assert.equal(tokenGeneration, 1);
+  assert.equal(deletedTokens.length, 3);
+  await retryQueuedNotifications(
+    notificationStore,
+    "https://discord.invalid/webhook",
+    "https://mc-api.ferreras.dev",
+  );
+  assert.equal(tokenGeneration, 2);
+  assert.equal(queuedNotifications.size, 0);
+} finally {
+  globalThis.fetch = originalFetch;
+}
+
+const moderationToken = "a".repeat(32);
+let moderationAvailable = true;
+const moderationStore = new CommentStore({
+  get: async () => JSON.stringify({
+    commentId: "5391b648-7603-4a4b-9444-5a838de7253e",
+    action: "approve",
+    expiresAt: new Date(Date.now() + 60_000).toISOString(),
+  }),
+  hgetall: async () => ({
+    postSlug: "post",
+    authorIdentityHash: "viewer",
+    authorCode: "ABCDE",
+    avatar: "steve",
+    nickname: "Jugador",
+    body: "Comentario",
+    status: "pending",
+    riskScore: "5",
+    createdAt: new Date().toISOString(),
+    editedAt: "",
+    moderatedAt: "",
+    moderationReason: "",
+    reportCount: "0",
+  }),
+  eval: async () => {
+    if (!moderationAvailable) return 0;
+    moderationAvailable = false;
+    return 1;
+  },
+});
+const moderationResults = await Promise.all([
+  moderationStore.moderateCommentWithToken(moderationToken),
+  moderationStore.moderateCommentWithToken(moderationToken),
+]);
+assert.equal(moderationResults.filter(Boolean).length, 1);
+assert.equal(moderationResults.find(Boolean)?.status, "published");
+
+const blockedOwnerEditStore = new CommentStore({
+  hgetall: async () => ({
+    postSlug: "post",
+    authorIdentityHash: "viewer",
+    authorCode: "ABCDE",
+    avatar: "steve",
+    nickname: "Jugador",
+    body: "Comentario",
+    status: "published",
+    riskScore: "0",
+    createdAt: new Date().toISOString(),
+    editedAt: "",
+    moderatedAt: "",
+    moderationReason: "",
+    reportCount: "0",
+  }),
+  eval: async () => 0,
+});
+assert.equal(await blockedOwnerEditStore.updateOwnComment(
+  "5391b648-7603-4a4b-9444-5a838de7253e",
+  "viewer",
+  { body: "Intento tardío", status: "published", riskScore: 0 },
+), null);
+assert.equal(
+  await blockedOwnerEditStore.createModerationTokens(
+    "5391b648-7603-4a4b-9444-5a838de7253e",
+  ),
+  null,
+);
 
 console.log("Comment security checks OK");

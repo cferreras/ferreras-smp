@@ -3,12 +3,32 @@ import { defineMiddleware } from "astro:middleware";
 const API_PREFIXES = ["/api/minecraft", "/api/comments"];
 const isApiOnly = import.meta.env.MINECRAFT_API_ONLY === "true";
 const isProduction = import.meta.env.PROD;
+const REQUIRED_CSP_DIRECTIVES = [
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "object-src 'none'",
+  "form-action 'self'",
+];
 
 const addSecurityHeaders = (response: Response) => {
-  response.headers.set(
-    "Content-Security-Policy",
-    "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+  const generatedCsp = response.headers.get("Content-Security-Policy");
+  const directives = generatedCsp
+    ?.split(";")
+    .map((directive) => directive.trim())
+    .filter(Boolean) ?? [];
+  const directiveNames = new Set(
+    directives.map((directive) => directive.split(/\s+/, 1)[0].toLowerCase()),
   );
+
+  for (const directive of REQUIRED_CSP_DIRECTIVES) {
+    const name = directive.split(/\s+/, 1)[0];
+    if (!directiveNames.has(name)) {
+      directives.push(directive);
+    }
+  }
+
+  response.headers.set("Content-Security-Policy", directives.join("; "));
+  response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   response.headers.set(

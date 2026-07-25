@@ -2,9 +2,11 @@ import type { APIRoute } from "astro";
 import { MissingRedisUrlError } from "../../../lib/redis";
 import { MissingCommentsConfigError } from "../../../lib/comments/config";
 import {
+  CommentsRequestError,
   commentsErrorResponse,
   commentsJsonResponse,
   commentsOptionsResponse,
+  readCommentsJson,
   requireCommentsWriteOrigin,
 } from "../../../lib/comments/http";
 import {
@@ -24,6 +26,9 @@ const errorResponse = (request: Request, error: unknown, cookie?: string) => {
   if (error instanceof Response) return error;
   if (error instanceof UnknownBlogPostError) {
     return commentsErrorResponse(request, 404, "Artículo no encontrado.", { cookie });
+  }
+  if (error instanceof CommentsRequestError) {
+    return commentsErrorResponse(request, error.status, error.message, { cookie });
   }
   if (error instanceof CommentValidationError) {
     return commentsJsonResponse(
@@ -109,27 +114,16 @@ export const GET = (async ({ params, request, url }) => {
   }
 }) satisfies APIRoute;
 
-export const POST = (async ({ params, request }) => {
+export const POST = (async ({ params, request, clientAddress }) => {
   try {
     requireCommentsWriteOrigin(request);
-
-    if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
-      return commentsErrorResponse(request, 415, "El formato de la solicitud no es válido.");
-    }
-
-    const declaredLength = Number.parseInt(request.headers.get("content-length") ?? "0", 10);
-    if (declaredLength > 8 * 1024) {
-      return commentsErrorResponse(request, 413, "El comentario es demasiado grande.");
-    }
-
-    let body: unknown;
-    try {
-      body = await request.json();
-    } catch {
-      return commentsErrorResponse(request, 400, "La solicitud no contiene JSON válido.");
-    }
-
-    const submission = await service.submit(request, params.slug ?? "", body);
+    const body = await readCommentsJson(request);
+    const submission = await service.submit(
+      request,
+      params.slug ?? "",
+      body,
+      clientAddress,
+    );
     return commentsJsonResponse(request, submission.result, {
       status: submission.replayed ? 200 : 201,
       cookie: submission.cookie,
