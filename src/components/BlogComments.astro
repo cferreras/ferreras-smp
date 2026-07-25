@@ -30,7 +30,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       <h2 id="comments-title">Comentarios</h2>
       <p>Comparte una duda o algo que añadirías a esta guía. No necesitas cuenta.</p>
     </div>
-    <p class="comments-count mono" data-comments-count aria-live="polite">Cargando…</p>
   </div>
 
   <form class="comment-form" data-comment-form novalidate>
@@ -198,7 +197,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     const more = root.querySelector<HTMLButtonElement>("[data-comments-more]");
     const submit = root.querySelector<HTMLButtonElement>("[type='submit']");
     const status = root.querySelector<HTMLElement>("[data-comment-form-status]");
-    const countLabel = root.querySelector<HTMLElement>("[data-comments-count]");
     const body = form?.elements.namedItem("body") as HTMLTextAreaElement | null;
     const length = root.querySelector<HTMLOutputElement>("[data-comment-length]");
     let cursor: string | null = null;
@@ -209,9 +207,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 
     const setCount = (value: number) => {
       count = value;
-      if (countLabel) {
-        countLabel.textContent = value === 1 ? "1 comentario" : `${value} comentarios`;
-      }
     };
 
     const reportComment = async (button: HTMLButtonElement, id: string) => {
@@ -433,7 +428,6 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       } catch {
         if (unavailable) unavailable.hidden = false;
         if (empty) empty.hidden = true;
-        if (countLabel) countLabel.textContent = "";
       } finally {
         if (loading) loading.hidden = true;
       }

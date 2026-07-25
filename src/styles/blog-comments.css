@@ -29,14 +29,6 @@
   line-height: 1.7;
 }
 
-.comments-count {
-  flex: none;
-  margin-bottom: 3px;
-  color: var(--muted);
-  font-size: 13px;
-  text-transform: uppercase;
-}
-
 .comment-form {
   padding: 0;
 }
