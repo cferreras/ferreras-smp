@@ -9,6 +9,7 @@ import {
 import type {
   CommentRecord,
   CommentStatus,
+  ModerationAction,
   ModerationTokenRecord,
   PublicComment,
 } from "./types.ts";
@@ -533,7 +534,7 @@ export class CommentStore {
       const token = randomBytes(24).toString("base64url");
       const tokenHash = createHash("sha256").update(token).digest("base64url");
       const record: ModerationTokenRecord = { commentId, action, expiresAt };
-      return { token, tokenHash, record: JSON.stringify(record) };
+      return { action, token, tokenHash, record: JSON.stringify(record) };
     });
     const created = await this.redis.eval(
       CREATE_MODERATION_TOKENS_SCRIPT,
@@ -545,7 +546,11 @@ export class CommentStore {
       ...values.flatMap(({ tokenHash, record }) => [tokenHash, record]),
     );
 
-    return Number(created) === 1 ? values.map(({ token }) => token) : null;
+    return Number(created) === 1
+      ? Object.fromEntries(
+        values.map(({ action, token }) => [action, token]),
+      ) as Record<ModerationAction, string>
+      : null;
   }
 
   async deleteModerationToken(token: string) {

@@ -29,11 +29,11 @@ export const isAllowedCommentsOrigin = (request: Request) => {
     || (process.env.NODE_ENV !== "production" && LOCAL_ORIGINS.has(origin));
 };
 
-export const getTrustedClientAddress = (request: Request, fallback?: string) => {
-  const cloudflareAddress = request.headers.get("cf-connecting-ip")?.trim();
-  if (cloudflareAddress && isIP(cloudflareAddress)) return cloudflareAddress;
-
-  const serverAddress = fallback?.trim();
+export const getTrustedClientAddress = (
+  _request: Request,
+  trustedRuntimeAddress?: string,
+) => {
+  const serverAddress = trustedRuntimeAddress?.trim();
   return serverAddress && isIP(serverAddress) ? serverAddress : "unknown";
 };
 

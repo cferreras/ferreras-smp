@@ -12,6 +12,7 @@ import {
   isAllowedCommentsOrigin,
   readCommentsJson,
 } from "./http.ts";
+import { notifyOrQueue, retryQueuedNotifications } from "./discord.ts";
 import { assessCommentRisk } from "./risk.ts";
 import {
   CommentRateLimitError,
@@ -172,7 +173,7 @@ const forwardedRequest = new Request(
     },
   },
 );
-assert.equal(getTrustedClientAddress(forwardedRequest, "192.0.2.10"), "203.0.113.8");
+assert.equal(getTrustedClientAddress(forwardedRequest, "192.0.2.10"), "192.0.2.10");
 assert.equal(
   getTrustedClientAddress(new Request(
     "https://mc-api.ferreras.dev/api/comments/post",
@@ -213,6 +214,19 @@ assert.equal(await verifyTurnstileToken(
   "secret",
   { expectedHostnames: ["mc.ferreras.dev"] },
   async () => Response.json({ success: true, hostname: "example.invalid" }),
+), false);
+assert.equal(await verifyTurnstileToken(
+  "valid-token",
+  "secret",
+  {
+    expectedAction: "blog-comment",
+    expectedHostnames: ["mc.ferreras.dev"],
+  },
+  async () => Response.json({
+    success: true,
+    action: "otro-formulario",
+    hostname: "mc.ferreras.dev",
+  }),
 ), false);
 
 const cursor = encodeCommentCursor({
@@ -295,6 +309,78 @@ const secondPage = await paginationStore.listPublished(
   "viewer",
 );
 assert.deepEqual(secondPage.comments.map(({ id }) => id), ["c", "d"]);
+
+const tokenMapStore = new CommentStore({
+  eval: async () => 1,
+});
+const tokenMap = await tokenMapStore.createModerationTokens(
+  "5391b648-7603-4a4b-9444-5a838de7253e",
+);
+assert.deepEqual(Object.keys(tokenMap), ["approve", "reject", "delete"]);
+for (const value of Object.values(tokenMap)) {
+  assert.match(value, /^[A-Za-z0-9_-]{32}$/);
+}
+
+const queuedNotifications = new Set();
+const deletedTokens = [];
+let tokenGeneration = 0;
+let webhookRequests = 0;
+const notificationComment = {
+  id: "5391b648-7603-4a4b-9444-5a838de7253e",
+  postSlug: "post",
+  authorIdentityHash: "viewer",
+  authorCode: "ABCDE",
+  avatar: "steve",
+  nickname: "Jugador",
+  body: "Comentario",
+  status: "pending",
+  riskScore: 5,
+  createdAt: new Date().toISOString(),
+  editedAt: "",
+  moderatedAt: "",
+  moderationReason: "",
+  reportCount: 0,
+};
+const notificationStore = {
+  createModerationTokens: async () => {
+    tokenGeneration += 1;
+    return Object.fromEntries(
+      ["approve", "reject", "delete"].map((action) => [
+        action,
+        `${action[0]}${String(tokenGeneration).repeat(31)}`,
+      ]),
+    );
+  },
+  deleteModerationToken: async (value) => deletedTokens.push(value),
+  queueNotification: async (id) => queuedNotifications.add(id),
+  clearNotification: async (id) => queuedNotifications.delete(id),
+  getQueuedNotifications: async () => [...queuedNotifications],
+  getComment: async () => notificationComment,
+};
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async () => {
+  webhookRequests += 1;
+  return new Response(null, { status: webhookRequests === 1 ? 503 : 204 });
+};
+try {
+  assert.equal(await notifyOrQueue(
+    notificationStore,
+    notificationComment,
+    "https://discord.invalid/webhook",
+    "https://mc-api.ferreras.dev",
+  ), false);
+  assert.equal(tokenGeneration, 1);
+  assert.equal(deletedTokens.length, 3);
+  await retryQueuedNotifications(
+    notificationStore,
+    "https://discord.invalid/webhook",
+    "https://mc-api.ferreras.dev",
+  );
+  assert.equal(tokenGeneration, 2);
+  assert.equal(queuedNotifications.size, 0);
+} finally {
+  globalThis.fetch = originalFetch;
+}
 
 const moderationToken = "a".repeat(32);
 let moderationAvailable = true;
