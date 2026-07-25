@@ -1,5 +1,7 @@
 # Geist Pixel en la marca
 
+> **Estado: reemplazada.** Esta decisión quedó sustituida por el sistema actual documentado en [`DESIGN.md`](../../../DESIGN.md): Manrope para marca, titulares y lectura; IBM Plex Mono para datos y etiquetas técnicas.
+
 ## Objetivo
 
 Mostrar el texto “Ferreras SMP” del encabezado con Geist Pixel para alinearlo con los títulos principales y reforzar la identidad visual.

@@ -14,36 +14,57 @@ const { compact = false, placement } = Astro.props;
     <span>Dirección del servidor</span>
     <strong>{server.address}</strong>
   </div>
-  <button class="copy-button" type="button" data-copy={server.address} data-copy-placement={placement}>
+  <button class="copy-button" type="button" data-copy={server.address} data-copy-placement={placement} aria-live="polite">
     <span class="copy-default">Copiar IP</span>
     <span class="copy-success">Copiada</span>
+    <span class="copy-error">No se pudo copiar</span>
   </button>
 </div>
 
 <script>
   import { trackAnalyticsEvent } from "../lib/analytics";
+  import { copyText } from "../lib/copy-text";
 
   document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((button) => {
     button.addEventListener("click", async () => {
       const value = button.dataset.copy;
       if (!value) return;
 
-      try {
-        await navigator.clipboard.writeText(value);
-      } catch {
-        const input = document.createElement("textarea");
-        input.value = value;
-        document.body.appendChild(input);
-        input.select();
-        document.execCommand("copy");
-        input.remove();
-      }
+      button.disabled = true;
+      button.classList.remove("is-copied", "has-copy-error");
 
-      button.classList.add("is-copied");
-      window.setTimeout(() => button.classList.remove("is-copied"), 2200);
-      trackAnalyticsEvent("copy_server_ip", {
-        placement: button.dataset.copyPlacement || "server_address",
-      });
+      const copied = await copyText(value, [
+        async (text) => {
+          if (!navigator.clipboard?.writeText) return false;
+          await navigator.clipboard.writeText(text);
+        },
+        (text) => {
+          const input = document.createElement("textarea");
+          input.value = text;
+          document.body.appendChild(input);
+          input.select();
+
+          try {
+            return document.execCommand("copy");
+          } finally {
+            input.remove();
+          }
+        },
+      ]);
+
+      button.disabled = false;
+      button.focus();
+      button.classList.add(copied ? "is-copied" : "has-copy-error");
+      window.setTimeout(
+        () => button.classList.remove("is-copied", "has-copy-error"),
+        2600,
+      );
+
+      if (copied) {
+        trackAnalyticsEvent("copy_server_ip", {
+          placement: button.dataset.copyPlacement || "server_address",
+        });
+      }
     });
   });
 </script>

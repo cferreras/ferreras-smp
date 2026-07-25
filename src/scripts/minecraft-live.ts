@@ -9,9 +9,11 @@ import {
 } from "../lib/group-activity-events";
 import { getRandomEmptyPlayerMessage } from "../lib/empty-player-messages";
 import { getPlayerAvatarUrl, STEVE_AVATAR_URL } from "../lib/minecraft/avatar";
+import { getLiveFailureFeedback } from "../lib/minecraft/live-feedback";
 
 const LIVE_ENDPOINT = "/api/minecraft/live";
 const POLLING_INTERVAL_MS = 10_000;
+const REQUEST_TIMEOUT_MS = POLLING_INTERVAL_MS - 1_000;
 
 const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   join: "Entrada",
@@ -28,13 +30,29 @@ if (liveRoot) {
   const apiBaseUrl = liveRoot.dataset.minecraftApiBase?.replace(/\/$/, "") || "";
   const apiUrl = (path: string) => `${apiBaseUrl}${path}`;
   const liveState = liveRoot.querySelector<HTMLElement>("[data-live-state]");
+  const retryButton = liveRoot.querySelector<HTMLButtonElement>("[data-live-retry]");
+  const statusBadge = liveRoot.querySelector<HTMLElement>("[data-status-badge]");
+  const statusLabel = liveRoot.querySelector<HTMLElement>("[data-status-label]");
+  const playersMetric = liveRoot.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
+  const worldDayMetric = liveRoot.querySelector<HTMLElement>(
+    '[data-status-metric="Día del mundo"]',
+  );
+  const tpsMetric = liveRoot.querySelector<HTMLElement>('[data-status-metric="TPS"]');
+  const tpsUnit = liveRoot.querySelector<HTMLElement>('[data-status-unit="TPS"]');
   let pollingId: number | undefined;
+  let lastUpdatedLabel = "";
+  let loading = false;
 
-  const setLiveState = (message: string, isError = false) => {
+  const setLiveState = (
+    message: string,
+    state: "loading" | "ready" | "stale" | "error",
+    canRetry = false,
+  ) => {
     if (!liveState) return;
 
     liveState.textContent = message;
-    liveState.dataset.state = isError ? "error" : "ready";
+    liveState.dataset.state = state;
+    if (retryButton) retryButton.hidden = !canRetry;
   };
 
   const applyAvatarFallback = (avatar: HTMLImageElement) => {
@@ -43,7 +61,7 @@ if (liveRoot) {
     avatar.src = avatar.dataset.fallbackSrc || STEVE_AVATAR_URL;
   };
 
-  document.querySelectorAll<HTMLImageElement>("[data-player-avatar]").forEach((avatar) => {
+  liveRoot.querySelectorAll<HTMLImageElement>("[data-player-avatar]").forEach((avatar) => {
     avatar.addEventListener("error", () => applyAvatarFallback(avatar), { once: true });
   });
 
@@ -68,11 +86,11 @@ if (liveRoot) {
   };
 
   const updatePlayers = (players: string[]) => {
-    document.querySelectorAll<HTMLElement>("[data-players-heading]").forEach((heading) => {
+    liveRoot.querySelectorAll<HTMLElement>("[data-players-heading]").forEach((heading) => {
       heading.textContent = `${players.length} ahora`;
     });
 
-    document.querySelectorAll<HTMLElement>("[data-player-feed]").forEach((feed) => {
+    liveRoot.querySelectorAll<HTMLElement>("[data-player-feed]").forEach((feed) => {
       const list = feed.querySelector<HTMLUListElement>("[data-player-list]");
       const empty = feed.querySelector<HTMLElement>("[data-empty-players]");
       if (!list || !empty) return;
@@ -116,8 +134,8 @@ if (liveRoot) {
   };
 
   const updateActivity = (events: MinecraftActivityEvent[]) => {
-    const lists = document.querySelectorAll<HTMLUListElement>("[data-activity-list]");
-    const emptyStates = document.querySelectorAll<HTMLElement>("[data-empty-activity]");
+    const lists = liveRoot.querySelectorAll<HTMLUListElement>("[data-activity-list]");
+    const emptyStates = liveRoot.querySelectorAll<HTMLElement>("[data-empty-activity]");
     const visibleEvents = getVisibleActivityEvents(events);
 
     lists.forEach((list) => {
@@ -130,17 +148,26 @@ if (liveRoot) {
     });
   };
 
+  const setUnavailableSnapshot = () => {
+    if (statusBadge) {
+      statusBadge.classList.remove("online", "offline");
+      statusBadge.classList.add("unavailable");
+      statusBadge.setAttribute("aria-label", "Estado no disponible");
+    }
+    if (statusLabel) statusLabel.textContent = "Sin datos";
+    if (playersMetric) playersMetric.textContent = "No disponible";
+    if (worldDayMetric) worldDayMetric.textContent = "No disponible";
+    if (tpsMetric) tpsMetric.textContent = "No disponible";
+    if (tpsUnit) tpsUnit.hidden = true;
+    updatePlayers([]);
+    updateActivity([]);
+  };
+
   const applySnapshot = (snapshot: MinecraftLiveSnapshot) => {
-    const statusBadge = document.querySelector<HTMLElement>("[data-status-badge]");
-    const statusLabel = document.querySelector<HTMLElement>("[data-status-label]");
-    const playersMetric = document.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
-    const worldDayMetric = document.querySelector<HTMLElement>(
-      '[data-status-metric="Día del mundo"]',
-    );
-    const tpsMetric = document.querySelector<HTMLElement>('[data-status-metric="TPS"]');
     const statusText = snapshot.status.online ? "Online" : "Offline";
 
     if (statusBadge) {
+      statusBadge.classList.remove("unavailable");
       statusBadge.classList.toggle("online", snapshot.status.online);
       statusBadge.classList.toggle("offline", !snapshot.status.online);
       statusBadge.setAttribute("aria-label", `Estado: ${statusText}`);
@@ -157,16 +184,24 @@ if (liveRoot) {
       tpsMetric.textContent =
         snapshot.status.tps === null ? "No disponible" : snapshot.status.tps.toFixed(1);
     }
+    if (tpsUnit) tpsUnit.hidden = snapshot.status.tps === null;
     updatePlayers(snapshot.status.players);
     updateActivity(snapshot.activity);
-    setLiveState("Actualizado en directo");
+
+    const serverUpdatedAt = new Date(snapshot.status.lastUpdated);
+    lastUpdatedLabel = new Intl.DateTimeFormat("es", {
+      hour: "2-digit",
+      minute: "2-digit",
+    }).format(Number.isNaN(serverUpdatedAt.getTime()) ? new Date() : serverUpdatedAt);
+    setLiveState(`Actualizado ${lastUpdatedLabel}`, "ready");
   };
 
-  const loadSnapshot = async () => {
+  const loadSnapshot = async (signal?: AbortSignal) => {
     const response = await fetch(apiUrl(LIVE_ENDPOINT), {
       headers: {
         Accept: "application/json",
       },
+      signal,
     });
 
     if (!response.ok) {
@@ -183,22 +218,58 @@ if (liveRoot) {
     }
   };
 
+  const handleLoadFailure = () => {
+    const feedback = getLiveFailureFeedback(lastUpdatedLabel);
+    if (feedback.state === "error") setUnavailableSnapshot();
+    setLiveState(feedback.message, feedback.state, true);
+  };
+
+  const refreshSnapshot = async () => {
+    if (loading) return;
+    loading = true;
+    if (retryButton) retryButton.disabled = true;
+    if (!lastUpdatedLabel) setLiveState("Actualizando…", "loading");
+
+    try {
+      await loadSnapshot(AbortSignal.timeout(REQUEST_TIMEOUT_MS));
+    } catch {
+      handleLoadFailure();
+    } finally {
+      loading = false;
+      if (retryButton) retryButton.disabled = false;
+    }
+  };
+
   const startPolling = () => {
-    if (pollingId) {
+    if (pollingId || document.hidden) {
       return;
     }
 
-    setLiveState("Actualizando…");
-    void loadSnapshot().catch(() => setLiveState("Estado no disponible temporalmente", true));
+    void refreshSnapshot();
 
     pollingId = window.setInterval(() => {
-      void loadSnapshot().catch(() => setLiveState("Estado no disponible temporalmente", true));
+      void refreshSnapshot();
     }, POLLING_INTERVAL_MS);
   };
 
-  window.addEventListener("beforeunload", () => {
-    stopPolling();
+  retryButton?.addEventListener("click", () => {
+    void refreshSnapshot();
   });
 
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopPolling();
+      return;
+    }
+
+    startPolling();
+  });
+
+  window.addEventListener("pagehide", stopPolling);
+  window.addEventListener("pageshow", startPolling);
+
+  window.addEventListener("beforeunload", stopPolling);
+
+  setUnavailableSnapshot();
   startPolling();
 }

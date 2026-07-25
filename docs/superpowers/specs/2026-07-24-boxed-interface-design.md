@@ -1,5 +1,7 @@
 # Diseño de interfaz en cajas
 
+> **Estado: dirección descartada.** La fuente de verdad actual es [`DESIGN.md`](../../../DESIGN.md), con superficies redondeadas, sombras suaves y controles de 8–10 px de radio. La encuesta comunitaria descrita más abajo fue retirada.
+
 ## Objetivo
 
 Aplicar a toda la web un lenguaje visual de paneles contiguos inspirado en la referencia proporcionada, conservando la identidad de Ferreras SMP: paleta negra y violeta, tipografías, contenido, logo y modos claro y oscuro.

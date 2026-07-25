@@ -21,7 +21,9 @@ const isCurrentPrimaryLink = (href: string) => href === "/blog" && currentPath.s
 <header class="site-header">
   <div class="shell header-shell">
     <a class="brand" href="/" aria-label={`${server.name}, inicio`}>
-      <img class="brand-mark" src="/brand-mark.svg" alt="" draggable="false" />
+      <span class="brand-mark" aria-hidden="true">
+        <img src="/brand-mark.svg" alt="" draggable="false" />
+      </span>
       <span class="brand-copy">
         <strong>{server.name}</strong>
       </span>
