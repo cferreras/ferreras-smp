@@ -293,7 +293,7 @@
 .comment-body {
   margin: 10px 0 7px;
   color: var(--muted-strong);
-  font-size: 14px;
+  font-size: 17px;
   line-height: 1.7;
   overflow-wrap: anywhere;
   white-space: pre-wrap;
@@ -417,6 +417,10 @@
 
   .comment-message textarea {
     min-height: 180px;
+    font-size: 16px;
+  }
+
+  .comment-body {
     font-size: 16px;
   }
 
