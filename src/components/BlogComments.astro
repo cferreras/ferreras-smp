@@ -1,0 +1,370 @@
+---
+import {
+  COMMENT_BODY_MAX_LENGTH,
+  COMMENT_NICKNAME_MAX_LENGTH,
+} from "../lib/comments/constants";
+import "../styles/blog-comments.css";
+
+interface Props {
+  slug: string;
+}
+
+const { slug } = Astro.props;
+const apiBase = import.meta.env.PUBLIC_COMMENTS_API_URL
+  || import.meta.env.PUBLIC_MINECRAFT_API_URL
+  || "";
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
+---
+
+<section
+  class="blog-comments"
+  aria-labelledby="comments-title"
+  data-comments-root
+  data-slug={slug}
+  data-api-base={apiBase}
+  data-turnstile-site-key={turnstileSiteKey}
+>
+  <div class="comments-heading">
+    <div>
+      <h2 id="comments-title">Comentarios</h2>
+      <p>Comparte una duda o algo que añadirías a esta guía. No necesitas cuenta.</p>
+    </div>
+    <p class="comments-count mono" data-comments-count aria-live="polite">Cargando…</p>
+  </div>
+
+  <form class="comment-form" data-comment-form novalidate>
+    <label class="comment-field comment-nickname">
+      <span>Nick</span>
+      <input
+        type="text"
+        name="nickname"
+        minlength="2"
+        maxlength={COMMENT_NICKNAME_MAX_LENGTH}
+        autocomplete="nickname"
+        placeholder="Tu nick"
+        required
+      />
+    </label>
+
+    <label class="comment-field comment-message">
+      <span>
+        Comentario
+        <small class="mono"><output data-comment-length>0</output> / {COMMENT_BODY_MAX_LENGTH}</small>
+      </span>
+      <textarea
+        name="body"
+        minlength="2"
+        maxlength={COMMENT_BODY_MAX_LENGTH}
+        rows="7"
+        placeholder="Escribe tu comentario…"
+        required
+      ></textarea>
+    </label>
+
+    <label class="comment-honeypot" aria-hidden="true">
+      Sitio web
+      <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
+
+    {turnstileSiteKey && (
+      <div
+        class="cf-turnstile"
+        data-sitekey={turnstileSiteKey}
+        data-theme="dark"
+        data-appearance="interaction-only"
+        data-action="blog-comment"
+      ></div>
+    )}
+
+    <div class="comment-form-footer">
+      <div class="comment-identity" data-comment-identity hidden>
+        <span class="comment-avatar" data-comment-avatar aria-hidden="true">
+          <span class="avatar-hair"></span>
+          <span class="avatar-eyes"></span>
+          <span class="avatar-shirt"></span>
+        </span>
+        <span>
+          <small>Publicas como</small>
+          <strong class="mono" data-comment-author-code>-----</strong>
+        </span>
+      </div>
+
+      <button class="comment-submit" type="submit" disabled>Publicar</button>
+    </div>
+
+    <p class="comment-form-status" data-comment-form-status aria-live="polite"></p>
+  </form>
+
+  <div class="comments-stream">
+    <div class="comments-loading" data-comments-loading>
+      <span></span><span></span><span></span>
+      <p>Abriendo la conversación…</p>
+    </div>
+    <ol class="comments-list" data-comments-list aria-live="polite"></ol>
+    <div class="comments-empty" data-comments-empty hidden>
+      <p>Todavía no hay comentarios. Puedes abrir la conversación.</p>
+    </div>
+    <div class="comments-unavailable" data-comments-unavailable hidden>
+      <p>No hemos podido cargar la conversación. Prueba de nuevo en unos instantes.</p>
+    </div>
+    <button class="comments-more" type="button" data-comments-more hidden>
+      Cargar más comentarios
+    </button>
+  </div>
+</section>
+
+{turnstileSiteKey && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+)}
+
+<script>
+  interface CommentItem {
+    id: string;
+    authorCode: string;
+    avatar: string;
+    nickname: string;
+    body: string;
+    createdAt: string;
+    reportCount: number;
+  }
+
+  interface CommentsResponse {
+    ok: boolean;
+    error?: string;
+    comments?: CommentItem[];
+    comment?: CommentItem;
+    count?: number;
+    nextCursor?: string | null;
+    message?: string;
+    viewer?: { authorCode: string; avatar: string };
+  }
+
+  interface TurnstileWindow extends Window {
+    turnstile?: { reset: (element?: Element) => void };
+  }
+
+  const skinNames: Record<string, string> = {
+    steve: "Steve",
+    alex: "Alex",
+    noor: "Noor",
+    sunny: "Sunny",
+    ari: "Ari",
+    zuri: "Zuri",
+    makena: "Makena",
+    kai: "Kai",
+    efe: "Efe",
+  };
+
+  const makeElement = <K extends keyof HTMLElementTagNameMap>(
+    tag: K,
+    className?: string,
+    text?: string,
+  ) => {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (text !== undefined) element.textContent = text;
+    return element;
+  };
+
+  const makeAvatar = (skin: string) => {
+    const avatar = makeElement("span", "comment-avatar");
+    avatar.dataset.skin = skin;
+    avatar.title = `Avatar de ${skinNames[skin] || "Minecraft"}`;
+    avatar.setAttribute("aria-hidden", "true");
+    ["avatar-hair", "avatar-eyes", "avatar-shirt"].forEach((className) => {
+      avatar.append(makeElement("span", className));
+    });
+    return avatar;
+  };
+
+  const makeIdempotencyKey = () => {
+    if (crypto.randomUUID) return crypto.randomUUID().replaceAll("-", "");
+    return Array.from(
+      crypto.getRandomValues(new Uint8Array(16)),
+      (value) => value.toString(16).padStart(2, "0"),
+    ).join("");
+  };
+
+  document.querySelectorAll<HTMLElement>("[data-comments-root]").forEach((root) => {
+    const slug = root.dataset.slug;
+    const apiBase = root.dataset.apiBase?.replace(/\/$/, "") || "";
+    const siteKey = root.dataset.turnstileSiteKey;
+    const form = root.querySelector<HTMLFormElement>("[data-comment-form]");
+    const list = root.querySelector<HTMLOListElement>("[data-comments-list]");
+    const loading = root.querySelector<HTMLElement>("[data-comments-loading]");
+    const empty = root.querySelector<HTMLElement>("[data-comments-empty]");
+    const unavailable = root.querySelector<HTMLElement>("[data-comments-unavailable]");
+    const more = root.querySelector<HTMLButtonElement>("[data-comments-more]");
+    const submit = root.querySelector<HTMLButtonElement>("[type='submit']");
+    const status = root.querySelector<HTMLElement>("[data-comment-form-status]");
+    const countLabel = root.querySelector<HTMLElement>("[data-comments-count]");
+    const body = form?.elements.namedItem("body") as HTMLTextAreaElement | null;
+    const length = root.querySelector<HTMLOutputElement>("[data-comment-length]");
+    const identity = root.querySelector<HTMLElement>("[data-comment-identity]");
+    const identityCode = root.querySelector<HTMLElement>("[data-comment-author-code]");
+    const identityAvatar = root.querySelector<HTMLElement>("[data-comment-avatar]");
+    let cursor: string | null = null;
+    let count = 0;
+
+    if (!slug || !form || !list || !submit) return;
+    const endpoint = `${apiBase}/api/comments/${encodeURIComponent(slug)}`;
+
+    const setCount = (value: number) => {
+      count = value;
+      if (countLabel) {
+        countLabel.textContent = value === 1 ? "1 comentario" : `${value} comentarios`;
+      }
+    };
+
+    const setViewer = (viewer?: CommentsResponse["viewer"]) => {
+      if (!viewer || !identity || !identityCode || !identityAvatar) return;
+      identity.hidden = false;
+      identityCode.textContent = viewer.authorCode;
+      identityAvatar.dataset.skin = viewer.avatar;
+      identityAvatar.title = `Avatar de ${skinNames[viewer.avatar] || "Minecraft"}`;
+    };
+
+    const reportComment = async (button: HTMLButtonElement, id: string) => {
+      button.disabled = true;
+      button.textContent = "Enviando…";
+      try {
+        const response = await fetch(
+          `${apiBase}/api/comments/${encodeURIComponent(id)}/report`,
+          { method: "POST", credentials: "include" },
+        );
+        const result = await response.json() as CommentsResponse;
+        button.textContent = response.ok ? "Denunciado" : (result.error || "Reintentar");
+      } catch {
+        button.disabled = false;
+        button.textContent = "Denunciar";
+      }
+    };
+
+    const renderComment = (comment: CommentItem) => {
+      const item = makeElement("li", "comment-item");
+      const content = makeElement("div", "comment-content");
+      const header = makeElement("header");
+      const byline = makeElement("p", "comment-byline");
+      const nickname = makeElement("strong", "", comment.nickname);
+      const code = makeElement("span", "mono comment-code", comment.authorCode);
+      const time = makeElement("time");
+      time.dateTime = comment.createdAt;
+      time.textContent = new Intl.DateTimeFormat("es-ES", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      }).format(new Date(comment.createdAt));
+
+      byline.append(nickname, code);
+      header.append(byline, time);
+
+      const message = makeElement("p", "comment-body", comment.body);
+      const report = makeElement("button", "comment-report", "Denunciar");
+      report.type = "button";
+      report.addEventListener("click", () => void reportComment(report, comment.id));
+
+      content.append(header, message, report);
+      item.append(makeAvatar(comment.avatar), content);
+      list.append(item);
+    };
+
+    const loadComments = async (append = false) => {
+      if (more) more.disabled = true;
+      try {
+        const url = new URL(endpoint, window.location.href);
+        if (append && cursor) url.searchParams.set("cursor", cursor);
+        const response = await fetch(url, { credentials: "include" });
+        const result = await response.json() as CommentsResponse;
+        if (!response.ok || !result.ok) throw new Error();
+
+        if (!append) list.replaceChildren();
+        (result.comments || []).forEach(renderComment);
+        cursor = result.nextCursor || null;
+        setCount(result.count || 0);
+        setViewer(result.viewer);
+        if (empty) empty.hidden = list.children.length > 0;
+        if (unavailable) unavailable.hidden = true;
+        if (more) {
+          more.hidden = !cursor;
+          more.disabled = false;
+        }
+        submit.disabled = !siteKey;
+      } catch {
+        if (unavailable) unavailable.hidden = false;
+        if (empty) empty.hidden = true;
+        if (countLabel) countLabel.textContent = "";
+      } finally {
+        if (loading) loading.hidden = true;
+      }
+    };
+
+    body?.addEventListener("input", () => {
+      if (length) length.value = String([...body.value].length);
+    });
+    more?.addEventListener("click", () => void loadComments(true));
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      const turnstileToken = String(data.get("cf-turnstile-response") || "");
+      if (!turnstileToken) {
+        if (status) status.textContent = "Completa la comprobación anti-spam.";
+        return;
+      }
+
+      submit.disabled = true;
+      if (status) status.textContent = "Publicando…";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nickname: data.get("nickname"),
+            body: data.get("body"),
+            website: data.get("website"),
+            turnstileToken,
+            idempotencyKey: makeIdempotencyKey(),
+          }),
+        });
+        const result = await response.json() as CommentsResponse;
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || "No se pudo publicar el comentario.");
+        }
+
+        if (result.comment) {
+          renderComment(result.comment);
+          setCount(count + 1);
+          if (empty) empty.hidden = true;
+        }
+        if (status) status.textContent = result.message || "Comentario recibido.";
+        if (body) body.value = "";
+        if (length) length.value = "0";
+        setViewer(result.viewer);
+      } catch (error) {
+        if (status) {
+          status.textContent = error instanceof Error
+            ? error.message
+            : "No se pudo publicar el comentario.";
+        }
+      } finally {
+        submit.disabled = false;
+        const turnstile = (window as TurnstileWindow).turnstile;
+        const widget = root.querySelector(".cf-turnstile");
+        if (turnstile && widget) turnstile.reset(widget);
+      }
+    });
+
+    void loadComments();
+  });
+</script>
