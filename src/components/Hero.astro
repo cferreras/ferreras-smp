@@ -14,8 +14,9 @@ const minecraftApiBase =
   <div class="shell hero-layout">
     <div class="hero-copy">
       <h1>Servidor Minecraft survival<br /><em>para jugar a tu ritmo.</em></h1>
-      <p class="hero-intro">{server.description}</p>
-      <p class="hero-technical">Construye granjas y automatizaciones sencillas o de complejidad media en un survival cercano a vanilla.</p>
+      <p class="hero-intro">
+        {server.description} Construye granjas y automatizaciones sencillas o de complejidad media en un survival cercano a vanilla.
+      </p>
       <div class="hero-actions">
         <a class="button button-secondary" href="/como-entrar">Cómo entrar</a>
         <a class="text-link hero-discord-link" href={server.discord} target="_blank" rel="noreferrer" data-analytics-discord="hero">Discord (opcional) <span aria-hidden="true">→</span></a>
@@ -39,17 +40,20 @@ const minecraftApiBase =
       </div>
     </aside>
   </div>
+</section>
 
-  <div
-    class="shell hero-status"
-    data-minecraft-live
-    data-minecraft-api-base={minecraftApiBase.replace(/\/$/, "")}
-  >
-    <ServerStatusStrip status={DEFAULT_MINECRAFT_SNAPSHOT.status} events={DEFAULT_MINECRAFT_SNAPSHOT.activity} />
-    <div class="live-feedback" data-live-feedback>
-      <p data-live-state aria-live="polite">Actualizando el estado del servidor…</p>
-      <button type="button" data-live-retry hidden>Reintentar</button>
-    </div>
+<section
+  class="live-section"
+  id="directo"
+  data-minecraft-live
+  data-minecraft-api-base={minecraftApiBase.replace(/\/$/, "")}
+  aria-labelledby="live-section-title"
+>
+  <div class="shell live-section-shell">
+    <ServerStatusStrip
+      status={DEFAULT_MINECRAFT_SNAPSHOT.status}
+      events={DEFAULT_MINECRAFT_SNAPSHOT.activity}
+    />
   </div>
 </section>
 
