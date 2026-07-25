@@ -351,7 +351,8 @@
 .comments-unavailable {
   padding: 20px 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 17px;
+  line-height: 1.7;
 }
 
 .comments-empty p,
@@ -413,6 +414,11 @@
   }
 
   .comment-body {
+    font-size: 16px;
+  }
+
+  .comments-empty,
+  .comments-unavailable {
     font-size: 16px;
   }
 
