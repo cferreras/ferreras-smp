@@ -51,6 +51,7 @@ const parseComment = (id: string, data: Record<string, string>): CommentRecord |
   return {
     id,
     postSlug: data.postSlug,
+    authorIdentityHash: data.authorIdentityHash ?? "",
     authorCode: data.authorCode,
     avatar: data.avatar as DefaultSkin,
     nickname: data.nickname ?? "",
@@ -58,20 +59,29 @@ const parseComment = (id: string, data: Record<string, string>): CommentRecord |
     status: data.status as CommentStatus,
     riskScore: Number.parseInt(data.riskScore || "0", 10),
     createdAt: data.createdAt,
+    editedAt: data.editedAt ?? "",
     moderatedAt: data.moderatedAt ?? "",
     moderationReason: data.moderationReason ?? "",
     reportCount: Number.parseInt(data.reportCount || "0", 10),
   };
 };
 
-const toPublicComment = (comment: CommentRecord): PublicComment => ({
+const toPublicComment = (
+  comment: CommentRecord,
+  viewerIdentityHash: string,
+): PublicComment => ({
   id: comment.id,
   authorCode: comment.authorCode,
   avatar: comment.avatar,
   nickname: comment.nickname,
   body: comment.body,
   createdAt: comment.createdAt,
+  editedAt: comment.editedAt,
   reportCount: comment.reportCount,
+  canDelete: Boolean(
+    comment.authorIdentityHash
+    && comment.authorIdentityHash === viewerIdentityHash
+  ),
 });
 
 export class CommentRateLimitError extends Error {
@@ -84,7 +94,12 @@ export class CommentRateLimitError extends Error {
 export class CommentStore {
   constructor(private readonly redis: Redis = getRedis()) {}
 
-  async listPublished(slug: string, cursor: string | null, requestedLimit: number | null) {
+  async listPublished(
+    slug: string,
+    cursor: string | null,
+    requestedLimit: number | null,
+    viewerIdentityHash: string,
+  ) {
     const offset = decodeCursor(cursor);
     const limit = Math.min(
       Math.max(requestedLimit || COMMENT_PAGE_DEFAULT, 1),
@@ -99,7 +114,7 @@ export class CommentStore {
     const comments = rows
       .map((row, index) => parseComment(pageIds[index], row))
       .filter((comment): comment is CommentRecord => comment?.status === "published")
-      .map(toPublicComment);
+      .map((comment) => toPublicComment(comment, viewerIdentityHash));
 
     return {
       comments,
@@ -112,19 +127,21 @@ export class CommentStore {
     return parseComment(id, await this.redis.hgetall(commentKey(id)));
   }
 
-  async createComment(input: Omit<CommentRecord, "id" | "createdAt" | "moderatedAt" | "moderationReason" | "reportCount">) {
+  async createComment(input: Omit<CommentRecord, "id" | "createdAt" | "editedAt" | "moderatedAt" | "moderationReason" | "reportCount">) {
     const id = randomUUID();
     const createdAt = new Date().toISOString();
     const record: CommentRecord = {
       ...input,
       id,
       createdAt,
+      editedAt: "",
       moderatedAt: "",
       moderationReason: "",
       reportCount: 0,
     };
     const values = {
       postSlug: record.postSlug,
+      authorIdentityHash: record.authorIdentityHash,
       authorCode: record.authorCode,
       avatar: record.avatar,
       nickname: record.nickname,
@@ -132,6 +149,7 @@ export class CommentStore {
       status: record.status,
       riskScore: String(record.riskScore),
       createdAt,
+      editedAt: "",
       moderatedAt: "",
       moderationReason: "",
       reportCount: "0",
@@ -146,6 +164,103 @@ export class CommentStore {
 
     await transaction.exec();
     return record;
+  }
+
+  async deleteOwnComment(id: string, identityHash: string) {
+    const comment = await this.getComment(id);
+    if (
+      !comment
+      || !comment.authorIdentityHash
+      || comment.authorIdentityHash !== identityHash
+    ) {
+      return false;
+    }
+
+    const tokenHashes = await this.redis.smembers(moderationTokenSetKey(id));
+    const transaction = this.redis.multi()
+      .del(commentKey(id))
+      .zrem(publishedKey(comment.postSlug), id)
+      .zrem(PENDING_KEY, id)
+      .zrem(REPORTED_KEY, id)
+      .zrem(NOTIFICATIONS_KEY, id);
+
+    for (const tokenHash of tokenHashes) {
+      transaction.del(moderationTokenKey(tokenHash));
+    }
+    transaction.del(moderationTokenSetKey(id));
+
+    await transaction.exec();
+    return true;
+  }
+
+  async updateOwnComment(
+    id: string,
+    identityHash: string,
+    input: {
+      body: string;
+      status: "published" | "pending";
+      riskScore: number;
+    },
+  ) {
+    const comment = await this.getComment(id);
+    if (
+      !comment
+      || !comment.authorIdentityHash
+      || comment.authorIdentityHash !== identityHash
+      || comment.status === "deleted"
+      || comment.status === "rejected"
+    ) {
+      return null;
+    }
+
+    const editedAt = new Date().toISOString();
+    const tokenHashes = await this.redis.smembers(moderationTokenSetKey(id));
+    const transaction = this.redis.multi()
+      .hset(commentKey(id), {
+        body: input.body,
+        status: input.status,
+        riskScore: String(input.riskScore),
+        editedAt,
+        moderatedAt: "",
+        moderationReason: "owner_edit",
+      })
+      .zrem(publishedKey(comment.postSlug), id)
+      .zrem(PENDING_KEY, id)
+      .zrem(REPORTED_KEY, id)
+      .zrem(NOTIFICATIONS_KEY, id);
+
+    for (const tokenHash of tokenHashes) {
+      transaction.del(moderationTokenKey(tokenHash));
+    }
+    transaction.del(moderationTokenSetKey(id));
+
+    if (input.status === "published") {
+      transaction.zadd(publishedKey(comment.postSlug), Date.parse(comment.createdAt), id);
+    } else {
+      transaction.zadd(PENDING_KEY, Date.parse(comment.createdAt), id);
+    }
+
+    await transaction.exec();
+    return {
+      ...comment,
+      body: input.body,
+      status: input.status,
+      riskScore: input.riskScore,
+      editedAt,
+      moderatedAt: "",
+      moderationReason: "owner_edit",
+    };
+  }
+
+  async consumeEditLimit(identityHash: string) {
+    const [count, ttl] = await this.redis.eval(
+      RATE_SCRIPT,
+      1,
+      `comments:rate:edit:hour:${identityHash}`,
+      60 * 60,
+    ) as [number, number];
+    if (count > 10) throw new CommentRateLimitError(Math.max(ttl, 1));
+    return Math.min(count / 10, 1);
   }
 
   async consumeRateLimits(identityHash: string, networkHash: string) {

@@ -14,6 +14,7 @@ import {
   CommentValidationError,
   normalizeCommentBody,
   normalizeNickname,
+  validateCommentEdit,
   validateSubmission,
 } from "./validation.ts";
 
@@ -64,6 +65,15 @@ assert.deepEqual(validateSubmission({
   turnstileToken: "token",
   idempotencyKey: "abcdefghijklmnop",
 });
+assert.deepEqual(validateCommentEdit({
+  body: "  Texto actualizado.  ",
+}), {
+  body: "Texto actualizado.",
+});
+assert.throws(
+  () => validateCommentEdit({ body: "\u202e" }),
+  (error) => error instanceof CommentValidationError && error.field === "body",
+);
 
 assert.equal(assessCommentRisk({
   body: "Gracias por la guía",
@@ -88,5 +98,9 @@ assert.equal(isAllowedCommentsOrigin(allowed), true);
 assert.equal(isAllowedCommentsOrigin(denied), false);
 assert.equal(commentsOptionsResponse(allowed).status, 204);
 assert.equal(commentsOptionsResponse(denied).status, 403);
+assert.match(
+  commentsOptionsResponse(allowed).headers.get("Access-Control-Allow-Methods") ?? "",
+  /PATCH, DELETE/,
+);
 
 console.log("Comment security checks OK");
