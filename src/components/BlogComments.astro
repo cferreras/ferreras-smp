@@ -78,11 +78,15 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 
     <div class="comment-form-footer">
       <div class="comment-identity" data-comment-identity hidden>
-        <span class="comment-avatar" data-comment-avatar aria-hidden="true">
-          <span class="avatar-hair"></span>
-          <span class="avatar-eyes"></span>
-          <span class="avatar-shirt"></span>
-        </span>
+        <img
+          class="comment-avatar"
+          data-comment-avatar
+          src="/images/comment-avatars/steve.png"
+          width="36"
+          height="36"
+          alt=""
+          aria-hidden="true"
+        />
         <span>
           <small>Publicas como</small>
           <strong class="mono" data-comment-author-code>-----</strong>
@@ -159,6 +163,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     kai: "Kai",
     efe: "Efe",
   };
+  const getAvatarSkin = (skin: string) => skin in skinNames ? skin : "steve";
+  const getAvatarUrl = (skin: string) =>
+    `/images/comment-avatars/${getAvatarSkin(skin)}.png`;
 
   const makeElement = <K extends keyof HTMLElementTagNameMap>(
     tag: K,
@@ -172,13 +179,14 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
   };
 
   const makeAvatar = (skin: string) => {
-    const avatar = makeElement("span", "comment-avatar");
-    avatar.dataset.skin = skin;
-    avatar.title = `Avatar de ${skinNames[skin] || "Minecraft"}`;
+    const safeSkin = getAvatarSkin(skin);
+    const avatar = makeElement("img", "comment-avatar");
+    avatar.src = getAvatarUrl(safeSkin);
+    avatar.width = 36;
+    avatar.height = 36;
+    avatar.alt = "";
+    avatar.title = `Avatar de ${skinNames[safeSkin]}`;
     avatar.setAttribute("aria-hidden", "true");
-    ["avatar-hair", "avatar-eyes", "avatar-shirt"].forEach((className) => {
-      avatar.append(makeElement("span", className));
-    });
     return avatar;
   };
 
@@ -207,7 +215,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     const length = root.querySelector<HTMLOutputElement>("[data-comment-length]");
     const identity = root.querySelector<HTMLElement>("[data-comment-identity]");
     const identityCode = root.querySelector<HTMLElement>("[data-comment-author-code]");
-    const identityAvatar = root.querySelector<HTMLElement>("[data-comment-avatar]");
+    const identityAvatar = root.querySelector<HTMLImageElement>("[data-comment-avatar]");
     let cursor: string | null = null;
     let count = 0;
 
@@ -225,8 +233,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       if (!viewer || !identity || !identityCode || !identityAvatar) return;
       identity.hidden = false;
       identityCode.textContent = viewer.authorCode;
-      identityAvatar.dataset.skin = viewer.avatar;
-      identityAvatar.title = `Avatar de ${skinNames[viewer.avatar] || "Minecraft"}`;
+      const safeSkin = getAvatarSkin(viewer.avatar);
+      identityAvatar.src = getAvatarUrl(safeSkin);
+      identityAvatar.title = `Avatar de ${skinNames[safeSkin]}`;
     };
 
     const reportComment = async (button: HTMLButtonElement, id: string) => {
