@@ -23,9 +23,9 @@ export const sendModerationNotification = async ({
   fetcher?: typeof fetch;
 }) => {
   const actions = ["approve", "reject", "delete"] as const;
-  const tokens = await Promise.all(
-    actions.map((action) => store.createModerationToken(comment.id, action)),
-  );
+  const tokens = await store.createModerationTokens(comment.id);
+  if (!tokens) return false;
+
   const links = actions.map((action, index) => {
     const url = new URL(`/api/comments/moderate/${tokens[index]}`, publicApiUrl);
     const label = action === "approve" ? "Aprobar" : action === "reject" ? "Rechazar" : "Eliminar";
@@ -73,6 +73,7 @@ export const sendModerationNotification = async ({
     });
 
     if (!response.ok) throw new Error(`Discord webhook returned ${response.status}`);
+    return true;
   } catch (error) {
     await Promise.all(tokens.map((token) => store.deleteModerationToken(token)));
     throw error;
@@ -104,7 +105,9 @@ export const retryQueuedNotifications = async (
 
   for (const id of ids) {
     const comment = await store.getComment(id);
-    if (!comment || (comment.status !== "pending" && comment.reportCount < 2)) {
+    const needsNotification = comment?.status === "pending"
+      || (comment?.status === "published" && comment.reportCount >= 2);
+    if (!comment || !needsNotification) {
       await store.clearNotification(id);
       continue;
     }

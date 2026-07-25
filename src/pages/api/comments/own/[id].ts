@@ -1,9 +1,11 @@
 import type { APIRoute } from "astro";
 import { MissingCommentsConfigError } from "../../../../lib/comments/config";
 import {
+  CommentsRequestError,
   commentsErrorResponse,
   commentsJsonResponse,
   commentsOptionsResponse,
+  readCommentsJson,
   requireCommentsWriteOrigin,
 } from "../../../../lib/comments/http";
 import {
@@ -29,6 +31,9 @@ const errorResponse = (request: Request, error: unknown) => {
   if (error instanceof Response) return error;
   if (error instanceof OwnCommentNotFoundError) {
     return commentsErrorResponse(request, 404, "Comentario no encontrado.");
+  }
+  if (error instanceof CommentsRequestError) {
+    return commentsErrorResponse(request, error.status, error.message);
   }
   if (error instanceof CommentValidationError) {
     return commentsJsonResponse(
@@ -75,22 +80,7 @@ export const PATCH = (async ({ params, request }) => {
     const invalid = validId(request, id);
     if (invalid) return invalid;
 
-    if (!request.headers.get("content-type")?.toLowerCase().startsWith("application/json")) {
-      return commentsErrorResponse(request, 415, "El formato de la solicitud no es válido.");
-    }
-
-    const declaredLength = Number.parseInt(request.headers.get("content-length") ?? "0", 10);
-    if (declaredLength > 8 * 1024) {
-      return commentsErrorResponse(request, 413, "El comentario es demasiado grande.");
-    }
-
-    let body: unknown;
-    try {
-      body = await request.json();
-    } catch {
-      return commentsErrorResponse(request, 400, "La solicitud no contiene JSON válido.");
-    }
-
+    const body = await readCommentsJson(request);
     const response = await service.editOwn(request, id, body);
     return commentsJsonResponse(request, response.result, { cookie: response.cookie });
   } catch (error) {

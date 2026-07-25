@@ -19,10 +19,12 @@ const hmac = (secret: string, purpose: string, value: string) =>
 const encodeSignature = (value: Buffer) => value.toString("base64url");
 
 const signaturesMatch = (left: string, right: string) => {
-  const leftBuffer = Buffer.from(left);
-  const rightBuffer = Buffer.from(right);
+  const leftBuffer = Buffer.from(left, "base64url");
+  const rightBuffer = Buffer.from(right, "base64url");
 
-  return leftBuffer.length === rightBuffer.length && timingSafeEqual(leftBuffer, rightBuffer);
+  return leftBuffer.length === 32
+    && leftBuffer.length === rightBuffer.length
+    && timingSafeEqual(leftBuffer, rightBuffer);
 };
 
 export const createIdentityToken = (secret: string, identityId = randomBytes(16).toString("base64url")) => {
@@ -69,7 +71,11 @@ export const parseCookies = (header: string | null) =>
       .map((part) => {
         const separator = part.indexOf("=");
         if (separator < 0) return [part, ""];
-        return [part.slice(0, separator), decodeURIComponent(part.slice(separator + 1))];
+        try {
+          return [part.slice(0, separator), decodeURIComponent(part.slice(separator + 1))];
+        } catch {
+          return [part.slice(0, separator), ""];
+        }
       }),
   );
 

@@ -7,8 +7,9 @@ const isProduction = import.meta.env.PROD;
 const addSecurityHeaders = (response: Response) => {
   response.headers.set(
     "Content-Security-Policy",
-    "frame-ancestors 'none'; base-uri 'self'; object-src 'none'",
+    "frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'",
   );
+  response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Content-Type-Options", "nosniff");
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   response.headers.set(
