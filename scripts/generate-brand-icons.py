@@ -21,11 +21,18 @@ def is_violet_background(pixel: tuple[int, int, int]) -> bool:
     )
 
 
+def flattened_pixels(image: Image.Image):
+    get_flattened_data = getattr(image, "get_flattened_data", None)
+    if get_flattened_data is not None:
+        return get_flattened_data()
+    return image.getdata()
+
+
 def main() -> None:
     source = Image.open(SOURCE).convert("RGB")
     pixels = [
         PRIMARY if is_violet_background(pixel) else pixel
-        for pixel in source.get_flattened_data()
+        for pixel in flattened_pixels(source)
     ]
     source.putdata(pixels)
 

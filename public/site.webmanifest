@@ -1,6 +1,8 @@
 {
   "name": "Ferreras SMP",
   "short_name": "Ferreras SMP",
+  "start_url": "/",
+  "scope": "/",
   "icons": [
     {
       "src": "/images/brand/ferreras-smp-icon-192.png",
