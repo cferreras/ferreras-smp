@@ -89,10 +89,15 @@ export class CommentEditRejectedError extends Error {
 }
 
 export class CommentsService {
-  private readonly store: CommentStore;
+  private storeInstance: CommentStore | undefined;
 
-  constructor(store = new CommentStore()) {
-    this.store = store;
+  constructor(store?: CommentStore) {
+    this.storeInstance = store;
+  }
+
+  private get store() {
+    this.storeInstance ??= new CommentStore();
+    return this.storeInstance;
   }
 
   async assertPublishedSlug(slug: string) {

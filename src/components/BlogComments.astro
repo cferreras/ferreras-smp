@@ -17,6 +17,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 ---
 
 <section
+  id="comentarios"
   class="blog-comments"
   aria-labelledby="comments-title"
   data-comments-root
@@ -25,40 +26,58 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
   data-turnstile-site-key={turnstileSiteKey}
   data-body-max-length={COMMENT_BODY_MAX_LENGTH}
 >
-  <div class="comments-heading">
-    <div>
-      <h2 id="comments-title">Comentarios</h2>
-      <p>Comparte una duda o algo que añadirías a esta guía. No necesitas cuenta.</p>
+  <header class="comments-heading">
+    <div class="comments-folio">
+      <p class="mono">Apuntes de la comunidad</p>
+      <span aria-hidden="true"></span>
+      <p class="mono" data-comments-count>— comentarios</p>
     </div>
-  </div>
+    <h2 id="comments-title">¿Qué añadirías o qué mejorarías de esta guía?</h2>
+    <p>Tus notas ayudan a mantener esta guía útil y precisa para todos los jugadores.</p>
+  </header>
 
   <form class="comment-form" data-comment-form novalidate>
-    <label class="comment-field comment-nickname">
-      <span>Nick</span>
-      <input
-        type="text"
-        name="nickname"
-        minlength="2"
-        maxlength={COMMENT_NICKNAME_MAX_LENGTH}
-        autocomplete="nickname"
-        placeholder="Tu nick"
-        required
+    <div class="comment-identity">
+      <img
+        class="comment-viewer-avatar"
+        data-comment-viewer-avatar
+        src="/images/comment-avatars/steve.png"
+        width="80"
+        height="80"
+        alt=""
+        aria-hidden="true"
       />
-    </label>
+      <label class="comment-field comment-nickname">
+        <span class="mono">Nick <small>(aparece públicamente)</small></span>
+        <input
+          type="text"
+          name="nickname"
+          minlength="2"
+          maxlength={COMMENT_NICKNAME_MAX_LENGTH}
+          autocomplete="nickname"
+          placeholder="Tu nick"
+          required
+        />
+        <small>¿No tienes cuenta? No pasa nada: publicas con una identidad anónima.</small>
+      </label>
+      <p class="comment-identity-label mono">
+        Escribir como: <strong data-comment-viewer-label>Anónimo</strong>
+      </p>
+    </div>
 
     <label class="comment-field comment-message">
-      <span>
-        Comentario
-        <small class="mono"><output data-comment-length>0</output> / {COMMENT_BODY_MAX_LENGTH}</small>
-      </span>
+      <span class="sr-only">Comentario</span>
       <textarea
         name="body"
         minlength="2"
         maxlength={COMMENT_BODY_MAX_LENGTH}
-        rows="7"
-        placeholder="Escribe tu comentario…"
+        rows="3"
+        placeholder="Comparte tu apunte o sugerencia…"
         required
       ></textarea>
+      <small class="comment-length mono">
+        <output data-comment-length>0</output> / {COMMENT_BODY_MAX_LENGTH}
+      </small>
     </label>
 
     <label class="comment-honeypot" aria-hidden="true">
@@ -66,18 +85,23 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       <input type="text" name="website" tabindex="-1" autocomplete="off" />
     </label>
 
-    {turnstileSiteKey && (
-      <div
-        class="cf-turnstile"
-        data-sitekey={turnstileSiteKey}
-        data-theme="dark"
-        data-appearance="interaction-only"
-        data-action="blog-comment"
-      ></div>
-    )}
-
     <div class="comment-form-footer">
-      <button class="comment-submit" type="submit" disabled>Publicar</button>
+      <div class="comment-guidance">
+        <p>Publica con respeto. No compartas datos personales.</p>
+        <a href="/normas">Ver normas de la comunidad</a>
+      </div>
+      {turnstileSiteKey && (
+        <div
+          class="cf-turnstile"
+          data-sitekey={turnstileSiteKey}
+          data-theme="dark"
+          data-appearance="interaction-only"
+          data-action="blog-comment"
+        ></div>
+      )}
+      <button class="comment-submit" type="submit" disabled>
+        Añadir a la conversación
+      </button>
     </div>
 
     <p class="comment-form-status" data-comment-form-status aria-live="polite"></p>
@@ -89,11 +113,17 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       <p>Abriendo la conversación…</p>
     </div>
     <ol class="comments-list" data-comments-list aria-live="polite"></ol>
+    <p class="comments-end mono" data-comments-end hidden>No hay más comentarios.</p>
     <div class="comments-empty" data-comments-empty hidden>
-      <p>Todavía no hay comentarios. Puedes comenzar la conversación.</p>
+      <p class="mono">Todavía no hay apuntes</p>
+      <p>Puedes ser la primera persona en añadir algo a esta guía.</p>
     </div>
     <div class="comments-unavailable" data-comments-unavailable hidden>
-      <p>No hemos podido cargar la conversación. Prueba de nuevo en unos instantes.</p>
+      <div>
+        <p class="mono">Conversación en pausa</p>
+        <p>No hemos podido cargar los comentarios en este momento.</p>
+      </div>
+      <button type="button" data-comments-retry>Reintentar</button>
     </div>
     <button class="comments-more" type="button" data-comments-more hidden>
       Cargar más comentarios
@@ -195,19 +225,77 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
     const empty = root.querySelector<HTMLElement>("[data-comments-empty]");
     const unavailable = root.querySelector<HTMLElement>("[data-comments-unavailable]");
     const more = root.querySelector<HTMLButtonElement>("[data-comments-more]");
+    const end = root.querySelector<HTMLElement>("[data-comments-end]");
+    const retry = root.querySelector<HTMLButtonElement>("[data-comments-retry]");
     const submit = root.querySelector<HTMLButtonElement>("[type='submit']");
     const status = root.querySelector<HTMLElement>("[data-comment-form-status]");
     const body = form?.elements.namedItem("body") as HTMLTextAreaElement | null;
     const length = root.querySelector<HTMLOutputElement>("[data-comment-length]");
+    const countLabel = root.querySelector<HTMLElement>("[data-comments-count]");
+    const viewerAvatar = root.querySelector<HTMLImageElement>("[data-comment-viewer-avatar]");
+    const viewerLabel = root.querySelector<HTMLElement>("[data-comment-viewer-label]");
     let cursor: string | null = null;
     let count = 0;
     let submissionIdempotencyKey = makeIdempotencyKey();
 
     if (!slug || !form || !list || !submit) return;
     const endpoint = `${apiBase}/api/comments/${encodeURIComponent(slug)}`;
+    const previewMode = import.meta.env.DEV
+      && new URL(window.location.href).searchParams.get("comments-preview") === "1";
+    const previewComments: CommentItem[] = [
+      {
+        id: "preview-1",
+        authorCode: "A7F3C",
+        avatar: "alex",
+        nickname: "AlexMiner",
+        body: "Funciona todo perfecto siguiendo la guía. Solo añadiría un paso para comprobar que el firewall no bloquee la conexión al entrar por primera vez.",
+        createdAt: "2026-07-26T17:42:00.000Z",
+        editedAt: "2026-07-26T18:03:00.000Z",
+        reportCount: 0,
+        canDelete: false,
+      },
+      {
+        id: "preview-2",
+        authorCode: "D3C97",
+        avatar: "kai",
+        nickname: "Ferreras",
+        body: "Buen apunte, AlexMiner. Lo añadiremos a la sección de resolución de problemas. Gracias por ayudar a mejorar la guía.",
+        createdAt: "2026-07-26T18:05:00.000Z",
+        editedAt: "",
+        reportCount: 0,
+        canDelete: false,
+      },
+      {
+        id: "preview-3",
+        authorCode: "B9D8F",
+        avatar: "steve",
+        nickname: "Redstone99",
+        body: "¿Hay algún límite recomendado de jugadores simultáneos para mantener una experiencia estable?",
+        createdAt: "2026-07-27T09:11:00.000Z",
+        editedAt: "",
+        reportCount: 0,
+        canDelete: false,
+      },
+    ];
 
     const setCount = (value: number) => {
       count = value;
+      if (countLabel) {
+        countLabel.textContent = `${value} ${value === 1 ? "comentario" : "comentarios"}`;
+      }
+    };
+
+    const setViewer = (viewer?: CommentsResponse["viewer"]) => {
+      if (!viewer) return;
+      if (viewerAvatar) viewerAvatar.src = getAvatarUrl(viewer.avatar);
+      if (viewerLabel) viewerLabel.textContent = `Anónimo · ${viewer.authorCode}`;
+    };
+
+    const renumberComments = () => {
+      Array.from(list.children).forEach((child, index) => {
+        const marker = child.querySelector<HTMLElement>(".comment-index");
+        if (marker) marker.textContent = String(index + 1).padStart(2, "0");
+      });
     };
 
     const reportComment = async (button: HTMLButtonElement, id: string) => {
@@ -247,7 +335,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 
         item.remove();
         setCount(Math.max(0, count - 1));
+        renumberComments();
         if (empty) empty.hidden = list.children.length > 0;
+        if (end) end.hidden = list.children.length === 0;
       } catch (error) {
         button.disabled = false;
         button.textContent = "Eliminar";
@@ -316,7 +406,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
           if (!result.comment) {
             item.remove();
             setCount(Math.max(0, count - 1));
+            renumberComments();
             if (empty) empty.hidden = list.children.length > 0;
+            if (end) end.hidden = list.children.length === 0;
             if (status) status.textContent = result.message || "Cambio pendiente de revisión.";
             return;
           }
@@ -350,9 +442,15 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
 
     const renderComment = (comment: CommentItem) => {
       const item = makeElement("li", "comment-item");
+      const index = makeElement(
+        "span",
+        "comment-index mono",
+        String(list.children.length + 1).padStart(2, "0"),
+      );
       const content = makeElement("div", "comment-content");
       const header = makeElement("header");
       const byline = makeElement("p", "comment-byline");
+      const prefix = makeElement("span", "comment-author-prefix mono", "Nick:");
       const nickname = makeElement("strong", "", comment.nickname);
       const code = makeElement("span", "mono comment-code", comment.authorCode);
       const meta = makeElement("div", "comment-meta");
@@ -366,7 +464,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
         minute: "2-digit",
       }).format(new Date(comment.createdAt));
 
-      byline.append(nickname, code);
+      byline.append(prefix, nickname, code);
       meta.append(time);
       if (comment.editedAt) {
         meta.append(makeElement("span", "comment-edited", "editado"));
@@ -402,12 +500,32 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       }
 
       content.append(header, message, actions);
-      item.append(makeAvatar(comment.avatar), content);
+      item.append(index, makeAvatar(comment.avatar), content);
       list.append(item);
     };
 
     const loadComments = async (append = false) => {
       if (more) more.disabled = true;
+      if (!append) {
+        if (loading) loading.hidden = false;
+        if (unavailable) unavailable.hidden = true;
+      }
+
+      if (previewMode) {
+        list.replaceChildren();
+        previewComments.forEach(renderComment);
+        cursor = null;
+        setCount(previewComments.length);
+        setViewer({ authorCode: "A7F3C", avatar: "alex" });
+        if (empty) empty.hidden = true;
+        if (end) end.hidden = false;
+        if (unavailable) unavailable.hidden = true;
+        if (loading) loading.hidden = true;
+        if (more) more.hidden = true;
+        submit.disabled = false;
+        return;
+      }
+
       try {
         const url = new URL(endpoint, window.location.href);
         if (append && cursor) url.searchParams.set("cursor", cursor);
@@ -419,7 +537,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
         (result.comments || []).forEach(renderComment);
         cursor = result.nextCursor || null;
         setCount(result.count || 0);
+        setViewer(result.viewer);
         if (empty) empty.hidden = list.children.length > 0;
+        if (end) end.hidden = Boolean(cursor) || list.children.length === 0;
         if (unavailable) unavailable.hidden = true;
         if (more) {
           more.hidden = !cursor;
@@ -427,8 +547,14 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
         }
         submit.disabled = !siteKey;
       } catch {
-        if (unavailable) unavailable.hidden = false;
-        if (empty) empty.hidden = true;
+        if (!append) {
+          setCount(0);
+          if (unavailable) unavailable.hidden = false;
+          if (empty) empty.hidden = true;
+          if (end) end.hidden = true;
+        } else if (more) {
+          more.disabled = false;
+        }
       } finally {
         if (loading) loading.hidden = true;
       }
@@ -438,6 +564,7 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
       if (length) length.value = String([...body.value].length);
     });
     more?.addEventListener("click", () => void loadComments(true));
+    retry?.addEventListener("click", () => void loadComments());
 
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
@@ -477,7 +604,9 @@ const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
           renderComment(result.comment);
           setCount(count + 1);
           if (empty) empty.hidden = true;
+          if (end && !cursor) end.hidden = false;
         }
+        setViewer(result.viewer);
         if (status) status.textContent = result.message || "Comentario recibido.";
         if (body) body.value = "";
         if (length) length.value = "0";
