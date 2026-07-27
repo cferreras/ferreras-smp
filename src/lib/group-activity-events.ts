@@ -3,7 +3,7 @@ import type { MinecraftActivityEvent } from "../types/minecraft-live";
 export type GroupedMinecraftActivityEvent = MinecraftActivityEvent & {
   count: number;
 };
-export const MAX_VISIBLE_ACTIVITY_EVENTS = 10;
+export const MAX_VISIBLE_ACTIVITY_EVENTS = 5;
 export const ACTIVITY_EVENT_LOOKBACK_LIMIT = 50;
 
 const REPEATED_EVENT_WINDOW_MS = 5 * 60 * 1_000;
