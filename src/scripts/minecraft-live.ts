@@ -23,6 +23,14 @@ const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   backup: "Backup",
   system: "Sistema",
 };
+const eventIcons: Record<MinecraftActivityEvent["type"], string> = {
+  join: "/icons/house.svg",
+  leave: "/icons/house.svg",
+  death: "/icons/sword.svg",
+  advancement: "/icons/sword.svg",
+  backup: "/icons/cube.svg",
+  system: "/icons/cube.svg",
+};
 
 const liveRoot = document.querySelector<HTMLElement>("[data-minecraft-live]");
 
@@ -33,12 +41,11 @@ if (liveRoot) {
   const retryButton = liveRoot.querySelector<HTMLButtonElement>("[data-live-retry]");
   const statusBadge = liveRoot.querySelector<HTMLElement>("[data-status-badge]");
   const statusLabel = liveRoot.querySelector<HTMLElement>("[data-status-label]");
+  const statusSummary = liveRoot.querySelector<HTMLElement>("[data-status-summary]");
   const playersMetric = liveRoot.querySelector<HTMLElement>('[data-status-metric="Jugadores"]');
   const worldDayMetric = liveRoot.querySelector<HTMLElement>(
     '[data-status-metric="Día del mundo"]',
   );
-  const tpsMetric = liveRoot.querySelector<HTMLElement>('[data-status-metric="TPS"]');
-  const tpsUnit = liveRoot.querySelector<HTMLElement>('[data-status-unit="TPS"]');
   let pollingId: number | undefined;
   let lastUpdatedLabel = "";
   let loading = false;
@@ -46,13 +53,12 @@ if (liveRoot) {
   const setLiveState = (
     message: string,
     state: "loading" | "ready" | "stale" | "error",
-    canRetry = false,
   ) => {
     if (!liveState) return;
 
     liveState.textContent = message;
     liveState.dataset.state = state;
-    if (retryButton) retryButton.hidden = !canRetry;
+    if (retryButton) retryButton.hidden = false;
   };
 
   const applyAvatarFallback = (avatar: HTMLImageElement) => {
@@ -68,7 +74,10 @@ if (liveRoot) {
   const createPlayerItem = (player: string) => {
     const item = document.createElement("li");
     const avatar = document.createElement("img");
+    const presence = document.createElement("span");
+    const playerCopy = document.createElement("span");
     const name = document.createElement("strong");
+    const detail = document.createElement("small");
 
     avatar.className = "player-avatar";
     avatar.src = getPlayerAvatarUrl(player);
@@ -79,15 +88,20 @@ if (liveRoot) {
     avatar.alt = "";
     avatar.setAttribute("aria-hidden", "true");
     avatar.addEventListener("error", () => applyAvatarFallback(avatar), { once: true });
+    presence.className = "player-presence";
+    presence.setAttribute("aria-hidden", "true");
+    playerCopy.className = "player-copy";
     name.textContent = player;
+    detail.textContent = "En el mundo";
+    playerCopy.append(name, detail);
 
-    item.append(avatar, name);
+    item.append(avatar, presence, playerCopy);
     return item;
   };
 
   const updatePlayers = (players: string[]) => {
     liveRoot.querySelectorAll<HTMLElement>("[data-players-heading]").forEach((heading) => {
-      heading.textContent = `${players.length} ahora`;
+      heading.textContent = `${players.length} en línea`;
     });
 
     liveRoot.querySelectorAll<HTMLElement>("[data-player-feed]").forEach((feed) => {
@@ -108,6 +122,10 @@ if (liveRoot) {
 
   const createActivityItem = (event: GroupedMinecraftActivityEvent) => {
     const item = document.createElement("li");
+    const icon = document.createElement("span");
+    const iconImage = document.createElement("img");
+    const content = document.createElement("div");
+    const meta = document.createElement("div");
     const type = document.createElement("span");
     const message = document.createElement("p");
     const copy = document.createElement("span");
@@ -116,6 +134,15 @@ if (liveRoot) {
 
     item.className = "activity-event";
     item.dataset.activityType = event.type;
+    icon.className = "activity-icon";
+    icon.setAttribute("aria-hidden", "true");
+    iconImage.src = eventIcons[event.type];
+    iconImage.width = 28;
+    iconImage.height = 28;
+    iconImage.alt = "";
+    icon.append(iconImage);
+    content.className = "activity-copy";
+    meta.className = "activity-meta";
     type.className = "activity-type";
     type.textContent = eventLabels[event.type];
     copy.textContent = event.message;
@@ -128,8 +155,10 @@ if (liveRoot) {
       count.textContent = `x${event.count}`;
       message.append(count);
     }
+    meta.append(type, time);
+    content.append(meta, message);
 
-    item.append(type, message, time);
+    item.append(icon, content);
     return item;
   };
 
@@ -155,16 +184,15 @@ if (liveRoot) {
       statusBadge.setAttribute("aria-label", "Estado no disponible");
     }
     if (statusLabel) statusLabel.textContent = "Sin datos";
-    if (playersMetric) playersMetric.textContent = "No disponible";
-    if (worldDayMetric) worldDayMetric.textContent = "No disponible";
-    if (tpsMetric) tpsMetric.textContent = "No disponible";
-    if (tpsUnit) tpsUnit.hidden = true;
+    if (statusSummary) statusSummary.textContent = "Estado no disponible temporalmente";
+    if (playersMetric) playersMetric.textContent = "—";
+    if (worldDayMetric) worldDayMetric.textContent = "—";
     updatePlayers([]);
     updateActivity([]);
   };
 
   const applySnapshot = (snapshot: MinecraftLiveSnapshot) => {
-    const statusText = snapshot.status.online ? "Online" : "Offline";
+    const statusText = snapshot.status.online ? "Servidor online" : "Servidor offline";
 
     if (statusBadge) {
       statusBadge.classList.remove("unavailable");
@@ -173,18 +201,18 @@ if (liveRoot) {
       statusBadge.setAttribute("aria-label", `Estado: ${statusText}`);
     }
     if (statusLabel) statusLabel.textContent = statusText;
+    if (statusSummary) {
+      statusSummary.textContent = snapshot.status.online
+        ? "Todo funcionando con normalidad"
+        : "El servidor está descansando";
+    }
     if (playersMetric) {
-      playersMetric.textContent = `${snapshot.status.playersOnline} / ${snapshot.status.maxPlayers}`;
+      playersMetric.textContent = snapshot.status.playersOnline.toString();
     }
     if (worldDayMetric) {
       worldDayMetric.textContent =
-        snapshot.status.worldDay === null ? "No disponible" : snapshot.status.worldDay.toString();
+        snapshot.status.worldDay === null ? "—" : snapshot.status.worldDay.toString();
     }
-    if (tpsMetric) {
-      tpsMetric.textContent =
-        snapshot.status.tps === null ? "No disponible" : snapshot.status.tps.toFixed(1);
-    }
-    if (tpsUnit) tpsUnit.hidden = snapshot.status.tps === null;
     updatePlayers(snapshot.status.players);
     updateActivity(snapshot.activity);
 
@@ -221,7 +249,7 @@ if (liveRoot) {
   const handleLoadFailure = () => {
     const feedback = getLiveFailureFeedback(lastUpdatedLabel);
     if (feedback.state === "error") setUnavailableSnapshot();
-    setLiveState(feedback.message, feedback.state, true);
+    setLiveState(feedback.message, feedback.state);
   };
 
   const refreshSnapshot = async () => {

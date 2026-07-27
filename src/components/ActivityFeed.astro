@@ -17,18 +17,33 @@ const eventLabels: Record<MinecraftActivityEvent["type"], string> = {
   backup: "Backup",
   system: "Sistema",
 };
+const eventIcons: Record<MinecraftActivityEvent["type"], string> = {
+  join: "/icons/house.svg",
+  leave: "/icons/house.svg",
+  death: "/icons/sword.svg",
+  advancement: "/icons/sword.svg",
+  backup: "/icons/cube.svg",
+  system: "/icons/cube.svg",
+};
 ---
 
 <div class="activity-feed">
   <ul class="activity-list" aria-label="Actividad reciente" data-activity-list hidden={events.length === 0}>
     {groupedEvents.map((event) => (
       <li class="activity-event" data-activity-type={event.type}>
-        <span class="activity-type">{eventLabels[event.type]}</span>
-        <p>
-          <span>{event.message}</span>
-          {event.count > 1 && <strong class="activity-count" aria-label={`${event.count} veces`}>x{event.count}</strong>}
-        </p>
-        <time datetime={event.createdAt}>{formatRelativeTime(event.createdAt)}</time>
+        <span class="activity-icon" aria-hidden="true">
+          <img src={eventIcons[event.type]} width="28" height="28" alt="" />
+        </span>
+        <div class="activity-copy">
+          <div class="activity-meta">
+            <span class="activity-type">{eventLabels[event.type]}</span>
+            <time datetime={event.createdAt}>{formatRelativeTime(event.createdAt)}</time>
+          </div>
+          <p>
+            <span>{event.message}</span>
+            {event.count > 1 && <strong class="activity-count" aria-label={`${event.count} veces`}>x{event.count}</strong>}
+          </p>
+        </div>
       </li>
     ))}
   </ul>
