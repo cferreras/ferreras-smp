@@ -89,8 +89,22 @@ const isCurrentPrimaryLink = (href: string) => href === "/blog" && currentPath.s
   toggle?.addEventListener("click", () => {
     const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
-    localStorage.setItem("ferreras-theme", next);
+    try {
+      localStorage.setItem("ferreras-theme", next);
+    } catch {
+      // The selected theme still applies for the current page.
+    }
     syncThemeControl();
+  });
+
+  window.addEventListener("storage", (event) => {
+    if (
+      event.key === "ferreras-theme"
+      && (event.newValue === "light" || event.newValue === "dark")
+    ) {
+      root.dataset.theme = event.newValue;
+      syncThemeControl();
+    }
   });
 
   syncThemeControl();

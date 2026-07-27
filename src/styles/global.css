@@ -1,31 +1,4 @@
 :root {
-  color-scheme: dark;
-  --background: #000000;
-  --foreground: #fafafa;
-  --card: #000000;
-  --card-elevated: #050505;
-  --muted: #a1a1aa;
-  --muted-strong: #d4d4d8;
-  --border: #27272a;
-  --border-soft: #18181b;
-  --primary: #8b5cf6;
-  --primary-strong: #7c3aed;
-  --primary-soft: #2e1065;
-  --primary-foreground: #ffffff;
-  --success: #22c55e;
-  --danger: #ef4444;
-  --ring: #a78bfa;
-  --shadow: 0 18px 60px rgb(0 0 0 / 0.4);
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 18px;
-  --shell: 1200px;
-  --header-height: 72px;
-  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
-}
-
-:root[data-theme="light"] {
   color-scheme: light;
   --background: #fafafa;
   --foreground: #09090b;
@@ -43,6 +16,55 @@
   --danger: #dc2626;
   --ring: #7c3aed;
   --shadow: 0 18px 50px rgb(24 24 27 / 0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --shell: 1200px;
+  --header-height: 72px;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #000000;
+  --foreground: #fafafa;
+  --card: #000000;
+  --card-elevated: #050505;
+  --muted: #a1a1aa;
+  --muted-strong: #d4d4d8;
+  --border: #27272a;
+  --border-soft: #18181b;
+  --primary: #8b5cf6;
+  --primary-strong: #7c3aed;
+  --primary-soft: #2e1065;
+  --primary-foreground: #ffffff;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --ring: #a78bfa;
+  --shadow: 0 18px 60px rgb(0 0 0 / 0.4);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --background: #000000;
+    --foreground: #fafafa;
+    --card: #000000;
+    --card-elevated: #050505;
+    --muted: #a1a1aa;
+    --muted-strong: #d4d4d8;
+    --border: #27272a;
+    --border-soft: #18181b;
+    --primary: #8b5cf6;
+    --primary-strong: #7c3aed;
+    --primary-soft: #2e1065;
+    --primary-foreground: #ffffff;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --ring: #a78bfa;
+    --shadow: 0 18px 60px rgb(0 0 0 / 0.4);
+  }
 }
 
 *,
