@@ -114,7 +114,7 @@ structuredData["@graph"].push(...pageSchemas);
 ---
 
 <!doctype html>
-<html lang="es" data-theme="dark">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -175,11 +175,18 @@ structuredData["@graph"].push(...pageSchemas);
     )}
     <script is:inline>
       (() => {
-        const saved = localStorage.getItem("ferreras-theme");
+        let saved = null;
+        try {
+          saved = localStorage.getItem("ferreras-theme");
+        } catch {
+          // The CSS fallback still follows the system preference if storage is unavailable.
+        }
         const theme = saved === "light" || saved === "dark"
           ? saved
           : matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
         document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]')
+          ?.setAttribute("content", theme === "dark" ? "#000000" : "#FAFAFA");
       })();
     </script>
     <title>{title}</title>
