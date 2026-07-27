@@ -18,7 +18,7 @@ La arquitectura objetivo separa la web pública de la API que habla con DragonFl
 mc.ferreras.dev      -> Vercel, frontend/web pública
 mc-api.ferreras.dev  -> Dokploy/VPS, API Minecraft Live
 DragonFly            -> privado en Dokploy/VPS
-Worker RCON/logs     -> Dokploy/VPS
+Worker latest.log    -> Dokploy/VPS
 Minecraft            -> Dokploy/VPS
 ```
 
@@ -164,12 +164,14 @@ curl http://localhost:4321/api/minecraft/status
 curl http://localhost:4321/api/minecraft/activity
 ```
 
-### Worker RCON de Minecraft
+### Worker de eventos de Minecraft
 
 El worker vive en `worker/` y se ejecuta como servicio separado en Dokploy/VPS.
-No expone puertos, no recibe peticiones HTTP y es la única pieza que debe hablar
-con RCON. Su trabajo es consultar Minecraft y escribir el estado en DragonFly/Redis
-en la clave `mc:status`, que luego lee la API.
+No expone puertos ni recibe peticiones HTTP. Sigue `latest.log` en tiempo real
+mediante eventos del sistema de archivos, reconstruye al arrancar los jugadores,
+el día del mundo y el estado del servidor, y lo escribe en DragonFly/Redis.
+RCON no se usa para consultar el estado periódicamente: queda reservado para
+comandos administrativos y reutiliza una conexión persistente.
 
 Variables necesarias para el worker:
 
@@ -180,7 +182,6 @@ RCON_PORT=25575
 RCON_PASSWORD=...
 MINECRAFT_HOST_PUBLIC=mc.ferreras.dev
 MINECRAFT_MAX_PLAYERS=20
-MINECRAFT_POLL_INTERVAL_MS=10000
 MINECRAFT_LOG_PATH=/srv/minecraft/logs/latest.log
 ```
 
@@ -189,12 +190,11 @@ Variables opcionales:
 ```env
 RCON_CONNECT_TIMEOUT_MS=5000
 RCON_COMMAND_TIMEOUT_MS=5000
-MINECRAFT_LOG_POLL_INTERVAL_MS=2000
 ```
 
-Para que `MINECRAFT_LOG_PATH` funcione, el contenedor del worker debe tener
-montada la carpeta de logs del servidor Minecraft. Si el host usa
-`/srv/minecraft/logs`, monta esa misma ruta en el worker como solo lectura:
+El contenedor del worker debe tener montada la carpeta de logs del servidor
+Minecraft. Si el host usa `/srv/minecraft/logs`, monta esa misma ruta en el
+worker como solo lectura:
 
 ```text
 /srv/minecraft/logs:/srv/minecraft/logs:ro
@@ -229,6 +229,15 @@ En Dokploy, despliega `worker/Dockerfile` como servicio aparte, en la misma red
 que DragonFly y Minecraft. No publiques puertos para este servicio. Si
 `RCON_HOST=minecraft` no resuelve, usa el host o IP alcanzable desde la red del
 worker.
+
+En los volúmenes del servicio añade el bind mount de logs en modo solo lectura.
+La ruta de destino debe coincidir con `MINECRAFT_LOG_PATH`; por ejemplo:
+
+```text
+Host: /srv/minecraft/logs
+Container: /srv/minecraft/logs
+Read only: sí
+```
 
 RCON y las conexiones `redis://` no cifran el tráfico. Mantén ambos puertos en
 esa red privada; si el tráfico cruza hosts o una red no confiable, protégelo con

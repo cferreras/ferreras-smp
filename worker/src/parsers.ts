@@ -1,4 +1,9 @@
-import type { ListStatus, MinecraftActivityEvent, PerformanceStatus } from "./types.js";
+import type {
+  ListStatus,
+  MinecraftActivityEvent,
+  ParsedMinecraftLogLine,
+  PerformanceStatus,
+} from "./types.js";
 
 export const parseListResponse = (response: string, fallbackMaxPlayers: number): ListStatus | null => {
   const match = response.match(/There are\s+(\d+)\s+of\s+a\s+max\s+of\s+(\d+)\s+players online:?\s*(.*)$/i);
@@ -11,10 +16,7 @@ export const parseListResponse = (response: string, fallbackMaxPlayers: number):
   const parsedMaxPlayers = Number.parseInt(match[2], 10);
   const playersRaw = match[3]?.trim() ?? "";
   const players = playersRaw
-    ? playersRaw
-        .split(",")
-        .map((player) => player.trim())
-        .filter(Boolean)
+    ? playersRaw.split(",").map((player) => player.trim()).filter(Boolean)
     : [];
 
   return {
@@ -43,7 +45,6 @@ export const parseWorldDayResponse = (response: string): number | null => {
   }
 
   const worldDay = Number.parseInt(match[1], 10);
-
   return Number.isFinite(worldDay) && worldDay >= 0 ? worldDay : null;
 };
 
@@ -57,12 +58,7 @@ export const parseTpsResponse = (response: string): number | null => {
   }
 
   const tps = Number.parseFloat(match[1]);
-
-  if (!Number.isFinite(tps) || tps < 0) {
-    return null;
-  }
-
-  return Math.min(tps, 20);
+  return Number.isFinite(tps) && tps >= 0 ? Math.min(tps, 20) : null;
 };
 
 export const parsePerformanceResponse = (response: string): PerformanceStatus | null => {
@@ -75,10 +71,7 @@ export const parsePerformanceResponse = (response: string): PerformanceStatus | 
     return null;
   }
 
-  return {
-    tps,
-    mspt: Number.isFinite(mspt) ? mspt : null,
-  };
+  return { tps, mspt: Number.isFinite(mspt) ? mspt : null };
 };
 
 const logMessagePattern = /^\[[^\]]+]\s+\[[^\]]+]:\s+(?:\[[^\]]+]\s+)?(.+)$/;
@@ -95,46 +88,109 @@ const createActivityEvent = (
   createdAt: new Date().toISOString(),
 });
 
-export const parseActivityLogLine = (line: string): MinecraftActivityEvent | null => {
+export const parseMinecraftLogLine = (line: string): ParsedMinecraftLogLine => {
   const message = line.match(logMessagePattern)?.[1]?.trim() || line.trim();
 
   if (!message) {
-    return null;
+    return { activity: null, state: null };
   }
 
-  const joinMatch = message.match(/^(.+?) joined the game$/i);
+  const startingMatch = message.match(/^Starting minecraft server version\s+(.+)$/i);
+
+  if (startingMatch) {
+    return {
+      activity: null,
+      state: { type: "server_starting", version: startingMatch[1].trim() || null },
+    };
+  }
+
+  if (/^Done \([^)]+\)!\s+For help,/i.test(message)) {
+    return {
+      activity: createActivityEvent("system", "El servidor está disponible"),
+      state: { type: "server_ready" },
+    };
+  }
+
+  if (/^(?:Stopping server|Closing server|Thread RCON Listener stopped)$/i.test(message)) {
+    return {
+      activity: createActivityEvent("system", "El servidor se ha detenido"),
+      state: { type: "server_stopped" },
+    };
+  }
+
+  const worldDayMatch =
+    message.match(/^¡Un nuevo día comienza!\s+Día:?\s*(\d+)\.?$/i) ??
+    message.match(/^A new day has begun!\s+Day:?\s*(\d+)\.?$/i);
+
+  if (worldDayMatch) {
+    return {
+      activity: null,
+      state: { type: "world_day", day: Number.parseInt(worldDayMatch[1], 10) },
+    };
+  }
+
+  const joinMatch = message.match(
+    /^([A-Za-z0-9_]{2,16}) (?:joined the game|se ha unido a la partida)$/i,
+  );
 
   if (joinMatch) {
     const player = joinMatch[1];
-    return createActivityEvent("join", `${player} ha entrado al servidor`, player);
+    return {
+      activity: createActivityEvent("join", `${player} ha entrado al servidor`, player),
+      state: { type: "player_join", player },
+    };
   }
 
-  const leaveMatch = message.match(/^(.+?) left the game$/i);
+  const leaveMatch = message.match(
+    /^([A-Za-z0-9_]{2,16}) (?:left the game|ha abandonado la partida)$/i,
+  );
 
   if (leaveMatch) {
     const player = leaveMatch[1];
-    return createActivityEvent("leave", `${player} ha salido del servidor`, player);
+    return {
+      activity: createActivityEvent("leave", `${player} ha salido del servidor`, player),
+      state: { type: "player_leave", player },
+    };
   }
 
-  const advancementMatch = message.match(/^(.+?) has (?:made the advancement|completed the challenge|reached the goal) \[(.+)]$/i);
+  const advancementMatch = message.match(
+    /^(.+?) (?:has (?:made the advancement|completed the challenge|reached the goal)|ha (?:conseguido el progreso|completado el desafío|alcanzado el objetivo)) \[(.+)]$/i,
+  );
 
   if (advancementMatch) {
     const [, player, advancement] = advancementMatch;
-    return createActivityEvent("advancement", `${player} consiguió ${advancement}`, player);
+    return {
+      activity: createActivityEvent("advancement", `${player} consiguió ${advancement}`, player),
+      state: null,
+    };
   }
 
-  const backupMatch = message.match(/\bbackup\b/i);
-
-  if (backupMatch && /\b(done|complete|completed|correctly|success|successful|finalizado|completado)\b/i.test(message)) {
-    return createActivityEvent("backup", "El servidor ha hecho backup correctamente");
+  if (
+    /\bbackup\b/i.test(message) &&
+    /\b(done|complete|completed|correctly|success|successful|finalizado|completado)\b/i.test(message)
+  ) {
+    return {
+      activity: createActivityEvent("backup", "El servidor ha hecho backup correctamente"),
+      state: null,
+    };
   }
 
   const deathMatch = message.match(/^([A-Za-z0-9_]{2,16})\s+(.+)$/);
 
-  if (deathMatch && /\b(was|died|fell|burned|blew|hit|shot|slain|killed|tried|went|starved|drowned|suffocated|discovered)\b/i.test(message)) {
+  if (
+    deathMatch &&
+    (/\b(was|died|fell|burned|blew|hit|shot|slain|killed|tried|went|starved|drowned|suffocated|discovered)\b/i.test(message) ||
+      /(murió|muerto|cayó|ardió|quemó|explotó|asesinado|disparado|ahogó|asfixió|intentó|descubrió)/i.test(message))
+  ) {
     const player = deathMatch[1];
-    return createActivityEvent("death", message, player);
+    return {
+      activity: createActivityEvent("death", message, player),
+      state: null,
+    };
   }
 
-  return null;
+  return { activity: null, state: null };
 };
+
+export const parseActivityLogLine = (line: string): MinecraftActivityEvent | null =>
+  parseMinecraftLogLine(line).activity;
