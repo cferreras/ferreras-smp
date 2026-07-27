@@ -29,7 +29,7 @@ Players connect through `mc.ferreras.dev`, use Discord for community and support
 - Supports simple- to medium-complexity farms and automations; specific supported mechanics remain an open product decision unless documented elsewhere.
 - Server-side performance, administration, security, community, and quality-of-life mods are documented in `src/data/server.ts`.
 - Land protection is available through Open Parties and Claims.
-- Public live status is supplied through a separate API backed by private Redis/DragonFly and a worker with RCON/log access.
+- Public live status is supplied through a separate API backed by private Redis/DragonFly and a worker that follows `latest.log`; RCON is reserved for administrative commands.
 - The website is an Astro application; the Minecraft live worker is a separate child app.
 
 ## Brand Commitments

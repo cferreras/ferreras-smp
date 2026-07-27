@@ -2,10 +2,13 @@ import assert from "node:assert/strict";
 import {
   parseActivityLogLine,
   parseListResponse,
+  parseMinecraftLogLine,
   parsePerformanceResponse,
   parseTpsResponse,
   parseWorldDayResponse,
 } from "./parsers.js";
+import { MinecraftStatusTracker } from "./status-tracker.js";
+import type { WorkerConfig } from "./config.js";
 
 const twoPlayers = parseListResponse("There are 2 of a max of 20 players online: Carlos, Akawonder", 20);
 assert.deepEqual(twoPlayers, {
@@ -45,6 +48,34 @@ assert.equal(
   parseActivityLogLine("[19:20:10] [Server thread/INFO]: Carlos joined the game")?.message,
   "Carlos ha entrado al servidor",
 );
+assert.deepEqual(
+  parseMinecraftLogLine("[19:20:10] [Server thread/INFO]: Carlos joined the game").state,
+  { type: "player_join", player: "Carlos" },
+);
+assert.deepEqual(
+  parseMinecraftLogLine("[19:20:10] [Server thread/INFO]: Carlos se ha unido a la partida").state,
+  { type: "player_join", player: "Carlos" },
+);
+assert.deepEqual(
+  parseMinecraftLogLine("[19:20:09] [Server thread/INFO]: Done (4.120s)! For help, type \"help\"").state,
+  { type: "server_ready" },
+);
+assert.deepEqual(
+  parseMinecraftLogLine("[19:20:08] [Server thread/INFO]: Starting minecraft server version 1.21.8").state,
+  { type: "server_starting", version: "1.21.8" },
+);
+assert.deepEqual(
+  parseMinecraftLogLine("[19:30:00] [Server thread/INFO]: Stopping server").state,
+  { type: "server_stopped" },
+);
+assert.deepEqual(
+  parseMinecraftLogLine("[17:11:33] [Server thread/INFO]: ¡Un nuevo día comienza! Día 633.").state,
+  { type: "world_day", day: 633 },
+);
+assert.deepEqual(
+  parseMinecraftLogLine("[00:05:22] [Server thread/INFO]: A new day has begun! Day: 307").state,
+  { type: "world_day", day: 307 },
+);
 assert.equal(
   parseActivityLogLine("[19:21:10] [Server thread/INFO]: Akawonder has made the advancement [Diamonds!]")?.message,
   "Akawonder consiguió Diamonds!",
@@ -53,6 +84,39 @@ assert.equal(
   parseActivityLogLine("[19:22:10] [Server thread/INFO]: Laura was blown up by Creeper")?.type,
   "death",
 );
+assert.equal(
+  parseActivityLogLine("[19:22:10] [Server thread/INFO]: Laura murió por culpa de Creeper")?.type,
+  "death",
+);
 assert.equal(parseActivityLogLine("[19:23:10] [Server thread/INFO]: Nothing interesting"), null);
+
+const tracker = new MinecraftStatusTracker({
+  redisUrl: "redis://example",
+  rconHost: "minecraft",
+  rconPort: 25_575,
+  rconPassword: "secret",
+  minecraftHostPublic: "mc.example.com",
+  minecraftMaxPlayers: 20,
+  rconConnectTimeoutMs: 5_000,
+  rconCommandTimeoutMs: 5_000,
+  minecraftLogPath: "/logs/latest.log",
+} satisfies WorkerConfig);
+tracker.apply({ type: "server_ready" });
+tracker.apply({ type: "world_day", day: 633 });
+tracker.apply({ type: "player_join", player: "Carlos" });
+tracker.apply({ type: "player_join", player: "Akawonder" });
+tracker.apply({ type: "player_leave", player: "Carlos" });
+assert.deepEqual(
+  {
+    online: tracker.snapshot().online,
+    worldDay: tracker.snapshot().worldDay,
+    players: tracker.snapshot().players,
+  },
+  {
+    online: true,
+    worldDay: 633,
+    players: ["Akawonder"],
+  },
+);
 
 console.info("Parser tests OK");

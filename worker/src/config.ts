@@ -5,11 +5,9 @@ export type WorkerConfig = {
   rconPassword: string;
   minecraftHostPublic: string;
   minecraftMaxPlayers: number;
-  minecraftPollIntervalMs: number;
   rconConnectTimeoutMs: number;
   rconCommandTimeoutMs: number;
-  minecraftLogPath?: string;
-  minecraftLogPollIntervalMs: number;
+  minecraftLogPath: string;
 };
 
 const requiredString = (name: string): string => {
@@ -39,8 +37,6 @@ const optionalInteger = (name: string, fallback: number): number => {
 };
 
 export const loadConfig = (): WorkerConfig => {
-  const pollIntervalMs = Math.max(optionalInteger("MINECRAFT_POLL_INTERVAL_MS", 10_000), 5_000);
-
   return {
     redisUrl: requiredString("REDIS_URL"),
     rconHost: requiredString("RCON_HOST"),
@@ -48,10 +44,8 @@ export const loadConfig = (): WorkerConfig => {
     rconPassword: requiredString("RCON_PASSWORD"),
     minecraftHostPublic: requiredString("MINECRAFT_HOST_PUBLIC"),
     minecraftMaxPlayers: optionalInteger("MINECRAFT_MAX_PLAYERS", 20),
-    minecraftPollIntervalMs: pollIntervalMs,
     rconConnectTimeoutMs: optionalInteger("RCON_CONNECT_TIMEOUT_MS", 5_000),
     rconCommandTimeoutMs: optionalInteger("RCON_COMMAND_TIMEOUT_MS", 5_000),
-    minecraftLogPath: process.env.MINECRAFT_LOG_PATH?.trim() || undefined,
-    minecraftLogPollIntervalMs: optionalInteger("MINECRAFT_LOG_POLL_INTERVAL_MS", 2_000),
+    minecraftLogPath: requiredString("MINECRAFT_LOG_PATH"),
   };
 };

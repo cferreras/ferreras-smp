@@ -37,3 +37,16 @@ export type MinecraftActivityEvent = {
   message: string;
   createdAt: string;
 };
+
+export type MinecraftLogStateEvent =
+  | { type: "server_starting"; version: string | null }
+  | { type: "server_ready" }
+  | { type: "server_stopped" }
+  | { type: "world_day"; day: number }
+  | { type: "player_join"; player: string }
+  | { type: "player_leave"; player: string };
+
+export type ParsedMinecraftLogLine = {
+  activity: MinecraftActivityEvent | null;
+  state: MinecraftLogStateEvent | null;
+};
