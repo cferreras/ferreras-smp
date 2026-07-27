@@ -23,7 +23,7 @@ export default defineConfig({
         "object-src 'none'",
         "frame-ancestors 'none'",
         "form-action 'self'",
-        "img-src 'self' data:",
+        "img-src 'self' data: https://minotar.net",
         "font-src 'self' https://fonts.gstatic.com",
         "connect-src 'self' https://mc-api.ferreras.dev https://challenges.cloudflare.com https://plausible.carlosferreras.com https://www.google-analytics.com https://region1.google-analytics.com",
         "frame-src https://challenges.cloudflare.com",
