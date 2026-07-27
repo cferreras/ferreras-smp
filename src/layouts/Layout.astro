@@ -71,6 +71,7 @@ const structuredData: {
       name: "Ferreras SMP",
       url: siteUrl.href,
       description: server.description,
+      logo: new URL("/images/brand/ferreras-smp-icon-512.png", siteUrl).href,
       sameAs: [server.discord],
     },
     {
@@ -123,7 +124,11 @@ structuredData["@graph"].push(...pageSchemas);
     {noindex && <meta name="robots" content="noindex, follow" />}
     {includeCanonical && <link rel="canonical" href={canonicalUrl} />}
     <link rel="sitemap" href="/sitemap-index.xml" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/brand/ferreras-smp-icon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/brand/ferreras-smp-icon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/brand/ferreras-smp-icon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta property="og:type" content={ogType} />
     <meta property="og:locale" content="es_ES" />
     <meta property="og:site_name" content="Ferreras SMP" />
