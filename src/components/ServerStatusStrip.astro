@@ -15,48 +15,47 @@ const statusClass = status.online ? "online" : "offline";
 
 <div class="live-section-content" data-analytics-server-status="home_live_status_section">
   <header class="live-section-heading">
-    <div>
-      <p class="eyebrow">En directo</p>
-      <h2 id="live-section-title">Ahora en Ferreras SMP.</h2>
-    </div>
-    <div class="live-section-heading-meta">
-      <div class:list={["live-section-state", statusClass]} data-status-badge aria-label={`Estado: ${statusLabel}`}>
-        <span class="status-dot" aria-hidden="true"></span>
-        <span data-status-label>{statusLabel}</span>
-      </div>
-      <div class="live-feedback" data-live-feedback>
-        <p data-live-state aria-live="polite">Actualizando el estado del servidor…</p>
-        <button type="button" data-live-retry hidden>Reintentar</button>
-      </div>
-    </div>
+    <p class="eyebrow">En directo</p>
+    <h2 id="live-section-title">Ahora en Ferreras SMP<span aria-hidden="true">.</span></h2>
   </header>
 
-  <dl class="live-summary" aria-label="Resumen actual del servidor">
-    <div>
-      <dt>Jugadores conectados</dt>
-      <dd data-status-metric="Jugadores">{status.playersOnline} / {status.maxPlayers}</dd>
+  <div class="live-dateline" aria-label="Resumen actual del servidor">
+    <div class="live-dateline-status">
+      <div class:list={["live-section-state", statusClass]} data-status-badge aria-label={`Estado: ${statusLabel}`}>
+        <span class="status-dot" aria-hidden="true"></span>
+        <strong data-status-label>{status.online ? "Servidor online" : "Servidor offline"}</strong>
+      </div>
+      <span class="live-dateline-copy" data-status-summary>
+        {status.online ? "Todo funcionando con normalidad" : "El servidor está descansando"}
+      </span>
     </div>
-    <div>
-      <dt>Día del mundo</dt>
-      <dd data-status-metric="Día del mundo">{status.worldDay === null ? "No disponible" : status.worldDay}</dd>
+    <div class="live-dateline-metric">
+      <img src="/icons/users-three.svg" width="24" height="24" alt="" aria-hidden="true" />
+      <strong data-status-metric="Jugadores">{status.playersOnline}</strong>
+      <span class="live-dateline-copy">jugadores conectados</span>
     </div>
-    <div>
-      <dt>Rendimiento</dt>
-      <dd>
-        <span data-status-metric="TPS">{status.tps === null ? "No disponible" : status.tps.toFixed(1)}</span>
-        <small data-status-unit="TPS" hidden={status.tps === null}> TPS</small>
-      </dd>
+    <div class="live-dateline-metric">
+      <img src="/icons/calendar-blank.svg" width="24" height="24" alt="" aria-hidden="true" />
+      <strong>Día <span data-status-metric="Día del mundo">{status.worldDay === null ? "—" : status.worldDay}</span></strong>
+      <span class="live-dateline-copy">del mundo</span>
     </div>
-  </dl>
+    <div class="live-feedback" data-live-feedback>
+      <p data-live-state aria-live="polite">Actualizando el estado…</p>
+      <button type="button" data-live-retry>
+        <img src="/icons/arrow-clockwise.svg" width="20" height="20" alt="" aria-hidden="true" />
+        <span>Reintentar</span>
+      </button>
+    </div>
+  </div>
 
   <div class="live-panels">
     <section class="live-panel live-players-panel" aria-labelledby="live-players-title">
       <header>
         <div>
-          <p class="card-kicker">Quién está dentro</p>
+          <p class="card-kicker">Comunidad</p>
           <h3 id="live-players-title">Jugadores conectados</h3>
         </div>
-        <span data-players-heading>{status.playersOnline} ahora</span>
+        <span class="live-count-badge" data-players-heading>{status.playersOnline} en línea</span>
       </header>
       <PlayerList players={status.players} />
     </section>
@@ -64,7 +63,7 @@ const statusClass = status.online ? "online" : "offline";
     <section class="live-panel live-activity-panel" aria-labelledby="live-activity-title">
       <header>
         <div>
-          <p class="card-kicker">Qué está pasando</p>
+          <p class="card-kicker">Comunidad</p>
           <h3 id="live-activity-title">Actividad reciente</h3>
         </div>
       </header>

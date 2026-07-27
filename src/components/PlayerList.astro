@@ -20,7 +20,11 @@ const { players } = Astro.props;
           alt=""
           aria-hidden="true"
         />
-        <strong>{player}</strong>
+        <span class="player-presence" aria-hidden="true"></span>
+        <span class="player-copy">
+          <strong>{player}</strong>
+          <small>En el mundo</small>
+        </span>
       </li>
     ))}
   </ul>
