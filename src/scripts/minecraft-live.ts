@@ -47,7 +47,7 @@ if (liveRoot) {
     '[data-status-metric="Día del mundo"]',
   );
   let pollingId: number | undefined;
-  let lastUpdatedLabel = "";
+  let lastSuccessfulRefreshLabel = "";
   let loading = false;
 
   const setLiveState = (
@@ -216,12 +216,11 @@ if (liveRoot) {
     updatePlayers(snapshot.status.players);
     updateActivity(snapshot.activity);
 
-    const serverUpdatedAt = new Date(snapshot.status.lastUpdated);
-    lastUpdatedLabel = new Intl.DateTimeFormat("es", {
+    lastSuccessfulRefreshLabel = new Intl.DateTimeFormat("es", {
       hour: "2-digit",
       minute: "2-digit",
-    }).format(Number.isNaN(serverUpdatedAt.getTime()) ? new Date() : serverUpdatedAt);
-    setLiveState(`Actualizado ${lastUpdatedLabel}`, "ready");
+    }).format(new Date());
+    setLiveState(`Actualizado ${lastSuccessfulRefreshLabel}`, "ready");
   };
 
   const loadSnapshot = async (signal?: AbortSignal) => {
@@ -247,7 +246,7 @@ if (liveRoot) {
   };
 
   const handleLoadFailure = () => {
-    const feedback = getLiveFailureFeedback(lastUpdatedLabel);
+    const feedback = getLiveFailureFeedback(lastSuccessfulRefreshLabel);
     if (feedback.state === "error") setUnavailableSnapshot();
     setLiveState(feedback.message, feedback.state);
   };
@@ -256,7 +255,7 @@ if (liveRoot) {
     if (loading) return;
     loading = true;
     if (retryButton) retryButton.disabled = true;
-    if (!lastUpdatedLabel) setLiveState("Actualizando…", "loading");
+    if (!lastSuccessfulRefreshLabel) setLiveState("Actualizando…", "loading");
 
     try {
       await loadSnapshot(AbortSignal.timeout(REQUEST_TIMEOUT_MS));
