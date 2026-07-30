@@ -6,7 +6,7 @@ import type { Redis } from "ioredis";
 import type { WorkerConfig } from "./config.js";
 import { logger } from "./logger.js";
 import { parseMinecraftLogLine } from "./parsers.js";
-import { saveActivityEvent, saveMinecraftStatus } from "./redis.js";
+import { readMinecraftStatus, saveActivityEvent, saveMinecraftStatus } from "./redis.js";
 import { MinecraftStatusTracker } from "./status-tracker.js";
 
 const readBytes = async (
@@ -34,6 +34,12 @@ export const startLogReader = async (config: WorkerConfig, redis: Redis) => {
   const logDirectory = dirname(logPath);
   const logFilename = basename(logPath);
   const tracker = new MinecraftStatusTracker(config);
+
+  try {
+    tracker.hydrate(await readMinecraftStatus(redis));
+  } catch (error) {
+    logger.warn("No se pudo recuperar el último snapshot de Redis; se continuará con el log", error);
+  }
   let position = 0;
   let fileIdentity: string | null = null;
   let partialLine = "";
@@ -50,7 +56,6 @@ export const startLogReader = async (config: WorkerConfig, redis: Redis) => {
       file = await stat(logPath);
     } catch (error) {
       if (initialRead) {
-        await saveMinecraftStatus(redis, tracker.snapshot());
         logger.warn(`Esperando a que aparezca ${logPath}`, error);
         initialRead = false;
       }
@@ -65,7 +70,7 @@ export const startLogReader = async (config: WorkerConfig, redis: Redis) => {
       position = 0;
       partialLine = "";
       decoder = new StringDecoder("utf8");
-      tracker.reset();
+      tracker.reset({ preserveWorldDay: true, preserveVersion: true });
       logger.info("Se ha detectado una rotación de latest.log; reconstruyendo el estado");
     }
 
@@ -75,12 +80,14 @@ export const startLogReader = async (config: WorkerConfig, redis: Redis) => {
     position = to;
     const lines = (partialLine + appended).split(/\r?\n/);
     partialLine = lines.pop() ?? "";
-    let statusChanged = rotated || truncated;
+    let statusChanged = false;
+    let sawStateEvent = false;
 
     for (const line of lines) {
       const parsed = parseMinecraftLogLine(line);
 
       if (parsed.state) {
+        sawStateEvent = true;
         statusChanged = tracker.apply(parsed.state) || statusChanged;
       }
 
@@ -90,12 +97,15 @@ export const startLogReader = async (config: WorkerConfig, redis: Redis) => {
       }
     }
 
-    if (initialRead || statusChanged) {
+    if (statusChanged || sawStateEvent) {
       await saveMinecraftStatus(redis, tracker.snapshot());
     }
 
     if (initialRead) {
       logger.info(`Siguiendo ${logPath} en tiempo real`);
+      if (!sawStateEvent) {
+        logger.info("No se detectaron eventos de estado; se conserva el último snapshot válido");
+      }
       initialRead = false;
     }
   };

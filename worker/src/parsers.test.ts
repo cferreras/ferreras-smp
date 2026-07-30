@@ -119,4 +119,33 @@ assert.deepEqual(
   },
 );
 
+const hydratedTracker = new MinecraftStatusTracker({
+  redisUrl: "redis://example",
+  rconHost: "minecraft",
+  rconPort: 25_575,
+  rconPassword: "secret",
+  minecraftHostPublic: "mc.example.com",
+  minecraftMaxPlayers: 20,
+  rconConnectTimeoutMs: 5_000,
+  rconCommandTimeoutMs: 5_000,
+  minecraftLogPath: "/logs/latest.log",
+} satisfies WorkerConfig);
+hydratedTracker.hydrate({ online: true, players: ["Carlos"], worldDay: 712, version: "26.2" });
+hydratedTracker.apply({ type: "server_starting", version: "26.2" });
+hydratedTracker.apply({ type: "server_ready" });
+assert.deepEqual(
+  {
+    online: hydratedTracker.snapshot().online,
+    worldDay: hydratedTracker.snapshot().worldDay,
+    version: hydratedTracker.snapshot().version,
+    players: hydratedTracker.snapshot().players,
+  },
+  {
+    online: true,
+    worldDay: 712,
+    version: "26.2",
+    players: [],
+  },
+);
+
 console.info("Parser tests OK");

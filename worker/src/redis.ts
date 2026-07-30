@@ -26,6 +26,22 @@ export const saveMinecraftStatus = async (redis: Redis, status: MinecraftStatus)
   await redis.set(MINECRAFT_STATUS_KEY, JSON.stringify(status));
 };
 
+export const readMinecraftStatus = async (redis: Redis): Promise<Partial<MinecraftStatus> | null> => {
+  const value = await redis.get(MINECRAFT_STATUS_KEY);
+
+  if (!value) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(value) as Partial<MinecraftStatus>;
+    return parsed && typeof parsed === "object" ? parsed : null;
+  } catch (error) {
+    logger.warn("El estado mc:status de Redis no contiene JSON válido", error);
+    return null;
+  }
+};
+
 export const saveActivityEvent = async (redis: Redis, event: MinecraftActivityEvent) => {
   await redis
     .multi()
