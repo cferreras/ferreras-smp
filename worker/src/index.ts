@@ -94,7 +94,10 @@ const main = async () => {
 
   if (!shouldStop) {
     await reconcileMinecraftStatus(config, redis);
-    stopLogReader = await startLogReader(config, redis);
+
+    if (!shouldStop) {
+      stopLogReader = await startLogReader(config, redis);
+    }
   }
 };
 

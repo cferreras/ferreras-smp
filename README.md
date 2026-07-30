@@ -172,8 +172,8 @@ mediante eventos del sistema de archivos, reconstruye al arrancar los jugadores,
 el día del mundo y el estado del servidor, y lo escribe en DragonFly/Redis.
 Al arrancar, el worker usa RCON una vez para reconciliar el estado actual y el
 día del mundo; después sigue `latest.log` en tiempo real para los cambios.
-La conexión RCON se reutiliza y también queda disponible para comandos
-administrativos.
+El `PersistentRconClient` se reutiliza solo durante la reconciliación y se
+cierra antes de empezar a leer `latest.log` en tiempo real.
 
 Variables necesarias para el worker:
 
