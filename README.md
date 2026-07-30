@@ -170,8 +170,10 @@ El worker vive en `worker/` y se ejecuta como servicio separado en Dokploy/VPS.
 No expone puertos ni recibe peticiones HTTP. Sigue `latest.log` en tiempo real
 mediante eventos del sistema de archivos, reconstruye al arrancar los jugadores,
 el día del mundo y el estado del servidor, y lo escribe en DragonFly/Redis.
-RCON no se usa para consultar el estado periódicamente: queda reservado para
-comandos administrativos y reutiliza una conexión persistente.
+Al arrancar, el worker usa RCON una vez para reconciliar el estado actual y el
+día del mundo; después sigue `latest.log` en tiempo real para los cambios.
+El `PersistentRconClient` se reutiliza solo durante la reconciliación y se
+cierra antes de empezar a leer `latest.log` en tiempo real.
 
 Variables necesarias para el worker:
 

@@ -7,6 +7,7 @@ import {
   parseTpsResponse,
   parseWorldDayResponse,
 } from "./parsers.js";
+import { isPartialMinecraftStatus } from "./redis.js";
 import { MinecraftStatusTracker } from "./status-tracker.js";
 import type { WorkerConfig } from "./config.js";
 
@@ -89,6 +90,16 @@ assert.equal(
   "death",
 );
 assert.equal(parseActivityLogLine("[19:23:10] [Server thread/INFO]: Nothing interesting"), null);
+assert.equal(
+  isPartialMinecraftStatus({ online: true, worldDay: 712, tps: 20, mspt: 1.4, version: "26.2" }),
+  true,
+);
+assert.equal(isPartialMinecraftStatus({ players: ["Carlos"], lastUpdated: "2026-07-30T12:00:00.000Z" }), true);
+assert.equal(isPartialMinecraftStatus([]), false);
+assert.equal(isPartialMinecraftStatus({ tps: "20" }), false);
+assert.equal(isPartialMinecraftStatus({ mspt: "1.4" }), false);
+assert.equal(isPartialMinecraftStatus({ version: 26.2 }), false);
+assert.equal(isPartialMinecraftStatus({ players: ["Carlos", 7] }), false);
 
 const tracker = new MinecraftStatusTracker({
   redisUrl: "redis://example",
@@ -116,6 +127,35 @@ assert.deepEqual(
     online: true,
     worldDay: 633,
     players: ["Akawonder"],
+  },
+);
+
+const hydratedTracker = new MinecraftStatusTracker({
+  redisUrl: "redis://example",
+  rconHost: "minecraft",
+  rconPort: 25_575,
+  rconPassword: "secret",
+  minecraftHostPublic: "mc.example.com",
+  minecraftMaxPlayers: 20,
+  rconConnectTimeoutMs: 5_000,
+  rconCommandTimeoutMs: 5_000,
+  minecraftLogPath: "/logs/latest.log",
+} satisfies WorkerConfig);
+hydratedTracker.hydrate({ online: true, players: ["Carlos"], worldDay: 712, version: "26.2" });
+hydratedTracker.apply({ type: "server_starting", version: "26.2" });
+hydratedTracker.apply({ type: "server_ready" });
+assert.deepEqual(
+  {
+    online: hydratedTracker.snapshot().online,
+    worldDay: hydratedTracker.snapshot().worldDay,
+    version: hydratedTracker.snapshot().version,
+    players: hydratedTracker.snapshot().players,
+  },
+  {
+    online: true,
+    worldDay: 712,
+    version: "26.2",
+    players: [],
   },
 );
 
