@@ -1,0 +1,14 @@
+---
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faDiscord } from '@fortawesome/free-brands-svg-icons';
+
+const discordSvg = icon(faDiscord, {
+	attributes: {
+		'aria-hidden': 'true',
+		focusable: 'false',
+	},
+	classes: ['discord-icon'],
+}).html.join('');
+---
+
+<Fragment set:html={discordSvg} />

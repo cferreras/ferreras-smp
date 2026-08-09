@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="Galería — Ferreras SMP" description="Una selección visual del mundo y el ambiente de Ferreras SMP.">
+	<SiteHeader />
+	<main>
+		<PageIntro
+			eyebrow="Galería"
+			title={'Un mundo que se <em>va llenando.</em>'}
+			lead="La galería se alimenta de las capturas que compartimos en Discord. Esta primera selección sirve para enseñar el tono del mundo: proyectos, paisajes y lugares que merece la pena conservar."
+		/>
+		<section class="content-section">
+			<div class="container">
+				<div class="gallery-grid">
+					<figure class="gallery-item"><img src="/images/gallery/veronicucha-fortaleza.jpg" alt="Veronicucha sobre la muralla de una fortaleza de piedra y madera" width="1720" height="1366" loading="lazy" decoding="async" /><figcaption>Fortalezas que empiezan arriba.</figcaption></figure>
+					<figure class="gallery-item"><img src="/images/gallery/ferreritas-costa-atardecer.jpg" alt="Ferreritas sobre una colina junto a la costa, rodeada de árboles y cultivos" width="1800" height="1343" loading="lazy" decoding="async" /><figcaption>La costa al caer la tarde.</figcaption></figure>
+					<figure class="gallery-item"><img src="/images/gallery/ferreritas-nether.jpg" alt="Ferreritas con armadura verde junto a una mesa de trabajo en el Nether" width="1800" height="715" loading="lazy" decoding="async" /><figcaption>Trabajo en condiciones difíciles.</figcaption></figure>
+					<figure class="gallery-item"><img src="/images/gallery/veronicucha-bosque.jpg" alt="Veronicucha junto a un árbol en un bosque con caminos de tierra" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Un rincón entre los árboles.</figcaption></figure>
+					<figure class="gallery-item"><img src="/images/gallery/casas-frente-al-mar.jpg" alt="Casas de piedra y madera frente al mar en Ferreras SMP" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Un barrio frente al mar.</figcaption></figure>
+					<figure class="gallery-item"><img src="/images/gallery/refugio-de-madera.jpg" alt="Entrada de madera y piedra decorada con vegetación y faroles" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Detalles que hacen hogar.</figcaption></figure>
+					<figure class="gallery-item"><img src="/images/gallery/casa-entre-bambus.jpg" alt="Refugio de madera rodeado de vegetación y bambú" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Un refugio para seguir construyendo.</figcaption></figure>
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+</Layout>

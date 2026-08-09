@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="Preguntas frecuentes — Ferreras SMP" description="Respuestas sobre Vanilla, Fabric, acceso, whitelist, PvP, duplicaciones y permanencia del mundo.">
+	<SiteHeader />
+	<main>
+		<PageIntro
+			eyebrow="Preguntas frecuentes"
+			title={'Lo importante, <em>sin rodeos.</em>'}
+			lead="Si después de leer esto te queda una duda, ven a Discord. Preferimos responder una pregunta concreta antes que dar por hecho que todo el mundo entiende lo mismo."
+		/>
+		<section class="content-section">
+			<div class="container content-layout">
+				<aside class="content-index"><strong>04 / FAQ</strong>Respuestas para decidir con contexto.</aside>
+				<div class="faq-list">
+					<details open><summary>¿Necesito instalar mods para entrar?</summary><p>No. Puedes conectarte con Minecraft Java Vanilla; Fabric y los mods del servidor ya están instalados donde corresponde.</p></details>
+					<details><summary>¿Qué versión utiliza el servidor?</summary><p>Ferreras SMP está pensado para Minecraft Java 26.2. La dirección de conexión es <code>mc.ferreras.dev</code>.</p></details>
+					<details><summary>¿Hay whitelist?</summary><p>Sí. Primero entras en Discord, lees la información y completas el formulario. Las solicitudes se revisan manualmente antes de darte acceso.</p></details>
+					<details><summary>¿Puedo jugar a mi ritmo?</summary><p>Sí. Puedes desarrollar proyectos propios y participar en construcciones colectivas. Lo que pedimos es respetar las normas y mantener una comunicación básica con la comunidad.</p></details>
+					<details><summary>¿Está permitido el PvP?</summary><p>Está habilitado técnicamente, pero no como conducta normal. Solo se permite si las dos personas acuerdan el enfrentamiento y nadie se queda con los objetos de la otra.</p></details>
+					<details><summary>¿El mundo se reiniciará?</summary><p>La intención es conservarlo durante mucho tiempo o indefinidamente. El mundo persistente forma parte de la propuesta.</p></details>
+					<details><summary>¿Qué pasa si hay un robo o un daño?</summary><p>Ledger permite consultar acciones y existen copias de seguridad para investigar incidentes graves. Escríbenos por Discord con el máximo contexto posible.</p></details>
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+</Layout>

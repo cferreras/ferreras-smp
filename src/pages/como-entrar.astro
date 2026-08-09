@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import DiscordIcon from '../components/DiscordIcon.astro';
+
+const discordUrl = 'https://link.ferreras.dev/discord';
+---
+
+<Layout title="Cómo entrar — Ferreras SMP" description="Conoce el proceso de acceso a Ferreras SMP: Discord, formulario, revisión manual y whitelist.">
+	<SiteHeader />
+	<main>
+		<PageIntro
+			eyebrow="Cómo entrar"
+			title={'Si te encaja, <em>nos conocemos.</em>'}
+			lead="No hay un registro automático ni un formulario perdido en la web. Primero entra en Discord, conoce el espacio y cuéntanos qué buscas en un servidor Vanilla técnico."
+			image="/images/blog/como-entrar-servidor-minecraft-java.webp"
+			imageAlt="Jugador de Minecraft frente a una baliza púrpura"
+			note="Minecraft Java · sin modpack obligatorio · acceso revisado"
+		/>
+
+		<section class="content-section">
+			<div class="container content-layout">
+				<aside class="content-art" aria-label="Ilustración de una guía de acceso de Ferreras SMP">
+					<img src="/images/brand/ferreras-smp-welcome-guide.png" alt="Guía de Minecraft mostrando una lista de acceso" width="1024" height="1536" loading="lazy" />
+				</aside>
+				<div class="prose">
+					<h2>El camino hasta la whitelist.</h2>
+					<ol>
+						<li>Entra en <a href={discordUrl} target="_blank" rel="noreferrer">el Discord de Ferreras SMP</a>.</li>
+						<li>Lee el canal de información y las normas de convivencia.</li>
+						<li>Localiza el canal del formulario y responde a las preguntas con calma.</li>
+						<li>Esperamos a revisar la solicitud. Si encaja, continuamos la conversación por Discord.</li>
+						<li>Cuando todo esté claro, añadimos tu cuenta a la whitelist.</li>
+					</ol>
+					<div class="callout"><p>El formulario pregunta por tu edad, tu motivo para unirte, tu interés por Vanilla y las granjas técnicas, la aceptación de las normas y cómo nos conociste.</p></div>
+					<h2>Lo que necesitas</h2>
+					<ul>
+						<li>Minecraft Java en una versión compatible con la 26.2.</li>
+						<li>Ganas de convivir en una comunidad pequeña y participar de verdad.</li>
+						<li>La dirección <code>mc.ferreras.dev</code> para añadir el servidor cuando se apruebe el acceso.</li>
+					</ul>
+					<p>No hace falta instalar mods para empezar: puedes usar el cliente Vanilla normal y conectarte directamente al servidor.</p>
+					<a class="button" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+</Layout>

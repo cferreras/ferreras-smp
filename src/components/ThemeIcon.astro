@@ -1,0 +1,34 @@
+---
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faCircleHalfStroke, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
+
+const sunSvg = icon(faSun, {
+	attributes: {
+		'aria-hidden': 'true',
+		focusable: 'false',
+	},
+	classes: ['theme-icon', 'theme-icon-sun'],
+}).html.join('');
+
+const moonSvg = icon(faMoon, {
+	attributes: {
+		'aria-hidden': 'true',
+		focusable: 'false',
+	},
+	classes: ['theme-icon', 'theme-icon-moon'],
+}).html.join('');
+
+const systemSvg = icon(faCircleHalfStroke, {
+	attributes: {
+		'aria-hidden': 'true',
+		focusable: 'false',
+	},
+	classes: ['theme-icon', 'theme-icon-system'],
+}).html.join('');
+---
+
+<span class="theme-icon-state" aria-hidden="true">
+	<Fragment set:html={sunSvg} />
+	<Fragment set:html={moonSvg} />
+	<Fragment set:html={systemSvg} />
+</span>

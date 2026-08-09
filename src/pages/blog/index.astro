@@ -1,0 +1,42 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+
+<Layout title="Blog — Ferreras SMP" description="Guías y contexto para conocer Ferreras SMP antes de entrar en Discord.">
+	<SiteHeader />
+	<main>
+		<section class="page-hero">
+			<div class="container page-hero-grid">
+				<div>
+					<p class="eyebrow">Blog</p>
+					<h1>Entender el mundo antes de <em>entrar.</em></h1>
+					<p>Guías, respuestas y decisiones de diseño para que puedas decidir si Ferreras SMP es el servidor que estás buscando.</p>
+				</div>
+				<div class="page-hero-aside"><p>Actualizamos los artículos cuando cambia la experiencia real del servidor. Si algo no está confirmado, lo decimos.</p></div>
+			</div>
+		</section>
+
+		<section class="content-section">
+			<div class="container">
+				<div class="blog-list">
+					{posts.map((post) => (
+						<a class="post-card" href={`/blog/${post.id}/`}>
+							<img src={post.data.image} alt={post.data.imageAlt} width="1200" height="800" loading="lazy" />
+							<span class="post-card-body">
+								<span class="post-card-meta">{post.data.category} · {post.data.publishedAt.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+								<h2>{post.data.title}</h2>
+								<p>{post.data.description}</p>
+							</span>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+</Layout>

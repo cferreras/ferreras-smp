@@ -1,0 +1,46 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="Normas — Ferreras SMP" description="Normas de convivencia, construcciones, robos, duplicaciones y PvP de Ferreras SMP.">
+	<SiteHeader />
+	<main>
+		<PageIntro
+			eyebrow="Convivencia"
+			title={'Construimos juntos. <em>Respetamos el espacio.</em>'}
+			lead="Las normas no están para llenar una página: están para que el trabajo de una persona siga siendo suyo y el mundo compartido se mantenga agradable con el tiempo."
+		/>
+
+		<section class="content-section">
+			<div class="container content-layout">
+				<aside class="content-index"><strong>03 / Normas</strong>Directas, conocidas y aplicables.</aside>
+				<div class="prose">
+					<h2>Trato y convivencia</h2>
+					<ul>
+						<li>No se permiten trampas, toxicidad, spam ni faltas de respeto.</li>
+						<li>Habla con otras personas como te gustaría que hablaran contigo.</li>
+						<li>Si hay un conflicto, pide ayuda antes de escalarlo en público.</li>
+					</ul>
+					<h2>Construcciones y objetos</h2>
+					<ul>
+						<li>No robes objetos de las casas de otras personas.</li>
+						<li>Los objetos abandonados en cofres fuera de casas o en shulkers tiradas sí pueden ser robados. Guarda lo importante en un Ender Chest.</li>
+						<li>No construyas demasiado cerca de una zona ya construida sin preguntar antes.</li>
+						<li>Respeta el trabajo, los caminos y el espacio de quienes llegaron antes.</li>
+					</ul>
+					<h2>Duplicación</h2>
+					<p>No se pueden duplicar objetos renovables. Sí se permite duplicar recursos no renovables, como TNT o arena. La diferencia depende de si el recurso puede volver a obtenerse de forma natural.</p>
+					<h2>PvP</h2>
+					<p>El PvP está habilitado técnicamente, pero no es una conducta normal. Dos miembros pueden acordar pelearse y matarse, pero nadie puede quedarse con los objetos de la otra persona.</p>
+					<h2>Incidentes y apelaciones</h2>
+					<p>Ferreras SMP utiliza Ledger para consultar acciones y dispone de copias de seguridad. El incumplimiento puede provocar una expulsión; si ocurre, la persona expulsada puede apelar y el caso se revisa.</p>
+					<div class="callout"><p>Si dudas sobre una situación concreta, pregunta antes de actuar. El contexto importa más que encontrar un hueco en la redacción.</p></div>
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+</Layout>

@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="Estado del servidor — Ferreras SMP" description="Consulta el estado actual de Ferreras SMP y el número de jugadores conectados.">
+	<SiteHeader />
+	<main>
+		<PageIntro
+			eyebrow="Estado"
+			title={'El mundo está <em>abierto.</em>'}
+			lead="Una vista sencilla para saber si puedes conectarte y cuánta gente está jugando, consultada directamente al servidor."
+		/>
+		<section class="content-section">
+			<div class="container status-overview">
+				<div class="status-card" aria-label="Estado del servidor" data-server-status-card>
+					<div class="status-card-top">
+						<strong>Ferreras SMP</strong>
+						<span class="status-live" data-server-status="live" data-status-state="loading">
+							<span class="status-dot" aria-hidden="true"></span>
+							<span data-server-status-text>Comprobando</span>
+						</span>
+					</div>
+					<p class="status-number"><span data-server-players-online>—</span> <small>/ <span data-server-players-max>—</span></small></p>
+					<p data-server-players-label>comprobando jugadores conectados</p>
+					<div class="status-domain"><span>Dirección</span><code>mc.ferreras.dev</code></div>
+				</div>
+				<div class="prose">
+					<h2>Pequeño a propósito.</h2>
+					<p>El límite de jugadores no es una promesa de actividad constante. Es una forma de proteger el carácter de la comunidad y que las nuevas personas puedan encontrar su sitio.</p>
+					<p>La tarjeta consulta el estado real del servidor sin depender de APIs externas. Más adelante podrá mostrar también las cabezas de quienes estén conectados y la latencia.</p>
+					<a class="button" href="/como-entrar/">Cómo entrar</a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+	<script is:inline src="/server-status.js"></script>
+</Layout>

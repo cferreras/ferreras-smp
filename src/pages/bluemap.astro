@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="BlueMap — Ferreras SMP" description="El mapa interactivo de Ferreras SMP llegará cuando BlueMap esté activo y tenga una URL pública.">
+	<SiteHeader />
+	<main>
+		<PageIntro
+			eyebrow="BlueMap"
+			title={'El mapa está <em>por llegar.</em>'}
+			lead="Estamos preparando un espacio para explorar el mundo desde la web. BlueMap está previsto, pero todavía no está activo y no queremos fingir que lo está."
+		/>
+		<section class="content-section">
+			<div class="container content-layout">
+				<figure class="bluemap-preview">
+					<img src="/images/minecraft-map-item.png" alt="Render generado de un objeto mapa de Minecraft abierto para Ferreras SMP" width="1536" height="1024" style="display: block; width: 100%; height: auto;" />
+				</figure>
+				<div class="prose">
+					<h2>Cuando esté listo, estará aquí.</h2>
+					<p>La integración prevista permitirá consultar el mapa, localizar proyectos y entender mejor cómo se va llenando el mundo. Hasta entonces, las mejores capturas se comparten en Discord y pasan a la <a href="/galeria/">galería</a>.</p>
+					<a class="button" href="https://link.ferreras.dev/discord" target="_blank" rel="noreferrer">Ver la comunidad</a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+</Layout>
+
+<style>
+	.bluemap-preview {
+		align-self: start;
+		width: min(100%, 420px);
+		margin: 0;
+	}
+
+	.bluemap-preview img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	@media (max-width: 940px) {
+		.bluemap-preview {
+			width: min(100%, 560px);
+		}
+	}
+
+</style>

@@ -1,0 +1,52 @@
+---
+import DiscordIcon from './DiscordIcon.astro';
+import ThemeIcon from './ThemeIcon.astro';
+
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
+const discordUrl = 'https://link.ferreras.dev/discord';
+const links = [
+	{ label: 'Inicio', href: '/' },
+	{ label: 'Servidor', href: '/servidor/' },
+	{ label: 'Cómo entrar', href: '/como-entrar/' },
+	{ label: 'Blog', href: '/blog/' },
+];
+
+const isCurrent = (href: string) => {
+	const normalized = href.replace(/\/$/, '') || '/';
+	return normalized === '/' ? currentPath === '/' : currentPath.startsWith(normalized);
+};
+---
+
+<header class="site-header">
+	<div class="container nav-shell">
+		<a class="brand" href="/" aria-label="Ferreras SMP, inicio">
+			<img src="/images/brand/ferreras-smp-icon-192.png" alt="" width="192" height="192" />
+			<span class="brand-copy">
+				<span class="brand-name">Ferreras SMP</span>
+				<span class="brand-tagline">Servidor Minecraft survival en español</span>
+			</span>
+		</a>
+
+		<nav class="desktop-nav" aria-label="Navegación principal">
+			{links.map((link) => (
+				<a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a>
+			))}
+		</nav>
+
+		<a class="header-cta" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+		<button class="theme-toggle" data-theme-toggle type="button" aria-label="Cambiar tema">
+			<ThemeIcon />
+			<span data-theme-label>Tema</span>
+		</button>
+
+		<details class="mobile-menu">
+			<summary>Menú</summary>
+			<nav class="mobile-menu-panel" aria-label="Navegación móvil">
+				{links.map((link) => (
+					<a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a>
+				))}
+				<a class="header-cta" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+			</nav>
+		</details>
+	</div>
+</header>

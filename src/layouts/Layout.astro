@@ -1,23 +1,74 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	imageAlt?: string;
+	type?: 'website' | 'article';
+	author?: string;
+	section?: string;
+	tags?: string[];
+	publishedAt?: Date;
+	updatedAt?: Date;
+}
+
+const {
+	title = 'Ferreras SMP — Minecraft Vanilla técnico, hecho en comunidad',
+	description = 'Ferreras SMP es un servidor Minecraft Java 26.2, Vanilla técnico y comunitario. Una microcomunidad pequeña, sin Pay2Win y sin modpack obligatorio.',
+	image = '/images/og-ferreras-smp.jpg',
+	imageAlt = 'Ferreras SMP, servidor de Minecraft Vanilla técnico hecho en comunidad',
+	type = 'website',
+	author,
+	section,
+	tags = [],
+	publishedAt,
+	updatedAt,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://mc.ferreras.dev');
+const canonical = new URL(Astro.url.pathname, siteUrl).toString();
+const imageUrl = new URL(image, siteUrl).toString();
+---
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 	<head>
-		<meta charset="utf-8" />
+		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<meta name="theme-color" content="#f7f4ed" />
+		<meta name="description" content={description} />
+		<meta name="robots" content="index, follow" />
+		{author && <meta name="author" content={author} />}
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<link rel="canonical" href={canonical} />
+		<link rel="icon" type="image/png" sizes="32x32" href="/images/brand/ferreras-smp-icon-32.png" />
+		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="manifest" href="/site.webmanifest" />
+		<meta property="og:type" content={type} />
+		<meta property="og:site_name" content="Ferreras SMP" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:alt" content={imageAlt} />
+		<meta property="og:url" content={canonical} />
+		{type === 'article' && publishedAt && <meta property="article:published_time" content={publishedAt.toISOString()} />}
+		{type === 'article' && updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
+		{type === 'article' && author && <meta property="article:author" content={author} />}
+		{type === 'article' && section && <meta property="article:section" content={section} />}
+		{type === 'article' && tags.map((tag) => <meta property="article:tag" content={tag} />)}
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={imageUrl} />
+		<meta name="twitter:image:alt" content={imageAlt} />
+		<title>{title}</title>
+		<script is:inline src="/theme-init.js"></script>
 	</head>
 	<body>
 		<slot />
+		<script is:inline src="/theme-toggle.js"></script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

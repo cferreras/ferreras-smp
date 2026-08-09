@@ -1,11 +1,144 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import DiscordIcon from '../components/DiscordIcon.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const discordUrl = 'https://link.ferreras.dev/discord';
+const posts = [
+	{
+		category: 'Servidor',
+		title: 'Qué mods hay en Ferreras SMP',
+		description: 'Por qué las mejoras están al servicio del mundo y no al revés.',
+		image: '/images/blog/que-mods-hay-ferreras-smp.webp',
+		href: '/blog/que-mods-hay-ferreras-smp/',
+	},
+	{
+		category: 'Guía',
+		title: 'Qué es un servidor SMP de Minecraft',
+		description: 'Una explicación sencilla para saber si este estilo de juego encaja contigo.',
+		image: '/images/blog/que-es-servidor-smp-minecraft.webp',
+		href: '/blog/que-es-servidor-smp-minecraft/',
+	},
+	{
+		category: 'Cómo entrar',
+		title: 'Cómo entrar a Minecraft Java',
+		description: 'Los pasos para llegar desde Discord hasta la whitelist.',
+		image: '/images/blog/como-entrar-servidor-minecraft-java.webp',
+		href: '/blog/como-entrar-servidor-minecraft-java/',
+	},
+];
 ---
 
 <Layout>
-	<Welcome />
+	<SiteHeader />
+
+	<main>
+		<section class="hero" id="inicio">
+			<div class="container hero-grid">
+				<div class="hero-copy">
+					<h1>
+						Minecraft
+						<span>Vanilla técnico,</span>
+						hecho en <strong>comunidad.</strong>
+					</h1>
+					<p class="hero-lead">Un mundo pequeño para construir, automatizar y quedarte.</p>
+					<div class="hero-actions">
+						<a class="button" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					</div>
+					<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
+						<span class="status-dot" aria-hidden="true"></span>
+						<span data-server-status-text>Comprobando servidor…</span>
+					</p>
+				</div>
+
+				<figure class="hero-visual">
+					<img src="/images/blog/que-es-servidor-smp-minecraft.webp" alt="Un grupo de jugadores construye junto a un río, con montañas al fondo" width="1200" height="800" fetchpriority="high" />
+					<figcaption>Un mundo persistente, cuidado entre pocas personas.</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<section class="section statement" id="servidor">
+			<div class="container statement-grid">
+				<div class="statement-mark">
+					<img src="/images/brand/ferreras-smp-world-mark.png" alt="Trigo creciendo en un bloque de tierra" width="512" height="512" loading="lazy" />
+				</div>
+				<div>
+					<h2>No es para todo el mundo</h2>
+					<p class="statement-copy">Ferreras SMP es un servidor survival vanilla técnico para quienes disfrutan de Minecraft sin prisas. Sin economía, sin Pay2Win, sin plugins que cambien la experiencia. Solo tú, tu creatividad y otras pocas personas que valoran la constancia y el respeto.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="section dark-section" id="como-entrar">
+			<div class="container">
+				<div class="section-heading">
+					<p class="eyebrow">Cómo funciona</p>
+					<h2>Entrar es fácil. Encajar importa.</h2>
+					<p>Discord es el punto de encuentro. Allí puedes conocer el ambiente, leer la información y completar el formulario para que podamos hablar contigo con calma.</p>
+				</div>
+				<ol class="steps">
+					<li class="step">
+						<span class="step-number">01</span>
+						<strong class="step-title">Entra en Discord</strong>
+						<p class="step-description">Presentamos el servidor, resolvemos dudas y puedes ver cómo hablamos entre nosotros.</p>
+						<a class="step-link" href={discordUrl} target="_blank" rel="noreferrer">Ir a Discord</a>
+					</li>
+					<li class="step">
+						<span class="step-number">02</span>
+						<strong class="step-title">Completa el formulario</strong>
+						<p class="step-description">Cuéntanos tu edad, qué buscas y cómo te gusta jugar. No es un examen: es contexto.</p>
+						<a class="step-link" href={discordUrl} target="_blank" rel="noreferrer">Ver el canal</a>
+					</li>
+					<li class="step">
+						<span class="step-number">03</span>
+						<strong class="step-title">Hablamos contigo</strong>
+						<p class="step-description">Revisamos cada solicitud de forma manual y continuamos por Discord si tiene sentido.</p>
+						<a class="step-link" href="/como-entrar/">Más información</a>
+					</li>
+				</ol>
+			</div>
+		</section>
+
+		<section class="section facts-section">
+			<div class="container facts-layout">
+				<div>
+					<p class="eyebrow">Una base técnica, nada más</p>
+					<h2>Vanilla con espacio para <span>hacer.</span></h2>
+				</div>
+				<dl class="facts-list">
+					<div><dt>Edición</dt><dd>Minecraft Java 26.2</dd></div>
+					<div><dt>Servidor</dt><dd>Fabric, optimizado y sin modpack obligatorio</dd></div>
+					<div><dt>Estilo</dt><dd>Survival técnico, proyectos libres y mundo persistente</dd></div>
+					<div><dt>Dirección</dt><dd><code class="connection-code">mc.ferreras.dev</code></dd></div>
+				</dl>
+			</div>
+		</section>
+
+		<section class="section blog-section" id="blog">
+			<div class="container">
+				<div class="section-heading">
+					<p class="eyebrow">Antes de entrar</p>
+					<h2>Conoce el mundo a tu ritmo.</h2>
+					<p>Artículos breves sobre la filosofía del servidor, el acceso y las herramientas del servidor. Sin esconder la letra pequeña.</p>
+				</div>
+				<div class="blog-grid">
+					{posts.map((post) => (
+						<a class="post-card" href={post.href}>
+							<img src={post.image} alt="" width="1200" height="800" loading="lazy" />
+							<span class="post-card-body">
+								<span class="post-card-meta">{post.category}</span>
+								<h3>{post.title}</h3>
+								<p>{post.description}</p>
+							</span>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<SiteFooter />
+	<script is:inline src="/server-status.js"></script>
 </Layout>

@@ -1,0 +1,49 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="El servidor — Ferreras SMP" description="La filosofía de Ferreras SMP: Minecraft Java Vanilla técnico, un mundo persistente y una comunidad pequeña.">
+	<SiteHeader />
+	<main>
+		<PageIntro
+			eyebrow="El servidor"
+			title={'Minecraft <em>sin adornos.</em>'}
+			lead="Ferreras SMP utiliza Fabric para que el mundo funcione mejor, no para convertir Minecraft en otra cosa. Aquí caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo."
+			image="/images/blog/que-es-servidor-smp-minecraft.webp"
+			imageAlt="Jugadores construyen una base junto a un río en Minecraft"
+			note="Java 26.2 · Fabric · cliente Vanilla compatible"
+		/>
+
+		<section class="content-section">
+			<div class="container content-layout">
+				<aside class="content-art" aria-label="Ilustración de un explorador de Ferreras SMP">
+					<img src="/images/brand/ferreras-smp-adventurer.png" alt="Explorador de Minecraft con un pico de madera" width="1024" height="1536" loading="lazy" />
+				</aside>
+				<div class="prose">
+					<h2>Una partida que no tiene prisa por terminar.</h2>
+					<p>La propuesta es sencilla: un mundo survival en español, abierto a proyectos individuales y colectivos, con las herramientas suficientes para convivir y sin una capa de sistemas que te obligue a jugar de una manera concreta.</p>
+					<p>El mundo se conservará durante mucho tiempo o indefinidamente. Puedes conectarte para avanzar en una base, diseñar una granja de hierro, explorar una zona nueva o simplemente saludar por Discord. El ritmo lo marca cada persona.</p>
+					<div class="callout"><p>El cliente Vanilla normal puede conectarse sin instalar nada adicional. Fabric y sus mods funcionan en el servidor para mejorar la comodidad, el mapa y la construcción técnica.</p></div>
+					<h2>Qué sí encontrarás</h2>
+					<ul>
+						<li>Una comunidad pequeña, con un máximo previsto de 20 miembros activos.</li>
+						<li>Libertad para construir, explorar, automatizar y colaborar.</li>
+						<li>Protección de terrenos, registros y copias de seguridad para resolver incidentes.</li>
+						<li>Un espacio de Discord para información, chat y capturas del mundo.</li>
+					</ul>
+					<h2>Qué no encontrarás</h2>
+					<ul>
+						<li>Pay2Win, rangos que cambien el juego o una economía artificial.</li>
+						<li>Un modpack obligatorio o una lista interminable de plugins.</li>
+						<li>Una comunidad masiva donde nadie conoce el contexto de los proyectos.</li>
+					</ul>
+					<a class="button" href="/como-entrar/">Ver cómo entrar</a>
+				</div>
+			</div>
+		</section>
+	</main>
+	<SiteFooter />
+</Layout>
