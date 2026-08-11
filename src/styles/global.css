@@ -110,8 +110,8 @@ img {
 .brand img {
 	width: 80px;
 	height: 80px;
-	border-radius: 19px;
-	box-shadow: 0 6px 18px rgba(112, 64, 244, 0.24);
+	aspect-ratio: 1;
+	object-fit: contain;
 }
 
 .brand-copy {
@@ -120,6 +120,7 @@ img {
 }
 
 .brand-name {
+	font-family: var(--display);
 	font-size: 1.72rem;
 	font-weight: 800;
 	letter-spacing: -0.04em;
@@ -1401,7 +1402,6 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	.brand img {
 		width: 64px;
 		height: 64px;
-		border-radius: 16px;
 	}
 
 	.desktop-nav,
@@ -1533,7 +1533,6 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	.brand img {
 		width: 42px;
 		height: 42px;
-		border-radius: 11px;
 	}
 
 	.brand-name {
