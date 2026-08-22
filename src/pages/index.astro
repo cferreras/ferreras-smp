@@ -37,14 +37,16 @@ const posts = [
 		<section class="hero" id="inicio">
 			<div class="container hero-grid">
 				<div class="hero-copy">
+					<p class="eyebrow">Servidor Minecraft Java · Whitelist abierta</p>
 					<h1>
 						Minecraft
 						<span>Vanilla técnico,</span>
 						hecho en <strong>comunidad.</strong>
 					</h1>
-					<p class="hero-lead">Un mundo pequeño para construir, automatizar y quedarte.</p>
+					<p class="hero-lead">Un mundo pequeño para construir, automatizar y quedarte. Sin economía, sin Pay2Win y sin modpack obligatorio.</p>
 					<div class="hero-actions">
 						<a class="button" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+						<a class="button-secondary" href="/como-entrar/">Cómo entrar paso a paso</a>
 					</div>
 					<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
 						<span class="status-dot" aria-hidden="true"></span>
@@ -62,7 +64,7 @@ const posts = [
 		<section class="section statement" id="servidor">
 			<div class="container statement-grid">
 				<div class="statement-mark">
-					<img src="/images/brand/ferreras-smp-world-mark.png" alt="Trigo creciendo en un bloque de tierra" width="512" height="512" loading="lazy" />
+					<img src="/images/brand/ferreras-smp-adventurer.png" alt="Personaje voxel del servidor" width="512" height="512" loading="lazy" />
 				</div>
 				<div>
 					<h2>No es para todo el mundo</h2>
@@ -74,7 +76,6 @@ const posts = [
 		<section class="section dark-section" id="como-entrar">
 			<div class="container">
 				<div class="section-heading">
-					<p class="eyebrow">Cómo funciona</p>
 					<h2>Entrar es fácil. Encajar importa.</h2>
 					<p>Discord es el punto de encuentro. Allí puedes conocer el ambiente, leer la información y completar el formulario para que podamos hablar contigo con calma.</p>
 				</div>
@@ -103,9 +104,9 @@ const posts = [
 
 		<section class="section facts-section">
 			<div class="container facts-layout">
-				<div>
-					<p class="eyebrow">Una base técnica, nada más</p>
+				<div class="facts-intro">
 					<h2>Vanilla con espacio para <span>hacer.</span></h2>
+					<p class="facts-copy">Las mejoras están al servicio del mundo: rendimiento, mapa y calidad de vida. Nada que cambie las reglas del juego.</p>
 				</div>
 				<dl class="facts-list">
 					<div><dt>Edición</dt><dd>Minecraft Java 26.2</dd></div>
@@ -119,9 +120,8 @@ const posts = [
 		<section class="section blog-section" id="blog">
 			<div class="container">
 				<div class="section-heading">
-					<p class="eyebrow">Antes de entrar</p>
 					<h2>Conoce el mundo a tu ritmo.</h2>
-					<p>Artículos breves sobre la filosofía del servidor, el acceso y las herramientas del servidor. Sin esconder la letra pequeña.</p>
+					<p>Artículos breves sobre la filosofía del servidor, el acceso y las herramientas. Sin esconder la letra pequeña.</p>
 				</div>
 				<div class="blog-grid">
 					{posts.map((post) => (
