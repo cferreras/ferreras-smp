@@ -1,4 +1,6 @@
 ---
+import DiscordIcon from './DiscordIcon.astro';
+
 const discordUrl = 'https://link.ferreras.dev/discord';
 ---
 
@@ -10,7 +12,7 @@ const discordUrl = 'https://link.ferreras.dev/discord';
 					<img src="/images/brand/ferreras-smp-isotype.webp" alt="" width="256" height="256" />
 					<span class="brand-copy">
 						<span class="brand-name">Ferreras SMP</span>
-						<span class="brand-tagline">Minecraft Vanilla técnico, hecho en comunidad.</span>
+						<span class="brand-tagline">Survival vanilla técnico</span>
 					</span>
 				</a>
 				<p>Un mundo pequeño para construir, automatizar y quedarte. Java 26.2, sin Pay2Win y sin modpack obligatorio.</p>
@@ -36,12 +38,10 @@ const discordUrl = 'https://link.ferreras.dev/discord';
 				</ul>
 			</div>
 
-			<div>
+			<div class="footer-join">
 				<p class="footer-heading">Entrar</p>
-				<ul class="footer-links">
-					<li><a href={discordUrl} target="_blank" rel="noreferrer">Discord</a></li>
-					<li><span class="connection-code">mc.ferreras.dev</span></li>
-				</ul>
+				<p class="footer-note">La whitelist se abre desde Discord. Te respondemos a mano.</p>
+				<a class="button footer-cta" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 			</div>
 		</div>
 
