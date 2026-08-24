@@ -176,7 +176,10 @@ Los tokens viven en `src/styles/global.css`. El tema claro y el oscuro comparten
 | --- | --- | --- | --- |
 | `--paper` | `#f7f4ed` | `#101011` | Fondo principal |
 | `--paper-strong` | `#fffdf8` | `#171619` | Tarjetas, paneles y secciones suaves |
-| `--ink` | `#17151b` | `#f7f3eb` | Texto principal y superficies invertidas |
+| `--ink` | `#17151b` | `#f7f3eb` | Texto principal |
+| `--paper-invert` | `#17151b` | `#1e1b26` | Fondo de la banda de contraste |
+| `--ink-invert` | `#f7f4ed` | `#f7f3eb` | Texto sobre la banda de contraste |
+| `--line-invert` | `rgba(247,244,237,.16)` | `rgba(247,243,235,.14)` | Divisiones dentro de la banda |
 | `--muted` | `#625f67` | `#b8b2be` | Texto auxiliar y metadatos |
 | `--muted-strong` | `#4e4a54` | `#d5ceda` | Párrafos y leads |
 | `--line` | `rgba(23,21,27,.14)` | `rgba(247,243,235,.15)` | Divisiones suaves |
@@ -194,6 +197,9 @@ Reglas de uso:
 - El verde solo significa disponibilidad positiva del servidor.
 - El estado offline usa un marrón rojizo apagado (`#b66d5b`) para no gritar “error”.
 - Los bordes deben ser discretos. La jerarquía se construye primero con espacio, tamaño y contraste.
+- La banda de contraste no invierte el tema: en claro es tinta sobre papel y en oscuro es una superficie
+  elevada. Nunca uses `--ink` como fondo de un bloque grande, porque en oscuro se convierte en crema y
+  crea un destello en pantallas oscuras.
 
 ### 4.3 Tipografía
 
@@ -393,7 +399,7 @@ La marca de trigo y tierra introduce la idea de mundo cuidado. El texto explica 
 
 #### Proceso de acceso
 
-Fondo `--ink`, texto claro y tres filas numeradas:
+Fondo `--paper-invert`, texto `--ink-invert` y tres filas numeradas:
 
 1. Entrar en Discord.
 2. Completar el formulario.
