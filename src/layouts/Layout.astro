@@ -29,6 +29,7 @@ const {
 	structuredData = [],
 } = Astro.props;
 
+const brandIcon = '/images/brand/ferreras-smp-isotype.webp';
 const siteUrl = Astro.site ?? new URL('https://mc.ferreras.dev');
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
@@ -42,9 +43,9 @@ const commonSchema = {
 			url: 'https://mc.ferreras.dev/',
 			logo: {
 				'@type': 'ImageObject',
-				url: 'https://mc.ferreras.dev/images/brand/ferreras-smp-icon-32.png',
-				width: 32,
-				height: 32,
+				url: new URL(brandIcon, siteUrl).toString(),
+				width: 256,
+				height: 256,
 			},
 			description: 'Servidor de Minecraft Java Vanilla técnico y comunitario con whitelist.',
 			sameAs: ['https://link.ferreras.dev/discord'],
@@ -72,8 +73,7 @@ const commonSchema = {
 		{author && <meta name="author" content={author} />}
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={canonical} />
-		<link rel="icon" type="image/png" sizes="32x32" href="/images/brand/ferreras-smp-icon-32.png" />
-		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+		<link rel="icon" type="image/webp" sizes="256x256" href={brandIcon} />
 		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta property="og:type" content={type} />
