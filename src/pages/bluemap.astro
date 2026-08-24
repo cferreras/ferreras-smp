@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+
+export const prerender = true;
 ---
 
 <Layout title="BlueMap — Ferreras SMP" description="El mapa interactivo de Ferreras SMP llegará cuando BlueMap esté activo y tenga una URL pública.">
@@ -10,7 +12,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 	<main>
 		<PageIntro
 			eyebrow="BlueMap"
-			title={'El mapa está <em>por llegar.</em>'}
+			title={'BlueMap de Ferreras SMP: el mapa está <em>por llegar.</em>'}
 			lead="Estamos preparando un espacio para explorar el mundo desde la web. BlueMap está previsto, pero todavía no está activo y no queremos fingir que lo está."
 		/>
 		<section class="content-section">
@@ -21,7 +23,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 				<div class="prose">
 					<h2>Cuando esté listo, estará aquí.</h2>
 					<p>La integración prevista permitirá consultar el mapa, localizar proyectos y entender mejor cómo se va llenando el mundo. Hasta entonces, las mejores capturas se comparten en Discord y pasan a la <a href="/galeria/">galería</a>.</p>
-					<a class="button" href="https://link.ferreras.dev/discord" target="_blank" rel="noreferrer">Ver la comunidad</a>
+					<a class="button" href="https://link.ferreras.dev/discord" target="_blank" rel="noopener noreferrer">Ver la comunidad</a>
 				</div>
 			</div>
 		</section>

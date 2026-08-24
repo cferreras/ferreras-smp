@@ -34,7 +34,7 @@ const isCurrent = (href: string) => {
 			))}
 		</nav>
 
-		<a class="header-cta" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+		<a class="header-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 		<button class="theme-toggle" data-theme-toggle type="button" aria-label="Cambiar tema">
 			<ThemeIcon />
 			<span data-theme-label>Tema</span>
@@ -46,7 +46,7 @@ const isCurrent = (href: string) => {
 				{links.map((link) => (
 					<a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a>
 				))}
-				<a class="header-cta" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+				<a class="header-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 			</nav>
 		</details>
 	</div>

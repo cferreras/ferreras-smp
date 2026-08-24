@@ -16,13 +16,13 @@ draft: false
 relatedLinks:
   - title: "Qué es un servidor SMP de Minecraft"
     description: "Descubre cómo funciona un mundo survival compartido y qué puedes esperar al entrar."
-    href: "/blog/que-es-servidor-smp-minecraft"
+    href: "/blog/que-es-servidor-smp-minecraft/"
   - title: "Normas de Ferreras SMP"
     description: "Revisa las bases para construir y convivir respetando a la comunidad."
-    href: "/normas"
+    href: "/normas/"
 ---
 
-Ferreras SMP utiliza mods y datapacks para proteger el mundo, facilitar la convivencia y mejorar el rendimiento. La mayoría trabaja únicamente en el servidor: puedes entrar desde Minecraft Java sin descargar un modpack ni modificar tu cliente.
+Ferreras SMP utiliza mods y datapacks para proteger el mundo, facilitar la convivencia y mejorar el rendimiento. La mayoría trabaja únicamente en el servidor: puedes entrar desde Minecraft Java sin descargar un modpack ni modificar tu cliente. En otras palabras, el cliente permanece limpio y la instalación técnica corre a cargo del servidor.
 
 La idea no es transformar Minecraft en otro juego. Seguimos buscando una experiencia survival reconocible y cercana a vanilla. Las mejoras técnicas están ahí para que el mundo funcione mejor, se pueda reparar un daño si ocurre y algunas tareas cotidianas resulten más cómodas.
 
@@ -57,7 +57,7 @@ Estas son las herramientas más importantes cuando varias personas comparten con
 - [EasyAuth](https://modrinth.com/mod/easyauth) gestiona la autenticación en servidores Fabric.
 - [No Chat Reports](https://modrinth.com/mod/no-chat-reports) modifica el sistema de firma y reporte del chat cuando es posible.
 
-La tecnología ayuda, pero no sustituye a las [normas de Ferreras SMP](/normas). Las reclamaciones y los registros sirven como red de seguridad; la convivencia sigue dependiendo de respetar el trabajo de otras personas.
+La tecnología ayuda, pero no sustituye a las [normas de Ferreras SMP](/normas/). Las reclamaciones y los registros sirven como red de seguridad; la convivencia sigue dependiendo de respetar el trabajo de otras personas.
 
 ## Comunidad e información dentro y fuera del juego
 
@@ -119,4 +119,4 @@ Los datapacks son la parte que más se acerca a añadir contenido, pero siguen s
 
 Nada de esta lista. Para jugar en Ferreras SMP solo necesitas una versión compatible de Minecraft Java y la dirección del servidor. Los mods server-side y los datapacks ya están instalados donde corresponde.
 
-El resultado es un survival con protección, herramientas de comunidad y una base técnica cuidada, pero sin convertir la entrada en la instalación de un modpack. Si quieres probarlo, revisa [cómo entrar a Ferreras SMP](/como-entrar) y añade `mc.ferreras.dev` a tu lista multijugador.
+El resultado es un survival con protección, herramientas de comunidad y una base técnica cuidada, pero sin convertir la entrada en la instalación de un modpack. Si quieres probarlo, revisa [cómo entrar a Ferreras SMP](/como-entrar/) y añade `mc.ferreras.dev` a tu lista multijugador.

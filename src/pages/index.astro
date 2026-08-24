@@ -5,6 +5,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 import DiscordIcon from '../components/DiscordIcon.astro';
 
 const discordUrl = 'https://link.ferreras.dev/discord';
+export const prerender = true;
 const posts = [
 	{
 		category: 'Servidor',
@@ -39,13 +40,11 @@ const posts = [
 				<div class="hero-copy">
 					<p class="eyebrow">Servidor Minecraft Java · Whitelist abierta</p>
 					<h1>
-						Minecraft
-						<span>Vanilla técnico,</span>
-						hecho en <strong>comunidad.</strong>
+						Minecraft <span>Vanilla técnico,</span> hecho en <strong>comunidad.</strong>
 					</h1>
 					<p class="hero-lead">Un mundo pequeño para construir, automatizar y quedarte. Sin economía, sin Pay2Win y sin modpack obligatorio.</p>
 					<div class="hero-actions">
-						<a class="button" href={discordUrl} target="_blank" rel="noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					<a class="button" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 						<a class="button-secondary" href="/como-entrar/">Cómo entrar paso a paso</a>
 					</div>
 					<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
@@ -64,7 +63,7 @@ const posts = [
 		<section class="section statement" id="servidor">
 			<div class="container statement-grid">
 				<div class="statement-mark">
-					<img src="/images/brand/ferreras-smp-adventurer.png" alt="Personaje voxel del servidor" width="512" height="512" loading="lazy" />
+					<img src="/images/brand/ferreras-smp-adventurer.webp" alt="Personaje voxel del servidor" width="512" height="512" loading="lazy" />
 				</div>
 				<div>
 					<h2>No es para todo el mundo</h2>
@@ -84,13 +83,13 @@ const posts = [
 						<span class="step-number">01</span>
 						<strong class="step-title">Entra en Discord</strong>
 						<p class="step-description">Presentamos el servidor, resolvemos dudas y puedes ver cómo hablamos entre nosotros.</p>
-						<a class="step-link" href={discordUrl} target="_blank" rel="noreferrer">Ir a Discord</a>
+						<a class="step-link" href={discordUrl} target="_blank" rel="noopener noreferrer">Ir a Discord</a>
 					</li>
 					<li class="step">
 						<span class="step-number">02</span>
 						<strong class="step-title">Completa el formulario</strong>
 						<p class="step-description">Cuéntanos tu edad, qué buscas y cómo te gusta jugar. No es un examen: es contexto.</p>
-						<a class="step-link" href={discordUrl} target="_blank" rel="noreferrer">Ver el canal</a>
+						<a class="step-link" href={discordUrl} target="_blank" rel="noopener noreferrer">Ver el canal</a>
 					</li>
 					<li class="step">
 						<span class="step-number">03</span>

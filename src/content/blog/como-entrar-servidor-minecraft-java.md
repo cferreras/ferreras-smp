@@ -15,16 +15,16 @@ draft: false
 relatedLinks:
   - title: "Cómo entrar a Ferreras SMP"
     description: "Consulta la IP y los pasos específicos para añadir el servidor."
-    href: "/como-entrar"
+    href: "/como-entrar/"
   - title: "Preguntas frecuentes"
     description: "Resuelve dudas sobre acceso, mods y estado del servidor."
-    href: "/preguntas-frecuentes"
+    href: "/preguntas-frecuentes/"
   - title: "Normas de convivencia"
     description: "Lee las bases para jugar y construir respetando a la comunidad."
-    href: "/normas"
+    href: "/normas/"
 ---
 
-Entrar a un servidor de Minecraft Java consiste en abrir el menú multijugador, guardar su dirección y conectarte. No necesitas modificar el juego salvo que el propio servidor indique expresamente lo contrario.
+Entrar a un servidor de Minecraft Java consiste en abrir el menú multijugador, guardar su dirección y conectarte. No necesitas modificar el juego salvo que el propio servidor indique expresamente lo contrario. El proceso es el mismo tanto si vas a jugar solo como si te espera una whitelist.
 
 En Ferreras SMP puedes jugar sin instalar un modpack. Solo necesitas Minecraft Java y la dirección `mc.ferreras.dev`.
 
@@ -36,7 +36,7 @@ Prepara estas tres cosas:
 - La dirección del servidor al que quieres entrar.
 - Conexión a internet y acceso al modo multijugador.
 
-Si vas a entrar a Ferreras SMP, puedes copiar la IP desde la [guía de acceso](/como-entrar).
+Si vas a entrar a Ferreras SMP, puedes copiar la IP desde la [guía de acceso](/como-entrar/).
 
 ## Cómo añadir un servidor de Minecraft Java
 
@@ -83,6 +83,6 @@ Las herramientas necesarias para la protección, el mapa y la convivencia ya est
 
 ## Antes de empezar a construir
 
-Dedica un momento a leer las [normas del servidor](/normas). Saber cómo se protegen las construcciones, cómo dejar espacio a otras personas y dónde informar de un problema evita malentendidos después.
+Dedica un momento a leer las [normas del servidor](/normas/). Saber cómo se protegen las construcciones, cómo dejar espacio a otras personas y dónde informar de un problema evita malentendidos después.
 
-Cuando lo tengas claro, vuelve a la [guía para entrar a Ferreras SMP](/como-entrar), copia la IP y añade el servidor a tu lista.
+Cuando lo tengas claro, vuelve a la [guía para entrar a Ferreras SMP](/como-entrar/), copia la IP y añade el servidor a tu lista.
