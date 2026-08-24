@@ -16,10 +16,10 @@ draft: false
 relatedLinks:
   - title: "Cómo entrar a un servidor de Minecraft Java"
     description: "Sigue los pasos para añadir una dirección y conectarte por primera vez."
-    href: "/blog/como-entrar-servidor-minecraft-java"
+    href: "/blog/como-entrar-servidor-minecraft-java/"
   - title: "Normas de Ferreras SMP"
     description: "Consulta las bases para construir y convivir respetando a la comunidad."
-    href: "/normas"
+    href: "/normas/"
 ---
 
 Un servidor SMP de Minecraft es un mundo multijugador centrado en la supervivencia. Las siglas proceden de *Survival Multiplayer*: varias personas exploran, consiguen recursos y construyen dentro del mismo mundo, cada una a su ritmo y con la posibilidad de colaborar.
@@ -46,7 +46,7 @@ Eso añade varias consideraciones:
 - Los proyectos comunitarios permiten construir a una escala difícil de alcanzar en solitario.
 - Si surge un problema, normalmente existe un equipo o canal de ayuda.
 
-Por eso es recomendable leer las normas antes de empezar. En Ferreras SMP puedes consultar las [bases de convivencia y sus ejemplos](/normas) antes de elegir dónde construir.
+Por eso es recomendable leer las normas antes de empezar. En Ferreras SMP puedes consultar las [bases de convivencia y sus ejemplos](/normas/) antes de elegir dónde construir.
 
 ## ¿Un SMP necesita mods?
 
@@ -78,7 +78,7 @@ Antes de añadir un servidor a tu lista, comprueba:
 - Cómo se protegen las bases y los objetos.
 - Dónde pedir ayuda si no puedes conectarte.
 
-Si nunca has añadido una dirección, consulta la guía sobre [cómo entrar a un servidor de Minecraft Java paso a paso](/blog/como-entrar-servidor-minecraft-java). Para acceder directamente a Ferreras SMP tienes también la [guía de acceso con la IP del servidor](/como-entrar).
+Si nunca has añadido una dirección, consulta la guía sobre [cómo entrar a un servidor de Minecraft Java paso a paso](/blog/como-entrar-servidor-minecraft-java/). Para acceder directamente a Ferreras SMP tienes también la [guía de acceso con la IP del servidor](/como-entrar/).
 
 ## Cómo es la propuesta de Ferreras SMP
 
@@ -86,4 +86,4 @@ Ferreras SMP es un servidor de Minecraft Java survival en español, sin modpack 
 
 Puedes jugar desde un cliente Vanilla; la protección de terrenos y las herramientas de comunidad funcionan en el servidor.
 
-Si esta forma de jugar encaja contigo, revisa [cómo entrar a Ferreras SMP](/como-entrar), copia la dirección y añade el servidor a tu lista multijugador.
+Si esta forma de jugar encaja contigo, revisa [cómo entrar a Ferreras SMP](/como-entrar/), copia la dirección y añade el servidor a tu lista multijugador.

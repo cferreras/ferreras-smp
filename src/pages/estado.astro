@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+
+export const prerender = true;
 ---
 
 <Layout title="Estado del servidor — Ferreras SMP" description="Consulta el estado actual de Ferreras SMP y el número de jugadores conectados.">
@@ -10,7 +12,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 	<main>
 		<PageIntro
 			eyebrow="Estado"
-			title={'El mundo está <em>abierto.</em>'}
+			title={'Estado del servidor: el mundo está <em>abierto.</em>'}
 			lead="Una vista sencilla para saber si puedes conectarte y cuánta gente está jugando, consultada directamente al servidor."
 		/>
 		<section class="content-section">

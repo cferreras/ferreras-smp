@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+
+export const prerender = true;
 ---
 
 <Layout title="Galería — Ferreras SMP" description="Una selección visual del mundo y el ambiente de Ferreras SMP.">
@@ -10,7 +12,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 	<main>
 		<PageIntro
 			eyebrow="Galería"
-			title={'Un mundo que se <em>va llenando.</em>'}
+			title={'Galería de Ferreras SMP: un mundo que se <em>va llenando.</em>'}
 			lead="La galería se alimenta de las capturas que compartimos en Discord. Esta primera selección sirve para enseñar el tono del mundo: proyectos, paisajes y lugares que merece la pena conservar."
 		/>
 		<section class="content-section">

@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+
+export const prerender = true;
 ---
 
 <Layout title="Normas — Ferreras SMP" description="Normas de convivencia, construcciones, robos, duplicaciones y PvP de Ferreras SMP.">
@@ -10,7 +12,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 	<main>
 		<PageIntro
 			eyebrow="Convivencia"
-			title={'Construimos juntos. <em>Respetamos el espacio.</em>'}
+			title={'Normas de Ferreras SMP: construimos juntos. <em>Respetamos el espacio.</em>'}
 			lead="Las normas no están para llenar una página: están para que el trabajo de una persona siga siendo suyo y el mundo compartido se mantenga agradable con el tiempo."
 		/>
 

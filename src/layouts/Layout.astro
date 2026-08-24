@@ -12,6 +12,7 @@ interface Props {
 	tags?: string[];
 	publishedAt?: Date;
 	updatedAt?: Date;
+	structuredData?: Record<string, unknown>[];
 }
 
 const {
@@ -25,11 +26,39 @@ const {
 	tags = [],
 	publishedAt,
 	updatedAt,
+	structuredData = [],
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL('https://mc.ferreras.dev');
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
+const commonSchema = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': 'https://mc.ferreras.dev/#organization',
+			name: 'Ferreras SMP',
+			url: 'https://mc.ferreras.dev/',
+			logo: {
+				'@type': 'ImageObject',
+				url: 'https://mc.ferreras.dev/images/brand/ferreras-smp-icon-32.png',
+				width: 32,
+				height: 32,
+			},
+			description: 'Servidor de Minecraft Java Vanilla técnico y comunitario con whitelist.',
+			sameAs: ['https://link.ferreras.dev/discord'],
+		},
+		{
+			'@type': 'WebSite',
+			'@id': 'https://mc.ferreras.dev/#website',
+			url: 'https://mc.ferreras.dev/',
+			name: 'Ferreras SMP',
+			inLanguage: 'es-ES',
+			publisher: { '@id': 'https://mc.ferreras.dev/#organization' },
+		},
+	],
+};
 ---
 
 <!doctype html>
@@ -46,6 +75,7 @@ const imageUrl = new URL(image, siteUrl).toString();
 		<link rel="icon" type="image/png" sizes="32x32" href="/images/brand/ferreras-smp-icon-32.png" />
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta property="og:type" content={type} />
 		<meta property="og:site_name" content="Ferreras SMP" />
 		<meta property="og:locale" content="es_ES" />
@@ -64,6 +94,8 @@ const imageUrl = new URL(image, siteUrl).toString();
 		<meta name="twitter:description" content={description} />
 		<meta name="twitter:image" content={imageUrl} />
 		<meta name="twitter:image:alt" content={imageAlt} />
+		<script type="application/ld+json" set:html={JSON.stringify(commonSchema)} />
+		{structuredData.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
 		<title>{title}</title>
 		<script is:inline src="/theme-init.js"></script>
 	</head>

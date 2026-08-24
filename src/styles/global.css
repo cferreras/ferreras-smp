@@ -1161,8 +1161,38 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 .article-cover {
 	width: 100%;
 	max-height: 35rem;
-	margin-bottom: 3.5rem;
+	margin-bottom: 2rem;
 	object-fit: cover;
+}
+
+.article-author {
+	display: grid;
+	gap: 0.25rem;
+	max-width: 42.5rem;
+	margin-bottom: 3.5rem;
+	padding: 1rem 1.25rem;
+	border-left: 2px solid var(--violet);
+	background: var(--paper-strong);
+}
+
+.article-author p {
+	margin: 0;
+	color: var(--muted-strong);
+	font-size: 0.9rem;
+	line-height: 1.55;
+}
+
+.article-author p:first-child {
+	color: var(--ink);
+}
+
+.article-author a,
+.faq-list a {
+	color: var(--violet);
+	font-weight: 800;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
 }
 
 .gallery-grid {
@@ -1304,6 +1334,14 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	font-weight: 800;
 	letter-spacing: -0.025em;
 	list-style: none;
+}
+
+.faq-list summary h2 {
+	margin: 0;
+	font: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	text-align: left;
 }
 
 .faq-list summary::-webkit-details-marker {
