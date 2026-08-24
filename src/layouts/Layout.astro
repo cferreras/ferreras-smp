@@ -73,6 +73,10 @@ const commonSchema = {
 		{author && <meta name="author" content={author} />}
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={canonical} />
+		{/* El .ico va primero como respaldo: Safari no admite favicons en WebP y el
+		    rastreador de favicons de Google prefiere ICO o PNG. Ambos archivos salen
+		    del mismo isotipo que la navbar. */}
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<link rel="icon" type="image/webp" sizes="256x256" href={brandIcon} />
 		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
