@@ -11,6 +11,11 @@
 	--violet: #7040f4;
 	--violet-deep: #5b2bd7;
 	--violet-soft: #e9e0ff;
+	/* Banda invertida: en claro es tinta sobre papel; en oscuro no se invierte,
+	   se eleva. Así el bloque sigue rompiendo el ritmo sin encender la pantalla. */
+	--paper-invert: #17151b;
+	--ink-invert: #f7f4ed;
+	--line-invert: rgba(247, 244, 237, 0.16);
 	--yellow: #f1b718;
 	--green: #5da551;
 	--shadow: 0 1rem 2.5rem rgba(35, 25, 62, 0.14);
@@ -28,6 +33,9 @@ html[data-theme='dark'] {
 	--line: rgba(247, 243, 235, 0.15);
 	--line-strong: rgba(247, 243, 235, 0.3);
 	--violet-soft: #2b1d57;
+	--paper-invert: #1e1b26;
+	--ink-invert: #f7f3eb;
+	--line-invert: rgba(247, 243, 235, 0.14);
 	--shadow: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.3);
 	color-scheme: dark;
 }
@@ -736,19 +744,28 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 }
 
 .dark-section {
-	background: var(--ink);
-	color: var(--paper);
+	background: var(--paper-invert);
+	color: var(--ink-invert);
 }
 
 .dark-section .eyebrow,
 .dark-section .section-heading p,
 .dark-section .step-description {
-	color: color-mix(in srgb, var(--paper) 68%, transparent);
+	color: color-mix(in srgb, var(--ink-invert) 68%, transparent);
 }
 
 .dark-section .section-heading h2,
-.dark-section .step-title {
-	color: var(--paper);
+.dark-section .step-title,
+.dark-section .step-link {
+	color: var(--ink-invert);
+}
+
+.dark-section .steps {
+	border-top-color: var(--line-invert);
+}
+
+.dark-section .step {
+	border-bottom-color: var(--line-invert);
 }
 
 .section-heading {
@@ -804,7 +821,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 }
 
 .step-link {
-	color: var(--paper);
+	color: var(--ink-invert);
 	font-size: 0.8rem;
 	font-weight: 800;
 	white-space: nowrap;
