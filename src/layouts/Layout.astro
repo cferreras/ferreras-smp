@@ -78,6 +78,9 @@ const commonSchema = {
 		    del mismo isotipo que la navbar. */}
 		<link rel="icon" href="/favicon.ico" sizes="32x32" />
 		<link rel="icon" type="image/webp" sizes="256x256" href={brandIcon} />
+		{/* iOS compone el icono sobre negro y no respeta la transparencia, así que
+		    el touch icon va a sangre sobre el violeta de marca. */}
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/brand/ferreras-smp-apple-touch-180.png" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta property="og:type" content={type} />
