@@ -3,34 +3,33 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
+import DiscordIcon from '../../components/DiscordIcon.astro';
 
+const discordUrl = 'https://link.ferreras.dev/discord';
 export const prerender = true;
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+const formatDate = (date: Date) => date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
 ---
 
 <Layout title="Blog — Ferreras SMP" description="Guías y contexto para conocer Ferreras SMP antes de entrar en Discord.">
-	<SiteHeader />
-	<main>
-		<section class="page-hero">
-			<div class="container page-hero-grid">
-				<div>
-					<p class="eyebrow">Blog</p>
-					<h1>Entender el mundo antes de <em>entrar.</em></h1>
-					<p>Guías, respuestas y decisiones de diseño para que puedas decidir si Ferreras SMP es el servidor que estás buscando.</p>
-				</div>
-				<div class="page-hero-aside"><p>Actualizamos los artículos cuando cambia la experiencia real del servidor. Si algo no está confirmado, lo decimos.</p></div>
-			</div>
-		</section>
+	<SiteHeader>
+		<div class="container page-lead">
+			<span class="chip">Blog</span>
+			<h1>Entender el mundo <span>antes de entrar.</span></h1>
+			<p>Guías, respuestas y decisiones de diseño para que puedas decidir si Ferreras SMP es el servidor que buscas. Si algo no está confirmado, lo decimos.</p>
+		</div>
+	</SiteHeader>
 
-		<section class="content-section">
+	<main>
+		<section class="section">
 			<div class="container">
 				<div class="blog-list">
 					{posts.map((post) => (
 						<a class="post-card" href={`/blog/${post.id}/`}>
 							<img src={post.data.image} alt={post.data.imageAlt} width="1200" height="800" loading="lazy" />
 							<span class="post-card-body">
-								<span class="post-card-meta">{post.data.category} · {post.data.publishedAt.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+								<span class="post-card-meta">{post.data.category} · {formatDate(post.data.publishedAt)}</span>
 								<h2>{post.data.title}</h2>
 								<p>{post.data.description}</p>
 							</span>
@@ -39,6 +38,18 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, 
 				</div>
 			</div>
 		</section>
+
+		<section class="band band-amber">
+			<div class="container">
+				<h2 class="section-title">¿Ya lo tienes claro?</h2>
+				<p class="band-lead">La whitelist se abre desde Discord, en cuatro pasos y con una persona al otro lado.</p>
+				<div class="band-actions">
+					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					<a class="button-ghost button-ghost-on-amber" href="/como-entrar/">Ver cómo entrar</a>
+				</div>
+			</div>
+		</section>
 	</main>
+
 	<SiteFooter />
 </Layout>

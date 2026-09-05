@@ -21,7 +21,7 @@
 		const nextPreference = preferences[(preferences.indexOf(preference) + 1) % preferences.length];
 		button.setAttribute('aria-label', `Tema actual: ${preferenceLabels[preference]}. Cambiar a tema ${preferenceLabels[nextPreference]}`);
 		if (label) label.textContent = preferenceLabels[preference].replace(/^./, (letter) => letter.toUpperCase());
-		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', document.documentElement.dataset.theme === 'dark' ? '#101011' : '#f7f4ed');
+		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', document.documentElement.dataset.theme === 'dark' ? '#100f13' : '#7c3aed');
 
 		if (persist) {
 			try {

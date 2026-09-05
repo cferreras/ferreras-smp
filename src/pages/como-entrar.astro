@@ -1,70 +1,183 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import DiscordIcon from '../components/DiscordIcon.astro';
 
 const discordUrl = 'https://link.ferreras.dev/discord';
 export const prerender = true;
+
+const path = [
+	{
+		title: 'Entra en Discord',
+		text: 'Es el punto de encuentro. Puedes mirar sin decir nada y ver cómo hablamos entre nosotros.',
+	},
+	{
+		title: 'Lee la información',
+		text: 'El canal de información y las normas de convivencia. Cinco minutos que evitan malentendidos.',
+	},
+	{
+		title: 'Rellena el formulario',
+		text: 'Está en su propio canal. Contesta con calma: no buscamos una respuesta preparada.',
+	},
+	{
+		title: 'Hablamos y entras',
+		text: 'Leemos cada solicitud a mano. Si encaja, seguimos por Discord y te añadimos a la whitelist.',
+	},
+];
+
+const questions = [
+	'Tu edad y cómo quieres que te llamemos.',
+	'Qué te gustaría construir o aprender aquí.',
+	'Si has jugado antes en servidores y qué convivencia buscas.',
+	'Si has leído las normas y aceptas que el mundo se comparte.',
+	'Cómo nos conociste.',
+];
+
+const doubts = [
+	{
+		title: '¿Cuánto tardáis en contestar?',
+		text: 'No hay reloj automático: alguien tiene que leer tu solicitud con atención. Si pasan varios días, escribe otra vez en el mismo canal y la recuperamos.',
+	},
+	{
+		title: '¿Cuándo decís que no?',
+		text: 'Cuando la solicitud llega vacía, cuando se ve que las normas dan igual o cuando buscas un servidor masivo y competitivo. Preferimos decirlo antes que después.',
+	},
+	{
+		title: '¿Y si me aprobáis?',
+		text: 'Te lo confirmamos por Discord y añadimos tu cuenta. Ya solo queda abrir Minecraft, añadir el servidor y saludar al llegar.',
+	},
+];
+
+const needs = [
+	'Minecraft Java compatible con la 26.2.',
+	'Más de 16 años y ganas de quedarte.',
+	'Nada más: no se instalan mods para entrar.',
+];
+
+const structuredData = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'HowTo',
+		name: 'Cómo entrar en Ferreras SMP',
+		description: 'El acceso a Ferreras SMP se pide desde Discord y se revisa a mano antes de añadir la cuenta a la whitelist.',
+		step: path.map((item, index) => ({
+			'@type': 'HowToStep',
+			position: index + 1,
+			name: item.title,
+			text: item.text,
+		})),
+	},
+];
 ---
 
-<Layout title="Cómo entrar — Ferreras SMP" description="Conoce el proceso de acceso a Ferreras SMP: Discord, formulario, revisión manual y whitelist.">
-	<SiteHeader />
-	<main>
-		<PageIntro
-			eyebrow="Cómo entrar"
-			title={'Cómo entrar a Ferreras SMP: si te encaja, <em>nos conocemos.</em>'}
-			lead="No hay un registro automático ni un formulario perdido en la web. Primero entra en Discord, conoce el espacio y cuéntanos qué buscas en un servidor Vanilla técnico."
-			image="/images/blog/como-entrar-servidor-minecraft-java.webp"
-			imageAlt="Jugador de Minecraft frente a una baliza púrpura"
-			note="Minecraft Java · sin modpack obligatorio · acceso revisado"
-		/>
+<Layout
+	title="Cómo entrar — Ferreras SMP"
+	description="Cuatro pasos para entrar en Ferreras SMP: Discord, normas, formulario y revisión manual antes de la whitelist."
+	structuredData={structuredData}
+>
+	<SiteHeader>
+		<div class="container page-lead">
+			<span class="chip">Cómo entrar</span>
+			<h1>Cuatro pasos y <span>una conversación.</span></h1>
+			<p>No hay registro automático ni formulario escondido. Entras en Discord, nos cuentas cómo juegas y te contestamos a mano.</p>
+		</div>
+	</SiteHeader>
 
-		<section class="content-section">
-			<div class="container content-layout">
-				<aside class="content-art" aria-label="Ilustración de una guía de acceso de Ferreras SMP">
-					<img src="/images/brand/ferreras-smp-welcome-guide.png" alt="Guía de Minecraft mostrando una lista de acceso" width="1024" height="1536" loading="lazy" />
-				</aside>
-				<div class="prose">
-					<h2>El camino hasta la whitelist.</h2>
-					<ol>
-						<li>Entra en <a href={discordUrl} target="_blank" rel="noopener noreferrer">el Discord de Ferreras SMP</a>.</li>
-						<li>Lee el canal de información y las normas de convivencia.</li>
-						<li>Localiza el canal del formulario y responde a las preguntas con calma.</li>
-						<li>Esperamos a revisar la solicitud. Si encaja, continuamos la conversación por Discord.</li>
-						<li>Cuando todo esté claro, añadimos tu cuenta a la whitelist.</li>
-					</ol>
-					<div class="callout"><p>El formulario pregunta por tu edad, tu motivo para unirte, tu interés por Vanilla y las granjas técnicas, la aceptación de las normas y cómo nos conociste.</p></div>
-					<h2>Qué pregunta realmente el formulario.</h2>
-					<p>No buscamos una presentación perfecta ni una respuesta que suene preparada. Queremos saber quién llega, qué espera de un mundo compartido y si la forma de jugar de Ferreras SMP tiene sentido para esa persona.</p>
-					<ul>
-						<li>Tu edad y cómo podemos dirigirnos a ti dentro de la comunidad.</li>
-						<li>Qué te gustaría construir, aprender o encontrar en un survival técnico.</li>
-						<li>Si has jugado antes en servidores y qué tipo de convivencia estás buscando.</li>
-						<li>Si has leído las normas y entiendes que el mundo, los objetos y el espacio se comparten.</li>
-						<li>Cómo nos conociste, para entender qué información te ha traído hasta aquí.</li>
-					</ul>
-					<p>Contesta con naturalidad y con el contexto suficiente para que podamos conocerte. No hace falta tener una granja diseñada ni una lista de proyectos: la constancia y la forma de tratar a otras personas importan más que llegar con experiencia técnica.</p>
-					<h2>Cuánto tarda la revisión.</h2>
-					<p>La revisión es manual y no tiene un reloj automático. No prometemos una respuesta inmediata porque depende de que haya alguien disponible para leer la solicitud y continuar la conversación con atención. Si pasan varios días sin respuesta, puedes escribir en el mismo canal de Discord para comprobar que la solicitud sigue visible.</p>
-					<h2>Qué pasa después de la aprobación.</h2>
-					<p>Si todo encaja, confirmamos el acceso por Discord y añadimos tu cuenta a la whitelist. Entonces puedes abrir Minecraft Java, agregar <code>mc.ferreras.dev</code> y entrar al mundo. En tu primera visita conviene saludar, leer cualquier aviso reciente y preguntar antes de ocupar una zona o tocar una construcción que no conozcas.</p>
-					<p>La whitelist no es el final de la conversación: sirve para que el primer paso tenga contexto. Después puedes jugar a tu ritmo, conocer los proyectos que ya existen y decidir dónde aportar sin tener que demostrar nada en la primera noche.</p>
-					<h2>Cuándo no se aprueba una solicitud.</h2>
-					<p>Podemos rechazar una solicitud si llega sin información suficiente, si deja claro que no se respetarán las normas o si busca una experiencia masiva, competitiva o basada en conseguir ventajas que Ferreras SMP no ofrece. También podemos decir que no cuando la propuesta no encaja con el momento de la comunidad. Preferimos ser claros antes de abrir la puerta a una convivencia que empiece con expectativas equivocadas.</p>
-					<p>Si nunca has añadido un servidor, consulta la <a href="/blog/como-entrar-servidor-minecraft-java/">guía genérica para entrar a cualquier servidor de Minecraft Java</a>. Allí explicamos el menú multijugador y las comprobaciones técnicas; esta página se centra en la whitelist de Ferreras SMP.</p>
-					<h2>Lo que necesitas</h2>
-					<ul>
-						<li>Minecraft Java en una versión compatible con la 26.2.</li>
-						<li>Ganas de convivir en una comunidad pequeña y participar de verdad.</li>
-						<li>La dirección <code>mc.ferreras.dev</code> para añadir el servidor cuando se apruebe el acceso.</li>
-					</ul>
-					<p>No hace falta instalar mods para empezar: puedes usar el cliente Vanilla normal y conectarte directamente al servidor.</p>
-					<a class="button" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+	<main>
+		<section class="section">
+			<div class="container">
+				<h2 class="section-title">El camino hasta la whitelist.</h2>
+
+				<ol class="steps steps-4">
+					{path.map((step, index) => (
+						<li class="step">
+							<span class="step-number">{String(index + 1).padStart(2, '0')}</span>
+							<strong class="step-title">{step.title}</strong>
+							<p class="step-description">{step.text}</p>
+						</li>
+					))}
+				</ol>
+			</div>
+		</section>
+
+		<section class="band band-lime">
+			<div class="container ask-layout">
+				<div class="ask-intro">
+					<h2 class="section-title">Qué te preguntamos.</h2>
+					<p class="band-lead">Cinco preguntas cortas. No es un examen: solo queremos saber quién llega y si el sitio le va a gustar.</p>
+				</div>
+
+				<ul class="check-list">
+					{questions.map((question) => (
+						<li>
+							<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5" /></svg>
+							<p>{question}</p>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="container">
+				<h2 class="section-title">Las tres dudas de siempre.</h2>
+
+				<div class="doubts">
+					{doubts.map((doubt) => (
+						<article class="card">
+							<h3>{doubt.title}</h3>
+							<p>{doubt.text}</p>
+						</article>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="container">
+				<div class="needs-layout">
+					<div class="needs-card">
+						<h2>Lo que necesitas</h2>
+						<ul class="check-list">
+							{needs.map((need) => (
+								<li>
+									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5" /></svg>
+									<p>{need}</p>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					<div class="ip-panel needs-ip">
+						<div>
+							<p class="ip-label">IP del servidor</p>
+							<p class="ip-value">mc.ferreras.dev</p>
+						</div>
+						<p class="ip-note">Pégala en «Multijugador → Añadir servidor». Solo conecta una vez estás en la whitelist.</p>
+						<button class="copy-ip" type="button" data-copy-ip="mc.ferreras.dev">
+							<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+							<span data-copy-label>Copiar</span>
+						</button>
+					</div>
+				</div>
+
+				<p class="after-note">¿Nunca has añadido un servidor? Te lo contamos paso a paso en la <a href="/blog/como-entrar-servidor-minecraft-java/">guía para entrar a Minecraft Java</a>.</p>
+			</div>
+		</section>
+
+		<section class="band band-amber">
+			<div class="container">
+				<h2 class="section-title">Empieza por Discord.</h2>
+				<p class="band-lead">Es el único sitio desde el que se abre la whitelist. Te contesta una persona, no un bot.</p>
+				<div class="band-actions">
+					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					<a class="button-ghost button-ghost-on-amber" href="/normas/">Leer las normas</a>
 				</div>
 			</div>
 		</section>
 	</main>
+
 	<SiteFooter />
+	<script is:inline src="/copy-ip.js"></script>
 </Layout>

@@ -2,7 +2,7 @@
 title: "Cómo entrar a un servidor de Minecraft Java paso a paso"
 description: "Aprende a añadir un servidor de Minecraft Java, conectarte y resolver las dudas básicas antes de entrar por primera vez."
 publishedAt: 2026-07-14
-updatedAt: 2026-07-14
+updatedAt: 2026-09-05
 author: "Carlos Ferreras"
 category: "Guías"
 tags:
@@ -24,65 +24,61 @@ relatedLinks:
     href: "/normas/"
 ---
 
-Entrar a un servidor de Minecraft Java consiste en abrir el menú multijugador, guardar su dirección y conectarte. No necesitas modificar el juego salvo que el propio servidor indique expresamente lo contrario. El proceso es el mismo tanto si vas a jugar solo como si te espera una whitelist.
+Entrar a un servidor de Minecraft Java son tres cosas: abres el menú multijugador, guardas su dirección y te conectas. No hace falta tocar el juego salvo que el servidor diga expresamente lo contrario, y el proceso es el mismo con whitelist o sin ella.
 
-En Ferreras SMP puedes jugar sin instalar un modpack. Solo necesitas Minecraft Java y la dirección `mc.ferreras.dev`.
+Para Ferreras SMP no instalas nada: solo necesitas Minecraft Java y la dirección `mc.ferreras.dev`.
 
 ## Qué necesitas antes de empezar
 
-Prepara estas tres cosas:
-
-- Una instalación funcional de Minecraft Java.
+- Minecraft Java instalado y funcionando.
 - La dirección del servidor al que quieres entrar.
 - Conexión a internet y acceso al modo multijugador.
 
-Si vas a entrar a Ferreras SMP, puedes copiar la IP desde la [guía de acceso](/como-entrar/).
+Si vas a entrar a Ferreras SMP, la IP está en la [guía de acceso](/como-entrar/), con botón para copiarla.
 
 ## Cómo añadir un servidor de Minecraft Java
 
 ### 1. Abre Minecraft Java
 
-Inicia el juego desde tu launcher habitual y llega al menú principal. Comprueba que estás abriendo la edición Java antes de continuar.
+Arranca el juego desde tu launcher y llega al menú principal. Comprueba que es la edición **Java** y no Bedrock: son juegos distintos y no comparten servidores.
 
 ### 2. Entra en Multijugador
 
-Selecciona **Multijugador**. Si es la primera vez que abres esta sección, el juego puede mostrar un aviso sobre servidores externos. Léelo y continúa cuando estés listo.
+Pulsa **Multijugador**. La primera vez el juego muestra un aviso sobre servidores externos; léelo y continúa.
 
 ### 3. Pulsa Añadir servidor
 
-Usa **Añadir servidor** para guardar el acceso. Escribe un nombre que puedas reconocer; este campo sirve para identificarlo en tu lista y no cambia el servidor.
+Con **Añadir servidor** guardas el acceso. El nombre es solo para que lo reconozcas en tu lista: puedes poner el que quieras, no cambia nada del servidor.
 
 ### 4. Escribe la dirección
 
-Introduce la IP o dominio exactamente como te lo hayan facilitado. Para Ferreras SMP, la dirección es:
+Escribe la IP o el dominio exactamente como te lo hayan pasado. La de Ferreras SMP es:
 
 `mc.ferreras.dev`
 
-Evita espacios al principio o al final. Un solo carácter incorrecto basta para que la conexión falle.
+Ojo con los espacios al principio y al final. Un carácter de más y la conexión falla.
 
 ### 5. Guarda y conéctate
 
-Guarda la entrada, selecciónala en la lista y pulsa **Entrar al servidor**. También puedes usar la conexión directa si solo quieres probar la dirección sin guardarla.
+Guarda, selecciona el servidor en la lista y pulsa **Entrar al servidor**. Si solo quieres probar la dirección sin guardarla, usa la conexión directa.
 
-## Qué revisar si no puedes entrar
+## Qué mirar si no consigues entrar
 
-Empieza por las comprobaciones sencillas:
+1. Que la dirección esté bien escrita, sin espacios sobrantes.
+2. Que hayas abierto Minecraft Java y no Bedrock.
+3. Que la versión del juego sea compatible con la del servidor.
+4. Cierra y vuelve a abrir el juego si acabas de cambiar algo de la configuración.
 
-1. Revisa que la dirección esté escrita correctamente.
-2. Confirma que has abierto Minecraft Java.
-3. Cierra y vuelve a abrir el juego si acabas de cambiar su configuración.
-4. Comprueba si el servidor aparece disponible en la lista multijugador.
+> Si sigues sin poder entrar a Ferreras SMP, escríbenos en Discord y pega el mensaje de error tal cual aparece. Con el texto exacto sabemos qué mirar; sin él, adivinamos.
 
-Los mensajes de error pueden tener causas distintas. Si continúas sin poder conectarte a Ferreras SMP, entra en el Discord desde esta página y comparte el mensaje exacto que aparece en pantalla. Eso permitirá al equipo orientarte sin adivinar el problema.
+## ¿Hay que instalar mods?
 
-## ¿Es obligatorio instalar mods?
+En Ferreras SMP no. Entras y juegas sin descargar un modpack ni herramientas aparte.
 
-No en Ferreras SMP. Puedes entrar y jugar sin descargar un modpack ni instalar herramientas adicionales.
+Lo que hace falta para la protección, el mapa y la convivencia ya está en el servidor. Tu cliente vanilla se conecta sin tocar nada. Si te interesa el detalle, lo contamos en [qué mods hay en Ferreras SMP](/blog/que-mods-hay-ferreras-smp/).
 
-Las herramientas necesarias para la protección, el mapa y la convivencia ya están instaladas en el servidor; tu cliente Vanilla puede conectarse sin modificaciones.
+## Antes de construir nada
 
-## Antes de empezar a construir
+Dedica dos minutos a las [normas del servidor](/normas/). Saber cómo se protegen las construcciones, cuánto espacio dejar y dónde avisar de un problema evita casi todos los malentendidos.
 
-Dedica un momento a leer las [normas del servidor](/normas/). Saber cómo se protegen las construcciones, cómo dejar espacio a otras personas y dónde informar de un problema evita malentendidos después.
-
-Cuando lo tengas claro, vuelve a la [guía para entrar a Ferreras SMP](/como-entrar/), copia la IP y añade el servidor a tu lista.
+Cuando lo tengas claro, vuelve a [cómo entrar a Ferreras SMP](/como-entrar/), copia la IP y añádela a tu lista.

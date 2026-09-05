@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
+import DiscordIcon from '../../components/DiscordIcon.astro';
 
 export const prerender = true;
 
@@ -19,6 +20,12 @@ const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(post.data.image, siteUrl).toString();
 const datePublished = post.data.publishedAt.toISOString();
 const dateModified = (post.data.updatedAt ?? post.data.publishedAt).toISOString();
+
+const others = (await getCollection('blog', ({ data }) => !data.draft))
+	.filter((entry) => entry.id !== post.id)
+	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+	.slice(0, 2);
+
 const blogPostingSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'BlogPosting',
@@ -56,26 +63,71 @@ const breadcrumbSchema = {
 	updatedAt={post.data.updatedAt}
 	structuredData={[blogPostingSchema, breadcrumbSchema]}
 >
-	<SiteHeader />
-	<main>
-		<section class="content-section">
-			<div class="container">
-				<header class="article-header">
-					<div class="article-meta"><span>{post.data.category}</span><span>{post.data.publishedAt.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}</span></div>
-					<h1>{post.data.title}</h1>
-					<p>{post.data.description}</p>
-				</header>
-				<img class="article-cover" src={post.data.image} alt={post.data.imageAlt} width="1200" height="800" />
-				<div class="article-author" aria-label="Autor del artículo">
-					<p><strong>Escrito por {post.data.author}</strong></p>
-					<p>{post.data.author} administra Ferreras SMP y mantiene la configuración técnica del servidor. Si quieres comentar una duda sobre este artículo, puedes encontrarle en <a href={discordUrl} target="_blank" rel="noopener noreferrer">Discord de Ferreras SMP</a>.</p>
+	<SiteHeader>
+		<div class="container page-lead">
+			<a class="back-link" href="/blog/">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5.5 8.5 12l6.5 6.5" /></svg>
+				<span>Volver al blog</span>
+			</a>
+
+			<header class="article-lead">
+				<div class="article-meta">
+					<span>{post.data.category}</span>
+					<span>{post.data.publishedAt.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
 				</div>
-				<div class="content-layout">
-					<aside class="content-index"><strong>Ferreras SMP</strong><a href="/blog/">Volver al blog</a></aside>
+				<h1>{post.data.title}</h1>
+				<p>{post.data.description}</p>
+			</header>
+		</div>
+	</SiteHeader>
+
+	<main>
+		<section class="section">
+			<div class="container">
+				<img class="article-cover" src={post.data.image} alt={post.data.imageAlt} width="1200" height="800" />
+
+				<div class="article-body">
 					<article class="prose"><Content /></article>
+
+					<aside class="article-author" aria-label="Autor del artículo">
+						<p>Escrito por {post.data.author}</p>
+						<p>{post.data.author} administra Ferreras SMP y mantiene la configuración técnica del servidor. Si quieres comentar una duda sobre este artículo, puedes encontrarle en el <a href={discordUrl} target="_blank" rel="noopener noreferrer">Discord de Ferreras SMP</a>.</p>
+					</aside>
+				</div>
+			</div>
+		</section>
+
+		{others.length > 0 && (
+			<section class="section">
+				<div class="container">
+					<h2 class="section-title">Sigue leyendo.</h2>
+					<div class="blog-list blog-list-related">
+						{others.map((entry) => (
+							<a class="post-card" href={`/blog/${entry.id}/`}>
+								<img src={entry.data.image} alt={entry.data.imageAlt} width="1200" height="800" loading="lazy" />
+								<span class="post-card-body">
+									<span class="post-card-meta">{entry.data.category}</span>
+									<h3>{entry.data.title}</h3>
+									<p>{entry.data.description}</p>
+								</span>
+							</a>
+						))}
+					</div>
+				</div>
+			</section>
+		)}
+
+		<section class="band band-amber">
+			<div class="container">
+				<h2 class="section-title">¿Te encaja el sitio?</h2>
+				<p class="band-lead">La whitelist se abre desde Discord y te contesta una persona, no un bot.</p>
+				<div class="band-actions">
+					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					<a class="button-ghost button-ghost-on-amber" href="/como-entrar/">Ver cómo entrar</a>
 				</div>
 			</div>
 		</section>
 	</main>
+
 	<SiteFooter />
 </Layout>
