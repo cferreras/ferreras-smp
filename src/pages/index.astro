@@ -6,133 +6,203 @@ import DiscordIcon from '../components/DiscordIcon.astro';
 
 const discordUrl = 'https://link.ferreras.dev/discord';
 export const prerender = true;
+
+const claims = [
+	{
+		icon: 'cube',
+		tone: 'violet',
+		title: 'Vanilla de verdad',
+		text: 'Nada de economía, rangos ni tiendas. El Minecraft que ya conoces, con granjas técnicas y proyectos libres.',
+	},
+	{
+		icon: 'bolt',
+		tone: 'lime',
+		title: 'Entras y juegas',
+		text: 'No instalas nada. Fabric corre en el servidor, no en tu ordenador: abres el juego y te conectas.',
+	},
+	{
+		icon: 'people',
+		tone: 'amber',
+		title: 'Como mucho, 20',
+		text: 'Una comunidad pequeña, mayor de 16 años. Leemos cada solicitud a mano y respondemos por Discord.',
+	},
+];
+
+const steps = [
+	{
+		title: 'Entra en Discord',
+		text: 'El punto de encuentro. Presentamos el servidor y resolvemos dudas sin compromiso.',
+	},
+	{
+		title: 'Rellena el formulario',
+		text: 'Tu edad, qué buscas y cómo te gusta jugar. No es un examen: es contexto.',
+	},
+	{
+		title: 'Hablamos y entras',
+		text: 'Revisamos cada solicitud a mano. Si encaja, te añadimos a la whitelist el mismo día.',
+	},
+];
+
+const world = [
+	{
+		image: '/images/gallery/casas-frente-al-mar.jpg',
+		alt: 'Dos casas de madera y piedra frente al mar',
+		caption: 'Casas frente al mar y granja de hierro',
+	},
+	{
+		image: '/images/gallery/casa-entre-bambus.jpg',
+		alt: 'Casa de ladrillo cubierta de vegetación junto a un bambusal',
+		caption: 'Trading hall para aldeanos',
+	},
+	{
+		image: '/images/gallery/veronicucha-fortaleza.jpg',
+		alt: 'Una jugadora sobre la torre de una fortaleza de piedra',
+		caption: 'Ciudad en construcción',
+	},
+];
+
 const posts = [
-	{
-		category: 'Servidor',
-		title: 'Qué mods hay en Ferreras SMP',
-		description: 'Por qué las mejoras están al servicio del mundo y no al revés.',
-		image: '/images/blog/que-mods-hay-ferreras-smp.webp',
-		href: '/blog/que-mods-hay-ferreras-smp/',
-	},
-	{
-		category: 'Guía',
-		title: 'Qué es un servidor SMP de Minecraft',
-		description: 'Una explicación sencilla para saber si este estilo de juego encaja contigo.',
-		image: '/images/blog/que-es-servidor-smp-minecraft.webp',
-		href: '/blog/que-es-servidor-smp-minecraft/',
-	},
-	{
-		category: 'Cómo entrar',
-		title: 'Cómo entrar a Minecraft Java',
-		description: 'Los pasos para llegar desde Discord hasta la whitelist.',
-		image: '/images/blog/como-entrar-servidor-minecraft-java.webp',
-		href: '/blog/como-entrar-servidor-minecraft-java/',
-	},
+	{ category: 'Servidor', title: 'Qué mods hay en Ferreras SMP', href: '/blog/que-mods-hay-ferreras-smp/' },
+	{ category: 'Guía', title: 'Qué es un servidor SMP', href: '/blog/que-es-servidor-smp-minecraft/' },
+	{ category: 'Cómo entrar', title: 'Cómo entrar a Minecraft Java', href: '/blog/como-entrar-servidor-minecraft-java/' },
 ];
 ---
 
 <Layout>
-	<SiteHeader />
+	<SiteHeader>
+		<div class="container hero" id="inicio">
+			<div class="hero-copy">
+				<span class="chip"><span class="chip-dot" aria-hidden="true"></span> Java 26.2 · Whitelist abierta</span>
+
+				<h1>Minecraft vanilla, hecho <span>en comunidad.</span></h1>
+
+				<p class="hero-lead">Un mundo pequeño para construir sin prisas. Sin Pay2Win, sin economía y sin modpack obligatorio.</p>
+
+				<div class="hero-actions">
+					<a class="button button-on-violet" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					<a class="button-ghost button-ghost-on-violet" href="/como-entrar/">Cómo entrar</a>
+				</div>
+
+				<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
+					<span class="status-dot" aria-hidden="true"></span>
+					<span data-server-status-text>Comprobando servidor…</span>
+				</p>
+			</div>
+
+			<figure class="hero-visual">
+				<img src="/images/gallery/ferreritas-costa-atardecer.jpg" alt="Vista del mundo de Ferreras SMP al atardecer, con casas junto a la costa" width="1200" height="800" fetchpriority="high" />
+			</figure>
+		</div>
+	</SiteHeader>
 
 	<main>
-		<section class="hero" id="inicio">
-			<div class="container hero-grid">
-				<div class="hero-copy">
-					<p class="eyebrow">Servidor Minecraft Java · Whitelist abierta</p>
-					<h1>
-						Minecraft <span>Vanilla técnico,</span> hecho en <strong>comunidad.</strong>
-					</h1>
-					<p class="hero-lead">Un mundo pequeño para construir, automatizar y quedarte. Sin economía, sin Pay2Win y sin modpack obligatorio.</p>
-					<div class="hero-actions">
-					<a class="button" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-						<a class="button-secondary" href="/como-entrar/">Cómo entrar paso a paso</a>
+		<section class="section" id="servidor">
+			<div class="container">
+				<h2 class="section-title">Esto es lo que hay. Y lo que no.</h2>
+				<p class="section-intro">Preferimos contarlo antes de que entres, para que no pierdas el tiempo si buscas otra cosa.</p>
+
+				<div class="claims">
+					{claims.map((claim) => (
+						<article class="card">
+							<div class={`card-icon card-icon-${claim.tone}`}>
+								{claim.icon === 'cube' && (
+									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6 20.5 7v10L12 21.4 3.5 17V7z" /><path d="M3.5 7 12 11.6 20.5 7" /><path d="M12 11.6V21.4" /></svg>
+								)}
+								{claim.icon === 'bolt' && (
+									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 9-11.5h-6.5z" /></svg>
+								)}
+								{claim.icon === 'people' && (
+									<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2" /><path d="M2.8 20c0-3.4 2.8-5.6 6.2-5.6s6.2 2.2 6.2 5.6" /><path d="M16.4 5.2a3.2 3.2 0 0 1 0 6" /><path d="M18 14.8c2 .7 3.2 2.5 3.2 5.2" /></svg>
+								)}
+							</div>
+							<h3>{claim.title}</h3>
+							<p>{claim.text}</p>
+						</article>
+					))}
+				</div>
+
+				<p class="no-fit">
+					<span class="no-fit-label">Seguramente no encajes si…</span>
+					<span>buscas un servidor grande</span>
+					<span>quieres plugins y economía</span>
+					<span>vienes a probar y ya</span>
+				</p>
+			</div>
+		</section>
+
+		<section class="band band-lime" id="como-entrar">
+			<div class="container">
+				<div class="section-head-split">
+					<div>
+						<h2 class="section-title">Entrar cuesta tres pasos.</h2>
+						<p class="band-lead">Todo pasa en Discord. Ahí ves cómo hablamos antes de decidir nada.</p>
 					</div>
-					<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
-						<span class="status-dot" aria-hidden="true"></span>
-						<span data-server-status-text>Comprobando servidor…</span>
+					<a class="button button-on-lime" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+				</div>
+
+				<ol class="steps">
+					{steps.map((step, index) => (
+						<li class="step">
+							<span class="step-number">{String(index + 1).padStart(2, '0')}</span>
+							<strong class="step-title">{step.title}</strong>
+							<p class="step-description">{step.text}</p>
+						</li>
+					))}
+				</ol>
+
+				<div class="ip-panel">
+					<div>
+						<p class="ip-label">IP del servidor</p>
+						<p class="ip-value" data-server-address>mc.ferreras.dev</p>
+					</div>
+					<p class="ip-note">Pégala en «Multijugador → Añadir servidor». Solo conecta si ya estás en la whitelist.</p>
+					<button class="copy-ip" type="button" data-copy-ip="mc.ferreras.dev">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+						<span data-copy-label>Copiar</span>
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="section" id="mundo">
+			<div class="container">
+				<div class="section-head-split">
+					<h2 class="section-title">Así se ve el mundo ahora mismo.</h2>
+					<p class="section-links">
+						<a href="/galeria/">Ver la galería →</a>
+						<a href="/bluemap/">Abrir el mapa →</a>
 					</p>
 				</div>
 
-				<figure class="hero-visual">
-					<img src="/images/blog/que-es-servidor-smp-minecraft.webp" alt="Un grupo de jugadores construye junto a un río, con montañas al fondo" width="1200" height="800" fetchpriority="high" />
-					<figcaption>Un mundo persistente, cuidado entre pocas personas.</figcaption>
-				</figure>
-			</div>
-		</section>
-
-		<section class="section statement" id="servidor">
-			<div class="container statement-grid">
-				<div class="statement-mark">
-					<img src="/images/brand/ferreras-smp-adventurer.webp" alt="Personaje voxel del servidor" width="1024" height="1536" loading="lazy" />
-				</div>
-				<div>
-					<h2>No es para todo el mundo</h2>
-					<p class="statement-copy">Ferreras SMP es un servidor survival vanilla técnico para quienes disfrutan de Minecraft sin prisas. Sin economía, sin Pay2Win, sin plugins que cambien la experiencia. Solo tú, tu creatividad y otras pocas personas que valoran la constancia y el respeto.</p>
-				</div>
-			</div>
-		</section>
-
-		<section class="section dark-section" id="como-entrar">
-			<div class="container">
-				<div class="section-heading">
-					<h2>Entrar es fácil. Encajar importa.</h2>
-					<p>Discord es el punto de encuentro. Allí puedes conocer el ambiente, leer la información y completar el formulario para que podamos hablar contigo con calma.</p>
-				</div>
-				<ol class="steps">
-					<li class="step">
-						<span class="step-number">01</span>
-						<strong class="step-title">Entra en Discord</strong>
-						<p class="step-description">Presentamos el servidor, resolvemos dudas y puedes ver cómo hablamos entre nosotros.</p>
-						<a class="step-link" href={discordUrl} target="_blank" rel="noopener noreferrer">Ir a Discord</a>
-					</li>
-					<li class="step">
-						<span class="step-number">02</span>
-						<strong class="step-title">Completa el formulario</strong>
-						<p class="step-description">Cuéntanos tu edad, qué buscas y cómo te gusta jugar. No es un examen: es contexto.</p>
-						<a class="step-link" href={discordUrl} target="_blank" rel="noopener noreferrer">Ver el canal</a>
-					</li>
-					<li class="step">
-						<span class="step-number">03</span>
-						<strong class="step-title">Hablamos contigo</strong>
-						<p class="step-description">Revisamos cada solicitud de forma manual y continuamos por Discord si tiene sentido.</p>
-						<a class="step-link" href="/como-entrar/">Más información</a>
-					</li>
-				</ol>
-			</div>
-		</section>
-
-		<section class="section facts-section">
-			<div class="container facts-layout">
-				<div class="facts-intro">
-					<h2>Vanilla con espacio para <span>hacer.</span></h2>
-					<p class="facts-copy">Las mejoras están al servicio del mundo: rendimiento, mapa y calidad de vida. Nada que cambie las reglas del juego.</p>
-				</div>
-				<dl class="facts-list">
-					<div><dt>Edición</dt><dd>Minecraft Java 26.2</dd></div>
-					<div><dt>Servidor</dt><dd>Fabric, optimizado y sin modpack obligatorio</dd></div>
-					<div><dt>Estilo</dt><dd>Survival técnico, proyectos libres y mundo persistente</dd></div>
-					<div><dt>Dirección</dt><dd><code class="connection-code">mc.ferreras.dev</code></dd></div>
-				</dl>
-			</div>
-		</section>
-
-		<section class="section blog-section" id="blog">
-			<div class="container">
-				<div class="section-heading">
-					<h2>Conoce el mundo a tu ritmo.</h2>
-					<p>Artículos breves sobre la filosofía del servidor, el acceso y las herramientas. Sin esconder la letra pequeña.</p>
-				</div>
-				<div class="blog-grid">
-					{posts.map((post) => (
-						<a class="post-card" href={post.href}>
-							<img src={post.image} alt="" width="1200" height="800" loading="lazy" />
-							<span class="post-card-body">
-								<span class="post-card-meta">{post.category}</span>
-								<h3>{post.title}</h3>
-								<p>{post.description}</p>
-							</span>
-						</a>
+				<div class="world-grid">
+					{world.map((shot) => (
+						<figure>
+							<img src={shot.image} alt={shot.alt} width="1200" height="800" loading="lazy" />
+							<figcaption>{shot.caption}</figcaption>
+						</figure>
 					))}
+				</div>
+
+				<ul class="blog-row">
+					{posts.map((post) => (
+						<li>
+							<a href={post.href}>
+								<span class="blog-row-meta">{post.category}</span>
+								<span class="blog-row-title">{post.title}</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</div>
+		</section>
+
+		<section class="band band-amber">
+			<div class="container">
+				<h2 class="section-title">¿Te encaja? Nos vemos dentro.</h2>
+				<p class="band-lead">La whitelist se abre desde Discord y te contesta una persona, no un bot.</p>
+				<div class="band-actions">
+					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					<a class="button-ghost button-ghost-on-amber" href="/normas/">Leer las normas</a>
 				</div>
 			</div>
 		</section>
@@ -140,4 +210,5 @@ const posts = [
 
 	<SiteFooter />
 	<script is:inline src="/server-status.js"></script>
+	<script is:inline src="/copy-ip.js"></script>
 </Layout>

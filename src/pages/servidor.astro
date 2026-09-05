@@ -1,61 +1,125 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import DiscordIcon from '../components/DiscordIcon.astro';
 
+const discordUrl = 'https://link.ferreras.dev/discord';
 export const prerender = true;
+
+const specs = [
+	{ label: 'Versión', value: 'Minecraft Java 26.2' },
+	{ label: 'Dirección', value: 'mc.ferreras.dev', code: true },
+	{ label: 'Límite', value: '20 jugadores' },
+	{ label: 'Whitelist', value: 'Sí, con Discord, formulario y revisión manual' },
+	{ label: 'PvP', value: 'Habilitado, solo con consentimiento' },
+	{ label: 'Mundo', value: 'Persistente, sin reinicios previstos' },
+	{ label: 'Mods', value: 'Server-side, sin modpack obligatorio' },
+];
+
+const yes = [
+	'Una comunidad pequeña, con un máximo previsto de 20 miembros activos.',
+	'Libertad para construir, explorar, automatizar y colaborar.',
+	'Protección de terrenos, registros y copias de seguridad para resolver incidentes.',
+	'Un espacio de Discord para información, chat y capturas del mundo.',
+];
+
+const no = [
+	'Pay2Win, rangos que cambien el juego o una economía artificial.',
+	'Un modpack obligatorio o una lista interminable de plugins.',
+	'Una comunidad masiva donde nadie conoce el contexto de los proyectos.',
+];
 ---
 
-<Layout title="El servidor — Ferreras SMP" description="La filosofía de Ferreras SMP: Minecraft Java Vanilla técnico, un mundo persistente y una comunidad pequeña.">
-	<SiteHeader />
-	<main>
-		<PageIntro
-			eyebrow="El servidor"
-			title={'El servidor: Minecraft Java vanilla, <em>sin adornos.</em>'}
-			lead="Ferreras SMP utiliza Fabric para que el mundo funcione mejor, no para convertir Minecraft en otra cosa. Aquí caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo."
-			image="/images/blog/que-es-servidor-smp-minecraft.webp"
-			imageAlt="Jugadores construyen una base junto a un río en Minecraft"
-			note="Java 26.2 · Fabric · cliente Vanilla compatible"
-		/>
+<Layout
+	title="El servidor — Ferreras SMP"
+	description="La ficha de Ferreras SMP: Minecraft Java 26.2, Fabric del lado del servidor, mundo persistente y comunidad de 20 personas."
+>
+	<SiteHeader>
+		<div class="container page-lead">
+			<span class="chip">El servidor</span>
+			<h1>Minecraft Java vanilla, <span>sin adornos.</span></h1>
+			<p>Fabric está aquí para que el mundo funcione mejor, no para convertir Minecraft en otra cosa. Caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo.</p>
+		</div>
+	</SiteHeader>
 
-		<section class="content-section">
-			<div class="container content-layout">
-				<aside class="content-art" aria-label="Ilustración de un explorador de Ferreras SMP">
+	<main>
+		<section class="section">
+			<div class="container media-layout">
+				<figure class="media-art">
 					<img src="/images/brand/ferreras-smp-adventurer.webp" alt="Explorador de Minecraft con un pico de madera" width="1024" height="1536" loading="lazy" />
-				</aside>
-				<div class="prose">
-					<h2>Ficha del servidor</h2>
-					<dl class="facts-list server-specs">
-						<div><dt>Versión</dt><dd>Minecraft Java 26.2</dd></div>
-						<div><dt>Dirección</dt><dd><code class="connection-code">mc.ferreras.dev</code></dd></div>
-						<div><dt>Límite</dt><dd>20 jugadores</dd></div>
-						<div><dt>Whitelist</dt><dd>Sí, con Discord, formulario y revisión manual</dd></div>
-						<div><dt>PvP</dt><dd>Habilitado, solo con consentimiento</dd></div>
-						<div><dt>Mundo</dt><dd>Persistente, sin reinicios previstos</dd></div>
-						<div><dt>Mods</dt><dd>Server-side, sin modpack obligatorio</dd></div>
+				</figure>
+
+				<div class="media-body">
+					<h2 class="section-title">Ficha del servidor.</h2>
+					<dl class="spec-list">
+						{specs.map((spec) => (
+							<div>
+								<dt>{spec.label}</dt>
+								<dd>{spec.code ? <code class="connection-code">{spec.value}</code> : spec.value}</dd>
+							</div>
+						))}
 					</dl>
-					<h2>Una partida que no tiene prisa por terminar.</h2>
-					<p>La propuesta es sencilla: un mundo survival en español, abierto a proyectos individuales y colectivos, con las herramientas suficientes para convivir y sin una capa de sistemas que te obligue a jugar de una manera concreta.</p>
-					<p>El mundo se conservará durante mucho tiempo o indefinidamente. Puedes conectarte para avanzar en una base, diseñar una granja de hierro, explorar una zona nueva o simplemente saludar por Discord. El ritmo lo marca cada persona.</p>
-					<div class="callout"><p>El cliente Vanilla normal puede conectarse sin instalar nada adicional. Fabric y sus mods funcionan en el servidor para mejorar la comodidad, el mapa y la construcción técnica. Puedes leer <a href="/blog/que-mods-hay-ferreras-smp/">qué mods hay en Ferreras SMP</a> y para qué sirve cada uno.</p></div>
-					<h2>Qué sí encontrarás</h2>
-					<ul>
-						<li>Una comunidad pequeña, con un máximo previsto de 20 miembros activos.</li>
-						<li>Libertad para construir, explorar, automatizar y colaborar.</li>
-						<li>Protección de terrenos, registros y copias de seguridad para resolver incidentes.</li>
-						<li>Un espacio de Discord para información, chat y capturas del mundo.</li>
-					</ul>
-					<h2>Qué no encontrarás</h2>
-					<ul>
-						<li>Pay2Win, rangos que cambien el juego o una economía artificial.</li>
-						<li>Un modpack obligatorio o una lista interminable de plugins.</li>
-						<li>Una comunidad masiva donde nadie conoce el contexto de los proyectos.</li>
-					</ul>
-					<a class="button" href="/como-entrar/">Ver cómo entrar</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="container">
+				<h2 class="section-title">Una partida que no tiene prisa por terminar.</h2>
+				<p class="section-intro">Un mundo survival en español, abierto a proyectos individuales y colectivos, con las herramientas suficientes para convivir y sin una capa de sistemas que te obligue a jugar de una manera concreta.</p>
+				<p class="section-intro">El mundo se conservará durante mucho tiempo o indefinidamente. Puedes conectarte para avanzar en una base, diseñar una granja de hierro, explorar una zona nueva o simplemente saludar por Discord. El ritmo lo marca cada persona.</p>
+
+				<div class="note-card">
+					<p>El cliente Vanilla normal se conecta sin instalar nada. Fabric y sus mods corren en el servidor para mejorar la comodidad, el mapa y la construcción técnica. Puedes leer <a href="/blog/que-mods-hay-ferreras-smp/">qué mods hay en Ferreras SMP</a> y para qué sirve cada uno.</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="band band-lime">
+			<div class="container">
+				<h2 class="section-title">Qué sí. Qué no.</h2>
+				<p class="band-lead">La lista corta, para que sepas a qué atenerte antes de pedir la whitelist.</p>
+
+				<div class="split-lists">
+					<div>
+						<h3 class="list-heading">Qué sí encontrarás</h3>
+						<ul class="check-list">
+							{yes.map((item) => (
+								<li>
+									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5" /></svg>
+									<p>{item}</p>
+								</li>
+							))}
+						</ul>
+					</div>
+
+					<div>
+						<h3 class="list-heading">Qué no encontrarás</h3>
+						<ul class="check-list cross-list">
+							{no.map((item) => (
+								<li>
+									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
+									<p>{item}</p>
+								</li>
+							))}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="band band-amber">
+			<div class="container">
+				<h2 class="section-title">¿Te suena bien? Pide la whitelist.</h2>
+				<p class="band-lead">Se abre desde Discord, en cuatro pasos y con una persona al otro lado.</p>
+				<div class="band-actions">
+					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+					<a class="button-ghost button-ghost-on-amber" href="/como-entrar/">Ver cómo entrar</a>
 				</div>
 			</div>
 		</section>
 	</main>
+
 	<SiteFooter />
 </Layout>

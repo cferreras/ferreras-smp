@@ -1,7 +1,5 @@
 ---
-import DiscordIcon from './DiscordIcon.astro';
-
-const discordUrl = 'https://link.ferreras.dev/discord';
+const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
@@ -15,21 +13,16 @@ const discordUrl = 'https://link.ferreras.dev/discord';
 						<span class="brand-tagline">Survival vanilla técnico</span>
 					</span>
 				</a>
-				<p>Un mundo pequeño para construir, automatizar y quedarte. Java 26.2, sin Pay2Win y sin modpack obligatorio.</p>
+				<p>Servidor de Minecraft Java 26.2, vanilla técnico y comunitario. Hecho para una comunidad pequeña y constante.</p>
 			</div>
 
-			<div>
-				<p class="footer-heading">Conocer</p>
+			<div class="footer-nav">
 				<ul class="footer-links">
 					<li><a href="/servidor/">El servidor</a></li>
 					<li><a href="/como-entrar/">Cómo entrar</a></li>
 					<li><a href="/normas/">Normas</a></li>
 					<li><a href="/preguntas-frecuentes/">Preguntas frecuentes</a></li>
 				</ul>
-			</div>
-
-			<div>
-				<p class="footer-heading">Ver</p>
 				<ul class="footer-links">
 					<li><a href="/blog/">Blog</a></li>
 					<li><a href="/galeria/">Galería</a></li>
@@ -37,17 +30,11 @@ const discordUrl = 'https://link.ferreras.dev/discord';
 					<li><a href="/bluemap/">BlueMap</a></li>
 				</ul>
 			</div>
-
-			<div class="footer-join">
-				<p class="footer-heading">Entrar</p>
-				<p class="footer-note">La whitelist se abre desde Discord. Te respondemos a mano.</p>
-				<a class="button footer-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-			</div>
 		</div>
 
 		<div class="footer-bottom">
-			<p>© {new Date().getFullYear()} Ferreras SMP</p>
-			<p>Hecho para una comunidad pequeña y constante.</p>
+			<p>© {year} Ferreras SMP</p>
+			<p>Sin Pay2Win. Sin economía. Sin prisa.</p>
 		</div>
 	</div>
 </footer>

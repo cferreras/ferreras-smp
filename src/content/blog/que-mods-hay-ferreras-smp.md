@@ -2,7 +2,7 @@
 title: "Qué mods hay en Ferreras SMP y cómo mantenemos una experiencia cercana a vanilla"
 description: "Conoce los mods server-side y datapacks de Ferreras SMP, para qué sirven y por qué puedes jugar sin instalar un modpack."
 publishedAt: 2026-07-19
-updatedAt: 2026-07-19
+updatedAt: 2026-09-05
 author: "Carlos Ferreras"
 category: "Servidor"
 tags:
@@ -22,101 +22,101 @@ relatedLinks:
     href: "/normas/"
 ---
 
-Ferreras SMP utiliza mods y datapacks para proteger el mundo, facilitar la convivencia y mejorar el rendimiento. La mayoría trabaja únicamente en el servidor: puedes entrar desde Minecraft Java sin descargar un modpack ni modificar tu cliente. En otras palabras, el cliente permanece limpio y la instalación técnica corre a cargo del servidor.
+Ferreras SMP usa mods y datapacks para proteger el mundo, facilitar la convivencia y que el servidor vaya fino. Casi todos funcionan solo en el servidor, así que entras desde Minecraft Java sin descargar un modpack ni tocar tu cliente.
 
-La idea no es transformar Minecraft en otro juego. Seguimos buscando una experiencia survival reconocible y cercana a vanilla. Las mejoras técnicas están ahí para que el mundo funcione mejor, se pueda reparar un daño si ocurre y algunas tareas cotidianas resulten más cómodas.
+La idea no es convertir Minecraft en otro juego. Seguimos queriendo un survival reconocible: las mejoras están para que el mundo funcione mejor, para poder reparar un destrozo si ocurre y para que algunas tareas pesadas dejen de serlo.
+
+> Si solo quieres jugar, no necesitas leer esta lista. Está aquí porque nos parece justo que sepas qué corre en el servidor donde vas a construir.
 
 ## Qué es un mod server-side
 
-Minecraft separa el cliente —el juego que abres en tu ordenador— del servidor que mantiene el mundo y decide su estado real. Un mod *server-side* se instala y ejecuta en ese servidor. Si está diseñado para comunicarse con clientes vanilla, el jugador no necesita tener una copia instalada.
+Minecraft separa el cliente —el juego que abres en tu ordenador— del servidor que mantiene el mundo y decide su estado real. Un mod *server-side* se instala y se ejecuta en ese servidor. Si está pensado para hablar con clientes vanilla, tú no necesitas tener nada instalado.
 
-Por eso puedes notar una mejora añadida por un mod sin haber descargado nada: el servidor puede registrar quién modificó un bloque, optimizar la generación del mundo o permitir reclamar un terreno mientras tu cliente sigue funcionando con normalidad. La [documentación de Fabric sobre mods server-side](https://wiki.fabricmc.net/community:serverside_mods) explica esta separación entre servidor y cliente.
+Por eso puedes notar una mejora sin haber descargado nada: el servidor registra quién cambió un bloque, optimiza la generación del mundo o te deja reclamar un terreno mientras tu juego sigue siendo el de siempre. La [documentación de Fabric sobre mods server-side](https://wiki.fabricmc.net/community:serverside_mods) explica esa separación.
 
-Esto no significa que todos los mods de Minecraft sean server-side. Algunos modifican gráficos o interfaces y solo funcionan en el cliente; otros necesitan estar instalados en ambos lados. La lista de este artículo corresponde a las herramientas que utiliza el servidor.
+No todos los mods son así. Algunos cambian gráficos o interfaz y solo funcionan en el cliente; otros hacen falta en ambos lados. Los de esta lista son los del servidor.
 
 ## En qué se parece a un plugin de Paper o Spigot
 
-Desde el punto de vista del jugador, un mod server-side de Fabric puede parecerse mucho a un plugin de Paper o Spigot: ambos amplían las funciones del servidor y normalmente permiten entrar sin instalar nada adicional.
+Desde fuera se parecen bastante: los dos amplían lo que hace el servidor y normalmente entras sin instalar nada. La diferencia está en cómo se integran.
 
-La diferencia principal está en cómo se integran:
+- Fabric carga mods, que trabajan con la lógica de Minecraft y con las API del ecosistema Fabric.
+- Paper y Spigot cargan plugins, que usan las API de Bukkit, Spigot o Paper. La [documentación de Paper](https://docs.papermc.io/paper/dev/how-do-plugins-work/) describe su ciclo de vida.
+- Un mod de Fabric no es un plugin de Paper, ni un plugin se copia sin más a un servidor Fabric.
 
-- Fabric carga mods y les permite trabajar con la lógica de Minecraft y con las API del ecosistema Fabric.
-- Paper y Spigot cargan plugins que utilizan las API de Bukkit, Spigot o Paper. La [documentación de Paper](https://docs.papermc.io/paper/dev/how-do-plugins-work/) describe su carga y ciclo de vida.
-- Un mod de Fabric no es automáticamente un plugin de Paper, ni un plugin puede copiarse sin más a un servidor Fabric.
-
-No hay una opción universalmente mejor. En Ferreras SMP usamos Fabric porque nos permite combinar herramientas de administración con optimizaciones internas manteniendo el comportamiento del juego que queremos conservar.
+Ninguna opción es mejor en abstracto. Usamos Fabric porque nos deja combinar herramientas de administración con optimizaciones internas sin cambiar el comportamiento del juego que queremos conservar.
 
 ## Protección del mundo y convivencia
 
-Estas son las herramientas más importantes cuando varias personas comparten construcciones y recursos:
+Las piezas que más importan cuando varias personas comparten construcciones y recursos:
 
-- [Open Parties and Claims](https://modrinth.com/mod/open-parties-and-claims) permite crear grupos y reclamar zonas. Es la base técnica de la protección de terrenos del servidor.
-- [Ledger](https://modrinth.com/mod/ledger) registra acciones del mundo para que el equipo pueda investigar cambios o daños. [Ledger Databases](https://modrinth.com/mod/ledger-databases) amplía las opciones de almacenamiento de esos registros.
-- [AntiXray](https://modrinth.com/mod/anti-xray) ayuda a combatir el uso de ventajas injustas para localizar minerales.
-- [BanHammer](https://modrinth.com/mod/banhammer) y [LuckPerms](https://modrinth.com/mod/luckperms) aportan herramientas de moderación y permisos.
-- [EasyAuth](https://modrinth.com/mod/easyauth) gestiona la autenticación en servidores Fabric.
-- [No Chat Reports](https://modrinth.com/mod/no-chat-reports) modifica el sistema de firma y reporte del chat cuando es posible.
+- [Open Parties and Claims](https://modrinth.com/mod/open-parties-and-claims) permite crear grupos y reclamar zonas. Es la base de la protección de terrenos.
+- [Ledger](https://modrinth.com/mod/ledger) registra las acciones del mundo para poder investigar un cambio o un destrozo. [Ledger Databases](https://modrinth.com/mod/ledger-databases) amplía dónde se guardan esos registros.
+- [AntiXray](https://modrinth.com/mod/anti-xray) dificulta localizar minerales con ventaja.
+- [BanHammer](https://modrinth.com/mod/banhammer) y [LuckPerms](https://modrinth.com/mod/luckperms) son las herramientas de moderación y permisos.
+- [EasyAuth](https://modrinth.com/mod/easyauth) gestiona la autenticación.
+- [No Chat Reports](https://modrinth.com/mod/no-chat-reports) cambia el sistema de firma y reporte del chat cuando es posible.
 
-La tecnología ayuda, pero no sustituye a las [normas de Ferreras SMP](/normas/). Las reclamaciones y los registros sirven como red de seguridad; la convivencia sigue dependiendo de respetar el trabajo de otras personas.
+La tecnología ayuda, pero no sustituye a las [normas](/normas/). Las reclamaciones y los registros son la red de seguridad; la convivencia sigue dependiendo de respetar el trabajo de los demás.
 
-## Comunidad e información dentro y fuera del juego
+## Comunidad e información
 
-[Discord MC Chat](https://modrinth.com/mod/discord-mc-chat) conecta el chat de Minecraft con Discord. Esto ayuda a mantener el contacto con la comunidad sin obligar a todo el mundo a estar conectado al juego al mismo tiempo.
+[Discord MC Chat](https://modrinth.com/mod/discord-mc-chat) conecta el chat del juego con Discord, para no tener que estar conectados a la vez para hablar.
 
-[BlueMap](https://modrinth.com/mod/bluemap) genera una representación tridimensional del mundo para visualizarla desde la web. [TAB](https://modrinth.com/mod/tab-was-taken) organiza información mostrada en la lista de jugadores, mientras que [TabTPS](https://modrinth.com/mod/tabtps) permite supervisar datos de rendimiento desde elementos de la interfaz del juego.
+[BlueMap](https://modrinth.com/mod/bluemap) genera un mapa tridimensional del mundo que se ve desde la web. [TAB](https://modrinth.com/mod/tab-was-taken) organiza la lista de jugadores y [TabTPS](https://modrinth.com/mod/tabtps) muestra datos de rendimiento dentro del juego.
 
-[Server Day Counter](https://modrinth.com/mod/serverdaycounter) muestra el día del mundo y [Villager Names](https://modrinth.com/mod/villager-names-serilum) da nombres a los aldeanos. Son detalles pequeños, pero ayudan a que el mundo compartido tenga memoria y personalidad.
+[Server Day Counter](https://modrinth.com/mod/serverdaycounter) lleva la cuenta de los días del mundo y [Villager Names](https://modrinth.com/mod/villager-names-serilum) pone nombre a los aldeanos. Son detalles, pero le dan memoria y carácter al sitio.
 
 ## Pequeñas mejoras que siguen sintiéndose vanilla
 
-Algunos mods cambian acciones concretas sin crear un sistema de progresión nuevo:
+Cambian acciones concretas sin montar una progresión nueva:
 
-- [RightClickHarvest](https://modrinth.com/mod/rightclickharvest) permite cosechar y replantar cultivos con clic derecho.
-- [Armed Stands](https://modrinth.com/mod/armed-stands) añade brazos a los soportes para armaduras y permite ajustar su estado.
-- [Clumps](https://modrinth.com/mod/clumps) agrupa orbes de experiencia, reduciendo entidades sin cambiar la recompensa obtenida.
-- [Carpet](https://modrinth.com/mod/carpet) incorpora herramientas para analizar y controlar aspectos técnicos del juego.
-- [Let Me Despawn](https://modrinth.com/mod/lmd) ajusta la desaparición de criaturas que permanecen cargadas de forma involuntaria.
+- [RightClickHarvest](https://modrinth.com/mod/rightclickharvest): cosechar y replantar con clic derecho.
+- [Armed Stands](https://modrinth.com/mod/armed-stands): brazos y poses en los soportes para armaduras.
+- [Clumps](https://modrinth.com/mod/clumps): agrupa los orbes de experiencia, con menos entidades y la misma recompensa.
+- [Carpet](https://modrinth.com/mod/carpet): herramientas para analizar y controlar aspectos técnicos.
+- [Let Me Despawn](https://modrinth.com/mod/lmd): ajusta la desaparición de criaturas que se quedan cargadas sin motivo.
 
-Son cambios deliberadamente limitados. El jugador sigue explorando, consiguiendo recursos, construyendo y sobreviviendo con las reglas reconocibles de Minecraft.
+Son cambios deliberadamente cortos. Sigues explorando, consiguiendo recursos y construyendo con las reglas de siempre.
 
 ## Rendimiento y estabilidad
 
-Una parte grande de la lista no añade contenido visible. Su función es reducir carga, acelerar tareas internas o evitar que una zona nueva provoque una pausa innecesaria.
+Buena parte de la lista no añade nada visible: reduce carga, acelera tareas internas o evita el tirón al entrar en una zona nueva.
 
-- [Lithium](https://modrinth.com/mod/lithium), [ServerCore](https://modrinth.com/mod/servercore) y [Very Many Players](https://modrinth.com/mod/vmp-fabric) optimizan distintos aspectos de la lógica y el funcionamiento del servidor.
-- [C2ME](https://modrinth.com/mod/c2me-fabric), [NoisiumForked](https://modrinth.com/mod/noisiumforked) y [Chunky](https://modrinth.com/mod/chunky) trabajan alrededor de la carga, generación y pregeneración de chunks.
-- [FerriteCore](https://modrinth.com/mod/ferrite-core) reduce el uso de memoria y [ModernFix-mVUS](https://modrinth.com/mod/modernfix-mvus) reúne correcciones y mejoras de rendimiento.
-- [Alternate Current](https://modrinth.com/mod/alternate-current) optimiza el funcionamiento del polvo de redstone.
-- [ScalableLux](https://modrinth.com/mod/scalablelux) mejora el cálculo de actualizaciones de luz.
-- [View Distance Fix](https://modrinth.com/mod/view-distance-fix) corrige la niebla cuando la distancia de renderizado del cliente supera la configurada en el servidor.
+- [Lithium](https://modrinth.com/mod/lithium), [ServerCore](https://modrinth.com/mod/servercore) y [Very Many Players](https://modrinth.com/mod/vmp-fabric) optimizan distintas partes de la lógica del servidor.
+- [C2ME](https://modrinth.com/mod/c2me-fabric), [NoisiumForked](https://modrinth.com/mod/noisiumforked) y [Chunky](https://modrinth.com/mod/chunky) trabajan la carga, la generación y la pregeneración de chunks.
+- [FerriteCore](https://modrinth.com/mod/ferrite-core) baja el uso de memoria y [ModernFix-mVUS](https://modrinth.com/mod/modernfix-mvus) reúne correcciones y mejoras de rendimiento.
+- [Alternate Current](https://modrinth.com/mod/alternate-current) optimiza el polvo de redstone.
+- [ScalableLux](https://modrinth.com/mod/scalablelux) mejora el cálculo de la luz.
+- [View Distance Fix](https://modrinth.com/mod/view-distance-fix) corrige la niebla cuando tu distancia de renderizado supera la del servidor.
 
-Estas optimizaciones no eliminan todos los límites físicos de un servidor. Su objetivo es aprovechar mejor los recursos y mantener una experiencia más estable sin introducir mecánicas ajenas al survival.
+Esto no elimina los límites físicos de una máquina. Sirve para aprovecharla mejor y que la partida sea estable, sin meter mecánicas ajenas al survival.
 
 ## Administración y piezas técnicas
 
-Otras herramientas trabajan detrás de escena:
+Trabajan detrás y no se notan jugando:
 
-- [spark](https://modrinth.com/mod/spark) permite diagnosticar consumo y problemas de rendimiento.
-- [Proxy Protocol Support](https://modrinth.com/mod/proxy-protocol-support) añade compatibilidad con conexiones que pasan por un proxy compatible.
-- [Fabric API](https://modrinth.com/mod/fabric-api) y [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) ofrecen funciones compartidas que necesitan otros mods.
-- [Cloth Config](https://modrinth.com/mod/cloth-config), [Collective](https://modrinth.com/mod/collective) y [Almanac](https://modrinth.com/mod/almanac) son librerías o bases comunes para otros proyectos.
+- [spark](https://modrinth.com/mod/spark) diagnostica consumo y problemas de rendimiento.
+- [Proxy Protocol Support](https://modrinth.com/mod/proxy-protocol-support) añade compatibilidad con conexiones que pasan por un proxy.
+- [Fabric API](https://modrinth.com/mod/fabric-api) y [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin) dan funciones compartidas que otros mods necesitan.
+- [Cloth Config](https://modrinth.com/mod/cloth-config), [Collective](https://modrinth.com/mod/collective) y [Almanac](https://modrinth.com/mod/almanac) son librerías de las que dependen otros.
 
-Estas dependencias forman parte de la instalación, pero no tendría sentido presentarlas como contenido jugable. Existen para que el resto de herramientas pueda funcionar.
+Son dependencias, no contenido. Existen para que el resto funcione.
 
 ## Qué datapacks utiliza Ferreras SMP
 
-Los datapacks aprovechan el sistema de datos incorporado en Minecraft para añadir recetas, funciones o ajustes al mundo. Ferreras SMP utiliza cinco:
+Los datapacks usan el sistema de datos del propio Minecraft para añadir recetas, funciones o ajustes. Tenemos cinco:
 
-- [All Mob Heads](https://modrinth.com/datapack/amh) permite obtener cabezas de las criaturas del juego.
-- [Server Sleep](https://modrinth.com/datapack/serversleep) adapta el descanso a una partida multijugador para que no sea necesario coordinar a todo el servidor cada noche.
-- [Craftable Elytra](https://modrinth.com/datapack/craft-elytra) añade una receta para fabricar élitros.
-- [SMP Starter](https://modrinth.com/datapack/smp-starter) automatiza parte de la preparación inicial de un mundo SMP.
-- [Elytra Vaults](https://modrinth.com/datapack/elytra-vaults-atlasplays) sustituye el élitro de los barcos del End por bóvedas para que varias personas puedan conseguirlo.
+- [All Mob Heads](https://modrinth.com/datapack/amh): cabezas de las criaturas del juego.
+- [Server Sleep](https://modrinth.com/datapack/serversleep): dormir sin tener que coordinar a todo el servidor cada noche.
+- [Craftable Elytra](https://modrinth.com/datapack/craft-elytra): receta para fabricar élitros.
+- [SMP Starter](https://modrinth.com/datapack/smp-starter): automatiza parte de la preparación inicial del mundo.
+- [Elytra Vaults](https://modrinth.com/datapack/elytra-vaults-atlasplays): cambia el élitro de los barcos del End por bóvedas, para que pueda conseguirlo más de una persona.
 
-Los datapacks son la parte que más se acerca a añadir contenido, pero siguen siendo cambios concretos. No incorporan una campaña, árboles de habilidades, máquinas ni una progresión diferente de la habitual.
+Es la parte que más se acerca a añadir contenido, pero siguen siendo cambios concretos. No hay campaña, ni habilidades, ni máquinas, ni una progresión distinta.
 
-## Entonces, ¿qué tienes que instalar para entrar?
+## Entonces, ¿qué tienes que instalar?
 
-Nada de esta lista. Para jugar en Ferreras SMP solo necesitas una versión compatible de Minecraft Java y la dirección del servidor. Los mods server-side y los datapacks ya están instalados donde corresponde.
+Nada de esta lista. Para jugar solo necesitas una versión compatible de Minecraft Java y la dirección del servidor: los mods y los datapacks ya están donde tienen que estar.
 
-El resultado es un survival con protección, herramientas de comunidad y una base técnica cuidada, pero sin convertir la entrada en la instalación de un modpack. Si quieres probarlo, revisa [cómo entrar a Ferreras SMP](/como-entrar/) y añade `mc.ferreras.dev` a tu lista multijugador.
+El resultado es un survival con protección, herramientas de comunidad y una base técnica cuidada, sin convertir la entrada en la instalación de un modpack. Si quieres probarlo, mira [cómo entrar](/como-entrar/) y añade `mc.ferreras.dev` a tu lista.

@@ -18,8 +18,10 @@ const isCurrent = (href: string) => {
 };
 ---
 
-<header class="site-header">
-	<div class="container nav-shell">
+{/* La cabecera vive dentro de la banda violeta: el slot recibe la entradilla de
+    la página para que titular y navegación compartan el mismo bloque de color. */}
+<div class="topband">
+	<header class="container topbar">
 		<a class="brand" href="/" aria-label="Ferreras SMP, inicio">
 			<img src="/images/brand/ferreras-smp-isotype.webp" alt="" width="256" height="256" />
 			<span class="brand-copy">
@@ -34,14 +36,17 @@ const isCurrent = (href: string) => {
 			))}
 		</nav>
 
-		<a class="header-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+		<a class="header-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Discord</span></a>
+
 		<button class="theme-toggle" data-theme-toggle type="button" aria-label="Cambiar tema">
 			<ThemeIcon />
 			<span data-theme-label>Tema</span>
 		</button>
 
 		<details class="mobile-menu">
-			<summary>Menú</summary>
+			<summary aria-label="Abrir menú">
+				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+			</summary>
 			<nav class="mobile-menu-panel" aria-label="Navegación móvil">
 				{links.map((link) => (
 					<a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined}>{link.label}</a>
@@ -49,5 +54,7 @@ const isCurrent = (href: string) => {
 				<a class="header-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 			</nav>
 		</details>
-	</div>
-</header>
+	</header>
+
+	<slot />
+</div>

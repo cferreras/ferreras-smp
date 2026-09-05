@@ -2,7 +2,7 @@
 title: "Qué es un servidor SMP de Minecraft y cómo funciona"
 description: "Descubre qué significa SMP en Minecraft, cómo funciona un mundo survival compartido y qué puedes esperar al entrar por primera vez."
 publishedAt: 2026-07-17
-updatedAt: 2026-07-17
+updatedAt: 2026-09-05
 author: "Carlos Ferreras"
 category: "Guías"
 tags:
@@ -22,68 +22,60 @@ relatedLinks:
     href: "/normas/"
 ---
 
-Un servidor SMP de Minecraft es un mundo multijugador centrado en la supervivencia. Las siglas proceden de *Survival Multiplayer*: varias personas exploran, consiguen recursos y construyen dentro del mismo mundo, cada una a su ritmo y con la posibilidad de colaborar.
+SMP son las siglas de *Survival Multiplayer*: un mundo de supervivencia de Minecraft que varias personas comparten. Exploras, consigues recursos y construyes en el mismo mapa que los demás, cada uno a su ritmo.
 
-No describe un único conjunto de reglas. Algunos SMP se acercan mucho a la experiencia original de Minecraft y otros incorporan protecciones, eventos o mejoras del lado del servidor. Antes de entrar conviene revisar qué ofrece cada comunidad y qué espera de sus jugadores.
+No es un conjunto de reglas concreto. Hay SMP casi idénticos al Minecraft original y otros con protecciones, eventos o mejoras del lado del servidor. Por eso lo que importa antes de entrar en uno es saber qué ofrece esa comunidad y qué espera de ti.
 
 ## Cómo funciona un servidor SMP
 
-La base es la misma que en una partida survival: empiezas con pocos recursos, exploras el entorno y progresas utilizando lo que encuentras. La diferencia principal es que compartes el mundo con otras personas.
+La partida es la de siempre: empiezas sin nada, exploras y progresas con lo que encuentras. La diferencia es que el mundo no es solo tuyo.
 
-Mientras juegas puedes encontrarte construcciones, caminos y proyectos creados por la comunidad. También puedes levantar una base por tu cuenta, compartir recursos o participar en una construcción conjunta. Jugar en multijugador no obliga a estar siempre en grupo.
+Mientras juegas te cruzas con casas, caminos y granjas que ha hecho otra gente. Puedes montar tu base por tu cuenta, prestar recursos o meterte en un proyecto conjunto. Multijugador no significa jugar siempre en grupo.
 
-El mundo y el progreso se guardan en el servidor. Su disponibilidad, sus normas y sus sistemas de protección dependen de quienes administran cada comunidad.
+El mundo y tu progreso se guardan en el servidor, así que su disponibilidad, sus normas y sus protecciones dependen de quien lo administra.
 
-## En qué se diferencia de una partida individual
+## Qué cambia respecto a jugar solo
 
-En una partida individual controlas el mundo y decides todas sus condiciones. En un SMP compartes el espacio y tus decisiones pueden afectar a otras personas.
+En una partida individual mandas tú. En un SMP compartes el espacio y lo que haces afecta a otras personas:
 
-Eso añade varias consideraciones:
+- Las construcciones y los objetos de los demás no se tocan.
+- Se deja aire entre bases. Nadie quiere un vecino pegado a la pared.
+- Suele haber normas contra trampas, robos y destrozos.
+- A cambio, se pueden montar proyectos a una escala imposible en solitario.
+- Y si pasa algo, normalmente hay alguien a quien preguntar.
 
-- Debes respetar las construcciones y los objetos ajenos.
-- Conviene dejar espacio suficiente entre bases.
-- Puede haber normas para evitar trampas, robos o daños deliberados.
-- Los proyectos comunitarios permiten construir a una escala difícil de alcanzar en solitario.
-- Si surge un problema, normalmente existe un equipo o canal de ayuda.
-
-Por eso es recomendable leer las normas antes de empezar. En Ferreras SMP puedes consultar las [bases de convivencia y sus ejemplos](/normas/) antes de elegir dónde construir.
+Por eso las normas se leen antes, no después. Las de Ferreras SMP están en [una página aparte](/normas/), con ejemplos concretos.
 
 ## ¿Un SMP necesita mods?
 
-No necesariamente. SMP describe el tipo de experiencia multijugador, no un requisito técnico concreto.
+Depende del servidor, no de que sea un SMP. «SMP» describe el tipo de partida, no un requisito técnico.
 
-Hay servidores que requieren un modpack y otros que permiten entrar con Minecraft sin modificaciones. Ferreras SMP se puede jugar desde Minecraft Java sin instalar un modpack obligatorio: las mejoras necesarias están instaladas en el servidor.
+Hay servidores que piden un modpack y otros a los que entras con Minecraft tal cual. En Ferreras SMP entras desde Minecraft Java sin instalar nada: lo que hace falta está en el servidor, no en tu ordenador.
 
-Las mejoras instaladas en el servidor tampoco implican siempre que tengas que instalar algo en tu equipo. Lo importante es revisar las indicaciones de acceso de cada comunidad.
+## Qué se hace dentro de un SMP
 
-## Qué puedes hacer dentro de un SMP
+No hay una forma correcta de jugar. Lo habitual es esto:
 
-No existe una única forma correcta de jugar. Algunas actividades habituales son:
+1. Buscar sitio y construir tu base.
+2. Explorar para encontrar recursos y lugares que merezcan la pena.
+3. Montar caminos, granjas o cosas que use más gente.
+4. Colaborar en construcciones sin dejar de lado tus proyectos.
+5. Echar una mano a quien acaba de llegar.
 
-1. Buscar una zona y construir una base propia.
-2. Explorar para encontrar recursos y lugares interesantes.
-3. Crear caminos, granjas o espacios útiles para más jugadores.
-4. Colaborar en construcciones sin abandonar tus proyectos personales.
-5. Ayudar a quienes acaban de llegar compartiendo información o recursos.
+> Lo bueno de un SMP es poder alternar. Un día avanzas tu casa en silencio y otro te sumas a algo colectivo.
 
-Un buen SMP permite alternar entre proyectos individuales y momentos de comunidad. Puedes conectarte para avanzar en una construcción tranquila y, otro día, sumarte a una actividad con más personas.
+## Qué mirar antes de entrar en uno
 
-## Qué revisar antes de entrar
-
-Antes de añadir un servidor a tu lista, comprueba:
-
-- La edición de Minecraft que utiliza.
-- Si exige mods o un modpack.
+- Qué edición de Minecraft usa.
+- Si pide mods o un modpack.
 - Las normas de convivencia y construcción.
 - Cómo se protegen las bases y los objetos.
-- Dónde pedir ayuda si no puedes conectarte.
+- Dónde pedir ayuda si no consigues conectarte.
 
-Si nunca has añadido una dirección, consulta la guía sobre [cómo entrar a un servidor de Minecraft Java paso a paso](/blog/como-entrar-servidor-minecraft-java/). Para acceder directamente a Ferreras SMP tienes también la [guía de acceso con la IP del servidor](/como-entrar/).
+Si nunca has añadido una dirección, la guía de [cómo entrar a un servidor de Minecraft Java](/blog/como-entrar-servidor-minecraft-java/) lo explica paso a paso.
 
-## Cómo es la propuesta de Ferreras SMP
+## Cómo lo planteamos en Ferreras SMP
 
-Ferreras SMP es un servidor de Minecraft Java survival en español, sin modpack obligatorio, pensado para jugar con tranquilidad y respetar el trabajo de los demás. El mundo incorpora protección de terrenos y la comunidad dispone de Discord para consultar dudas o informar de problemas.
+Ferreras SMP es un survival de Minecraft Java en español, sin modpack obligatorio y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
 
-Puedes jugar desde un cliente Vanilla; la protección de terrenos y las herramientas de comunidad funcionan en el servidor.
-
-Si esta forma de jugar encaja contigo, revisa [cómo entrar a Ferreras SMP](/como-entrar/), copia la dirección y añade el servidor a tu lista multijugador.
+Si te suena bien, mira [cómo entrar](/como-entrar/): la whitelist se pide desde Discord y la revisamos a mano.
