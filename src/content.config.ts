@@ -6,6 +6,9 @@ const blog = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
 	schema: z.object({
 		title: z.string(),
+		// Título alternativo solo para el <title> y el OG, cuando el H1 del post
+		// es más largo de lo que cabe en un resultado de búsqueda. No afecta al H1.
+		seoTitle: z.string().optional(),
 		description: z.string(),
 		publishedAt: z.coerce.date(),
 		updatedAt: z.coerce.date().optional(),

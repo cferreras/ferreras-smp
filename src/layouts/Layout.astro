@@ -13,6 +13,7 @@ interface Props {
 	publishedAt?: Date;
 	updatedAt?: Date;
 	structuredData?: Record<string, unknown>[];
+	noindex?: boolean;
 }
 
 const {
@@ -27,6 +28,7 @@ const {
 	publishedAt,
 	updatedAt,
 	structuredData = [],
+	noindex = false,
 } = Astro.props;
 
 const brandIcon = '/images/brand/ferreras-smp-isotype.webp';
@@ -69,7 +71,10 @@ const commonSchema = {
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#7c3aed" />
 		<meta name="description" content={description} />
-		<meta name="robots" content="index, follow" />
+		{/* Las páginas de utilidad (estado, BlueMap) se marcan con noindex: siguen
+		    siendo útiles para quien navega, pero no aportan contenido suficiente
+		    para el índice y arrastran la calidad percibida del dominio. */}
+		<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
 		{author && <meta name="author" content={author} />}
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={canonical} />

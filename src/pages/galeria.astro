@@ -3,11 +3,48 @@ import Layout from '../layouts/Layout.astro';
 import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import { breadcrumbSchema } from '../lib/schema';
 
 export const prerender = true;
+
+const shots = [
+	{ src: '/images/gallery/veronicucha-fortaleza.jpg', alt: 'Veronicucha sobre la muralla de una fortaleza de piedra y madera', width: 1720, height: 1366, caption: 'Fortalezas que empiezan arriba.' },
+	{ src: '/images/gallery/ferreritas-costa-atardecer.jpg', alt: 'Ferreritas sobre una colina junto a la costa, rodeada de árboles y cultivos', width: 1800, height: 1343, caption: 'La costa al caer la tarde.' },
+	{ src: '/images/gallery/ferreritas-nether.jpg', alt: 'Ferreritas con armadura verde junto a una mesa de trabajo en el Nether', width: 1800, height: 715, caption: 'Trabajo en condiciones difíciles.' },
+	{ src: '/images/gallery/veronicucha-bosque.jpg', alt: 'Veronicucha junto a un árbol en un bosque con caminos de tierra', width: 1800, height: 716, caption: 'Un rincón entre los árboles.' },
+	{ src: '/images/gallery/casas-frente-al-mar.jpg', alt: 'Casas de piedra y madera frente al mar en Ferreras SMP', width: 1800, height: 716, caption: 'Un barrio frente al mar.' },
+	{ src: '/images/gallery/refugio-de-madera.jpg', alt: 'Entrada de madera y piedra decorada con vegetación y faroles', width: 1800, height: 716, caption: 'Detalles que hacen hogar.' },
+	{ src: '/images/gallery/casa-entre-bambus.jpg', alt: 'Refugio de madera rodeado de vegetación y bambú', width: 1800, height: 716, caption: 'Un refugio para seguir construyendo.' },
+];
+
+// Las capturas son originales del servidor: describirlas como ImageObject es la
+// única señal estructurada que esta página puede aportar sin inventar texto.
+const structuredData = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'ImageGallery',
+		name: 'Galería de Ferreras SMP',
+		description: 'Capturas del mundo survival de Ferreras SMP compartidas por su comunidad.',
+		inLanguage: 'es-ES',
+		isPartOf: { '@id': 'https://mc.ferreras.dev/#website' },
+		associatedMedia: shots.map((shot) => ({
+			'@type': 'ImageObject',
+			contentUrl: new URL(shot.src, 'https://mc.ferreras.dev').toString(),
+			caption: shot.caption,
+			description: shot.alt,
+			width: shot.width,
+			height: shot.height,
+		})),
+	},
+	breadcrumbSchema([{ name: 'Galería' }]),
+];
 ---
 
-<Layout title="Galería — Ferreras SMP" description="Una selección visual del mundo y el ambiente de Ferreras SMP.">
+<Layout
+	title="Galería — Ferreras SMP"
+	description="Una selección visual del mundo y el ambiente de Ferreras SMP."
+	structuredData={structuredData}
+>
 	<SiteHeader />
 	<main>
 		<PageIntro
@@ -18,13 +55,9 @@ export const prerender = true;
 		<section class="content-section">
 			<div class="container">
 				<div class="gallery-grid">
-					<figure class="gallery-item"><img src="/images/gallery/veronicucha-fortaleza.jpg" alt="Veronicucha sobre la muralla de una fortaleza de piedra y madera" width="1720" height="1366" loading="lazy" decoding="async" /><figcaption>Fortalezas que empiezan arriba.</figcaption></figure>
-					<figure class="gallery-item"><img src="/images/gallery/ferreritas-costa-atardecer.jpg" alt="Ferreritas sobre una colina junto a la costa, rodeada de árboles y cultivos" width="1800" height="1343" loading="lazy" decoding="async" /><figcaption>La costa al caer la tarde.</figcaption></figure>
-					<figure class="gallery-item"><img src="/images/gallery/ferreritas-nether.jpg" alt="Ferreritas con armadura verde junto a una mesa de trabajo en el Nether" width="1800" height="715" loading="lazy" decoding="async" /><figcaption>Trabajo en condiciones difíciles.</figcaption></figure>
-					<figure class="gallery-item"><img src="/images/gallery/veronicucha-bosque.jpg" alt="Veronicucha junto a un árbol en un bosque con caminos de tierra" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Un rincón entre los árboles.</figcaption></figure>
-					<figure class="gallery-item"><img src="/images/gallery/casas-frente-al-mar.jpg" alt="Casas de piedra y madera frente al mar en Ferreras SMP" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Un barrio frente al mar.</figcaption></figure>
-					<figure class="gallery-item"><img src="/images/gallery/refugio-de-madera.jpg" alt="Entrada de madera y piedra decorada con vegetación y faroles" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Detalles que hacen hogar.</figcaption></figure>
-					<figure class="gallery-item"><img src="/images/gallery/casa-entre-bambus.jpg" alt="Refugio de madera rodeado de vegetación y bambú" width="1800" height="716" loading="lazy" decoding="async" /><figcaption>Un refugio para seguir construyendo.</figcaption></figure>
+					{shots.map((shot) => (
+						<figure class="gallery-item"><img src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" /><figcaption>{shot.caption}</figcaption></figure>
+					))}
 				</div>
 			</div>
 		</section>
