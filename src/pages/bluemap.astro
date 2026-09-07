@@ -7,7 +7,11 @@ import SiteHeader from '../components/SiteHeader.astro';
 export const prerender = true;
 ---
 
-<Layout title="BlueMap — Ferreras SMP" description="El mapa interactivo de Ferreras SMP llegará cuando BlueMap esté activo y tenga una URL pública.">
+<Layout
+	title="BlueMap — Ferreras SMP"
+	description="El mapa interactivo de Ferreras SMP llegará cuando BlueMap esté activo y tenga una URL pública."
+	noindex
+>
 	<SiteHeader />
 	<main>
 		<PageIntro

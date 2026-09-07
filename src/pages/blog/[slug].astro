@@ -51,7 +51,7 @@ const breadcrumbSchema = {
 ---
 
 <Layout
-	title={`${post.data.title} — Ferreras SMP`}
+	title={post.data.seoTitle ?? `${post.data.title} — Ferreras SMP`}
 	description={post.data.description}
 	image={post.data.image}
 	imageAlt={post.data.imageAlt}

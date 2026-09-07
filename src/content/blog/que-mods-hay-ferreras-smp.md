@@ -1,5 +1,6 @@
 ---
 title: "Qué mods hay en Ferreras SMP y cómo mantenemos una experiencia cercana a vanilla"
+seoTitle: "Qué mods hay en Ferreras SMP y por qué no necesitas modpack"
 description: "Conoce los mods server-side y datapacks de Ferreras SMP, para qué sirven y por qué puedes jugar sin instalar un modpack."
 publishedAt: 2026-07-19
 updatedAt: 2026-09-05

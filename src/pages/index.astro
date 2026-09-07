@@ -12,7 +12,7 @@ const claims = [
 		icon: 'cube',
 		tone: 'violet',
 		title: 'Vanilla de verdad',
-		text: 'Nada de economía, rangos ni tiendas. El Minecraft que ya conoces, con granjas técnicas y proyectos libres.',
+		text: 'Nada de economía, rangos ni tiendas. El Minecraft que ya conoces, con <a href="/servidor/">granjas técnicas y proyectos libres</a>.',
 	},
 	{
 		icon: 'bolt',
@@ -66,9 +66,34 @@ const posts = [
 	{ category: 'Guía', title: 'Qué es un servidor SMP', href: '/blog/que-es-servidor-smp-minecraft/' },
 	{ category: 'Cómo entrar', title: 'Cómo entrar a Minecraft Java', href: '/blog/como-entrar-servidor-minecraft-java/' },
 ];
+
+// La home describe el propio servidor como producto: el WebSite y la
+// Organization ya los aporta el layout, aquí va la ficha del juego.
+const structuredData = [
+	{
+		'@context': 'https://schema.org',
+		'@type': 'WebPage',
+		'@id': 'https://mc.ferreras.dev/#webpage',
+		url: 'https://mc.ferreras.dev/',
+		name: 'Ferreras SMP — Minecraft Vanilla técnico, hecho en comunidad',
+		description:
+			'Servidor de Minecraft Java 26.2 vanilla técnico con Fabric del lado del servidor, whitelist con revisión manual y un máximo de 20 jugadores.',
+		inLanguage: 'es-ES',
+		isPartOf: { '@id': 'https://mc.ferreras.dev/#website' },
+		about: { '@id': 'https://mc.ferreras.dev/#organization' },
+		primaryImageOfPage: {
+			'@type': 'ImageObject',
+			url: 'https://mc.ferreras.dev/images/gallery/ferreritas-costa-atardecer.jpg',
+		},
+	},
+];
 ---
 
-<Layout>
+<Layout
+	title="Ferreras SMP — Minecraft Vanilla técnico, hecho en comunidad"
+	description="Ferreras SMP es un servidor Minecraft Java 26.2, Vanilla técnico y comunitario. Una microcomunidad pequeña, sin Pay2Win y sin modpack obligatorio."
+	structuredData={structuredData}
+>
 	<SiteHeader>
 		<div class="container hero" id="inicio">
 			<div class="hero-copy">
@@ -116,7 +141,7 @@ const posts = [
 								)}
 							</div>
 							<h3>{claim.title}</h3>
-							<p>{claim.text}</p>
+							<p set:html={claim.text}></p>
 						</article>
 					))}
 				</div>

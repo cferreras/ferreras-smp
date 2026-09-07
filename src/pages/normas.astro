@@ -3,9 +3,12 @@ import Layout from '../layouts/Layout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import DiscordIcon from '../components/DiscordIcon.astro';
+import { breadcrumbSchema } from '../lib/schema';
 
 const discordUrl = 'https://link.ferreras.dev/discord';
 export const prerender = true;
+
+const structuredData = [breadcrumbSchema([{ name: 'Normas' }])];
 
 const rules = [
 	{
@@ -55,6 +58,7 @@ const rules = [
 <Layout
 	title="Normas — Ferreras SMP"
 	description="Normas de convivencia, construcciones, robos, duplicaciones y PvP de Ferreras SMP, en cuatro bloques."
+	structuredData={structuredData}
 >
 	<SiteHeader>
 		<div class="container page-lead">
