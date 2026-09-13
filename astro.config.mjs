@@ -9,7 +9,7 @@ const noindexRoutes = ['/estado/', '/bluemap/'];
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://mc.ferreras.dev',
+	site: 'https://cubusfera.com',
 	output: 'server',
 	trailingSlash: 'always',
 	adapter: vercel(),

@@ -12,7 +12,7 @@ const shots = [
 	{ src: '/images/gallery/ferreritas-costa-atardecer.jpg', alt: 'Ferreritas sobre una colina junto a la costa, rodeada de árboles y cultivos', width: 1800, height: 1343, caption: 'La costa al caer la tarde.' },
 	{ src: '/images/gallery/ferreritas-nether.jpg', alt: 'Ferreritas con armadura verde junto a una mesa de trabajo en el Nether', width: 1800, height: 715, caption: 'Trabajo en condiciones difíciles.' },
 	{ src: '/images/gallery/veronicucha-bosque.jpg', alt: 'Veronicucha junto a un árbol en un bosque con caminos de tierra', width: 1800, height: 716, caption: 'Un rincón entre los árboles.' },
-	{ src: '/images/gallery/casas-frente-al-mar.jpg', alt: 'Casas de piedra y madera frente al mar en Ferreras SMP', width: 1800, height: 716, caption: 'Un barrio frente al mar.' },
+	{ src: '/images/gallery/casas-frente-al-mar.jpg', alt: 'Casas de piedra y madera frente al mar en Cubusfera', width: 1800, height: 716, caption: 'Un barrio frente al mar.' },
 	{ src: '/images/gallery/refugio-de-madera.jpg', alt: 'Entrada de madera y piedra decorada con vegetación y faroles', width: 1800, height: 716, caption: 'Detalles que hacen hogar.' },
 	{ src: '/images/gallery/casa-entre-bambus.jpg', alt: 'Refugio de madera rodeado de vegetación y bambú', width: 1800, height: 716, caption: 'Un refugio para seguir construyendo.' },
 ];
@@ -23,13 +23,13 @@ const structuredData = [
 	{
 		'@context': 'https://schema.org',
 		'@type': 'ImageGallery',
-		name: 'Galería de Ferreras SMP',
-		description: 'Capturas del mundo survival de Ferreras SMP compartidas por su comunidad.',
+		name: 'Galería de Cubusfera',
+		description: 'Capturas del mundo survival de Cubusfera compartidas por su comunidad.',
 		inLanguage: 'es-ES',
-		isPartOf: { '@id': 'https://mc.ferreras.dev/#website' },
+		isPartOf: { '@id': 'https://cubusfera.com/#website' },
 		associatedMedia: shots.map((shot) => ({
 			'@type': 'ImageObject',
-			contentUrl: new URL(shot.src, 'https://mc.ferreras.dev').toString(),
+			contentUrl: new URL(shot.src, 'https://cubusfera.com').toString(),
 			caption: shot.caption,
 			description: shot.alt,
 			width: shot.width,
@@ -41,15 +41,15 @@ const structuredData = [
 ---
 
 <Layout
-	title="Galería — Ferreras SMP"
-	description="Una selección visual del mundo y el ambiente de Ferreras SMP."
+	title="Galería — Cubusfera"
+	description="Una selección visual del mundo y el ambiente de Cubusfera."
 	structuredData={structuredData}
 >
 	<SiteHeader />
 	<main>
 		<PageIntro
 			eyebrow="Galería"
-			title={'Galería de Ferreras SMP: un mundo que se <em>va llenando.</em>'}
+			title={'Galería de Cubusfera: un mundo que se <em>va llenando.</em>'}
 			lead="La galería se alimenta de las capturas que compartimos en Discord. Esta primera selección sirve para enseñar el tono del mundo: proyectos, paisajes y lugares que merece la pena conservar."
 		/>
 		<section class="content-section">

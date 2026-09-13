@@ -1,10 +1,10 @@
-# Ferreras SMP — documento de producto
+# Cubusfera — documento de producto
 
 > Brief consolidado a partir de la entrevista del 9 de agosto de 2026.
 
 ## 1. Resumen
 
-Ferreras SMP es un servidor de Minecraft Java 26.2 pensado para personas mayores de 16 años que quieren jugar a un Minecraft cercano a Vanilla, técnico y comunitario, sin Pay2Win, economía artificial ni una acumulación de plugins.
+Cubusfera es un servidor de Minecraft Java 26.2 pensado para personas mayores de 16 años que quieren jugar a un Minecraft cercano a Vanilla, técnico y comunitario, sin Pay2Win, economía artificial ni una acumulación de plugins.
 
 La web debe presentar el servidor con honestidad, filtrar a quienes no encajan y llevar a las personas adecuadas a Discord. El objetivo no es convencer a todo el mundo ni maximizar registros: es atraer a una microcomunidad compatible, de hasta 20 miembros activos y sin superar los 20 jugadores conectados a la vez.
 
@@ -16,8 +16,9 @@ Lema propuesto:
 
 | Área | Decisión |
 | --- | --- |
-| Web y servidor | `mc.ferreras.dev` |
-| Discord | [link.ferreras.dev/discord](https://link.ferreras.dev/discord) |
+| Servidor | `play.cubusfera.com` (`mc.ferreras.dev` sigue funcionando) |
+| Web | `cubusfera.com` |
+| Discord | [discord.com/invite/xW7yyHRJvE](https://discord.com/invite/xW7yyHRJvE) |
 | Edición | Minecraft Java |
 | Versión | Minecraft 26.2 |
 | Cliente | No se necesita instalar nada para entrar |
@@ -31,9 +32,9 @@ Lema propuesto:
 | Conversión principal | Llegar a Discord y completar el formulario de acceso |
 | Comunidad objetivo | Hasta 20 miembros activos y 20 jugadores online como máximo |
 
-## 3. Qué es Ferreras SMP
+## 3. Qué es Cubusfera
 
-Ferreras SMP ofrece una experiencia cercana al Minecraft Vanilla, con libertad para crear granjas técnicas, construcciones y proyectos individuales o colectivos. El servidor utiliza Fabric para mejorar el rendimiento, la estabilidad y algunos aspectos de calidad de vida, pero no exige mods al jugador para conectarse.
+Cubusfera ofrece una experiencia cercana al Minecraft Vanilla, con libertad para crear granjas técnicas, construcciones y proyectos individuales o colectivos. El servidor utiliza Fabric para mejorar el rendimiento, la estabilidad y algunos aspectos de calidad de vida, pero no exige mods al jugador para conectarse.
 
 La comunidad es pequeña, abierta a nuevos miembros, seria con las normas y cercana en el trato. La propuesta no se basa en progresión artificial, rangos, economía o contenido custom, sino en construir un mundo compartido que cada jugador pueda sentir como suyo y mantener a largo plazo.
 
@@ -47,7 +48,7 @@ Conseguir miembros adecuados que lleguen desde la web, entren en Discord, conozc
 
 ### Objetivos secundarios
 
-- Explicar claramente qué hace diferente a Ferreras SMP.
+- Explicar claramente qué hace diferente a Cubusfera.
 - Filtrar de antemano a personas que buscan otro tipo de servidor.
 - Mostrar que existe una comunidad pequeña, activa y real.
 - Dar contexto mediante artículos, capturas, estado del servidor y, más adelante, un mapa BlueMap.
@@ -79,7 +80,7 @@ Número de miembros que llegan al servidor gracias a la web. La cantidad importa
 - Quienes creen que Minecraft termina al derrotar al Dragón.
 - Quienes no quieren construir, colaborar o desarrollar proyectos a largo plazo.
 
-La comunicación debe actuar como filtro. No se debe vender Ferreras SMP como el servidor adecuado para todo el mundo.
+La comunicación debe actuar como filtro. No se debe vender Cubusfera como el servidor adecuado para todo el mundo.
 
 ## 6. Recorrido de usuario
 
@@ -103,7 +104,7 @@ Discord es el punto de entrada y el espacio de información y convivencia. Debe 
 - Canal de capturas.
 - Canal con el chat del servidor sincronizado con el juego.
 
-El enlace público actual es [link.ferreras.dev/discord](https://link.ferreras.dev/discord). El botón de Discord debe estar destacado en la cabecera y en los principales puntos de conversión.
+El enlace público actual es [discord.com/invite/xW7yyHRJvE](https://discord.com/invite/xW7yyHRJvE). El botón de Discord debe estar destacado en la cabecera y en los principales puntos de conversión.
 
 ## 8. Formulario de acceso y moderación
 
@@ -124,7 +125,7 @@ El incumplimiento de las normas puede provocar la expulsión. El jugador expulsa
 ### Acceso y tecnología
 
 - Minecraft Java 26.2.
-- Dirección de conexión y dominio de la web: `mc.ferreras.dev`.
+- Dirección de conexión: `play.cubusfera.com` (`mc.ferreras.dev` sigue funcionando). Dominio de la web: `cubusfera.com`.
 - Fabric se utiliza en el servidor para rendimiento, estabilidad y calidad de vida.
 - El cliente Vanilla normal puede conectarse sin instalar nada adicional.
 
@@ -179,7 +180,7 @@ Presenta las reglas de forma directa y legible, incluyendo duplicaciones, robos,
 
 Sirve para informar, responder dudas y permitir que una persona conozca el servidor poco a poco antes de entrar en Discord. Los artículos antiguos deben actualizarse:
 
-1. **Qué mods hay en Ferreras SMP:** mantener la explicación centrada en los mods server-side y datapacks del servidor.
+1. **Qué mods hay en Cubusfera:** mantener la explicación centrada en los mods server-side y datapacks del servidor.
 2. **Qué es un servidor SMP de Minecraft:** actualizar con la filosofía actual de comunidad pequeña, Vanilla técnico y mundo persistente.
 3. **Cómo entrar al servidor de Minecraft Java:** actualizar para explicar Discord, formulario, revisión y whitelist.
 
@@ -245,7 +246,7 @@ La conversión principal es el clic hacia Discord y, en última instancia, que e
 - Navegación responsive en móvil y ordenador.
 - Tema claro/oscuro siguiendo el sistema y con cambio manual persistente.
 - Páginas de servidor, acceso, normas, blog, galería, estado, preguntas frecuentes y espacio preparado para BlueMap.
-- Dirección `mc.ferreras.dev` para web y conexión al servidor.
+- Dirección `play.cubusfera.com` para conectarse al servidor y `cubusfera.com` para la web.
 - Estado online/offline y jugadores conectados con cabezas apiladas.
 - Contenidos Markdown.
 - Reutilización de Manrope, logo y OG image existentes.

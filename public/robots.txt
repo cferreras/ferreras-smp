@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://mc.ferreras.dev/sitemap-index.xml
+Sitemap: https://cubusfera.com/sitemap-index.xml

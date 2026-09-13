@@ -3,7 +3,7 @@ import DiscordIcon from './DiscordIcon.astro';
 import ThemeIcon from './ThemeIcon.astro';
 
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
-const discordUrl = 'https://link.ferreras.dev/discord';
+const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 const links = [
 	{ label: 'Inicio', href: '/' },
 	{ label: 'Servidor', href: '/servidor/' },
@@ -12,7 +12,13 @@ const links = [
 	{ label: 'Blog', href: '/blog/' },
 ];
 
-const isCurrent = (href: string) => {
+const themeOptions = [
+	{ value: 'system', label: 'Sistema' },
+	{ value: 'light', label: 'Claro' },
+	{ value: 'dark', label: 'Oscuro' },
+] as const;
+
+const isCurrent =(href: string) => {
 	const normalized = href.replace(/\/$/, '') || '/';
 	return normalized === '/' ? currentPath === '/' : currentPath.startsWith(normalized);
 };
@@ -22,10 +28,10 @@ const isCurrent = (href: string) => {
     la página para que titular y navegación compartan el mismo bloque de color. */}
 <div class="topband">
 	<header class="container topbar">
-		<a class="brand" href="/" aria-label="Ferreras SMP, inicio">
-			<img src="/images/brand/ferreras-smp-isotype.webp" alt="" width="256" height="256" />
+		<a class="brand" href="/" aria-label="Cubusfera, inicio">
+			<img src="/images/brand/cubusfera-isotype-on-violet.svg" alt="" width="512" height="512" />
 			<span class="brand-copy">
-				<span class="brand-name">Ferreras SMP</span>
+				<span class="brand-name">Cubusfera</span>
 				<span class="brand-tagline">Survival vanilla técnico</span>
 			</span>
 		</a>
@@ -38,10 +44,27 @@ const isCurrent = (href: string) => {
 
 		<a class="header-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Discord</span></a>
 
-		<button class="theme-toggle" data-theme-toggle type="button" aria-label="Cambiar tema">
-			<ThemeIcon />
-			<span data-theme-label>Tema</span>
-		</button>
+		<div class="theme-menu" data-theme-menu>
+			<button
+				class="theme-toggle"
+				data-theme-toggle
+				type="button"
+				aria-haspopup="menu"
+				aria-expanded="false"
+				aria-controls="theme-menu-panel"
+			>
+				<ThemeIcon />
+				<span data-theme-label>Tema</span>
+			</button>
+			<div class="theme-menu-panel" id="theme-menu-panel" role="menu" aria-label="Tema" hidden>
+				{themeOptions.map((option) => (
+					<button class="theme-menu-option" type="button" role="menuitemradio" aria-checked="false" data-theme-option={option.value} tabindex="-1">
+						<ThemeIcon variant={option.value} />
+						<span>{option.label}</span>
+					</button>
+				))}
+			</div>
+		</div>
 
 		<details class="mobile-menu">
 			<summary aria-label="Abrir menú">

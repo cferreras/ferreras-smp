@@ -1,12 +1,12 @@
-# Ferreras SMP — diseño de la web
+# Cubusfera — diseño de la web
 
-> Documento vivo del sistema visual, la arquitectura de contenidos y las reglas de experiencia de Ferreras SMP.
+> Documento vivo del sistema visual, la arquitectura de contenidos y las reglas de experiencia de Cubusfera.
 >
 > Estado: diseño implementado y documentado a partir del código actual, el documento de producto y una inspección visual local realizada el 9 de agosto de 2026.
 
 ## 0. Propósito y fuente de verdad
 
-Ferreras SMP no necesita parecer el servidor más grande de Minecraft. La web debe ayudar a que una persona compatible reconozca el ambiente, entienda las condiciones de entrada y llegue a Discord con expectativas correctas.
+Cubusfera no necesita parecer el servidor más grande de Minecraft. La web debe ayudar a que una persona compatible reconozca el ambiente, entienda las condiciones de entrada y llegue a Discord con expectativas correctas.
 
 La decisión de diseño central es esta:
 
@@ -38,7 +38,7 @@ Si este documento y una implementación futura entran en conflicto, primero se d
 
 La conversión no es un registro web. Es:
 
-1. Descubrir Ferreras SMP.
+1. Descubrir Cubusfera.
 2. Entender si encaja con la persona.
 3. Entrar en Discord.
 4. Leer la información y las normas.
@@ -131,7 +131,7 @@ flowchart LR
 
 #### Cabecera desktop
 
-- Marca a la izquierda: icono cuadrado, nombre “Ferreras SMP” y subtítulo “Servidor Minecraft survival en español”.
+- Marca a la izquierda: icono cuadrado, nombre “Cubusfera” y subtítulo “Servidor Minecraft survival en español”.
 - Navegación primaria: `Inicio`, `Servidor`, `Cómo entrar`, `Blog`.
 - CTA destacado: `Entrar en Discord`.
 - Control de tema al extremo derecho.
@@ -242,7 +242,7 @@ La imagen es evidencia del mundo, no un fondo genérico. Se usan assets reales d
 - `public/images/gallery/`: capturas del mundo para el mosaico.
 - `public/images/brand/`: iconos, marca pixelada, mundo, aventurero y guía.
 - `public/images/minecraft-map-item.png`: placeholder visual de BlueMap.
-- `public/images/og-ferreras-smp.jpg`: Open Graph y previews.
+- `public/images/og-cubusfera.jpg`: Open Graph y previews.
 
 Dirección de imagen:
 
@@ -437,7 +437,7 @@ La información crítica que nunca debe quedar escondida:
 - hay que leer información y normas;
 - la solicitud se revisa manualmente;
 - el cliente Vanilla puede conectarse sin modpack;
-- la dirección se entrega como `mc.ferreras.dev`.
+- la dirección se entrega como `play.cubusfera.com`.
 
 El CTA final vuelve a ser Discord y lleva icono de Discord.
 
@@ -655,4 +655,4 @@ Una nueva pantalla o cambio visual está alineado si cumple lo siguiente:
 7. ¿La versión oscura conserva contraste y profundidad?
 8. ¿La navegación activa y el estado del servidor son comprensibles?
 9. ¿El contenido sigue siendo honesto si la persona no encaja?
-10. ¿La pantalla sigue pareciendo Ferreras SMP aunque se eliminen las imágenes?
+10. ¿La pantalla sigue pareciendo Cubusfera aunque se eliminen las imágenes?

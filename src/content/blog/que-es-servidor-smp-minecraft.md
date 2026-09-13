@@ -17,7 +17,7 @@ relatedLinks:
   - title: "Cómo entrar a un servidor de Minecraft Java"
     description: "Sigue los pasos para añadir una dirección y conectarte por primera vez."
     href: "/blog/como-entrar-servidor-minecraft-java/"
-  - title: "Normas de Ferreras SMP"
+  - title: "Normas de Cubusfera"
     description: "Consulta las bases para construir y convivir respetando a la comunidad."
     href: "/normas/"
 ---
@@ -44,13 +44,13 @@ En una partida individual mandas tú. En un SMP compartes el espacio y lo que ha
 - A cambio, se pueden montar proyectos a una escala imposible en solitario.
 - Y si pasa algo, normalmente hay alguien a quien preguntar.
 
-Por eso las normas se leen antes, no después. Las de Ferreras SMP están en [una página aparte](/normas/), con ejemplos concretos.
+Por eso las normas se leen antes, no después. Las de Cubusfera están en [una página aparte](/normas/), con ejemplos concretos.
 
 ## ¿Un SMP necesita mods?
 
 Depende del servidor, no de que sea un SMP. «SMP» describe el tipo de partida, no un requisito técnico.
 
-Hay servidores que piden un modpack y otros a los que entras con Minecraft tal cual. En Ferreras SMP entras desde Minecraft Java sin instalar nada: lo que hace falta está en el servidor, no en tu ordenador.
+Hay servidores que piden un modpack y otros a los que entras con Minecraft tal cual. En Cubusfera entras desde Minecraft Java sin instalar nada: lo que hace falta está en el servidor, no en tu ordenador.
 
 ## Qué se hace dentro de un SMP
 
@@ -74,8 +74,8 @@ No hay una forma correcta de jugar. Lo habitual es esto:
 
 Si nunca has añadido una dirección, la guía de [cómo entrar a un servidor de Minecraft Java](/blog/como-entrar-servidor-minecraft-java/) lo explica paso a paso.
 
-## Cómo lo planteamos en Ferreras SMP
+## Cómo lo planteamos en Cubusfera
 
-Ferreras SMP es un survival de Minecraft Java en español, sin modpack obligatorio y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
+Cubusfera es un survival de Minecraft Java en español, sin modpack obligatorio y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
 
 Si te suena bien, mira [cómo entrar](/como-entrar/): la whitelist se pide desde Discord y la revisamos a mano.

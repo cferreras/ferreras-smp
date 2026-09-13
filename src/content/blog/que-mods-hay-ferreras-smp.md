@@ -1,7 +1,7 @@
 ---
-title: "Qué mods hay en Ferreras SMP y cómo mantenemos una experiencia cercana a vanilla"
-seoTitle: "Qué mods hay en Ferreras SMP y por qué no necesitas modpack"
-description: "Conoce los mods server-side y datapacks de Ferreras SMP, para qué sirven y por qué puedes jugar sin instalar un modpack."
+title: "Qué mods hay en Cubusfera y cómo mantenemos una experiencia cercana a vanilla"
+seoTitle: "Qué mods hay en Cubusfera y por qué no necesitas modpack"
+description: "Conoce los mods server-side y datapacks de Cubusfera, para qué sirven y por qué puedes jugar sin instalar un modpack."
 publishedAt: 2026-07-19
 updatedAt: 2026-09-05
 author: "Carlos Ferreras"
@@ -18,12 +18,12 @@ relatedLinks:
   - title: "Qué es un servidor SMP de Minecraft"
     description: "Descubre cómo funciona un mundo survival compartido y qué puedes esperar al entrar."
     href: "/blog/que-es-servidor-smp-minecraft/"
-  - title: "Normas de Ferreras SMP"
+  - title: "Normas de Cubusfera"
     description: "Revisa las bases para construir y convivir respetando a la comunidad."
     href: "/normas/"
 ---
 
-Ferreras SMP usa mods y datapacks para proteger el mundo, facilitar la convivencia y que el servidor vaya fino. Casi todos funcionan solo en el servidor, así que entras desde Minecraft Java sin descargar un modpack ni tocar tu cliente.
+Cubusfera usa mods y datapacks para proteger el mundo, facilitar la convivencia y que el servidor vaya fino. Casi todos funcionan solo en el servidor, así que entras desde Minecraft Java sin descargar un modpack ni tocar tu cliente.
 
 La idea no es convertir Minecraft en otro juego. Seguimos queriendo un survival reconocible: las mejoras están para que el mundo funcione mejor, para poder reparar un destrozo si ocurre y para que algunas tareas pesadas dejen de serlo.
 
@@ -104,7 +104,7 @@ Trabajan detrás y no se notan jugando:
 
 Son dependencias, no contenido. Existen para que el resto funcione.
 
-## Qué datapacks utiliza Ferreras SMP
+## Qué datapacks utiliza Cubusfera
 
 Los datapacks usan el sistema de datos del propio Minecraft para añadir recetas, funciones o ajustes. Tenemos cinco:
 
@@ -120,4 +120,4 @@ Es la parte que más se acerca a añadir contenido, pero siguen siendo cambios c
 
 Nada de esta lista. Para jugar solo necesitas una versión compatible de Minecraft Java y la dirección del servidor: los mods y los datapacks ya están donde tienen que estar.
 
-El resultado es un survival con protección, herramientas de comunidad y una base técnica cuidada, sin convertir la entrada en la instalación de un modpack. Si quieres probarlo, mira [cómo entrar](/como-entrar/) y añade `mc.ferreras.dev` a tu lista.
+El resultado es un survival con protección, herramientas de comunidad y una base técnica cuidada, sin convertir la entrada en la instalación de un modpack. Si quieres probarlo, mira [cómo entrar](/como-entrar/) y añade `play.cubusfera.com` a tu lista.

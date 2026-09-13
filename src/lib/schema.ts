@@ -1,4 +1,4 @@
-const SITE_URL = 'https://mc.ferreras.dev';
+const SITE_URL = 'https://cubusfera.com';
 
 /**
  * BreadcrumbList para las páginas de sección. El último elemento va sin `item`,
