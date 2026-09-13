@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
-const siteUrl = Astro.site ?? new URL('https://mc.ferreras.dev');
+const siteUrl = Astro.site ?? new URL('https://cubusfera.com');
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(post.data.image, siteUrl).toString();
 const datePublished = post.data.publishedAt.toISOString();
@@ -35,7 +35,7 @@ const blogPostingSchema = {
 	datePublished,
 	dateModified,
 	author: { '@type': 'Person', name: post.data.author },
-	publisher: { '@id': 'https://mc.ferreras.dev/#organization' },
+	publisher: { '@id': 'https://cubusfera.com/#organization' },
 	mainEntityOfPage: canonicalUrl,
 	inLanguage: 'es-ES',
 };
@@ -43,8 +43,8 @@ const breadcrumbSchema = {
 	'@context': 'https://schema.org',
 	'@type': 'BreadcrumbList',
 	itemListElement: [
-		{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://mc.ferreras.dev/' },
-		{ '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://mc.ferreras.dev/blog/' },
+		{ '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://cubusfera.com/' },
+		{ '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://cubusfera.com/blog/' },
 		{ '@type': 'ListItem', position: 3, name: post.data.title },
 	],
 };

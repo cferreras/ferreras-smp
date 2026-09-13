@@ -26,10 +26,10 @@ const structuredData = [
 		name: 'Galería de Cubusfera',
 		description: 'Capturas del mundo survival de Cubusfera compartidas por su comunidad.',
 		inLanguage: 'es-ES',
-		isPartOf: { '@id': 'https://mc.ferreras.dev/#website' },
+		isPartOf: { '@id': 'https://cubusfera.com/#website' },
 		associatedMedia: shots.map((shot) => ({
 			'@type': 'ImageObject',
-			contentUrl: new URL(shot.src, 'https://mc.ferreras.dev').toString(),
+			contentUrl: new URL(shot.src, 'https://cubusfera.com').toString(),
 			caption: shot.caption,
 			description: shot.alt,
 			width: shot.width,

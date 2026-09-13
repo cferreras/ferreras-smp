@@ -32,7 +32,7 @@ const {
 } = Astro.props;
 
 const brandIcon = '/images/brand/cubusfera-icon-512.png';
-const siteUrl = Astro.site ?? new URL('https://mc.ferreras.dev');
+const siteUrl = Astro.site ?? new URL('https://cubusfera.com');
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
 const commonSchema = {
@@ -40,9 +40,9 @@ const commonSchema = {
 	'@graph': [
 		{
 			'@type': 'Organization',
-			'@id': 'https://mc.ferreras.dev/#organization',
+			'@id': 'https://cubusfera.com/#organization',
 			name: 'Cubusfera',
-			url: 'https://mc.ferreras.dev/',
+			url: 'https://cubusfera.com/',
 			logo: {
 				'@type': 'ImageObject',
 				url: new URL(brandIcon, siteUrl).toString(),
@@ -54,11 +54,11 @@ const commonSchema = {
 		},
 		{
 			'@type': 'WebSite',
-			'@id': 'https://mc.ferreras.dev/#website',
-			url: 'https://mc.ferreras.dev/',
+			'@id': 'https://cubusfera.com/#website',
+			url: 'https://cubusfera.com/',
 			name: 'Cubusfera',
 			inLanguage: 'es-ES',
-			publisher: { '@id': 'https://mc.ferreras.dev/#organization' },
+			publisher: { '@id': 'https://cubusfera.com/#organization' },
 		},
 	],
 };

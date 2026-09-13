@@ -17,7 +17,7 @@ Lema propuesto:
 | Área | Decisión |
 | --- | --- |
 | Servidor | `play.cubusfera.com` (`mc.ferreras.dev` sigue funcionando) |
-| Web | `mc.ferreras.dev` |
+| Web | `cubusfera.com` |
 | Discord | [discord.com/invite/xW7yyHRJvE](https://discord.com/invite/xW7yyHRJvE) |
 | Edición | Minecraft Java |
 | Versión | Minecraft 26.2 |
@@ -125,7 +125,7 @@ El incumplimiento de las normas puede provocar la expulsión. El jugador expulsa
 ### Acceso y tecnología
 
 - Minecraft Java 26.2.
-- Dirección de conexión: `play.cubusfera.com` (`mc.ferreras.dev` sigue funcionando). Dominio de la web: `mc.ferreras.dev`.
+- Dirección de conexión: `play.cubusfera.com` (`mc.ferreras.dev` sigue funcionando). Dominio de la web: `cubusfera.com`.
 - Fabric se utiliza en el servidor para rendimiento, estabilidad y calidad de vida.
 - El cliente Vanilla normal puede conectarse sin instalar nada adicional.
 
@@ -246,7 +246,7 @@ La conversión principal es el clic hacia Discord y, en última instancia, que e
 - Navegación responsive en móvil y ordenador.
 - Tema claro/oscuro siguiendo el sistema y con cambio manual persistente.
 - Páginas de servidor, acceso, normas, blog, galería, estado, preguntas frecuentes y espacio preparado para BlueMap.
-- Dirección `play.cubusfera.com` para conectarse al servidor y `mc.ferreras.dev` para la web.
+- Dirección `play.cubusfera.com` para conectarse al servidor y `cubusfera.com` para la web.
 - Estado online/offline y jugadores conectados con cabezas apiladas.
 - Contenidos Markdown.
 - Reutilización de Manrope, logo y OG image existentes.
