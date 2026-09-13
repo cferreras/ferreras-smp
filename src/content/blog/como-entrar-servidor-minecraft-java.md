@@ -13,7 +13,7 @@ image: "/images/blog/como-entrar-servidor-minecraft-java.webp"
 imageAlt: "Jugador de Minecraft frente a una baliza púrpura que representa la conexión a un servidor"
 draft: false
 relatedLinks:
-  - title: "Cómo entrar a Ferreras SMP"
+  - title: "Cómo entrar a Cubusfera"
     description: "Consulta la IP y los pasos específicos para añadir el servidor."
     href: "/como-entrar/"
   - title: "Preguntas frecuentes"
@@ -26,7 +26,7 @@ relatedLinks:
 
 Entrar a un servidor de Minecraft Java son tres cosas: abres el menú multijugador, guardas su dirección y te conectas. No hace falta tocar el juego salvo que el servidor diga expresamente lo contrario, y el proceso es el mismo con whitelist o sin ella.
 
-Para Ferreras SMP no instalas nada: solo necesitas Minecraft Java y la dirección `mc.ferreras.dev`.
+Para Cubusfera no instalas nada: solo necesitas Minecraft Java y la dirección `play.cubusfera.com`.
 
 ## Qué necesitas antes de empezar
 
@@ -34,7 +34,7 @@ Para Ferreras SMP no instalas nada: solo necesitas Minecraft Java y la direcció
 - La dirección del servidor al que quieres entrar.
 - Conexión a internet y acceso al modo multijugador.
 
-Si vas a entrar a Ferreras SMP, la IP está en la [guía de acceso](/como-entrar/), con botón para copiarla.
+Si vas a entrar a Cubusfera, la IP está en la [guía de acceso](/como-entrar/), con botón para copiarla.
 
 ## Cómo añadir un servidor de Minecraft Java
 
@@ -52,9 +52,9 @@ Con **Añadir servidor** guardas el acceso. El nombre es solo para que lo recono
 
 ### 4. Escribe la dirección
 
-Escribe la IP o el dominio exactamente como te lo hayan pasado. La de Ferreras SMP es:
+Escribe la IP o el dominio exactamente como te lo hayan pasado. La de Cubusfera es:
 
-`mc.ferreras.dev`
+`play.cubusfera.com`
 
 Ojo con los espacios al principio y al final. Un carácter de más y la conexión falla.
 
@@ -69,16 +69,16 @@ Guarda, selecciona el servidor en la lista y pulsa **Entrar al servidor**. Si so
 3. Que la versión del juego sea compatible con la del servidor.
 4. Cierra y vuelve a abrir el juego si acabas de cambiar algo de la configuración.
 
-> Si sigues sin poder entrar a Ferreras SMP, escríbenos en Discord y pega el mensaje de error tal cual aparece. Con el texto exacto sabemos qué mirar; sin él, adivinamos.
+> Si sigues sin poder entrar a Cubusfera, escríbenos en Discord y pega el mensaje de error tal cual aparece. Con el texto exacto sabemos qué mirar; sin él, adivinamos.
 
 ## ¿Hay que instalar mods?
 
-En Ferreras SMP no. Entras y juegas sin descargar un modpack ni herramientas aparte.
+En Cubusfera no. Entras y juegas sin descargar un modpack ni herramientas aparte.
 
-Lo que hace falta para la protección, el mapa y la convivencia ya está en el servidor. Tu cliente vanilla se conecta sin tocar nada. Si te interesa el detalle, lo contamos en [qué mods hay en Ferreras SMP](/blog/que-mods-hay-ferreras-smp/).
+Lo que hace falta para la protección, el mapa y la convivencia ya está en el servidor. Tu cliente vanilla se conecta sin tocar nada. Si te interesa el detalle, lo contamos en [qué mods hay en Cubusfera](/blog/que-mods-hay-ferreras-smp/).
 
 ## Antes de construir nada
 
 Dedica dos minutos a las [normas del servidor](/normas/). Saber cómo se protegen las construcciones, cuánto espacio dejar y dónde avisar de un problema evita casi todos los malentendidos.
 
-Cuando lo tengas claro, vuelve a [cómo entrar a Ferreras SMP](/como-entrar/), copia la IP y añádela a tu lista.
+Cuando lo tengas claro, vuelve a [cómo entrar a Cubusfera](/como-entrar/), copia la IP y añádela a tu lista.

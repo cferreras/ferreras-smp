@@ -5,14 +5,14 @@ import SiteHeader from '../components/SiteHeader.astro';
 import DiscordIcon from '../components/DiscordIcon.astro';
 import { breadcrumbSchema } from '../lib/schema';
 
-const discordUrl = 'https://link.ferreras.dev/discord';
+const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'El servidor' }])];
 
 const specs = [
 	{ label: 'Versión', value: 'Minecraft Java 26.2' },
-	{ label: 'Dirección', value: 'mc.ferreras.dev', code: true },
+	{ label: 'Dirección', value: 'play.cubusfera.com', code: true },
 	{ label: 'Límite', value: '20 jugadores' },
 	{ label: 'Whitelist', value: 'Sí, con Discord, formulario y revisión manual' },
 	{ label: 'PvP', value: 'Habilitado, solo con consentimiento' },
@@ -35,8 +35,8 @@ const no = [
 ---
 
 <Layout
-	title="El servidor — Ferreras SMP"
-	description="La ficha de Ferreras SMP: Minecraft Java 26.2, Fabric del lado del servidor, mundo persistente y comunidad de 20 personas."
+	title="El servidor — Cubusfera"
+	description="La ficha de Cubusfera: Minecraft Java 26.2, Fabric del lado del servidor, mundo persistente y comunidad de 20 personas."
 	structuredData={structuredData}
 >
 	<SiteHeader>
@@ -75,7 +75,7 @@ const no = [
 				<p class="section-intro">El mundo se conservará durante mucho tiempo o indefinidamente. Puedes conectarte para avanzar en una base, diseñar una granja de hierro, explorar una zona nueva o simplemente saludar por Discord. El ritmo lo marca cada persona.</p>
 
 				<div class="note-card">
-					<p>El cliente Vanilla normal se conecta sin instalar nada. Fabric y sus mods corren en el servidor para mejorar la comodidad, el mapa y la construcción técnica. Puedes leer <a href="/blog/que-mods-hay-ferreras-smp/">qué mods hay en Ferreras SMP</a> y para qué sirve cada uno.</p>
+					<p>El cliente Vanilla normal se conecta sin instalar nada. Fabric y sus mods corren en el servidor para mejorar la comodidad, el mapa y la construcción técnica. Puedes leer <a href="/blog/que-mods-hay-ferreras-smp/">qué mods hay en Cubusfera</a> y para qué sirve cada uno.</p>
 				</div>
 			</div>
 		</section>

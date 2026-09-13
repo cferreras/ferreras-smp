@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
-const discordUrl = 'https://link.ferreras.dev/discord';
+const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 const siteUrl = Astro.site ?? new URL('https://mc.ferreras.dev');
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(post.data.image, siteUrl).toString();
@@ -51,7 +51,7 @@ const breadcrumbSchema = {
 ---
 
 <Layout
-	title={post.data.seoTitle ?? `${post.data.title} — Ferreras SMP`}
+	title={post.data.seoTitle ?? `${post.data.title} — Cubusfera`}
 	description={post.data.description}
 	image={post.data.image}
 	imageAlt={post.data.imageAlt}
@@ -91,7 +91,7 @@ const breadcrumbSchema = {
 
 					<aside class="article-author" aria-label="Autor del artículo">
 						<p>Escrito por {post.data.author}</p>
-						<p>{post.data.author} administra Ferreras SMP y mantiene la configuración técnica del servidor. Si quieres comentar una duda sobre este artículo, puedes encontrarle en el <a href={discordUrl} target="_blank" rel="noopener noreferrer">Discord de Ferreras SMP</a>.</p>
+						<p>{post.data.author} administra Cubusfera y mantiene la configuración técnica del servidor. Si quieres comentar una duda sobre este artículo, puedes encontrarle en el <a href={discordUrl} target="_blank" rel="noopener noreferrer">Discord de Cubusfera</a>.</p>
 					</aside>
 				</div>
 			</div>

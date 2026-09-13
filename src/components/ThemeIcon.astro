@@ -2,33 +2,36 @@
 import { icon } from '@fortawesome/fontawesome-svg-core';
 import { faCircleHalfStroke, faMoon, faSun } from '@fortawesome/free-solid-svg-icons';
 
-const sunSvg = icon(faSun, {
-	attributes: {
-		'aria-hidden': 'true',
-		focusable: 'false',
-	},
-	classes: ['theme-icon', 'theme-icon-sun'],
-}).html.join('');
+interface Props {
+	/* Sin variante se pintan los tres iconos apilados y el CSS muestra el de la
+	   preferencia activa; con variante se pinta solo ese (opciones del menú). */
+	variant?: 'light' | 'dark' | 'system';
+}
 
-const moonSvg = icon(faMoon, {
-	attributes: {
-		'aria-hidden': 'true',
-		focusable: 'false',
-	},
-	classes: ['theme-icon', 'theme-icon-moon'],
-}).html.join('');
+const { variant } = Astro.props;
 
-const systemSvg = icon(faCircleHalfStroke, {
-	attributes: {
-		'aria-hidden': 'true',
-		focusable: 'false',
-	},
-	classes: ['theme-icon', 'theme-icon-system'],
-}).html.join('');
+const definitions = {
+	light: { icon: faSun, className: 'theme-icon-sun' },
+	dark: { icon: faMoon, className: 'theme-icon-moon' },
+	system: { icon: faCircleHalfStroke, className: 'theme-icon-system' },
+};
+
+const renderIcon = (key: keyof typeof definitions) =>
+	icon(definitions[key].icon, {
+		attributes: {
+			'aria-hidden': 'true',
+			focusable: 'false',
+		},
+		classes: ['theme-icon', definitions[key].className],
+	}).html.join('');
 ---
 
-<span class="theme-icon-state" aria-hidden="true">
-	<Fragment set:html={sunSvg} />
-	<Fragment set:html={moonSvg} />
-	<Fragment set:html={systemSvg} />
-</span>
+{variant ? (
+	<Fragment set:html={renderIcon(variant)} />
+) : (
+	<span class="theme-icon-state" aria-hidden="true">
+		<Fragment set:html={renderIcon('light')} />
+		<Fragment set:html={renderIcon('dark')} />
+		<Fragment set:html={renderIcon('system')} />
+	</span>
+)}

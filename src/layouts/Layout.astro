@@ -17,10 +17,10 @@ interface Props {
 }
 
 const {
-	title = 'Ferreras SMP — Minecraft Vanilla técnico, hecho en comunidad',
-	description = 'Ferreras SMP es un servidor Minecraft Java 26.2, Vanilla técnico y comunitario. Una microcomunidad pequeña, sin Pay2Win y sin modpack obligatorio.',
-	image = '/images/og-ferreras-smp.jpg',
-	imageAlt = 'Ferreras SMP, servidor de Minecraft Vanilla técnico hecho en comunidad',
+	title = 'Cubusfera — Minecraft Vanilla técnico, hecho en comunidad',
+	description = 'Cubusfera es un servidor Minecraft Java 26.2, Vanilla técnico y comunitario. Una microcomunidad pequeña, sin Pay2Win y sin modpack obligatorio.',
+	image = '/images/og-cubusfera.jpg',
+	imageAlt = 'Cubusfera, servidor de Minecraft Vanilla técnico hecho en comunidad',
 	type = 'website',
 	author,
 	section,
@@ -31,7 +31,7 @@ const {
 	noindex = false,
 } = Astro.props;
 
-const brandIcon = '/images/brand/ferreras-smp-isotype.webp';
+const brandIcon = '/images/brand/cubusfera-icon-512.png';
 const siteUrl = Astro.site ?? new URL('https://mc.ferreras.dev');
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
@@ -41,22 +41,22 @@ const commonSchema = {
 		{
 			'@type': 'Organization',
 			'@id': 'https://mc.ferreras.dev/#organization',
-			name: 'Ferreras SMP',
+			name: 'Cubusfera',
 			url: 'https://mc.ferreras.dev/',
 			logo: {
 				'@type': 'ImageObject',
 				url: new URL(brandIcon, siteUrl).toString(),
-				width: 256,
-				height: 256,
+				width: 512,
+				height: 512,
 			},
 			description: 'Servidor de Minecraft Java Vanilla técnico y comunitario con whitelist.',
-			sameAs: ['https://link.ferreras.dev/discord'],
+			sameAs: ['https://discord.com/invite/xW7yyHRJvE'],
 		},
 		{
 			'@type': 'WebSite',
 			'@id': 'https://mc.ferreras.dev/#website',
 			url: 'https://mc.ferreras.dev/',
-			name: 'Ferreras SMP',
+			name: 'Cubusfera',
 			inLanguage: 'es-ES',
 			publisher: { '@id': 'https://mc.ferreras.dev/#organization' },
 		},
@@ -78,18 +78,18 @@ const commonSchema = {
 		{author && <meta name="author" content={author} />}
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={canonical} />
-		{/* El .ico va primero como respaldo: Safari no admite favicons en WebP y el
-		    rastreador de favicons de Google prefiere ICO o PNG. Ambos archivos salen
-		    del mismo isotipo que la navbar. */}
-		<link rel="icon" href="/favicon.ico" sizes="32x32" />
-		<link rel="icon" type="image/webp" sizes="256x256" href={brandIcon} />
+		{/* El .ico va primero como respaldo para Safari y el rastreador de favicons
+		    de Google, que prefiere ICO o PNG. El favicon abre más los huecos de la
+		    "Y" que el isotipo de la navbar para que se siga leyendo a 16 px. */}
+		<link rel="icon" href="/favicon.ico" sizes="48x48" />
+		<link rel="icon" type="image/svg+xml" href="/images/brand/cubusfera-favicon.svg" />
 		{/* iOS compone el icono sobre negro y no respeta la transparencia, así que
 		    el touch icon va a sangre sobre el violeta de marca. */}
-		<link rel="apple-touch-icon" sizes="180x180" href="/images/brand/ferreras-smp-apple-touch-180.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/images/brand/cubusfera-apple-touch-180.png" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<meta property="og:type" content={type} />
-		<meta property="og:site_name" content="Ferreras SMP" />
+		<meta property="og:site_name" content="Cubusfera" />
 		<meta property="og:locale" content="es_ES" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
