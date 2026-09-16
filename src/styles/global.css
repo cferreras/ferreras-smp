@@ -2369,7 +2369,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 @media (max-width: 620px) {
 	.container {
-		width: min(100% - 1.875rem, 35rem);
+		width: min(100% - 2.5rem, 35rem);
 	}
 
 	.topbar {
@@ -2434,7 +2434,6 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 	.band-lime,
 	.band-amber {
-		margin-inline: -0.75rem;
 		border-radius: 1.75rem;
 	}
 
@@ -2539,6 +2538,13 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 	.footer-bottom {
 		font-size: 0.875rem;
+	}
+}
+
+/* En pantallas muy estrechas el lema no cabe junto a los botones de tema y menú. */
+@media (max-width: 360px) {
+	.brand-tagline {
+		display: none;
 	}
 }
 
