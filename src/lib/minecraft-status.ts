@@ -1,6 +1,6 @@
 import dns from 'node:dns/promises';
 
-const SERVER_HOST = 'mc.ferreras.dev';
+const SERVER_HOST = 'play.cubusfera.com';
 const SERVER_PORT = 25565;
 const PING_TIMEOUT_MS = 2500;
 const CACHE_TTL_MS = 30_000;

@@ -150,7 +150,7 @@ La cabecera no debe convertirse en un listado de todas las páginas. `Normas`, `
 
 #### Pie de página
 
-El footer tiene cuatro zonas: identidad, `Conocer`, `Ver` y `Entrar`. Incluye las rutas secundarias, el dominio `mc.ferreras.dev`, el enlace a Discord y una línea final que recuerda el carácter pequeño y constante de la comunidad.
+El footer tiene cuatro zonas: identidad, `Conocer`, `Ver` y `Entrar`. Incluye las rutas secundarias, el dominio `play.cubusfera.com`, el enlace a Discord y una línea final que recuerda el carácter pequeño y constante de la comunidad.
 
 ## 4. Dirección visual
 
