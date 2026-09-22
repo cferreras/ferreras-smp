@@ -11,7 +11,7 @@ tags:
   - smp
   - survival
 image: "/images/blog/que-es-servidor-smp-minecraft.webp"
-imageAlt: "Cuatro aventureros de Minecraft colaboran en la construcción de una base junto a un puente, cultivos y un río"
+imageAlt: "Pequeña parcela de Minecraft hecha de bloques verdes, con un árbol dentro de un cercado"
 draft: false
 relatedLinks:
   - title: "Cómo entrar a un servidor de Minecraft Java"

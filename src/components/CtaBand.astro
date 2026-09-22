@@ -1,0 +1,27 @@
+---
+import DiscordIcon from './DiscordIcon.astro';
+
+// Banda ámbar con la que acaban las páginas: siempre lleva a Discord y, como
+// segunda opción, a la página informativa que toque.
+interface Props {
+	kicker?: string;
+	title: string;
+	lead: string;
+	secondary: { href: string; label: string };
+}
+
+const { kicker = 'Siguiente paso', title, lead, secondary } = Astro.props;
+const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
+---
+
+<section class="home-band home-band-amber">
+	<div class="container">
+		<span class="home-kicker">{kicker}</span>
+		<h2>{title}</h2>
+		<p class="home-lead">{lead}</p>
+		<div class="home-hero-actions">
+			<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+			<a class="button-ghost button-ghost-on-amber" href={secondary.href}>{secondary.label}</a>
+		</div>
+	</div>
+</section>

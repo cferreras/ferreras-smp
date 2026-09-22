@@ -1,10 +1,13 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import DiscordIcon from '../components/DiscordIcon.astro';
+import InnerHero from '../components/InnerHero.astro';
 import { breadcrumbSchema } from '../lib/schema';
+import '../styles/phi.css';
 
+const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 export const prerender = true;
 
 // Las preguntas viven en un array para que el marcado visible y el FAQPage
@@ -62,23 +65,43 @@ const structuredData = [
 	description="Respuestas sobre Vanilla, Fabric, acceso, whitelist, PvP, duplicaciones y permanencia del mundo."
 	structuredData={structuredData}
 >
-	<SiteHeader />
-	<main>
-		<PageIntro
-			eyebrow="Preguntas frecuentes"
-			title={'Preguntas frecuentes: lo importante, <em>sin rodeos.</em>'}
-			lead="Si después de leer esto te queda una duda, ven a Discord. Preferimos responder una pregunta concreta antes que dar por hecho que todo el mundo entiende lo mismo."
-		/>
-		<section class="content-section">
-			<div class="container content-layout">
-				<aside class="content-index"><strong>04 / FAQ</strong>Respuestas para decidir con contexto.</aside>
-				<div class="faq-list">
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero
+				chip={`Preguntas frecuentes · ${faqs.length}`}
+				title="Preguntas frecuentes: lo importante,"
+				highlight="sin rodeos."
+				lead="Si después de leer esto te queda una duda, ven a Discord. Preferimos responder una pregunta concreta antes que dar por hecho que todo el mundo entiende lo mismo."
+			/>
+		</SiteHeader>
+
+		<main>
+			<section class="container home-section phi-split">
+				<div class="faq">
 					{faqs.map((faq, index) => (
-						<details open={index === 0}><summary><h2>{faq.question}</h2></summary><p set:html={faq.answer}></p></details>
+						<details open={index === 0}>
+							<summary>
+								<span class="faq-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+								<h2>{faq.question}</h2>
+								<span class="faq-toggle" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg></span>
+							</summary>
+							<p set:html={faq.answer}></p>
+						</details>
 					))}
 				</div>
-			</div>
-		</section>
-	</main>
-	<SiteFooter />
+
+				<aside class="srv-note faq-aside">
+					<div class="home-card-icon home-card-icon-violet">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12.5a7 7 0 0 1-7 7H8l-4 2.5.9-3.4A7 7 0 0 1 11 4.5h2a7 7 0 0 1 7 7z" /></svg>
+					</div>
+					<span class="home-kicker">¿Falta la tuya?</span>
+					<h3>Pregunta en Discord.</h3>
+					<p>Te contesta una persona. Es también donde se abre la whitelist, así que ya estarás en el sitio.</p>
+					<a class="button" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+				</aside>
+			</section>
+		</main>
+
+		<SiteFooter />
+	</div>
 </Layout>

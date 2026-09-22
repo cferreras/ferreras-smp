@@ -11,7 +11,7 @@ tags:
   - minecraft-java
   - survival
 image: "/images/blog/ferreras-smp-ahora-es-cubusfera.webp"
-imageAlt: "Vista al atardecer de la costa del servidor, con un cartel de Ferreritas sobre el poblado"
+imageAlt: "Etiqueta de nombre de Minecraft hecha de bloques violeta sobre fondo lila"
 draft: false
 relatedLinks:
   - title: "Cómo entrar al servidor"

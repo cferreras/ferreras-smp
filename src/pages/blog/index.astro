@@ -3,16 +3,35 @@ import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import DiscordIcon from '../../components/DiscordIcon.astro';
+import InnerHero from '../../components/InnerHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PostCard from '../../components/PostCard.astro';
 import { breadcrumbSchema } from '../../lib/schema';
+import { slugify, toCard } from '../../lib/blog';
+import '../../styles/phi.css';
 
-const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'Blog' }])];
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
-const formatDate = (date: Date) => date.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+const entries = (await getCollection('blog', ({ data }) => !data.draft)).sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+
+const posts = entries.map(toCard);
+
+const [featured] = posts;
+
+const filters = [
+	{ tag: 'all', label: 'Todos', count: posts.length },
+	...[...new Set(posts.map((post) => post.category))]
+		.sort((a, b) => a.localeCompare(b, 'es'))
+		.map((category) => ({
+			tag: slugify(category),
+			label: category,
+			count: posts.filter((post) => post.category === category).length,
+		})),
+];
+
+const countLabel = (count: number) => `${count} ${count === 1 ? 'artículo' : 'artículos'}`;
 ---
 
 <Layout
@@ -20,43 +39,77 @@ const formatDate = (date: Date) => date.toLocaleDateString('es-ES', { day: '2-di
 	description="Guías y contexto para conocer Cubusfera antes de entrar en Discord."
 	structuredData={structuredData}
 >
-	<SiteHeader>
-		<div class="container page-lead">
-			<span class="chip">Blog</span>
-			<h1>Entender el mundo <span>antes de entrar.</span></h1>
-			<p>Guías, respuestas y decisiones de diseño para que puedas decidir si Cubusfera es el servidor que buscas. Si algo no está confirmado, lo decimos.</p>
-		</div>
-	</SiteHeader>
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero
+				chip={`Blog · ${countLabel(posts.length)}`}
+				title="Entender el mundo"
+				highlight="antes de entrar."
+				lead="Guías, respuestas y decisiones de diseño para que puedas decidir si Cubusfera es el servidor que buscas. Si algo no está confirmado, lo decimos."
+			/>
+		</SiteHeader>
 
-	<main>
-		<section class="section">
+		<main class="blog-main">
 			<div class="container">
-				<div class="blog-list">
-					{posts.map((post) => (
-						<a class="post-card" href={`/blog/${post.id}/`}>
-							<img src={post.data.image} alt={post.data.imageAlt} width="1200" height="800" loading="lazy" />
-							<span class="post-card-body">
-								<span class="post-card-meta">{post.data.category} · {formatDate(post.data.publishedAt)}</span>
-								<h2>{post.data.title}</h2>
-								<p>{post.data.description}</p>
+				{/* Sin JavaScript los filtros no hacen nada, así que nacen ocultos y
+				    los muestra /blog-filter.js. */}
+				<div class="blog-filters" data-blog-filters hidden>
+					<div class="blog-filter-group" role="group" aria-label="Filtrar artículos por etiqueta">
+						{filters.map((filter) => (
+							<button class="blog-filter" type="button" data-tag={filter.tag} data-filter={filter.tag} data-label={filter.label} data-count={filter.count} aria-pressed={filter.tag === 'all' ? 'true' : 'false'}>
+								<span class="blog-filter-dot" aria-hidden="true"></span>
+								{filter.label}
+								<span class="blog-filter-count">{filter.count}</span>
+							</button>
+						))}
+					</div>
+					<p class="blog-meta" data-blog-count aria-live="polite">{countLabel(posts.length)}</p>
+				</div>
+
+				{featured && (
+					<a class="blog-featured" href={featured.href} data-blog-lead>
+						<img src={featured.image} alt={featured.imageAlt} width="1200" height="800" />
+						<div class="blog-featured-body">
+							<span class="blog-featured-kicker">
+								<span class="blog-tag" data-tag={featured.tag}>{featured.category}</span>
+								<span class="home-kicker">Lo último</span>
 							</span>
-						</a>
+							<h2>{featured.title}</h2>
+							<p>{featured.description}</p>
+							<div class="blog-featured-foot">
+								<span class="blog-meta">{featured.meta}</span>
+								<span class="blog-read">
+									Leer artículo
+									<svg class="blog-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+								</span>
+							</div>
+						</div>
+					</a>
+				)}
+
+				<div class="home-head blog-archive-head" data-blog-lead>
+					<div class="home-head-title">
+						<span class="home-kicker">Archivo</span>
+						<h2>Todos los artículos.</h2>
+					</div>
+					<p class="home-lead">Guías para empezar, cómo funciona el servidor y lo que va cambiando en la comunidad.</p>
+				</div>
+
+				<ul class="blog-grid">
+					{posts.map((post, index) => (
+						<PostCard post={post} data-post data-featured={index === 0 ? '' : undefined} hidden={index === 0} />
 					))}
-				</div>
+				</ul>
 			</div>
-		</section>
+		</main>
 
-		<section class="band band-amber">
-			<div class="container">
-				<h2 class="section-title">¿Ya lo tienes claro?</h2>
-				<p class="band-lead">La whitelist se abre desde Discord, en cuatro pasos y con una persona al otro lado.</p>
-				<div class="band-actions">
-					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-					<a class="button-ghost button-ghost-on-amber" href="/como-entrar/">Ver cómo entrar</a>
-				</div>
-			</div>
-		</section>
-	</main>
+		<CtaBand
+			title="¿Ya lo tienes claro?"
+			lead="La whitelist se abre desde Discord, en cuatro pasos y con una persona al otro lado."
+			secondary={{ href: '/como-entrar/', label: 'Ver cómo entrar' }}
+		/>
 
-	<SiteFooter />
+		<SiteFooter />
+	</div>
+	<script is:inline src="/blog-filter.js"></script>
 </Layout>

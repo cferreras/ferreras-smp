@@ -1,8 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import DiscordIcon from '../components/DiscordIcon.astro';
+import InnerHero from '../components/InnerHero.astro';
+import '../styles/phi.css';
 
 export const prerender = true;
 ---
@@ -12,46 +14,31 @@ export const prerender = true;
 	description="El mapa interactivo de Cubusfera llegará cuando BlueMap esté activo y tenga una URL pública."
 	noindex
 >
-	<SiteHeader />
-	<main>
-		<PageIntro
-			eyebrow="BlueMap"
-			title={'BlueMap de Cubusfera: el mapa está <em>por llegar.</em>'}
-			lead="Estamos preparando un espacio para explorar el mundo desde la web. BlueMap está previsto, pero todavía no está activo y no queremos fingir que lo está."
-		/>
-		<section class="content-section">
-			<div class="container content-layout">
-				<figure class="bluemap-preview">
-					<img src="/images/minecraft-map-item.png" alt="Render generado de un objeto mapa de Minecraft abierto para Cubusfera" width="1536" height="1024" style="display: block; width: 100%; height: auto;" />
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero
+				chip="BlueMap · Previsto"
+				title="BlueMap de Cubusfera: el mapa está"
+				highlight="por llegar."
+				lead="Estamos preparando un espacio para explorar el mundo desde la web. BlueMap está previsto, pero todavía no está activo y no queremos fingir que lo está."
+			/>
+		</SiteHeader>
+
+		<main>
+			<section class="container home-section phi-split">
+				<figure class="map-figure">
+					<img src="/images/minecraft-map-item.webp" alt="Render generado de un objeto mapa de Minecraft abierto para Cubusfera" width="1200" height="800" />
 				</figure>
-				<div class="prose">
+
+				<div class="phi-aside-copy">
+					<span class="home-kicker">Mientras tanto</span>
 					<h2>Cuando esté listo, estará aquí.</h2>
-					<p>La integración prevista permitirá consultar el mapa, localizar proyectos y entender mejor cómo se va llenando el mundo. Hasta entonces, las mejores capturas se comparten en Discord y pasan a la <a href="/galeria/">galería</a>.</p>
-					<a class="button" href="https://discord.com/invite/xW7yyHRJvE" target="_blank" rel="noopener noreferrer">Ver la comunidad</a>
+					<p class="home-lead">La integración prevista permitirá consultar el mapa, localizar proyectos y entender mejor cómo se va llenando el mundo. Hasta entonces, las mejores capturas se comparten en Discord y pasan a la <a href="/galeria/">galería</a>.</p>
+					<a class="button" href="https://discord.com/invite/xW7yyHRJvE" target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Ver la comunidad</span></a>
 				</div>
-			</div>
-		</section>
-	</main>
-	<SiteFooter />
+			</section>
+		</main>
+
+		<SiteFooter />
+	</div>
 </Layout>
-
-<style>
-	.bluemap-preview {
-		align-self: start;
-		width: min(100%, 420px);
-		margin: 0;
-	}
-
-	.bluemap-preview img {
-		display: block;
-		width: 100%;
-		height: auto;
-	}
-
-	@media (max-width: 940px) {
-		.bluemap-preview {
-			width: min(100%, 560px);
-		}
-	}
-
-</style>
