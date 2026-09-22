@@ -2,10 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import DiscordIcon from '../components/DiscordIcon.astro';
+import InnerHero from '../components/InnerHero.astro';
+import CtaBand from '../components/CtaBand.astro';
 import { breadcrumbSchema } from '../lib/schema';
+import '../styles/phi.css';
 
-const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'Normas' }])];
@@ -53,6 +54,14 @@ const rules = [
 		],
 	},
 ];
+
+// Qué pasa cuando algo sale mal: cada garantía con un título corto para que
+// se lean como pasos de la misma red de seguridad.
+const safety = [
+	{ title: 'Registros', text: 'Usamos Ledger para consultar qué acciones se hicieron y cuándo.' },
+	{ title: 'Copias de seguridad', text: 'Hay copias de seguridad del mundo para revertir un destrozo.' },
+	{ title: 'Apelación', text: 'El incumplimiento puede provocar una expulsión, y quien la recibe puede apelar: el caso se revisa.' },
+];
 ---
 
 <Layout
@@ -60,23 +69,30 @@ const rules = [
 	description="Normas de convivencia, construcciones, robos, duplicaciones y PvP de Cubusfera, en cuatro bloques."
 	structuredData={structuredData}
 >
-	<SiteHeader>
-		<div class="container page-lead">
-			<span class="chip">Convivencia</span>
-			<h1>Construimos juntos. <span>Respetamos el espacio.</span></h1>
-			<p>Las normas no están para llenar una página: están para que el trabajo de una persona siga siendo suyo y el mundo compartido se mantenga agradable con el tiempo.</p>
-		</div>
-	</SiteHeader>
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero
+				chip="Convivencia"
+				title="Construimos juntos."
+				highlight="Respetamos el espacio."
+				lead="Las normas no están para llenar una página: están para que el trabajo de una persona siga siendo suyo y el mundo compartido se mantenga agradable con el tiempo."
+			/>
+		</SiteHeader>
 
-	<main>
-		<section class="section">
-			<div class="container">
-				<h2 class="section-title">Cuatro bloques, nada más.</h2>
+		<main>
+			<section class="container home-section" aria-labelledby="bloques">
+				<div class="home-head">
+					<div class="home-head-title">
+						<span class="home-kicker">01 — Las normas</span>
+						<h2 id="bloques">Cuatro bloques, nada más.</h2>
+					</div>
+					<p class="home-lead">Si dudas sobre una situación concreta, pregunta antes de actuar. El contexto importa más que encontrar un hueco en la redacción.</p>
+				</div>
 
-				<div class="rule-cards">
+				<div class="rule-grid">
 					{rules.map((rule) => (
-						<article class="card rule-card">
-							<div class={`card-icon card-icon-${rule.tone}`}>
+						<article class="home-card">
+							<div class={`home-card-icon home-card-icon-${rule.tone}`}>
 								{rule.icon === 'chat' && (
 									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12.5a7 7 0 0 1-7 7H8l-4 2.5.9-3.4A7 7 0 0 1 11 4.5h2a7 7 0 0 1 7 7z" /></svg>
 								)}
@@ -91,54 +107,43 @@ const rules = [
 								)}
 							</div>
 							<h3>{rule.title}</h3>
-							<ul>
+							<ul class="rule-list">
 								{rule.items.map((item) => <li>{item}</li>)}
 							</ul>
 						</article>
 					))}
 				</div>
+			</section>
 
-				<div class="note-card">
-					<p>Si dudas sobre una situación concreta, pregunta antes de actuar. El contexto importa más que encontrar un hueco en la redacción.</p>
+			<section class="home-band home-band-lime" aria-labelledby="si-sale-mal">
+				<div class="container">
+					<div class="home-head">
+						<div class="home-head-title">
+							<span class="home-kicker">02 — Incidencias</span>
+							<h2 id="si-sale-mal">Si algo sale mal.</h2>
+						</div>
+						<p class="home-lead">Podemos comprobar lo que pasó antes de decidir nada, y una expulsión no es el final de la conversación.</p>
+					</div>
+
+					<ol class="home-steps">
+						{safety.map((item, index) => (
+							<li class="home-step">
+								<span class="home-step-number">{String(index + 1).padStart(2, '0')}</span>
+								<strong class="home-step-title">{item.title}</strong>
+								<p>{item.text}</p>
+							</li>
+						))}
+					</ol>
 				</div>
-			</div>
-		</section>
+			</section>
 
-		<section class="band band-lime">
-			<div class="container ask-layout">
-				<div class="ask-intro">
-					<h2 class="section-title">Si algo sale mal.</h2>
-					<p class="band-lead">Podemos comprobar lo que pasó antes de decidir nada, y una expulsión no es el final de la conversación.</p>
-				</div>
+			<CtaBand
+				title="¿Todo claro? Nos vemos en Discord."
+				lead="Ahí se resuelven las dudas y se abre la whitelist."
+				secondary={{ href: '/como-entrar/', label: 'Ver cómo entrar' }}
+			/>
+		</main>
 
-				<ul class="check-list">
-					<li>
-						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5" /></svg>
-						<p>Usamos Ledger para consultar qué acciones se hicieron y cuándo.</p>
-					</li>
-					<li>
-						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5" /></svg>
-						<p>Hay copias de seguridad del mundo para revertir un destrozo.</p>
-					</li>
-					<li>
-						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5" /></svg>
-						<p>El incumplimiento puede provocar una expulsión, y quien la recibe puede apelar: el caso se revisa.</p>
-					</li>
-				</ul>
-			</div>
-		</section>
-
-		<section class="band band-amber">
-			<div class="container">
-				<h2 class="section-title">¿Todo claro? Nos vemos en Discord.</h2>
-				<p class="band-lead">Ahí se resuelven las dudas y se abre la whitelist.</p>
-				<div class="band-actions">
-					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-					<a class="button-ghost button-ghost-on-amber" href="/como-entrar/">Ver cómo entrar</a>
-				</div>
-			</div>
-		</section>
-	</main>
-
-	<SiteFooter />
+		<SiteFooter />
+	</div>
 </Layout>

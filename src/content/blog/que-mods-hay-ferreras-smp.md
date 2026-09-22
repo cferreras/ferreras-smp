@@ -3,7 +3,7 @@ title: "Qué mods hay en Cubusfera y cómo mantenemos una experiencia cercana a 
 seoTitle: "Qué mods hay en Cubusfera y por qué no necesitas modpack"
 description: "Conoce los mods server-side y datapacks de Cubusfera, para qué sirven y por qué puedes jugar sin instalar un modpack."
 publishedAt: 2026-07-19
-updatedAt: 2026-09-05
+updatedAt: 2026-09-23
 author: "Carlos Ferreras"
 category: "Servidor"
 tags:
@@ -12,7 +12,7 @@ tags:
   - fabric
   - survival
 image: "/images/blog/que-mods-hay-ferreras-smp.webp"
-imageAlt: "Dos jugadores contemplan una base survival protegida, con cultivos, aldeanos y mecanismos de redstone"
+imageAlt: "Bloque de Minecraft en tonos ámbar con grabados pixelados en cada cara"
 draft: false
 relatedLinks:
   - title: "Qué es un servidor SMP de Minecraft"
@@ -33,7 +33,7 @@ La idea no es convertir Minecraft en otro juego. Seguimos queriendo un survival 
 
 Minecraft separa el cliente —el juego que abres en tu ordenador— del servidor que mantiene el mundo y decide su estado real. Un mod *server-side* se instala y se ejecuta en ese servidor. Si está pensado para hablar con clientes vanilla, tú no necesitas tener nada instalado.
 
-Por eso puedes notar una mejora sin haber descargado nada: el servidor registra quién cambió un bloque, optimiza la generación del mundo o te deja reclamar un terreno mientras tu juego sigue siendo el de siempre. La [documentación de Fabric sobre mods server-side](https://wiki.fabricmc.net/community:serverside_mods) explica esa separación.
+Por eso puedes notar una mejora sin haber descargado nada: el servidor registra quién cambió un bloque, optimiza la generación del mundo o muestra un mapa en la web mientras tu juego sigue siendo el de siempre. La [documentación de Fabric sobre mods server-side](https://wiki.fabricmc.net/community:serverside_mods) explica esa separación.
 
 No todos los mods son así. Algunos cambian gráficos o interfaz y solo funcionan en el cliente; otros hacen falta en ambos lados. Los de esta lista son los del servidor.
 
@@ -51,22 +51,21 @@ Ninguna opción es mejor en abstracto. Usamos Fabric porque nos deja combinar he
 
 Las piezas que más importan cuando varias personas comparten construcciones y recursos:
 
-- [Open Parties and Claims](https://modrinth.com/mod/open-parties-and-claims) permite crear grupos y reclamar zonas. Es la base de la protección de terrenos.
 - [Ledger](https://modrinth.com/mod/ledger) registra las acciones del mundo para poder investigar un cambio o un destrozo. [Ledger Databases](https://modrinth.com/mod/ledger-databases) amplía dónde se guardan esos registros.
 - [AntiXray](https://modrinth.com/mod/anti-xray) dificulta localizar minerales con ventaja.
 - [BanHammer](https://modrinth.com/mod/banhammer) y [LuckPerms](https://modrinth.com/mod/luckperms) son las herramientas de moderación y permisos.
 - [EasyAuth](https://modrinth.com/mod/easyauth) gestiona la autenticación.
 - [No Chat Reports](https://modrinth.com/mod/no-chat-reports) cambia el sistema de firma y reporte del chat cuando es posible.
 
-La tecnología ayuda, pero no sustituye a las [normas](/normas/). Las reclamaciones y los registros son la red de seguridad; la convivencia sigue dependiendo de respetar el trabajo de los demás.
+La tecnología ayuda, pero no sustituye a las [normas](/normas/). Los registros y la moderación son la red de seguridad; la convivencia sigue dependiendo de respetar el trabajo de los demás.
 
 ## Comunidad e información
 
 [Discord MC Chat](https://modrinth.com/mod/discord-mc-chat) conecta el chat del juego con Discord, para no tener que estar conectados a la vez para hablar.
 
-[BlueMap](https://modrinth.com/mod/bluemap) genera un mapa tridimensional del mundo que se ve desde la web. [TAB](https://modrinth.com/mod/tab-was-taken) organiza la lista de jugadores y [TabTPS](https://modrinth.com/mod/tabtps) muestra datos de rendimiento dentro del juego.
+[BlueMap](https://modrinth.com/mod/bluemap) genera un mapa tridimensional del mundo que se ve desde la web. [TAB](https://modrinth.com/mod/tab-was-taken) organiza la lista de jugadores y [TabTPS](https://modrinth.com/mod/tabtps) muestra datos de rendimiento dentro del juego. [MiniMOTD](https://modrinth.com/mod/minimotd) personaliza el mensaje y el icono que ves en tu lista de servidores.
 
-[Server Day Counter](https://modrinth.com/mod/serverdaycounter) lleva la cuenta de los días del mundo y [Villager Names](https://modrinth.com/mod/villager-names-serilum) pone nombre a los aldeanos. Son detalles, pero le dan memoria y carácter al sitio.
+[Villager Names](https://modrinth.com/mod/villager-names-serilum) pone nombre a los aldeanos. Es un detalle, pero le da carácter al sitio.
 
 ## Pequeñas mejoras que siguen sintiéndose vanilla
 

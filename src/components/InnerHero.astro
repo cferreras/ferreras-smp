@@ -1,0 +1,23 @@
+---
+// Hero de las páginas interiores: titular en la columna ancha (727) y
+// entradilla en la estrecha (449), alineados por abajo. `highlight` es el
+// final del titular que va en dorado.
+interface Props {
+	chip?: string;
+	title: string;
+	highlight?: string;
+	lead?: string;
+	size?: 'page' | 'article';
+}
+
+const { chip, title, highlight, lead, size = 'page' } = Astro.props;
+---
+
+<div class:list={['container', 'inner-hero', { 'inner-hero-article': size === 'article' }]}>
+	<div class="inner-hero-title">
+		<slot name="before" />
+		{chip && <span class="home-chip">{chip}</span>}
+		<h1>{title}{highlight && <> <span>{highlight}</span></>}</h1>
+	</div>
+	{lead && <p class="inner-hero-lead">{lead}</p>}
+</div>

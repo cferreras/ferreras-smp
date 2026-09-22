@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { PostCard } from '../lib/blog';
+
+interface Props extends HTMLAttributes<'li'> {
+	post: PostCard;
+}
+
+// El resto de atributos van al <li>: el listado del blog los usa para filtrar.
+const { post, ...attrs } = Astro.props;
+---
+
+<li class="blog-card" data-tag={post.tag} {...attrs}>
+	<a href={post.href}>
+		<img src={post.image} alt={post.imageAlt} width="1200" height="800" loading="lazy" />
+		<div class="blog-card-body">
+			<span class="blog-tag">{post.category}</span>
+			<h3>{post.title}</h3>
+			<p>{post.description}</p>
+			<div class="blog-card-foot">
+				<span class="blog-meta">{post.meta}</span>
+				<svg class="blog-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+			</div>
+		</div>
+	</a>
+</li>

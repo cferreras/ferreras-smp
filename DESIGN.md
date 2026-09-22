@@ -3,6 +3,22 @@
 > Documento vivo del sistema visual, la arquitectura de contenidos y las reglas de experiencia de Cubusfera.
 >
 > Estado: diseño implementado y documentado a partir del código actual, el documento de producto y una inspección visual local realizada el 9 de agosto de 2026.
+>
+> **Actualización del 22 de septiembre de 2026:** todas las páginas se han rediseñado sobre el sistema φ descrito justo debajo. Donde las secciones 4 a 7 hablen de medidas, radios, bandas a sangre o componentes concretos (`.card`, `.steps`, `.page-hero`…), manda el sistema φ: esas piezas ya no existen. Tono, arquitectura de información, colores de marca y reglas de accesibilidad siguen vigentes.
+
+## Sistema φ (septiembre 2026)
+
+Vive en `src/styles/phi.css` y cuelga de la clase `.phi`, que envuelve cada página. `global.css` queda para los tokens de color, la base tipográfica, la cabecera, el pie y los botones.
+
+- **Rejilla:** contenedor de 75rem (1200 px a 1440) partido en `1,618fr + 1fr` = 727 + 449 px con 24 px de hueco. La misma división ordena heros, cabeceras de sección, fichas, mosaicos y el pie. Las piezas grandes (imágenes, destacados) son rectángulos áureos: 727 × 449 o 449 × 727.
+- **Espacios:** solo Fibonacci — 8 · 13 · 21 · 34 · 55 · 89 · 144 px (`--s-1` a `--s-7`). Secciones a 144, cabecera a contenido 89, relleno de tarjeta 34.
+- **Tipografía:** 16 px multiplicado por potencias de √φ — 13 · 16 · 21 · 26 · 34 · 55 · 68 · 89. Cuerpo 16/26, entradillas 21/34, títulos de sección 55, titular de página interior 68, titular de portada 89. El cuerpo de los artículos usa un cuarto de paso (18/29).
+- **Radios:** 13 · 21 · 34.
+- **Bandas:** redondeadas (34 px) y separadas 13 px del borde de la ventana (8 px en móvil); el contenido queda a 120 px del borde a 1440 y a 21 px en móvil.
+- **Escala:** todo en rem; a 1440 px 1rem = 16 px y el diseño cuadra al píxel, por encima crece con la raíz.
+- **Piezas compartidas:** `InnerHero` (hero de páginas interiores), `CtaBand` (banda ámbar final), `PostCard` (tarjeta de artículo) y `src/lib/blog.ts` (slug de categoría, fecha, tiempo de lectura).
+- **Etiquetas del blog:** la categoría de cada artículo es su etiqueta y su color — Novedades `#7c3aed`, Guías `#3f7a1e`, Servidor `#f6b93b`. Una categoría nueva sale en gris hasta que se le añade su regla `[data-tag]` en `phi.css`.
+- **Portadas:** ilustraciones de bloques 3D sobre fondo liso del color de su etiqueta, en WebP a 1200 px.
 
 ## 0. Propósito y fuente de verdad
 

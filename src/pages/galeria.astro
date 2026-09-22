@@ -1,21 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import InnerHero from '../components/InnerHero.astro';
+import CtaBand from '../components/CtaBand.astro';
 import { breadcrumbSchema } from '../lib/schema';
+import { shots } from '../lib/gallery';
+import '../styles/phi.css';
 
 export const prerender = true;
 
-const shots = [
-	{ src: '/images/gallery/veronicucha-fortaleza.jpg', alt: 'Veronicucha sobre la muralla de una fortaleza de piedra y madera', width: 1720, height: 1366, caption: 'Fortalezas que empiezan arriba.' },
-	{ src: '/images/gallery/ferreritas-costa-atardecer.jpg', alt: 'Ferreritas sobre una colina junto a la costa, rodeada de árboles y cultivos', width: 1800, height: 1343, caption: 'La costa al caer la tarde.' },
-	{ src: '/images/gallery/ferreritas-nether.jpg', alt: 'Ferreritas con armadura verde junto a una mesa de trabajo en el Nether', width: 1800, height: 715, caption: 'Trabajo en condiciones difíciles.' },
-	{ src: '/images/gallery/veronicucha-bosque.jpg', alt: 'Veronicucha junto a un árbol en un bosque con caminos de tierra', width: 1800, height: 716, caption: 'Un rincón entre los árboles.' },
-	{ src: '/images/gallery/casas-frente-al-mar.jpg', alt: 'Casas de piedra y madera frente al mar en Cubusfera', width: 1800, height: 716, caption: 'Un barrio frente al mar.' },
-	{ src: '/images/gallery/refugio-de-madera.jpg', alt: 'Entrada de madera y piedra decorada con vegetación y faroles', width: 1800, height: 716, caption: 'Detalles que hacen hogar.' },
-	{ src: '/images/gallery/casa-entre-bambus.jpg', alt: 'Refugio de madera rodeado de vegetación y bambú', width: 1800, height: 716, caption: 'Un refugio para seguir construyendo.' },
-];
+// El mosaico sigue la rejilla áurea: las dos capturas casi cuadradas abren en
+// 727 + 449, la primera panorámica ocupa el ancho y el resto va de dos en dos.
+const layout = (index: number) => (index === 0 ? 'gal-main' : index === 1 ? 'gal-side' : index === 2 ? 'gal-wide' : 'gal-half');
 
 // Las capturas son originales del servidor: describirlas como ImageObject es la
 // única señal estructurada que esta página puede aportar sin inventar texto.
@@ -45,22 +42,39 @@ const structuredData = [
 	description="Una selección visual del mundo y el ambiente de Cubusfera."
 	structuredData={structuredData}
 >
-	<SiteHeader />
-	<main>
-		<PageIntro
-			eyebrow="Galería"
-			title={'Galería de Cubusfera: un mundo que se <em>va llenando.</em>'}
-			lead="La galería se alimenta de las capturas que compartimos en Discord. Esta primera selección sirve para enseñar el tono del mundo: proyectos, paisajes y lugares que merece la pena conservar."
-		/>
-		<section class="content-section">
-			<div class="container">
-				<div class="gallery-grid">
-					{shots.map((shot) => (
-						<figure class="gallery-item"><img src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" /><figcaption>{shot.caption}</figcaption></figure>
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero
+				chip={`Galería · ${shots.length} capturas`}
+				title="Galería de Cubusfera: un mundo que se"
+				highlight="va llenando."
+				lead="La galería se alimenta de las capturas que compartimos en Discord. Esta primera selección sirve para enseñar el tono del mundo: proyectos, paisajes y lugares que merece la pena conservar."
+			/>
+		</SiteHeader>
+
+		<main>
+			<section class="container home-section">
+				<div class="gal-grid">
+					{shots.map((shot, index) => (
+						<figure class={layout(index)}>
+							<img src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} loading={index < 2 ? 'eager' : 'lazy'} decoding="async" />
+							<figcaption class="home-caption">{shot.caption}</figcaption>
+						</figure>
 					))}
 				</div>
-			</div>
-		</section>
-	</main>
-	<SiteFooter />
+
+				<p class="gal-more">
+					<a href="/bluemap/">El mapa del mundo, por llegar →</a>
+				</p>
+			</section>
+
+			<CtaBand
+				title="¿Te encaja? Nos vemos dentro."
+				lead="La whitelist se abre desde Discord y te contesta una persona, no un bot."
+				secondary={{ href: '/servidor/', label: 'Conocer el servidor' }}
+			/>
+		</main>
+
+		<SiteFooter />
+	</div>
 </Layout>

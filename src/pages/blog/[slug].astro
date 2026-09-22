@@ -3,7 +3,11 @@ import { getCollection, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
-import DiscordIcon from '../../components/DiscordIcon.astro';
+import InnerHero from '../../components/InnerHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import PostCard from '../../components/PostCard.astro';
+import { readingMinutes, slugify, toCard } from '../../lib/blog';
+import '../../styles/phi.css';
 
 export const prerender = true;
 
@@ -13,18 +17,23 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 const siteUrl = Astro.site ?? new URL('https://cubusfera.com');
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(post.data.image, siteUrl).toString();
 const datePublished = post.data.publishedAt.toISOString();
 const dateModified = (post.data.updatedAt ?? post.data.publishedAt).toISOString();
+const longDate = (date: Date) => date.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+
+// El índice sale de los h2 reales del artículo: con menos de dos no aporta nada.
+const toc = headings.filter((heading) => heading.depth === 2);
 
 const others = (await getCollection('blog', ({ data }) => !data.draft))
 	.filter((entry) => entry.id !== post.id)
 	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
-	.slice(0, 2);
+	.slice(0, 3)
+	.map(toCard);
 
 const blogPostingSchema = {
 	'@context': 'https://schema.org',
@@ -55,6 +64,8 @@ const breadcrumbSchema = {
 	description={post.data.description}
 	image={post.data.image}
 	imageAlt={post.data.imageAlt}
+	imageWidth={1200}
+	imageHeight={800}
 	type="article"
 	author={post.data.author}
 	section={post.data.category}
@@ -63,71 +74,75 @@ const breadcrumbSchema = {
 	updatedAt={post.data.updatedAt}
 	structuredData={[blogPostingSchema, breadcrumbSchema]}
 >
-	<SiteHeader>
-		<div class="container page-lead">
-			<a class="back-link" href="/blog/">
-				<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5.5 8.5 12l6.5 6.5" /></svg>
-				<span>Volver al blog</span>
-			</a>
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero title={post.data.title} lead={post.data.description} size="article">
+				<Fragment slot="before">
+					<a class="article-back" href="/blog/">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5.5 8.5 12l6.5 6.5" /></svg>
+						<span>Volver al blog</span>
+					</a>
+					<p class="article-info">
+						<span class="blog-tag" data-tag={slugify(post.data.category)}>{post.data.category}</span>
+						<time datetime={datePublished}>{longDate(post.data.publishedAt)}</time>
+						<span aria-hidden="true">·</span>
+						<span>{readingMinutes(post.body)} min de lectura</span>
+					</p>
+				</Fragment>
+			</InnerHero>
+		</SiteHeader>
 
-			<header class="article-lead">
-				<div class="article-meta">
-					<span>{post.data.category}</span>
-					<span>{post.data.publishedAt.toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
-				</div>
-				<h1>{post.data.title}</h1>
-				<p>{post.data.description}</p>
-			</header>
-		</div>
-	</SiteHeader>
+		<main>
+			<section class="container article-main">
+				<img class="article-image" src={post.data.image} alt={post.data.imageAlt} width="1200" height="800" fetchpriority="high" />
 
-	<main>
-		<section class="section">
-			<div class="container">
-				<img class="article-cover" src={post.data.image} alt={post.data.imageAlt} width="1200" height="800" />
+				<div class="phi-split article-layout">
+					<article class="phi-prose"><Content /></article>
 
-				<div class="article-body">
-					<article class="prose"><Content /></article>
+					<aside class="article-aside">
+						{toc.length > 1 && (
+							<nav class="article-toc" aria-labelledby="toc-title">
+								<p class="home-kicker" id="toc-title">En este artículo</p>
+								<ol>
+									{toc.map((heading) => (
+										<li><a href={`#${heading.slug}`}>{heading.text}</a></li>
+									))}
+								</ol>
+							</nav>
+						)}
 
-					<aside class="article-author" aria-label="Autor del artículo">
-						<p>Escrito por {post.data.author}</p>
-						<p>{post.data.author} administra Cubusfera y mantiene la configuración técnica del servidor. Si quieres comentar una duda sobre este artículo, puedes encontrarle en el <a href={discordUrl} target="_blank" rel="noopener noreferrer">Discord de Cubusfera</a>.</p>
+						<div class="article-byline" aria-label="Autor del artículo">
+							<p class="home-kicker">Escrito por</p>
+							<p class="article-byline-name">{post.data.author}</p>
+							<p>{post.data.author} administra Cubusfera y mantiene la configuración técnica del servidor. Si quieres comentar una duda sobre este artículo, puedes encontrarle en el <a href={discordUrl} target="_blank" rel="noopener noreferrer">Discord de Cubusfera</a>.</p>
+							{post.data.updatedAt && <p class="blog-meta">Actualizado el <time datetime={dateModified}>{longDate(post.data.updatedAt)}</time></p>}
+						</div>
 					</aside>
 				</div>
-			</div>
-		</section>
-
-		{others.length > 0 && (
-			<section class="section">
-				<div class="container">
-					<h2 class="section-title">Sigue leyendo.</h2>
-					<div class="blog-list blog-list-related">
-						{others.map((entry) => (
-							<a class="post-card" href={`/blog/${entry.id}/`}>
-								<img src={entry.data.image} alt={entry.data.imageAlt} width="1200" height="800" loading="lazy" />
-								<span class="post-card-body">
-									<span class="post-card-meta">{entry.data.category}</span>
-									<h3>{entry.data.title}</h3>
-									<p>{entry.data.description}</p>
-								</span>
-							</a>
-						))}
-					</div>
-				</div>
 			</section>
-		)}
 
-		<section class="band band-amber">
-			<div class="container">
-				<h2 class="section-title">¿Te encaja el sitio?</h2>
-				<p class="band-lead">La whitelist se abre desde Discord y te contesta una persona, no un bot.</p>
-				<div class="band-actions">
-					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-					<a class="button-ghost button-ghost-on-amber" href="/como-entrar/">Ver cómo entrar</a>
-				</div>
-			</div>
-		</section>
-	</main>
+			{others.length > 0 && (
+				<section class="container article-more" aria-labelledby="sigue-leyendo">
+					<div class="home-head">
+						<div class="home-head-title">
+							<span class="home-kicker">Sigue leyendo</span>
+							<h2 id="sigue-leyendo">Más del blog.</h2>
+						</div>
+						<p class="home-links"><a href="/blog/">Ver todos los artículos →</a></p>
+					</div>
+					<ul class="blog-grid">
+						{others.map((entry) => <PostCard post={entry} />)}
+					</ul>
+				</section>
+			)}
 
-	<SiteFooter />
+			<CtaBand
+				title="¿Te encaja el sitio?"
+				lead="La whitelist se abre desde Discord y te contesta una persona, no un bot."
+				secondary={{ href: '/como-entrar/', label: 'Ver cómo entrar' }}
+			/>
+		</main>
+
+		<SiteFooter />
+	</div>
 </Layout>

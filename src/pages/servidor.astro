@@ -2,17 +2,19 @@
 import Layout from '../layouts/Layout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import DiscordIcon from '../components/DiscordIcon.astro';
+import InnerHero from '../components/InnerHero.astro';
+import CtaBand from '../components/CtaBand.astro';
 import { breadcrumbSchema } from '../lib/schema';
+import '../styles/phi.css';
 
-const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
+const serverAddress = 'play.cubusfera.com';
 export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'El servidor' }])];
 
 const specs = [
 	{ label: 'Versión', value: 'Minecraft Java 26.2' },
-	{ label: 'Dirección', value: 'play.cubusfera.com', code: true },
+	{ label: 'Dirección', value: serverAddress, address: true },
 	{ label: 'Límite', value: '20 jugadores' },
 	{ label: 'Whitelist', value: 'Sí, con Discord, formulario y revisión manual' },
 	{ label: 'PvP', value: 'Habilitado, solo con consentimiento' },
@@ -39,91 +41,118 @@ const no = [
 	description="La ficha de Cubusfera: Minecraft Java 26.2, Fabric del lado del servidor, mundo persistente y comunidad de 20 personas."
 	structuredData={structuredData}
 >
-	<SiteHeader>
-		<div class="container page-lead">
-			<span class="chip">El servidor</span>
-			<h1>Minecraft Java vanilla, <span>sin adornos.</span></h1>
-			<p>Fabric está aquí para que el mundo funcione mejor, no para convertir Minecraft en otra cosa. Caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo.</p>
-		</div>
-	</SiteHeader>
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero
+				chip="El servidor"
+				title="Minecraft Java vanilla,"
+				highlight="sin adornos."
+				lead="Fabric está aquí para que el mundo funcione mejor, no para convertir Minecraft en otra cosa. Caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo."
+			/>
+		</SiteHeader>
 
-	<main>
-		<section class="section">
-			<div class="container media-layout">
-				<figure class="media-art">
-					<img src="/images/brand/ferreras-smp-adventurer.webp" alt="Explorador de Minecraft con un pico de madera" width="1024" height="1536" loading="lazy" />
+		<main>
+			<section class="container srv-ficha" aria-labelledby="ficha">
+				<figure class="srv-figure">
+					<img src="/images/servidor-bloque-comando.webp" alt="Bloque de Minecraft en tonos violeta con grabados pixelados en cada cara" width="1024" height="1536" loading="lazy" />
 				</figure>
 
-				<div class="media-body">
-					<h2 class="section-title">Ficha del servidor.</h2>
-					<dl class="spec-list">
-						{specs.map((spec) => (
-							<div>
-								<dt>{spec.label}</dt>
-								<dd>{spec.code ? <code class="connection-code">{spec.value}</code> : spec.value}</dd>
-							</div>
-						))}
-					</dl>
+				<div class="home-head-title">
+					<span class="home-kicker">01 — Ficha</span>
+					<h2 id="ficha">Ficha del servidor.</h2>
 				</div>
-			</div>
-		</section>
 
-		<section class="section">
-			<div class="container">
-				<h2 class="section-title">Una partida que no tiene prisa por terminar.</h2>
-				<p class="section-intro">Un mundo survival en español, abierto a proyectos individuales y colectivos, con las herramientas suficientes para convivir y sin una capa de sistemas que te obligue a jugar de una manera concreta.</p>
-				<p class="section-intro">El mundo se conservará durante mucho tiempo o indefinidamente. Puedes conectarte para avanzar en una base, diseñar una granja de hierro, explorar una zona nueva o simplemente saludar por Discord. El ritmo lo marca cada persona.</p>
+				<dl class="srv-specs">
+					{specs.map((spec) => (
+						<div class="srv-spec">
+							<dt>{spec.label}</dt>
+							<dd>
+								{spec.address ? (
+									<span class="srv-address">
+										<code>{spec.value}</code>
+										<button class="srv-copy" type="button" data-copy-ip={spec.value}>
+											<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+											<span data-copy-label>Copiar</span>
+										</button>
+									</span>
+								) : (
+									spec.value
+								)}
+							</dd>
+						</div>
+					))}
+				</dl>
+			</section>
 
-				<div class="note-card">
-					<p>El cliente Vanilla normal se conecta sin instalar nada. Fabric y sus mods corren en el servidor para mejorar la comodidad, el mapa y la construcción técnica. Puedes leer <a href="/blog/que-mods-hay-ferreras-smp/">qué mods hay en Cubusfera</a> y para qué sirve cada uno.</p>
+			<section class="container srv-ritmo" aria-labelledby="ritmo">
+				<div>
+					<div class="home-head-title">
+						<span class="home-kicker">02 — El ritmo</span>
+						<h2 id="ritmo">Una partida que no tiene prisa por terminar.</h2>
+					</div>
+					<p class="home-lead">Un mundo survival en español, abierto a proyectos individuales y colectivos, con las herramientas suficientes para convivir y sin una capa de sistemas que te obligue a jugar de una manera concreta.</p>
+					<p class="home-lead">El mundo se conservará durante mucho tiempo o indefinidamente. Puedes conectarte para avanzar en una base, diseñar una granja de hierro, explorar una zona nueva o simplemente saludar por Discord. El ritmo lo marca cada persona.</p>
 				</div>
-			</div>
-		</section>
 
-		<section class="band band-lime">
-			<div class="container">
-				<h2 class="section-title">Qué sí. Qué no.</h2>
-				<p class="band-lead">La lista corta, para que sepas a qué atenerte antes de pedir la whitelist.</p>
+				<aside class="srv-note">
+					<div class="home-card-icon home-card-icon-lime">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 9-11.5h-6.5z" /></svg>
+					</div>
+					<span class="home-kicker">Cliente vanilla</span>
+					<h3>No instalas nada.</h3>
+					<p>El cliente Vanilla normal se conecta sin instalar nada. Fabric y sus mods corren en el servidor para mejorar la comodidad, el mapa y la construcción técnica.</p>
+					<a href="/blog/que-mods-hay-ferreras-smp/">
+						Qué mods hay en Cubusfera
+						<svg class="blog-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
+					</a>
+				</aside>
+			</section>
 
-				<div class="split-lists">
-					<div>
-						<h3 class="list-heading">Qué sí encontrarás</h3>
-						<ul class="check-list">
-							{yes.map((item) => (
-								<li>
-									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5 9.5 18 20 6.5" /></svg>
-									<p>{item}</p>
-								</li>
-							))}
-						</ul>
+			<section class="home-band home-band-lime" aria-labelledby="si-no">
+				<div class="container">
+					<div class="home-head">
+						<div class="home-head-title">
+							<span class="home-kicker">03 — Qué sí, qué no</span>
+							<h2 id="si-no">Qué sí. Qué no.</h2>
+						</div>
+						<p class="home-lead">La lista corta, para que sepas a qué atenerte antes de pedir la whitelist.</p>
 					</div>
 
-					<div>
-						<h3 class="list-heading">Qué no encontrarás</h3>
-						<ul class="check-list cross-list">
-							{no.map((item) => (
-								<li>
-									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg>
-									<p>{item}</p>
-								</li>
-							))}
-						</ul>
+					<div class="srv-lists">
+						<div class="srv-panel">
+							<h3>Qué sí encontrarás</h3>
+							<ul>
+								{yes.map((item) => (
+									<li>
+										<span class="srv-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7" /></svg></span>
+										{item}
+									</li>
+								))}
+							</ul>
+						</div>
+						<div class="srv-panel srv-panel-no">
+							<h3>Qué no encontrarás</h3>
+							<ul>
+								{no.map((item) => (
+									<li>
+										<span class="srv-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7l10 10M17 7 7 17" /></svg></span>
+										{item}
+									</li>
+								))}
+							</ul>
+						</div>
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
 
-		<section class="band band-amber">
-			<div class="container">
-				<h2 class="section-title">¿Te suena bien? Pide la whitelist.</h2>
-				<p class="band-lead">Se abre desde Discord, en cuatro pasos y con una persona al otro lado.</p>
-				<div class="band-actions">
-					<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-					<a class="button-ghost button-ghost-on-amber" href="/como-entrar/">Ver cómo entrar</a>
-				</div>
-			</div>
-		</section>
-	</main>
+			<CtaBand
+				title="¿Te suena bien? Pide la whitelist."
+				lead="Se abre desde Discord, en cuatro pasos y con una persona al otro lado."
+				secondary={{ href: '/como-entrar/', label: 'Ver cómo entrar' }}
+			/>
+		</main>
 
-	<SiteFooter />
+		<SiteFooter />
+	</div>
+	<script is:inline src="/copy-ip.js"></script>
 </Layout>

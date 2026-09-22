@@ -10,7 +10,7 @@ tags:
   - servidores-minecraft
   - survival
 image: "/images/blog/como-entrar-servidor-minecraft-java.webp"
-imageAlt: "Jugador de Minecraft frente a una baliza púrpura que representa la conexión a un servidor"
+imageAlt: "Brújula de Minecraft hecha de bloques verdes sobre fondo verde claro"
 draft: false
 relatedLinks:
   - title: "Cómo entrar a Cubusfera"

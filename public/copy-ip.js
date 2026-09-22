@@ -3,12 +3,15 @@
 
 	var RESET_MS = 2000;
 
+	/* Tras el aviso vuelve al texto con el que se pintó el botón ("Copiar",
+	   "Copiar IP"…), no a uno fijo. */
 	function flash(button, label, text) {
+		if (label && !label.dataset.original) label.dataset.original = label.textContent;
 		button.dataset.copied = 'true';
 		if (label) label.textContent = text;
 		window.setTimeout(function () {
 			delete button.dataset.copied;
-			if (label) label.textContent = 'Copiar';
+			if (label) label.textContent = label.dataset.original;
 		}, RESET_MS);
 	}
 

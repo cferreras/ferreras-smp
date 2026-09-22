@@ -1,8 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import PageIntro from '../components/PageIntro.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import InnerHero from '../components/InnerHero.astro';
+import '../styles/phi.css';
 
 export const prerender = true;
 ---
@@ -12,36 +13,52 @@ export const prerender = true;
 	description="Consulta el estado actual de Cubusfera y el número de jugadores conectados."
 	noindex
 >
-	<SiteHeader />
-	<main>
-		<PageIntro
-			eyebrow="Estado"
-			title={'Estado del servidor: el mundo está <em>abierto.</em>'}
-			lead="Una vista sencilla para saber si puedes conectarte y cuánta gente está jugando, consultada directamente al servidor."
-		/>
-		<section class="content-section">
-			<div class="container status-overview">
-				<div class="status-card" aria-label="Estado del servidor" data-server-status-card>
-					<div class="status-card-top">
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero
+				chip="Estado"
+				title="Estado del servidor: el mundo está"
+				highlight="abierto."
+				lead="Una vista sencilla para saber si puedes conectarte y cuánta gente está jugando, consultada directamente al servidor."
+			/>
+		</SiteHeader>
+
+		<main>
+			<section class="container home-section phi-split">
+				<div class="status-panel" aria-label="Estado del servidor" data-server-status-card>
+					<div class="status-panel-top">
 						<strong>Cubusfera</strong>
 						<span class="status-live" data-server-status="live" data-status-state="loading">
 							<span class="status-dot" aria-hidden="true"></span>
 							<span data-server-status-text>Comprobando</span>
 						</span>
 					</div>
-					<p class="status-number"><span data-server-players-online>—</span> <small>/ <span data-server-players-max>—</span></small></p>
-					<p data-server-players-label>comprobando jugadores conectados</p>
-					<div class="status-domain"><span>Dirección</span><code>play.cubusfera.com</code></div>
+					<p class="status-panel-number"><span data-server-players-online>—</span><small>/ <span data-server-players-max>—</span></small></p>
+					<p class="status-panel-label" data-server-players-label>comprobando jugadores conectados</p>
+					<div class="status-panel-address">
+						<span class="home-kicker">Dirección</span>
+						<span class="srv-address">
+							<code>play.cubusfera.com</code>
+							<button class="srv-copy" type="button" data-copy-ip="play.cubusfera.com">
+								<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+								<span data-copy-label>Copiar</span>
+							</button>
+						</span>
+					</div>
 				</div>
-				<div class="prose">
+
+				<div class="phi-aside-copy">
+					<span class="home-kicker">Límite de 20</span>
 					<h2>Pequeño a propósito.</h2>
-					<p>El límite de jugadores no es una promesa de actividad constante. Es una forma de proteger el carácter de la comunidad y que las nuevas personas puedan encontrar su sitio.</p>
-					<p>La tarjeta consulta el estado real del servidor sin depender de APIs externas. Más adelante podrá mostrar también las cabezas de quienes estén conectados y la latencia.</p>
+					<p class="home-lead">El límite de jugadores no es una promesa de actividad constante. Es una forma de proteger el carácter de la comunidad y que las nuevas personas puedan encontrar su sitio.</p>
+					<p class="home-lead">La tarjeta consulta el estado real del servidor sin depender de APIs externas. Más adelante podrá mostrar también las cabezas de quienes estén conectados y la latencia.</p>
 					<a class="button" href="/como-entrar/">Cómo entrar</a>
 				</div>
-			</div>
-		</section>
-	</main>
-	<SiteFooter />
+			</section>
+		</main>
+
+		<SiteFooter />
+	</div>
 	<script is:inline src="/server-status.js"></script>
+	<script is:inline src="/copy-ip.js"></script>
 </Layout>

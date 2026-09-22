@@ -1,5 +1,8 @@
 ---
+import DiscordIcon from './DiscordIcon.astro';
+
 const year = new Date().getFullYear();
+const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 ---
 
 <footer class="site-footer">
@@ -17,18 +20,31 @@ const year = new Date().getFullYear();
 			</div>
 
 			<div class="footer-nav">
-				<ul class="footer-links">
-					<li><a href="/servidor/">El servidor</a></li>
-					<li><a href="/como-entrar/">Cómo entrar</a></li>
-					<li><a href="/normas/">Normas</a></li>
-					<li><a href="/preguntas-frecuentes/">Preguntas frecuentes</a></li>
-				</ul>
-				<ul class="footer-links">
-					<li><a href="/blog/">Blog</a></li>
-					<li><a href="/galeria/">Galería</a></li>
-					<li><a href="/estado/">Estado</a></li>
-					<li><a href="/bluemap/">BlueMap</a></li>
-				</ul>
+				<nav class="footer-col" aria-labelledby="footer-conocer">
+					<p class="footer-heading" id="footer-conocer">Conocer</p>
+					<ul class="footer-links">
+						<li><a href="/servidor/">El servidor</a></li>
+						<li><a href="/como-entrar/">Cómo entrar</a></li>
+						<li><a href="/normas/">Normas</a></li>
+						<li><a href="/preguntas-frecuentes/">Preguntas frecuentes</a></li>
+					</ul>
+				</nav>
+				<nav class="footer-col" aria-labelledby="footer-ver">
+					<p class="footer-heading" id="footer-ver">Ver</p>
+					<ul class="footer-links">
+						<li><a href="/blog/">Blog</a></li>
+						<li><a href="/galeria/">Galería</a></li>
+						<li><a href="/estado/">Estado</a></li>
+						<li><a href="/bluemap/">BlueMap</a></li>
+					</ul>
+				</nav>
+				<div class="footer-col footer-col-enter">
+					<p class="footer-heading">Entrar</p>
+					<ul class="footer-links">
+						<li><span class="footer-ip">play.cubusfera.com</span></li>
+						<li><a class="footer-discord" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Discord de Cubusfera</span></a></li>
+					</ul>
+				</div>
 			</div>
 		</div>
 
