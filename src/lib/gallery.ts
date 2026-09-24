@@ -20,6 +20,7 @@ export const shots: Shot[] = [
 	{ src: '/images/gallery/casa-entre-bambus.jpg', alt: 'Refugio de madera rodeado de vegetación y bambú', width: 1800, height: 716, caption: 'Un refugio para seguir construyendo.' },
 	{ src: '/images/gallery/granja-de-hierro-aldea.jpg', alt: 'Jugador con armadura de diamante frente a una granja de hierro junto a una aldea de sabana', width: 1800, height: 962, caption: 'Redstone con vistas a la aldea.', hero: { position: '54% 50%' } },
 	{ src: '/images/gallery/estructura-purpur-end.jpg', alt: 'Estructura de purpur de varias plantas sobre las islas exteriores del End, rodeada de plantas coro', width: 1800, height: 962, caption: 'Obras grandes en el End.', hero: { position: '54% 50%' } },
+	{ src: '/images/gallery/jugador-ovejas-aldea.webp', alt: 'Jugador con armadura de diamante sentado en un cojín naranja junto a unas ovejas, con una construcción de piedra, una hoguera y bambú detrás', width: 1800, height: 963, caption: 'Probando los nuevos cojines de la 26.3.', hero: { position: '50% 50%' } },
 ];
 
 const find = (file: string) => {
@@ -28,8 +29,8 @@ const find = (file: string) => {
 	return shot;
 };
 
-// Orden del carrusel del hero: la costa abre (es la imagen que ya conoce quien
-// ha visto la web) y el resto alterna superficie, redstone y End.
-export const heroShots = ['ferreritas-costa-atardecer.jpg', 'granja-de-hierro-aldea.jpg', 'estructura-purpur-end.jpg', 'veronicucha-fortaleza.jpg'].map(find);
+// Orden del carrusel del hero: abre la captura más reciente del mundo y el resto
+// alterna superficie, redstone y End.
+export const heroShots = ['jugador-ovejas-aldea.webp', 'granja-de-hierro-aldea.jpg', 'estructura-purpur-end.jpg', 'veronicucha-fortaleza.jpg'].map(find);
 
 export const shotByFile = find;

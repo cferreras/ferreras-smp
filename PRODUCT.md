@@ -4,7 +4,7 @@
 
 ## 1. Resumen
 
-Cubusfera es un servidor de Minecraft Java 26.2 pensado para personas mayores de 16 años que quieren jugar a un Minecraft cercano a Vanilla, técnico y comunitario, sin Pay2Win, economía artificial ni una acumulación de plugins.
+Cubusfera es un servidor de Minecraft Java 26.3 pensado para personas mayores de 16 años que quieren jugar a un Minecraft cercano a Vanilla, técnico y comunitario, sin Pay2Win, economía artificial ni una acumulación de plugins.
 
 La web debe presentar el servidor con honestidad, filtrar a quienes no encajan y llevar a las personas adecuadas a Discord. El objetivo no es convencer a todo el mundo ni maximizar registros: es atraer a una microcomunidad compatible, de hasta 20 miembros activos y sin superar los 20 jugadores conectados a la vez.
 
@@ -20,7 +20,7 @@ Lema propuesto:
 | Web | `cubusfera.com` |
 | Discord | [discord.com/invite/xW7yyHRJvE](https://discord.com/invite/xW7yyHRJvE) |
 | Edición | Minecraft Java |
-| Versión | Minecraft 26.2 |
+| Versión | Minecraft 26.3 |
 | Cliente | No se necesita instalar nada para entrar |
 | Servidor | Fabric, con optimizaciones y mejoras de calidad de vida |
 | Idioma | Español de España, informal |
@@ -124,7 +124,7 @@ El incumplimiento de las normas puede provocar la expulsión. El jugador expulsa
 
 ### Acceso y tecnología
 
-- Minecraft Java 26.2.
+- Minecraft Java 26.3.
 - Dirección de conexión: `play.cubusfera.com` (`mc.ferreras.dev` sigue funcionando). Dominio de la web: `cubusfera.com`.
 - Fabric se utiliza en el servidor para rendimiento, estabilidad y calidad de vida.
 - El cliente Vanilla normal puede conectarse sin instalar nada adicional.
