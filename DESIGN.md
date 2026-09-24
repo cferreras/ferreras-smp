@@ -65,7 +65,7 @@ La web debe conducir a Discord sin fingir que la whitelist es automática ni que
 
 ### 1.2 Lo que debe comunicar en pocos segundos
 
-- Es Minecraft Java, versión 26.2.
+- Es Minecraft Java, versión 26.3.
 - La experiencia es cercana a Vanilla y técnica.
 - Fabric y los mods están del lado del servidor; no hay modpack obligatorio.
 - La comunidad es pequeña, tranquila y exigente con el respeto.
@@ -433,7 +433,7 @@ Sección de papel fuerte con tres cards. El contenido debe responder dudas reale
 
 ### 6.2 El servidor `/servidor/`
 
-Usa `PageIntro` con la promesa “Minecraft sin adornos.”, imagen del mundo y nota `Java 26.2 · Fabric · cliente Vanilla compatible`.
+Usa `PageIntro` con la promesa “Minecraft sin adornos.”, imagen del mundo y nota `Java 26.3 · Fabric · cliente Vanilla compatible`.
 
 El cuerpo utiliza la ilustración transparente del aventurero en el rail lateral y prosa larga en la columna principal. El orden argumental es:
 

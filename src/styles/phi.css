@@ -2550,6 +2550,7 @@ html[data-theme='dark'] .phi {
 }
 
 .phi-prose img {
+	height: auto;
 	border-radius: var(--r-md);
 }
 
