@@ -10,7 +10,7 @@
 	--line: rgba(28, 21, 36, 0.12);
 	--line-strong: rgba(28, 21, 36, 0.24);
 
-	/* Violeta: el de marca es el del isotipo; el de banda baja medio tono
+	/* Violeta: el de marca es el de los iconos; el de banda baja medio tono
 	   para que el texto blanco encima pase AA (con #8b5cf6 se queda en 4.4). */
 	--violet-brand: #8b5cf6;
 	--violet: #7c3aed;
@@ -202,34 +202,15 @@ img {
 	color: var(--on-violet);
 }
 
-.brand img {
-	width: 2.875rem;
-	height: 2.875rem;
-	aspect-ratio: 1;
-	object-fit: contain;
+/* Wordmark vectorial: las letras heredan el color del enlace y el bloque de la C va en ámbar. */
+.brand-wordmark {
+	display: block;
+	width: auto;
+	height: 1.5rem;
+	aspect-ratio: 10044 / 1622;
 }
 
-.brand-copy {
-	display: grid;
-	gap: 1px;
-}
 
-.brand-name {
-	font-family: var(--display);
-	font-size: 1.1875rem;
-	font-weight: 600;
-	letter-spacing: -0.02em;
-	line-height: 1.1;
-}
-
-.brand-tagline {
-	color: var(--on-violet-3);
-	font-size: 0.6875rem;
-	font-weight: 700;
-	letter-spacing: 0.1em;
-	line-height: 1.2;
-	text-transform: uppercase;
-}
 
 .desktop-nav {
 	display: flex;
@@ -765,14 +746,10 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	padding-bottom: 3rem;
 }
 
-.site-footer .brand,
-.site-footer .brand-name {
+.site-footer .brand {
 	color: var(--footer-ink);
 }
 
-.site-footer .brand-tagline {
-	color: var(--footer-muted);
-}
 
 .footer-intro {
 	width: min(100%, 21.25rem);
@@ -888,9 +865,8 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 		gap: 0.75rem;
 	}
 
-	.brand img {
-		width: 2.5rem;
-		height: 2.5rem;
+	.brand-wordmark {
+		height: 1.375rem;
 	}
 
 	.desktop-nav,
@@ -934,19 +910,10 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 		gap: 0.75rem;
 	}
 
-	.brand img {
-		width: 2.375rem;
-		height: 2.375rem;
+	.brand-wordmark {
+		height: 1.25rem;
 	}
 
-	.brand-name {
-		font-size: 1.0625rem;
-	}
-
-	.brand-tagline {
-		font-size: 0.5625rem;
-		white-space: nowrap;
-	}
 
 	.theme-toggle {
 		width: 2.875rem;
@@ -977,13 +944,6 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 	.footer-bottom {
 		font-size: 0.875rem;
-	}
-}
-
-/* En pantallas muy estrechas el lema no cabe junto a los botones de tema y menú. */
-@media (max-width: 360px) {
-	.brand-tagline {
-		display: none;
 	}
 }
 

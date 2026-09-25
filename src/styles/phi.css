@@ -192,28 +192,11 @@ html[data-theme='dark'] .phi {
 	gap: var(--s-2);
 }
 
-.phi .brand img {
-	width: var(--s-4);
-	height: var(--s-4);
+.phi .brand-wordmark {
+	height: 1.75rem; /* el SVG lleva margen: las letras quedan a 26, paso √φ de la escala */
 }
 
-.phi .brand-copy {
-	gap: 2px;
-}
 
-.phi .brand-name {
-	font-size: var(--t-md);
-	line-height: 1;
-	letter-spacing: -0.01em;
-}
-
-.phi .brand-tagline {
-	color: var(--on-violet-2);
-	font-size: var(--t-xs);
-	letter-spacing: 0;
-	line-height: 1;
-	text-transform: none;
-}
 
 .phi .desktop-nav {
 	gap: var(--s-1);
@@ -776,11 +759,6 @@ html[data-theme='dark'] .phi {
 	line-height: var(--t-lg);
 }
 
-.phi .site-footer .brand img {
-	width: var(--s-4);
-	height: var(--s-4);
-}
-
 .phi .footer-nav {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -960,10 +938,6 @@ html[data-theme='dark'] .phi {
 	/* 8 de inset + 13 dentro de la banda = 21 px de margen lateral. */
 	.phi .container {
 		width: calc(100% - 1.625rem);
-	}
-
-	.phi .brand-tagline {
-		font-size: var(--t-xs);
 	}
 
 	.phi .mobile-menu summary {

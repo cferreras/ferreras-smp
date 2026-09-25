@@ -20,6 +20,14 @@ Vive en `src/styles/phi.css` y cuelga de la clase `.phi`, que envuelve cada pág
 - **Etiquetas del blog:** la categoría de cada artículo es su etiqueta y su color — Novedades `#7c3aed`, Guías `#3f7a1e`, Servidor `#f6b93b`. Una categoría nueva sale en gris hasta que se le añade su regla `[data-tag]` en `phi.css`.
 - **Portadas:** ilustraciones de bloques 3D sobre fondo liso del color de su etiqueta, en WebP a 1200 px.
 
+## Marca (septiembre 2026)
+
+- **Wordmark:** «Cubusfera» en contornos de Manrope ExtraBold (800) con su kerning y un apretado de −1,2 %. La única marca propia es un bloque ámbar `#F6B93B` en el hueco de la C («Núcleo»: un cubo dentro de la esfera). Sin subtítulo.
+- **Monograma:** la C sola con su bloque, para cualquier sitio cuadrado. Se centra sobre su caja exacta, sin compensaciones ópticas.
+- **Uso en la web:** `BrandWordmark.astro` dibuja el wordmark en línea; las letras toman `currentColor` (blanco en la banda violeta y en el pie) y el bloque va siempre en ámbar. Alto de 26 px.
+- **Ficheros** (`public/images/brand/`): `cubusfera-wordmark.svg` (tinta) y `-white.svg`; `cubusfera-monogram.svg`; `cubusfera-favicon.svg` (C al 68 % sobre violeta) y `/favicon.ico` (16, 32 y 48 px); iconos de app a 192/512 (C al 56 %), maskable (44 %) y touch icon (52 %); avatares de Discord `cubusfera-discord-light` (tinta sobre `#FDF8EF`) y `-dark` (claro sobre `#100F13`), en SVG y PNG de 1024 px, con la C al 50 % para el recorte circular.
+- **No hacer:** redibujar la C a mano, separar el bloque de la letra, ponerlo en otro color o añadir un isotipo aparte.
+
 ## 0. Propósito y fuente de verdad
 
 Cubusfera no necesita parecer el servidor más grande de Minecraft. La web debe ayudar a que una persona compatible reconozca el ambiente, entienda las condiciones de entrada y llegue a Discord con expectativas correctas.
@@ -258,7 +266,7 @@ La imagen es evidencia del mundo, no un fondo genérico. Se usan assets reales d
 - `public/images/gallery/`: capturas del mundo para el mosaico.
 - `public/images/brand/`: iconos, marca pixelada, mundo, aventurero y guía.
 - `public/images/minecraft-map-item.png`: placeholder visual de BlueMap.
-- `public/images/og-cubusfera.jpg`: Open Graph y previews.
+- `public/images/og-cubusfera-2026-09.jpg` (1200 × 630) y `-square.jpg` (1200 × 1200): Open Graph de la portada. Al cambiarlas, cambia el nombre: las redes las guardan en caché por URL.
 
 Dirección de imagen:
 

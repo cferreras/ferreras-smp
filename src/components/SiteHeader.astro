@@ -1,4 +1,5 @@
 ---
+import BrandWordmark from './BrandWordmark.astro';
 import DiscordIcon from './DiscordIcon.astro';
 import ThemeIcon from './ThemeIcon.astro';
 
@@ -29,11 +30,7 @@ const isCurrent =(href: string) => {
 <div class="topband">
 	<header class="container topbar">
 		<a class="brand" href="/" aria-label="Cubusfera, inicio">
-			<img src="/images/brand/cubusfera-isotype-on-violet.svg" alt="" width="512" height="512" />
-			<span class="brand-copy">
-				<span class="brand-name">Cubusfera</span>
-				<span class="brand-tagline">Survival vanilla técnico</span>
-			</span>
+			<BrandWordmark class="brand-wordmark" />
 		</a>
 
 		<nav class="desktop-nav" aria-label="Navegación principal">

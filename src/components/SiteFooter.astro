@@ -1,4 +1,5 @@
 ---
+import BrandWordmark from './BrandWordmark.astro';
 import DiscordIcon from './DiscordIcon.astro';
 
 const year = new Date().getFullYear();
@@ -10,11 +11,7 @@ const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 		<div class="footer-grid">
 			<div class="footer-intro">
 				<a class="brand" href="/" aria-label="Cubusfera, inicio">
-					<img src="/images/brand/cubusfera-isotype.svg" alt="" width="512" height="512" />
-					<span class="brand-copy">
-						<span class="brand-name">Cubusfera</span>
-						<span class="brand-tagline">Survival vanilla técnico</span>
-					</span>
+					<BrandWordmark class="brand-wordmark" />
 				</a>
 				<p>Servidor de Minecraft Java 26.3, vanilla técnico y comunitario. Hecho para una comunidad pequeña y constante.</p>
 			</div>
