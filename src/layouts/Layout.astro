@@ -1,11 +1,9 @@
 ---
 import '../styles/global.css';
 
-// La portada lleva dos imágenes OG: la horizontal va primero porque es la que
-// eligen Discord, Facebook y X; la cuadrada la aprovechan las plataformas que
-// enseñan miniaturas cuadradas (WhatsApp, Telegram) en vez de recortar la otra.
+// Una sola og:image: Open Graph no deja que cada plataforma elija la que mejor
+// le encaja, y Discord (entre otras) enseña todas las que haya en galería.
 const DEFAULT_IMAGE = '/images/og-cubusfera-2026-09.jpg';
-const SQUARE_IMAGE = '/images/og-cubusfera-2026-09-square.jpg';
 
 interface Props {
 	title?: string;
@@ -47,7 +45,6 @@ const brandIcon = '/images/brand/cubusfera-icon-512.png';
 const siteUrl = Astro.site ?? new URL('https://cubusfera.com');
 const canonical = new URL(Astro.url.pathname, siteUrl).toString();
 const imageUrl = new URL(image, siteUrl).toString();
-const squareImageUrl = image === DEFAULT_IMAGE ? new URL(SQUARE_IMAGE, siteUrl).toString() : undefined;
 const commonSchema = {
 	'@context': 'https://schema.org',
 	'@graph': [
@@ -110,14 +107,6 @@ const commonSchema = {
 		<meta property="og:image:width" content={String(imageWidth)} />
 		<meta property="og:image:height" content={String(imageHeight)} />
 		<meta property="og:image:alt" content={imageAlt} />
-		{squareImageUrl && (
-			<>
-				<meta property="og:image" content={squareImageUrl} />
-				<meta property="og:image:width" content="1200" />
-				<meta property="og:image:height" content="1200" />
-				<meta property="og:image:alt" content={imageAlt} />
-			</>
-		)}
 		<meta property="og:url" content={canonical} />
 		{type === 'article' && publishedAt && <meta property="article:published_time" content={publishedAt.toISOString()} />}
 		{type === 'article' && updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
