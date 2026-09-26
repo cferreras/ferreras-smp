@@ -3,6 +3,13 @@
 	"redirects": [
 		{ "source": "/sitemap.xml", "destination": "/sitemap-index.xml", "permanent": true }
 	],
+	"rewrites": [
+		{
+			"source": "/nx/app.js",
+			"destination": "https://plausible.carlosferreras.com/js/script.hash.outbound-links.pageview-props.tagged-events.js"
+		},
+		{ "source": "/nx/r/", "destination": "https://plausible.carlosferreras.com/api/event" }
+	],
 	"headers": [
 		{
 			"source": "/(.*)",
