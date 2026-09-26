@@ -122,6 +122,17 @@ const commonSchema = {
 		{structuredData.map((schema) => <script type="application/ld+json" set:html={JSON.stringify(schema)} />)}
 		<title>{title}</title>
 		<script is:inline src="/theme-init.js"></script>
+		{/* Analítica con Plausible autoalojado. La cola de window.plausible permite
+		    lanzar eventos personalizados antes de que cargue el script diferido. */}
+		<script
+			is:inline
+			defer
+			data-domain="cubusfera.com"
+			src="https://plausible.carlosferreras.com/js/script.hash.outbound-links.pageview-props.tagged-events.js"
+		></script>
+		<script is:inline>
+			window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };
+		</script>
 	</head>
 	<body>
 		<slot />
