@@ -822,10 +822,14 @@ a.home-video-player:focus-visible .home-video-play {
 	opacity: 0.88;
 }
 
+/* «Categoría ·» y la fecha no se parten por dentro: si no caben, la fecha
+   baja entera a la línea siguiente en vez de apilarse palabra a palabra. */
 .home-blog-meta {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: var(--s-1);
+	gap: 0 var(--s-1);
+	white-space: nowrap;
 	color: var(--muted);
 	font-family: var(--mono);
 	font-size: var(--t-xs);
@@ -1112,9 +1116,26 @@ a.home-video-player:focus-visible .home-video-play {
 		gap: var(--s-4);
 	}
 
-	/* 8 de inset + 13 dentro de la banda = 21 px de margen lateral. */
+	/* Toda la fila es el enlace: sin la flecha, el título gana el ancho que
+	   le faltaba y no se va a cinco líneas. */
+	.home-blog a {
+		grid-template-columns: var(--s-6) minmax(0, 1fr);
+		column-gap: var(--s-2);
+	}
+
+	.home-blog a > svg {
+		display: none;
+	}
+
+	.home-blog-title {
+		font-size: var(--t-sm);
+		line-height: var(--t-md);
+	}
+
+	/* 8 de inset + 21 dentro de la banda = 29 px de margen lateral: con 13 el
+	   texto quedaba pegado al borde de las cajas de color. */
 	.phi .container {
-		width: calc(100% - 1.625rem);
+		width: calc(100% - 2 * var(--s-3));
 	}
 
 	.phi .mobile-menu summary {
@@ -1690,8 +1711,8 @@ a.home-video-player:focus-visible .home-video-play {
 	   el borde de la pantalla y arranca alineada con el texto. */
 	.blog-filter-group {
 		flex-wrap: nowrap;
-		margin-inline: calc(-1 * (var(--inset) + var(--s-2)));
-		padding-inline: calc(var(--inset) + var(--s-2));
+		margin-inline: calc(-1 * (var(--inset) + var(--s-3)));
+		padding-inline: calc(var(--inset) + var(--s-3));
 		overflow-x: auto;
 		scrollbar-width: none;
 	}
