@@ -4,6 +4,7 @@ import Layout from '../layouts/Layout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import DiscordIcon from '../components/DiscordIcon.astro';
+import YouTubeIcon from '../components/YouTubeIcon.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { formatDate, slugify } from '../lib/blog';
 import { heroShots } from '../lib/gallery';
@@ -70,6 +71,15 @@ const [mainShot, ...sideShots] = [
 	},
 ];
 
+const video = {
+	title: 'Un servidor donde mandan las granjas',
+	author: 'Opinacraft',
+	url: 'https://www.youtube.com/shorts/_y24WEr57Vc',
+	channelUrl: 'https://www.youtube.com/@Opinacraft',
+	embedUrl: 'https://www.youtube-nocookie.com/embed/_y24WEr57Vc?autoplay=1&rel=0&playsinline=1',
+	poster: '/images/video-opinacraft.webp',
+};
+
 // Las tres entradas más recientes: el bloque se actualiza solo al publicar.
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
 	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
@@ -124,6 +134,7 @@ const structuredData = [
 					<div class="home-hero-actions">
 						<a class="button button-on-violet" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 						<a class="button-ghost button-ghost-on-violet" href="/como-entrar/">Cómo entrar</a>
+						<a class="home-hero-video-link" href="#video">Ver el vídeo ↓</a>
 					</div>
 
 					<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
@@ -264,6 +275,25 @@ const structuredData = [
 						</div>
 					</div>
 
+					{/* Fachada del Short: sin JavaScript es un enlace a YouTube; con él, el
+					    reproductor (youtube-nocookie) solo se carga al pulsar, para no
+					    pesar en la portada ni poner cookies antes de tiempo. */}
+					<div class="home-video" id="video">
+						<div class="home-video-copy">
+							<h3 class="home-kicker">En vídeo</h3>
+							<p class="home-video-title">{video.title}</p>
+							<p class="home-lead">Un minuto entre las granjas técnicas que tenemos funcionando, contado por {video.author}.</p>
+							<div class="home-video-actions">
+								<a class="button" href={video.url} target="_blank" rel="noopener noreferrer"><YouTubeIcon /> <span>Ver en YouTube</span></a>
+								<a class="button-ghost" href={video.channelUrl} target="_blank" rel="noopener noreferrer"><YouTubeIcon /> <span>Canal de {video.author}</span></a>
+							</div>
+						</div>
+						<a class="home-video-player" href={video.url} target="_blank" rel="noopener noreferrer" data-video-embed={video.embedUrl} data-video-title={video.title} aria-label={`Reproducir el vídeo «${video.title}»`}>
+							<img src={video.poster} alt="" width="540" height="960" loading="lazy" decoding="async" />
+							<span class="home-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg></span>
+						</a>
+					</div>
+
 					<div class="home-blog">
 						<h3 class="home-kicker">Del blog</h3>
 						<ul>
@@ -300,4 +330,5 @@ const structuredData = [
 	<script is:inline src="/server-status.js"></script>
 	<script is:inline src="/copy-ip.js"></script>
 	<script is:inline src="/hero-slides.js"></script>
+	<script is:inline src="/video-facade.js"></script>
 </Layout>

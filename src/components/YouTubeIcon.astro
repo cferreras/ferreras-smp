@@ -1,0 +1,14 @@
+---
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faYoutube } from '@fortawesome/free-brands-svg-icons';
+
+const youtubeSvg = icon(faYoutube, {
+	attributes: {
+		'aria-hidden': 'true',
+		focusable: 'false',
+	},
+	classes: ['youtube-icon'],
+}).html.join('');
+---
+
+<Fragment set:html={youtubeSvg} />
