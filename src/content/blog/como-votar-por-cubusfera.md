@@ -27,7 +27,7 @@ relatedLinks:
 
 Cubusfera ya tiene **sistema de votos**. Estamos en dos listas de servidores, [40servidoresmc](https://www.40servidoresmc.es/cubusfera/votar) y [Opinacraft](https://www.opinacraft.com/servers/cubusfera/votar), y desde dentro del juego puedes consultar los enlaces con `/votar`.
 
-Votar no cambia nada del servidor ni te da ventaja sobre nadie. Lo que hace es ayudar a que nos encuentre más gente que busca justo lo que somos.
+> Votar no cambia nada del servidor ni te da ventaja sobre nadie. Lo que hace es ayudar a que nos encuentre más gente que busca justo lo que somos.
 
 ## Por qué nos importan los votos
 
@@ -63,7 +63,9 @@ No hace falta que guardes estos enlaces. En el servidor, escribe:
 
 y te aparecen los enlaces a las dos listas en el chat.
 
-Cuando votas, **sale un mensaje en el chat confirmando el voto**. Si has votado y no lo ves, lo más habitual es un nick mal escrito en 40servidoresmc: revisa que coincida exactamente con el tuyo. Si aun así no aparece, avisa en [Discord](https://discord.com/invite/xW7yyHRJvE) y lo miramos.
+Cuando votas, **sale un mensaje en el chat confirmando el voto**.
+
+> ¿Has votado y no ves el mensaje? Lo más habitual es un nick mal escrito en 40servidoresmc: revisa que coincida exactamente con el tuyo. Si aun así no aparece, avisa en [Discord](https://discord.com/invite/xW7yyHRJvE) y lo miramos.
 
 ## En resumen
 
