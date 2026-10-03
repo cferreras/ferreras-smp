@@ -1055,14 +1055,7 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 
 	.home-video {
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-4);
 		margin-top: var(--s-5);
-	}
-
-	.home-video-player {
-		justify-self: center;
-		width: min(100%, 20rem);
 	}
 
 	.home-blog ul {
@@ -1110,6 +1103,13 @@ a.home-video-player:focus-visible .home-video-play {
 
 	.home-hero-video-link {
 		margin-left: 0;
+	}
+
+	/* En el móvil el Short ocupa el ancho de la columna, como las capturas,
+	   en vez de quedarse centrado con un margen propio. */
+	.home-video {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--s-4);
 	}
 
 	/* 8 de inset + 13 dentro de la banda = 21 px de margen lateral. */
