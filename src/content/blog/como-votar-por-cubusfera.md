@@ -11,7 +11,7 @@ tags:
   - comunidad
   - votos
 image: "/images/blog/como-votar-por-cubusfera.webp"
-imageAlt: "Marca de verificación hecha de bloques violeta sobre fondo lila"
+imageAlt: "Urna de votación de bloques violeta con una papeleta marcada entrando por la ranura"
 draft: false
 relatedLinks:
   - title: "Cómo entrar al servidor"
