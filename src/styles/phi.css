@@ -717,18 +717,71 @@ a.home-video-player:focus-visible .home-video-play {
 	transform: translate(-50%, -50%) scale(1.06);
 }
 
+/* Acceso al vídeo desde el hero: una miniatura vertical del Short con su play,
+   a la altura de los botones, para que se lea como vídeo y no como un enlace más. */
 .home-hero-video-link {
-	align-self: center;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s-2);
 	margin-left: var(--s-1);
 	color: var(--on-violet);
+}
+
+.home-hero-video-thumb {
+	position: relative;
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	width: 2.125rem; /* 34 × 55: el 9:16 del Short a la altura de los botones */
+	height: var(--s-5);
+	overflow: hidden;
+	border: 2px solid rgba(255, 255, 255, 0.7);
+	border-radius: var(--r-sm);
+	box-shadow: 0 0.5rem 1.25rem rgba(38, 8, 92, 0.3);
+	transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.home-hero-video-thumb img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 40%; /* la granja, no el subtítulo del vídeo */
+}
+
+.home-hero-video-thumb svg {
+	position: relative;
+	width: 1rem;
+	height: 1rem;
+	fill: #ffffff;
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+
+.home-hero-video-text {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.2;
+}
+
+.home-hero-video-label {
 	font-size: var(--t-sm);
 	font-weight: 800;
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
+}
+
+.home-hero-video-meta {
+	opacity: 0.75;
+	font-size: var(--t-xs);
+	font-weight: 700;
 }
 
 .home-hero-video-link:hover {
 	color: var(--gold);
+}
+
+.home-hero-video-link:hover .home-hero-video-thumb {
+	border-color: var(--gold);
+	transform: rotate(-4deg) scale(1.06);
 }
 
 .home-blog {
@@ -769,10 +822,14 @@ a.home-video-player:focus-visible .home-video-play {
 	opacity: 0.88;
 }
 
+/* «Categoría ·» y la fecha no se parten por dentro: si no caben, la fecha
+   baja entera a la línea siguiente en vez de apilarse palabra a palabra. */
 .home-blog-meta {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: var(--s-1);
+	gap: 0 var(--s-1);
+	white-space: nowrap;
 	color: var(--muted);
 	font-family: var(--mono);
 	font-size: var(--t-xs);
@@ -1002,14 +1059,7 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 
 	.home-video {
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-4);
 		margin-top: var(--s-5);
-	}
-
-	.home-video-player {
-		justify-self: center;
-		width: min(100%, 20rem);
 	}
 
 	.home-blog ul {
@@ -1055,9 +1105,37 @@ a.home-video-player:focus-visible .home-video-play {
 		--r-lg: var(--s-3);
 	}
 
-	/* 8 de inset + 13 dentro de la banda = 21 px de margen lateral. */
+	.home-hero-video-link {
+		margin-left: 0;
+	}
+
+	/* En el móvil el Short ocupa el ancho de la columna, como las capturas,
+	   en vez de quedarse centrado con un margen propio. */
+	.home-video {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--s-4);
+	}
+
+	/* Toda la fila es el enlace: sin la flecha, el título gana el ancho que
+	   le faltaba y no se va a cinco líneas. */
+	.home-blog a {
+		grid-template-columns: var(--s-6) minmax(0, 1fr);
+		column-gap: var(--s-2);
+	}
+
+	.home-blog a > svg {
+		display: none;
+	}
+
+	.home-blog-title {
+		font-size: var(--t-sm);
+		line-height: var(--t-md);
+	}
+
+	/* 8 de inset + 21 dentro de la banda = 29 px de margen lateral: con 13 el
+	   texto quedaba pegado al borde de las cajas de color. */
 	.phi .container {
-		width: calc(100% - 1.625rem);
+		width: calc(100% - 2 * var(--s-3));
 	}
 
 	.phi .mobile-menu summary {
@@ -1633,8 +1711,8 @@ a.home-video-player:focus-visible .home-video-play {
 	   el borde de la pantalla y arranca alineada con el texto. */
 	.blog-filter-group {
 		flex-wrap: nowrap;
-		margin-inline: calc(-1 * (var(--inset) + var(--s-2)));
-		padding-inline: calc(var(--inset) + var(--s-2));
+		margin-inline: calc(-1 * (var(--inset) + var(--s-3)));
+		padding-inline: calc(var(--inset) + var(--s-3));
 		overflow-x: auto;
 		scrollbar-width: none;
 	}

@@ -134,7 +134,16 @@ const structuredData = [
 					<div class="home-hero-actions">
 						<a class="button button-on-violet" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 						<a class="button-ghost button-ghost-on-violet" href="/como-entrar/">Cómo entrar</a>
-						<a class="home-hero-video-link" href="#video">Ver el vídeo ↓</a>
+						<a class="home-hero-video-link" href="#video">
+							<span class="home-hero-video-thumb" aria-hidden="true">
+								<img src={video.poster} alt="" width="540" height="960" decoding="async" />
+								<svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg>
+							</span>
+							<span class="home-hero-video-text">
+								<span class="home-hero-video-label">Ver el vídeo</span>
+								<span class="home-hero-video-meta">Short de {video.author}</span>
+							</span>
+						</a>
 					</div>
 
 					<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
