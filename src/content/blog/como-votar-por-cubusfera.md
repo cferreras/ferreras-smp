@@ -51,7 +51,7 @@ Puedes votar en las dos listas. Cada una tiene sus normas:
 [Votar en Opinacraft →](https://www.opinacraft.com/servers/cubusfera/votar)
 
 - Tienes que **iniciar sesión** con tu cuenta de Opinacraft para votar.
-- Puedes votar **cada 24 horas**. Si ya has votado, la página te dice cuánto falta para el siguiente.
+- Puedes votar **cada 23 horas**. Si ya has votado, la página te dice cuánto falta para el siguiente.
 
 ## Dentro del juego: /votar
 
@@ -70,7 +70,7 @@ Cuando votas, **sale un mensaje en el chat confirmando el voto**.
 ## En resumen
 
 - Vota en [40servidoresmc](https://www.40servidoresmc.es/cubusfera/votar) con tu nick exacto, una vez al día.
-- Vota en [Opinacraft](https://www.opinacraft.com/servers/cubusfera/votar) con tu cuenta, cada 24 horas.
+- Vota en [Opinacraft](https://www.opinacraft.com/servers/cubusfera/votar) con tu cuenta, cada 23 horas.
 - Usa `/votar` en el juego para tener los enlaces a mano y fíjate en el mensaje del chat que confirma tu voto.
 
 Votar te lleva un minuto al día y es la forma más directa de ayudar a que Cubusfera siga creciendo con gente que encaja. Gracias por echarnos una mano.
