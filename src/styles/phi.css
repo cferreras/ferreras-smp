@@ -717,18 +717,71 @@ a.home-video-player:focus-visible .home-video-play {
 	transform: translate(-50%, -50%) scale(1.06);
 }
 
+/* Acceso al vídeo desde el hero: una miniatura vertical del Short con su play,
+   a la altura de los botones, para que se lea como vídeo y no como un enlace más. */
 .home-hero-video-link {
-	align-self: center;
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s-2);
 	margin-left: var(--s-1);
 	color: var(--on-violet);
+}
+
+.home-hero-video-thumb {
+	position: relative;
+	display: grid;
+	place-items: center;
+	flex-shrink: 0;
+	width: 2.125rem; /* 34 × 55: el 9:16 del Short a la altura de los botones */
+	height: var(--s-5);
+	overflow: hidden;
+	border: 2px solid rgba(255, 255, 255, 0.7);
+	border-radius: var(--r-sm);
+	box-shadow: 0 0.5rem 1.25rem rgba(38, 8, 92, 0.3);
+	transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.home-hero-video-thumb img {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center 40%; /* la granja, no el subtítulo del vídeo */
+}
+
+.home-hero-video-thumb svg {
+	position: relative;
+	width: 1rem;
+	height: 1rem;
+	fill: #ffffff;
+	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+
+.home-hero-video-text {
+	display: flex;
+	flex-direction: column;
+	line-height: 1.2;
+}
+
+.home-hero-video-label {
 	font-size: var(--t-sm);
 	font-weight: 800;
-	text-decoration: underline;
-	text-underline-offset: 0.2em;
+}
+
+.home-hero-video-meta {
+	opacity: 0.75;
+	font-size: var(--t-xs);
+	font-weight: 700;
 }
 
 .home-hero-video-link:hover {
 	color: var(--gold);
+}
+
+.home-hero-video-link:hover .home-hero-video-thumb {
+	border-color: var(--gold);
+	transform: rotate(-4deg) scale(1.06);
 }
 
 .home-blog {
@@ -1053,6 +1106,10 @@ a.home-video-player:focus-visible .home-video-play {
 	.phi {
 		--inset: var(--s-1);
 		--r-lg: var(--s-3);
+	}
+
+	.home-hero-video-link {
+		margin-left: 0;
 	}
 
 	/* 8 de inset + 13 dentro de la banda = 21 px de margen lateral. */
