@@ -123,12 +123,17 @@ const commonSchema = {
 		<title>{title}</title>
 		<script is:inline src="/theme-init.js"></script>
 		{/* Analítica con Plausible autoalojado. La cola de window.plausible permite
-		    lanzar eventos personalizados antes de que cargue el script diferido. */}
+		    lanzar eventos personalizados antes de que cargue el script diferido.
+		    El script y los eventos pasan por el propio dominio (rewrites de
+		    vercel.json) con rutas neutras para que los bloqueadores no los corten.
+		    El endpoint de eventos acaba en barra para no chocar con la redirección
+		    de trailingSlash, que convertiría el POST en un 308. */}
 		<script
 			is:inline
 			defer
 			data-domain="cubusfera.com"
-			src="https://plausible.carlosferreras.com/js/script.hash.outbound-links.pageview-props.tagged-events.js"
+			data-api="/nx/r/"
+			src="/nx/app.js"
 		></script>
 		<script is:inline>
 			window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };
