@@ -135,7 +135,7 @@ La cabecera mantiene una navegación corta y prioriza las rutas de decisión. El
 | `/blog/[slug]/` | Profundizar en un tema concreto | Cabecera de artículo + portada + prosa | Enlaces relacionados / acceso |
 | `/galeria/` | Mostrar el mundo y su ambiente real | Mosaico editorial de capturas | Conocer el servidor / Discord |
 | `/estado/` | Responder “¿puedo conectarme ahora?” | Tarjeta de estado + explicación | Cómo entrar |
-| `/bluemap/` | Comunicar una integración futura sin fingirla | Empty state editorial + imagen | Galería o Discord |
+| `/bluemap/` | Explorar el mundo y localizar estructuras | Visor BlueMap incrustado + capas de marcadores | Pantalla completa / Discord |
 
 ### 3.1 Recorrido principal
 
@@ -265,7 +265,6 @@ La imagen es evidencia del mundo, no un fondo genérico. Se usan assets reales d
 - `public/images/blog/`: portadas de artículos y hero de la portada.
 - `public/images/gallery/`: capturas del mundo para el mosaico.
 - `public/images/brand/`: iconos, marca pixelada, mundo, aventurero y guía.
-- `public/images/minecraft-map-item.png`: placeholder visual de BlueMap.
 - `public/images/og-cubusfera-2026-09.jpg` (1200 × 630) y `-square.jpg` (1200 × 1200): Open Graph de la portada. Al cambiarlas, cambia el nombre: las redes las guardan en caché por URL.
 
 Dirección de imagen:
@@ -530,9 +529,9 @@ El texto debe comunicar la pérdida de datos cuando la consulta falla. El futuro
 
 ### 6.10 BlueMap `/bluemap/`
 
-Es un empty state honesto. El titular informa de que el mapa está por llegar; la imagen de mapa de Minecraft sirve como expectativa visual, no como falsa integración.
+BlueMap está activo en `https://mapa.cubusfera.com/`. La página lo incrusta en un `iframe` a todo el ancho del contenedor, en rectángulo áureo apaisado (en móvil, 70 vh de alto), con un enlace para abrirlo a pantalla completa.
 
-El cuerpo deriva a la galería y a Discord. Cuando BlueMap esté activo, la página debe evolucionar a una vista funcional conservando el mismo encabezado, tono y CTA de respaldo.
+Debajo, en reparto áureo, se listan las capas de marcadores de estructuras por dimensión (Overworld, Nether, End) sin recuentos, porque crecen al generarse mundo. La columna estrecha explica cómo usar las capas y conserva el CTA de respaldo a Discord y la galería. La página es indexable.
 
 ## 7. Responsive y reflow
 

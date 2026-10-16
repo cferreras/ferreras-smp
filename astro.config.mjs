@@ -5,7 +5,7 @@ import vercel from '@astrojs/vercel';
 
 // Rutas con noindex en el layout: se excluyen también del sitemap para no
 // pedirle a Google que rastree lo que luego le decimos que no indexe.
-const noindexRoutes = ['/estado/', '/bluemap/'];
+const noindexRoutes = ['/estado/'];
 
 // https://astro.build/config
 export default defineConfig({
