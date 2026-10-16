@@ -185,7 +185,6 @@ html[data-theme='dark'] .phi {
 	min-height: var(--s-6);
 	gap: var(--s-4);
 	padding-block: 0;
-	border-bottom: 1px solid rgba(255, 255, 255, 0.16);
 }
 
 .phi .brand {
@@ -196,30 +195,70 @@ html[data-theme='dark'] .phi {
 	height: 1.75rem; /* el SVG lleva margen: las letras quedan a 26, paso √φ de la escala */
 }
 
-
-
+/* Navegación en cápsula: los enlaces viven en una píldora translúcida centrada
+   entre la marca y las acciones; el activo se rellena de blanco, como los botones. */
 .phi .desktop-nav {
-	gap: var(--s-1);
+	gap: 0.125rem;
+	margin-inline: auto;
+	padding: 0.25rem;
+	border: 1px solid rgba(255, 255, 255, 0.16);
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.1);
 }
 
 .phi .desktop-nav a {
 	display: flex;
 	align-items: center;
-	min-height: 2.75rem;
-	padding: 0 var(--s-2);
-}
-
-.phi .desktop-nav a[aria-current='page'] {
-	font-weight: 800;
+	min-height: 2.125rem;
+	padding: 0 var(--s-3);
+	border-radius: 999px;
+	font-size: var(--t-sm);
+	transition: background-color 160ms ease, color 160ms ease;
 }
 
 .phi .desktop-nav a::after {
-	right: var(--s-2);
-	bottom: var(--s-1);
-	left: var(--s-2);
+	content: none;
+}
+
+.phi .desktop-nav a:hover,
+.phi .desktop-nav a:focus-visible {
+	background: rgba(255, 255, 255, 0.14);
+	outline: none;
+}
+
+.phi .desktop-nav a:focus-visible {
+	box-shadow: inset 0 0 0 2px #ffffff;
+}
+
+.phi .desktop-nav a[aria-current='page'] {
+	background: #ffffff;
+	color: var(--violet-ink);
+	font-weight: 800;
+}
+
+/* El menú móvil marca el activo con el mismo relleno en vez de un subrayado
+   que ocupaba todo el ancho del panel. */
+.phi .mobile-menu-panel > a:not(.header-cta)::after {
+	content: none;
+}
+
+.phi .mobile-menu-panel > a:not(.header-cta) {
+	transition: background-color 160ms ease, color 160ms ease;
+}
+
+.phi .mobile-menu-panel > a:not(.header-cta):hover,
+.phi .mobile-menu-panel > a:not(.header-cta):focus-visible {
+	background: rgba(255, 255, 255, 0.12);
+}
+
+.phi .mobile-menu-panel > a:not(.header-cta)[aria-current='page'] {
+	background: #ffffff;
+	color: var(--violet-ink);
+	font-weight: 800;
 }
 
 .phi .topbar > .header-cta {
+	flex-shrink: 0;
 	min-height: 2.75rem;
 	gap: var(--s-1);
 	padding-inline: var(--s-3);
@@ -569,21 +608,19 @@ html[data-theme='dark'] .phi {
 
 /* ---------- 03 · El mundo ---------- */
 
+/* Accesos de cabecera de sección: botones rellenos compactos, a la altura del
+   botón de Discord de la navbar. */
 .home-links {
 	display: flex;
+	flex-wrap: wrap;
 	justify-content: flex-end;
-	gap: var(--s-4);
-	font-size: var(--t-sm);
-	font-weight: 800;
-	line-height: var(--t-lg);
+	gap: var(--s-2);
 }
 
-.home-links a {
-	color: var(--home-accent);
-}
-
-.home-links a:hover {
-	color: var(--ink);
+.phi .home-links .button {
+	min-height: 2.75rem;
+	padding-inline: var(--s-3);
+	white-space: nowrap;
 }
 
 .home-mosaic {
@@ -792,6 +829,14 @@ a.home-video-player:focus-visible .home-video-play {
 	color: var(--muted);
 }
 
+/* Kicker a la izquierda y enlace al blog a la derecha, en la misma línea. */
+.home-blog-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--s-3);
+}
+
 .home-blog ul {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -801,7 +846,7 @@ a.home-video-player:focus-visible .home-video-play {
 	list-style: none;
 }
 
-.home-blog a {
+.home-blog li > a {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: start;
@@ -818,7 +863,7 @@ a.home-video-player:focus-visible .home-video-play {
 	transition: opacity 160ms ease;
 }
 
-.home-blog a:hover .home-blog-thumb {
+.home-blog li > a:hover .home-blog-thumb {
 	opacity: 0.88;
 }
 
@@ -857,7 +902,7 @@ a.home-video-player:focus-visible .home-video-play {
 	transition: color 160ms ease;
 }
 
-.home-blog svg {
+.home-blog li svg {
 	flex-shrink: 0;
 	width: var(--t-md);
 	height: var(--t-md);
@@ -870,11 +915,11 @@ a.home-video-player:focus-visible .home-video-play {
 	transition: transform 160ms ease;
 }
 
-.home-blog a:hover .home-blog-title {
+.home-blog li > a:hover .home-blog-title {
 	color: var(--home-accent);
 }
 
-.home-blog a:hover svg {
+.home-blog li > a:hover svg {
 	transform: translate(2px, -2px);
 }
 
@@ -960,13 +1005,44 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 }
 
-@media (max-width: 940px) {
-	.phi .container {
-		width: calc(100% - 4.25rem);
+/* Con la cápsula entera no cabe también la etiqueta de Discord: el botón se
+   queda en icono redondo, del mismo tamaño que el del tema. */
+@media (max-width: 1280px) {
+	.phi .topbar {
+		gap: var(--s-3);
+	}
+
+	.phi .topbar > .header-cta {
+		width: 2.75rem;
+		padding-inline: 0;
+	}
+
+	.phi .topbar > .header-cta span {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
+	}
+
+	.phi .topbar > .header-cta + .theme-menu {
+		margin-left: calc(var(--s-1) - var(--s-3));
+	}
+}
+
+/* Por debajo de esto la cápsula ya no respira: pasa al menú desplegable. */
+@media (max-width: 1100px) {
+	.phi .desktop-nav,
+	.phi .topbar > .header-cta {
+		display: none;
+	}
+
+	.phi .mobile-menu {
+		display: block;
 	}
 
 	.phi .topbar {
-		min-height: 4.75rem;
 		gap: var(--s-1);
 	}
 
@@ -978,6 +1054,16 @@ a.home-video-player:focus-visible .home-video-play {
 
 	.phi .topbar > .header-cta + .theme-menu {
 		margin-left: 0;
+	}
+}
+
+@media (max-width: 940px) {
+	.phi .container {
+		width: calc(100% - 4.25rem);
+	}
+
+	.phi .topbar {
+		min-height: 4.75rem;
 	}
 
 	.home-section,
@@ -1075,7 +1161,7 @@ a.home-video-player:focus-visible .home-video-play {
 		border-bottom: 1px solid var(--line-strong);
 	}
 
-	.home-blog a {
+	.home-blog li > a {
 		grid-template-columns: var(--s-6) minmax(0, 1fr) auto;
 		align-items: center;
 		padding-block: var(--s-2);
@@ -1086,7 +1172,7 @@ a.home-video-player:focus-visible .home-video-play {
 		border-radius: var(--r-sm);
 	}
 
-	.home-blog svg {
+	.home-blog li svg {
 		margin-top: 0;
 	}
 
@@ -1118,12 +1204,12 @@ a.home-video-player:focus-visible .home-video-play {
 
 	/* Toda la fila es el enlace: sin la flecha, el título gana el ancho que
 	   le faltaba y no se va a cinco líneas. */
-	.home-blog a {
+	.home-blog li > a {
 		grid-template-columns: var(--s-6) minmax(0, 1fr);
 		column-gap: var(--s-2);
 	}
 
-	.home-blog a > svg {
+	.home-blog li > a > svg {
 		display: none;
 	}
 
@@ -1169,6 +1255,13 @@ a.home-video-player:focus-visible .home-video-play {
 	.phi .button,
 	.phi .button-ghost {
 		width: 100%;
+	}
+
+	/* Los accesos de sección son secundarios: se reparten la fila en vez de
+	   apilarse a todo el ancho. */
+	.phi .home-links .button {
+		flex: 1 1 0;
+		width: auto;
 	}
 
 	.home-hero {
@@ -2392,14 +2485,10 @@ a.home-video-player:focus-visible .home-video-play {
 	grid-column: 2 / 4;
 }
 
+/* Botón que cierra una sección de imagen (galería, mapa), alineado a la derecha. */
 .gal-more {
 	margin-top: var(--s-5);
-	font-weight: 800;
 	text-align: right;
-}
-
-.gal-more a {
-	color: var(--home-accent);
 }
 
 /* ---------- Estado ---------- */
@@ -2479,22 +2568,51 @@ a.home-video-player:focus-visible .home-video-play {
 
 /* ---------- BlueMap ---------- */
 
-/* El mapa es un PNG con transparencia: va sobre un panel pergamino en
-   rectángulo áureo apaisado (727 × 449). */
-.map-figure {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+/* El visor de BlueMap ocupa todo el contenedor en rectángulo áureo
+   apaisado. En móvil el áureo queda demasiado bajo para navegar, así que
+   pasa a una altura mínima. */
+.map-frame {
+	overflow: hidden;
 	aspect-ratio: 1.618 / 1;
-	padding: var(--s-4);
+	min-height: 28rem;
+	border: 1px solid var(--line);
 	border-radius: var(--r-md);
 	background: var(--amber-soft);
 }
 
-.map-figure img {
+.map-frame iframe {
+	display: block;
 	width: 100%;
 	height: 100%;
-	object-fit: contain;
+	border: 0;
+}
+
+.map-layers {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--s-5) var(--gutter);
+}
+
+.map-layers-column {
+	display: grid;
+	gap: var(--s-5);
+	align-content: start;
+}
+
+.map-layers h3 {
+	font-size: var(--t-md);
+	line-height: var(--t-lg);
+}
+
+@media (max-width: 620px) {
+	.map-frame {
+		aspect-ratio: auto;
+		height: 70vh;
+	}
+
+	.map-layers {
+		grid-template-columns: minmax(0, 1fr);
+	}
 }
 
 /* ---------- Artículo ---------- */

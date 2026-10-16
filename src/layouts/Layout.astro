@@ -81,7 +81,7 @@ const commonSchema = {
 		<meta name="viewport" content="width=device-width" />
 		<meta name="theme-color" content="#7c3aed" />
 		<meta name="description" content={description} />
-		{/* Las páginas de utilidad (estado, BlueMap) se marcan con noindex: siguen
+		{/* Las páginas de utilidad (como estado) se marcan con noindex: siguen
 		    siendo útiles para quien navega, pero no aportan contenido suficiente
 		    para el índice y arrastran la calidad percibida del dominio. */}
 		<meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
@@ -142,5 +142,6 @@ const commonSchema = {
 	<body>
 		<slot />
 		<script is:inline src="/theme-toggle.js"></script>
+		<script is:inline src="/back-to-top.js"></script>
 	</body>
 </html>

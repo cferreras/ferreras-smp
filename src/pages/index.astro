@@ -264,8 +264,8 @@ const structuredData = [
 							<h2>Así se ve el mundo ahora mismo.</h2>
 						</div>
 						<p class="home-links">
-							<a href="/galeria/">Ver la galería →</a>
-							<a href="/bluemap/">Abrir el mapa →</a>
+							<a class="button" href="/galeria/">Ver la galería</a>
+							<a class="button" href="/bluemap/">Abrir el mapa</a>
 						</p>
 					</div>
 
@@ -304,7 +304,10 @@ const structuredData = [
 					</div>
 
 					<div class="home-blog">
-						<h3 class="home-kicker">Del blog</h3>
+						<div class="home-blog-head">
+							<h3 class="home-kicker">Del blog</h3>
+							<p class="home-links"><a class="button" href="/blog/">Ver más del blog</a></p>
+						</div>
 						<ul>
 							{posts.map((post) => (
 								<li data-tag={post.tag}>

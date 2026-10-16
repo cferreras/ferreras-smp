@@ -51,7 +51,7 @@ Conseguir miembros adecuados que lleguen desde la web, entren en Discord, conozc
 - Explicar claramente qué hace diferente a Cubusfera.
 - Filtrar de antemano a personas que buscan otro tipo de servidor.
 - Mostrar que existe una comunidad pequeña, activa y real.
-- Dar contexto mediante artículos, capturas, estado del servidor y, más adelante, un mapa BlueMap.
+- Dar contexto mediante artículos, capturas, estado del servidor y el mapa BlueMap.
 - Facilitar información práctica sin obligar a instalar mods o registrarse en la web.
 
 ### Métrica principal
@@ -200,7 +200,7 @@ Componente minimalista que muestra:
 
 ### BlueMap
 
-Página o acceso futuro a un mapa interactivo BlueMap. La integración está prevista, pero todavía no está activada.
+Mapa interactivo 3D del mundo, alojado en `https://mapa.cubusfera.com/` e incrustado en `/bluemap/`. Incluye marcadores de estructuras (aldeas, fortalezas, ciudades antiguas, bastiones, ciudades del End…) con sus coordenadas, agrupados en capas por dimensión.
 
 ### Preguntas frecuentes
 
@@ -245,7 +245,7 @@ La conversión principal es el clic hacia Discord y, en última instancia, que e
 - Portada con propuesta de valor, filtro de audiencia y CTA a Discord.
 - Navegación responsive en móvil y ordenador.
 - Tema claro/oscuro siguiendo el sistema y con cambio manual persistente.
-- Páginas de servidor, acceso, normas, blog, galería, estado, preguntas frecuentes y espacio preparado para BlueMap.
+- Páginas de servidor, acceso, normas, blog, galería, estado, preguntas frecuentes y mapa BlueMap.
 - Dirección `play.cubusfera.com` para conectarse al servidor y `cubusfera.com` para la web.
 - Estado online/offline y jugadores conectados con cabezas apiladas.
 - Contenidos Markdown.
@@ -257,7 +257,6 @@ La conversión principal es el clic hacia Discord y, en última instancia, que e
 ## 16. Pendientes y decisiones abiertas
 
 - Confirmar el enlace final del formulario de Google.
-- Activar BlueMap y definir su URL pública.
 - Definir la fuente técnica para el estado online, jugadores y skins/cabezas.
 - Confirmar cómo se desactiva el CTA cuando se alcance el límite de 20 plazas.
 - Revisar los avisos y requisitos legales de formularios y analítica antes de publicar en producción.
