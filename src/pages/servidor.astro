@@ -5,6 +5,8 @@ import SiteHeader from '../components/SiteHeader.astro';
 import InnerHero from '../components/InnerHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { breadcrumbSchema } from '../lib/schema';
+import { toCard } from '../lib/blog';
+import { getCollection } from 'astro:content';
 import '../styles/phi.css';
 
 const serverAddress = 'play.cubusfera.com';
@@ -12,15 +14,40 @@ export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'El servidor' }])];
 
-const specs = [
-	{ label: 'Versión', value: 'Minecraft Java 26.3' },
-	{ label: 'Dirección', value: serverAddress, address: true },
-	{ label: 'Límite', value: '20 jugadores' },
-	{ label: 'Whitelist', value: 'Sí, con Discord, formulario y revisión manual' },
-	{ label: 'PvP', value: 'Habilitado, solo con consentimiento' },
-	{ label: 'Mundo', value: 'Persistente, sin reinicios previstos' },
-	{ label: 'Mods', value: 'Server-side, sin modpack obligatorio' },
+// Lo esencial va en el panel de la IP; el resto, en tarjetas debajo.
+const stats = [
+	{ label: 'Versión', value: 'Java 26.3' },
+	{ label: 'Plazas', value: '20 jugadores' },
+	{ label: 'Cliente', value: 'Vanilla' },
 ];
+
+const specs = [
+	{
+		label: 'Whitelist',
+		value: 'Con Discord, formulario y revisión manual',
+		icon: '<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z" /><path d="m8.75 12 2.25 2.25 4.25-4.5" />',
+	},
+	{
+		label: 'PvP',
+		value: 'Habilitado, solo con consentimiento',
+		icon: '<path d="M14.5 17.5 3 6V3h3l11.5 11.5" /><path d="m13 19 6-6M16 16l4 4M19 21l2-2" /><path d="M9.5 6.5 13 3h3v3l-3.5 3.5" /><path d="m5 14 4 4M7 17l-3 3M3 19l2 2" />',
+	},
+	{
+		label: 'Mundo',
+		value: 'Persistente, sin reinicios previstos',
+		icon: '<circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.5 3.75 5.5 3.75 9S14.5 18.5 12 21c-2.5-2.5-3.75-5.5-3.75-9S9.5 5.5 12 3z" />',
+	},
+	{
+		label: 'Mods',
+		value: 'Server-side, sin modpack obligatorio',
+		icon: '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9z" /><path d="m4 7.5 8 4.5 8-4.5M12 12v9" />',
+	},
+];
+
+// La tarjeta de la ficha enseña la última entrada publicada: se renueva sola.
+const [latest] = (await getCollection('blog', ({ data }) => !data.draft))
+	.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+	.map(toCard);
 
 const yes = [
 	'Una comunidad pequeña, con un máximo previsto de 20 miembros activos.',
@@ -53,35 +80,53 @@ const no = [
 
 		<main>
 			<section class="container srv-ficha" aria-labelledby="ficha">
-				<figure class="srv-figure">
-					<img src="/images/servidor-bloque-comando.webp" alt="Bloque de Minecraft en tonos violeta con grabados pixelados en cada cara" width="1024" height="1536" loading="lazy" />
-				</figure>
-
 				<div class="home-head-title">
 					<span class="home-kicker">01 — Ficha</span>
 					<h2 id="ficha">Ficha del servidor.</h2>
 				</div>
 
+				<div class="srv-ip">
+					<div class="srv-ip-address">
+						<p class="home-kicker">Dirección</p>
+						<p class="srv-ip-value">{serverAddress}</p>
+					</div>
+					<button class="copy-ip" type="button" data-copy-ip={serverAddress}>
+						<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+						<span data-copy-label>Copiar IP</span>
+					</button>
+					<dl class="srv-stats">
+						{stats.map((stat) => (
+							<div class="srv-stat">
+								<dt>{stat.label}</dt>
+								<dd>{stat.value}</dd>
+							</div>
+						))}
+					</dl>
+				</div>
+
 				<dl class="srv-specs">
 					{specs.map((spec) => (
 						<div class="srv-spec">
+							<span class="srv-spec-icon" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={spec.icon} /></span>
 							<dt>{spec.label}</dt>
-							<dd>
-								{spec.address ? (
-									<span class="srv-address">
-										<code>{spec.value}</code>
-										<button class="srv-copy" type="button" data-copy-ip={spec.value}>
-											<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
-											<span data-copy-label>Copiar</span>
-										</button>
-									</span>
-								) : (
-									spec.value
-								)}
-							</dd>
+							<dd>{spec.value}</dd>
 						</div>
 					))}
 				</dl>
+
+				{latest && (
+					<a class="srv-post" href={latest.href} data-tag={latest.tag}>
+						<img src={latest.image} alt={latest.imageAlt} width="1200" height="800" loading="lazy" decoding="async" />
+						<span class="srv-post-body">
+							<span class="srv-post-meta">
+								<span class="blog-tag">{latest.category}</span>
+								<span class="blog-meta">{latest.meta}</span>
+							</span>
+							<span class="srv-post-kicker">Lo último del blog</span>
+							<span class="srv-post-title">{latest.title}</span>
+						</span>
+					</a>
+				)}
 			</section>
 
 			<section class="container srv-ritmo" aria-labelledby="ritmo">

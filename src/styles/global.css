@@ -13,20 +13,20 @@
 	/* Esmeralda: la banda es más oscura que las caras del logo para que el
 	   isotipo destaque encima (su cara derecha, #12804c, se perdería sobre un
 	   verde medio) y el texto blanco pase AA con holgura. */
-	--brand: #0e5234;
-	--brand-deep: #0a3d26;
-	--brand-ink: #0b2e1e;
+	--brand: #00523f;
+	--brand-deep: #013d2e;
+	--brand-ink: #042e23;
 	--brand-soft: #dcf5e7;
 	/* Verde para texto e iconos sobre papel: la cara derecha del logo. */
 	--brand-accent: #12804c;
-	--code-ink: #0e5234;
+	--code-ink: #00523f;
 	--on-brand: #ffffff;
 	--on-brand-2: #d3eedf;
 	--on-brand-3: #c2e6d2;
 
 	/* Menta: la cara superior del logo, para la banda secundaria. */
 	--mint: #45d98a;
-	--on-mint: #0b2e1e;
+	--on-mint: #042e23;
 	--on-mint-2: #134a30;
 
 	/* Lapislázuli: tercer tono de las tarjetas, para no tener tres verdes. */
@@ -45,7 +45,7 @@
 	--green: #5da551;
 	--yellow: #f1b718;
 
-	--ip-panel: #0b2e1e;
+	--ip-panel: #042e23;
 	--ip-label: #6ee8a8;
 	--ip-note: #a9dcc0;
 
@@ -60,7 +60,7 @@
 	--radius-card: 1.875rem;
 	--radius-soft: 1.375rem;
 	--shadow-card: 0 0.75rem 1.875rem rgba(20, 32, 26, 0.07);
-	--shadow: 0 1rem 2.5rem rgba(10, 46, 30, 0.14);
+	--shadow: 0 1rem 2.5rem rgba(4, 46, 35, 0.14);
 
 	--display: 'Fredoka', 'Trebuchet MS', sans-serif;
 	--body: 'Nunito', 'Segoe UI', sans-serif;
@@ -80,7 +80,7 @@ html[data-theme='dark'] {
 
 	/* Las bandas no se apagan, se hunden: mismo tono, menos luz, para que la
 	   pantalla no queme de noche y el texto siga pasando AA. */
-	--brand: #0b3f28;
+	--brand: #013f30;
 	--brand-soft: #173a28;
 	--brand-accent: #6ee8a8;
 	/* El chip de código va sobre --brand-soft: en oscuro necesita tinta clara
@@ -107,7 +107,7 @@ html[data-theme='dark'] {
 	--coral-soft: #3a1f19;
 	--coral-ink: #f0a894;
 
-	--ip-panel: #07170f;
+	--ip-panel: #051711;
 
 	--footer-bg: #080c0a;
 	--shadow-card: 0 0.75rem 1.875rem rgba(0, 0, 0, 0.4);
