@@ -1852,15 +1852,14 @@ a.home-video-player:focus-visible .home-video-play {
    El servidor
    ========================================================================== */
 
-/* 01 · Ficha: la columna estrecha la ocupa la tarjeta del último artículo, a
-   toda la altura; la ancha, el titular, el panel de la IP y las cuatro
-   tarjetas de datos (2 × 2). */
+/* 01 · Ficha: la ilustración ocupa la columna estrecha a toda la altura; la
+   ancha lleva el titular, el panel de la IP y las cuatro tarjetas (2 × 2). */
 .srv-ficha {
 	display: grid;
 	grid-template-areas:
-		'post head'
-		'post ip'
-		'post specs';
+		'fig head'
+		'fig ip'
+		'fig specs';
 	grid-template-columns: minmax(0, 1fr) minmax(0, 1.618fr);
 	grid-template-rows: auto auto 1fr;
 	column-gap: var(--gutter);
@@ -1869,6 +1868,27 @@ a.home-video-player:focus-visible .home-video-play {
 
 .srv-ficha .home-head-title {
 	grid-area: head;
+}
+
+/* En escritorio va la versión vertical de la ilustración (1:2) y se recorta
+   lo justo para llenar la columna. El fondo es el menta de la propia imagen,
+   fijo en los dos temas. */
+.srv-figure {
+	display: flex;
+	grid-area: fig;
+	overflow: hidden;
+	border-radius: var(--r-md);
+	background: #dcf8e7;
+}
+
+.srv-figure picture {
+	display: contents;
+}
+
+.srv-figure img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 }
 
 /* Panel oscuro, como el de la portada: dirección y botón arriba, y debajo las
@@ -1894,6 +1914,13 @@ a.home-video-player:focus-visible .home-video-play {
 
 .srv-ip .home-kicker {
 	color: var(--ip-label);
+}
+
+.phi .srv-ip-status {
+	gap: var(--s-1);
+	margin: var(--s-1) 0 0;
+	font-size: var(--t-sm);
+	line-height: var(--t-lg);
 }
 
 .srv-ip-value {
@@ -2008,79 +2035,6 @@ a.home-video-player:focus-visible .home-video-play {
 	line-height: var(--s-4);
 }
 
-/* Tarjeta del último artículo: la imagen llena lo que deja el texto y se
-   recorta por los lados (las portadas llevan el motivo centrado). */
-.srv-post {
-	display: flex;
-	flex-direction: column;
-	grid-area: post;
-	overflow: hidden;
-	border: 1px solid var(--line);
-	border-radius: var(--r-md);
-	background: var(--surface);
-	color: var(--ink);
-	text-decoration: none;
-}
-
-.srv-post img {
-	flex: 1 1 0;
-	width: 100%;
-	min-height: 18rem;
-	object-fit: cover;
-	background: var(--brand-soft);
-	transition: transform 320ms ease;
-}
-
-.srv-post:hover img {
-	transform: scale(1.03);
-}
-
-.srv-post-body {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	padding: var(--s-3);
-	background: var(--surface);
-}
-
-.srv-post-meta {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--s-1) var(--s-2);
-}
-
-.srv-post-kicker {
-	margin-top: var(--s-3);
-	color: var(--home-accent);
-	font-family: var(--mono);
-	font-size: var(--t-xs);
-	font-weight: 600;
-	letter-spacing: 0.08em;
-	line-height: var(--s-3);
-	text-transform: uppercase;
-}
-
-.srv-post-title {
-	margin-top: var(--s-1);
-	font-family: var(--display);
-	font-size: var(--t-lg);
-	font-weight: 600;
-	letter-spacing: -0.015em;
-	line-height: var(--s-4);
-}
-
-.srv-post:hover .srv-post-title {
-	text-decoration: underline;
-	text-decoration-thickness: 2px;
-	text-underline-offset: 4px;
-}
-
-.srv-post:focus-visible {
-	outline: 3px solid var(--gold);
-	outline-offset: 3px;
-}
-
 /* Dirección con botón de copiar en línea (la usa también /estado/). */
 .srv-address {
 	display: flex;
@@ -2185,19 +2139,78 @@ a.home-video-player:focus-visible .home-video-play {
 	line-height: var(--t-lg);
 }
 
-.srv-note a {
-	display: inline-flex;
+.phi .srv-note .button {
 	align-self: flex-start;
-	align-items: center;
-	gap: var(--s-1);
+	min-height: 2.75rem;
 	margin-top: var(--s-3);
-	color: var(--home-accent);
-	font-weight: 800;
+	padding-inline: var(--s-3);
+	font-size: var(--t-sm);
+}
+
+/* 03 · Lo que corre detrás: seis tarjetas (3 × 2) con los mods de cada grupo
+   en píldoras, y el botón a la lista completa debajo. */
+.srv-stack-section {
+	padding-bottom: var(--s-7);
+}
+
+.srv-stack {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--gutter);
+	margin-top: var(--s-6);
+	padding: 0;
+	list-style: none;
+}
+
+.srv-stack-card {
+	display: flex;
+	flex-direction: column;
+	padding: var(--s-4);
+	border: 1px solid var(--line);
+	border-radius: var(--r-md);
+	background: var(--surface);
+}
+
+.srv-stack-card h3 {
+	margin-top: var(--s-3);
+	font-size: var(--t-lg);
+	letter-spacing: -0.015em;
+	line-height: var(--s-4);
+}
+
+.srv-stack-card p {
+	margin-top: var(--s-1);
+	color: var(--muted-strong);
+	font-size: var(--t-sm);
 	line-height: var(--t-lg);
 }
 
-.srv-note a:hover .blog-arrow {
-	transform: translate(2px, -2px);
+.srv-mods {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s-1);
+	margin-top: auto;
+	padding: var(--s-3) 0 0;
+	list-style: none;
+}
+
+.srv-mods li {
+	display: inline-flex;
+	align-items: center;
+	min-height: var(--t-lg);
+	padding-inline: var(--s-2);
+	border-radius: 999px;
+	background: var(--brand-soft);
+	color: var(--code-ink);
+	font-family: var(--mono);
+	font-size: var(--t-xs);
+	font-weight: 600;
+}
+
+.srv-stack-more {
+	display: flex;
+	justify-content: center;
+	margin-top: var(--s-5);
 }
 
 /* 03 · Qué sí, qué no: panel claro para el sí y oscuro para el no. */
@@ -2284,27 +2297,30 @@ a.home-video-player:focus-visible .home-video-play {
 	.srv-ficha {
 		grid-template-areas:
 			'head'
+			'fig'
 			'ip'
-			'specs'
-			'post';
+			'specs';
 		grid-template-columns: minmax(0, 1fr);
 		grid-template-rows: none;
 		padding-top: var(--s-6);
 	}
 
-	.srv-ip {
+	.srv-figure {
 		margin-top: var(--s-4);
+		aspect-ratio: 1.618 / 1;
 	}
 
-	.srv-post {
+	.srv-ip {
 		margin-top: var(--gutter);
 	}
 
-	.srv-post img {
-		flex: none;
-		height: auto;
-		min-height: 0;
-		aspect-ratio: 1.618 / 1;
+	.srv-stack {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		margin-top: var(--s-4);
+	}
+
+	.srv-stack-section {
+		padding-bottom: var(--s-6);
 	}
 
 	.srv-ritmo {
@@ -2396,13 +2412,60 @@ a.home-video-player:focus-visible .home-video-play {
 		line-height: var(--t-lg);
 	}
 
-	.srv-post {
+	.srv-figure {
+		margin-top: var(--s-3);
+	}
+
+	.srv-ip {
 		margin-top: var(--s-2);
 	}
 
-	.srv-post-title {
+	.srv-stack {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--s-2);
+		margin-top: var(--s-3);
+	}
+
+	/* Icono y título en una línea para no alargar seis tarjetas apiladas. */
+	.srv-stack-card {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		column-gap: var(--s-2);
+		align-items: center;
+		padding: var(--s-3);
+	}
+
+	.srv-stack-card .srv-spec-icon {
+		width: var(--s-4);
+		height: var(--s-4);
+	}
+
+	.srv-stack-card .srv-spec-icon svg {
+		width: var(--t-md);
+		height: var(--t-md);
+	}
+
+	.srv-stack-card h3 {
+		margin-top: 0;
 		font-size: var(--t-md);
 		line-height: var(--t-lg);
+	}
+
+	.srv-stack-card p,
+	.srv-mods {
+		grid-column: 1 / -1;
+	}
+
+	.srv-stack-card p {
+		margin-top: var(--s-2);
+	}
+
+	.srv-stack-more {
+		margin-top: var(--s-4);
+	}
+
+	.phi .srv-stack-more .button {
+		width: 100%;
 	}
 
 	.srv-ritmo .home-lead {
