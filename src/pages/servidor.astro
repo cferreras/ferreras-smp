@@ -12,14 +12,74 @@ export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'El servidor' }])];
 
+// Lo esencial va en el panel de la IP; el resto, en tarjetas debajo.
+const stats = [
+	{ label: 'Versión', value: 'Java 26.3' },
+	{ label: 'Plazas', value: '20 jugadores' },
+	{ label: 'Cliente', value: 'Vanilla' },
+];
+
 const specs = [
-	{ label: 'Versión', value: 'Minecraft Java 26.3' },
-	{ label: 'Dirección', value: serverAddress, address: true },
-	{ label: 'Límite', value: '20 jugadores' },
-	{ label: 'Whitelist', value: 'Sí, con Discord, formulario y revisión manual' },
-	{ label: 'PvP', value: 'Habilitado, solo con consentimiento' },
-	{ label: 'Mundo', value: 'Persistente, sin reinicios previstos' },
-	{ label: 'Mods', value: 'Server-side, sin modpack obligatorio' },
+	{
+		label: 'Whitelist',
+		value: 'Con Discord, formulario y revisión manual',
+		icon: '<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z" /><path d="m8.75 12 2.25 2.25 4.25-4.5" />',
+	},
+	{
+		label: 'PvP',
+		value: 'Habilitado, solo con consentimiento',
+		icon: '<path d="M14.5 17.5 3 6V3h3l11.5 11.5" /><path d="m13 19 6-6M16 16l4 4M19 21l2-2" /><path d="M9.5 6.5 13 3h3v3l-3.5 3.5" /><path d="m5 14 4 4M7 17l-3 3M3 19l2 2" />',
+	},
+	{
+		label: 'Mundo',
+		value: 'Persistente, sin reinicios previstos',
+		icon: '<circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3c2.5 2.5 3.75 5.5 3.75 9S14.5 18.5 12 21c-2.5-2.5-3.75-5.5-3.75-9S9.5 5.5 12 3z" />',
+	},
+	{
+		label: 'Mods',
+		value: 'Server-side, sin modpack obligatorio',
+		icon: '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9z" /><path d="m4 7.5 8 4.5 8-4.5M12 12v9" />',
+	},
+];
+
+// Lo que corre en el servidor, resumido de «Qué mods hay en Cubusfera».
+const stack = [
+	{
+		title: 'Registro del mundo',
+		text: 'Cada bloque que se pone o se quita queda anotado, así que un destrozo se investiga y se deshace.',
+		mods: ['Ledger'],
+		icon: '<path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1L3.5 8.5" /><path d="M3.5 3.5v5h5" /><path d="M12 7.5V12l3 2" />',
+	},
+	{
+		title: 'Juego limpio',
+		text: 'Los minerales no se ven a través de la piedra, y la moderación tiene sus herramientas.',
+		mods: ['AntiXray', 'BanHammer', 'LuckPerms'],
+		icon: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />',
+	},
+	{
+		title: 'Chat con Discord',
+		text: 'El chat del juego y el de Discord van unidos: hablas con quien esté dentro sin conectarte.',
+		mods: ['Discord MC Chat'],
+		icon: '<path d="M20.5 12a8.5 8.5 0 0 1-12.4 7.5L3.5 20.5l1-4.4A8.5 8.5 0 1 1 20.5 12z" />',
+	},
+	{
+		title: 'Comodidades',
+		text: 'Cambios cortos en acciones concretas, sin una progresión nueva ni objetos ajenos al juego.',
+		mods: ['RightClickHarvest', 'Armed Stands', 'Clumps'],
+		icon: '<path d="M12 21v-9" /><path d="M12 12c0-4-3-6.5-7.5-6.5 0 4.5 3 6.5 7.5 6.5zM12 14.5c0-4 3-6.5 7.5-6.5 0 4.5-3 6.5-7.5 6.5z" />',
+	},
+	{
+		title: 'Rendimiento',
+		text: 'Optimizaciones que no se ven: menos carga, chunks que se generan sin tirones y redstone más fina.',
+		mods: ['Lithium', 'C2ME', 'ScalableLux', 'Alternate Current'],
+		icon: '<path d="M4.2 18.5a9 9 0 1 1 15.6 0" /><path d="m12 13.5 4-5" /><circle cx="12" cy="13.5" r="1.5" />',
+	},
+	{
+		title: 'Datapacks',
+		text: 'Se duerme sin coordinar a todo el servidor y los élitros los puede conseguir más de una persona.',
+		mods: ['Server Sleep', 'All Mob Heads', 'Elytra Vaults'],
+		icon: '<path d="m12 3 9 5-9 5-9-5z" /><path d="m3 12.5 9 5 9-5" /><path d="m3 17 9 5 9-5" />',
+	},
 ];
 
 const yes = [
@@ -54,7 +114,12 @@ const no = [
 		<main>
 			<section class="container srv-ficha" aria-labelledby="ficha">
 				<figure class="srv-figure">
-					<img src="/images/servidor-bloque-comando.webp" alt="Bloque de Minecraft en tonos violeta con grabados pixelados en cada cara" width="1024" height="1536" loading="lazy" />
+					{/* Vertical para la columna estrecha de escritorio; horizontal cuando
+					    la ficha se apila. */}
+					<picture>
+						<source media="(min-width: 941px)" srcset="/images/servidor-esmeralda-vertical.webp" width="760" height="1520" />
+						<img src="/images/servidor-esmeralda.webp" alt="Cubo verde de esmeralda con un hueco esférico tallado en la esquina frontal, el logo de Cubusfera, flotando sobre fondo menta" width="1200" height="800" loading="lazy" decoding="async" />
+					</picture>
 				</figure>
 
 				<div class="home-head-title">
@@ -62,26 +127,39 @@ const no = [
 					<h2 id="ficha">Ficha del servidor.</h2>
 				</div>
 
+				<div class="srv-ip">
+					<div class="srv-ip-address">
+						<p class="home-kicker">Dirección</p>
+						<p class="srv-ip-value">{serverAddress}</p>
+						<p class="hero-status srv-ip-status" data-server-status="hero" data-status-state="loading" role="status">
+							<span class="status-dot" aria-hidden="true"></span>
+							<span data-server-status-text>Comprobando servidor…</span>
+						</p>
+					</div>
+					<button class="copy-ip" type="button" data-copy-ip={serverAddress}>
+						<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+						<span data-copy-label>Copiar IP</span>
+					</button>
+					<dl class="srv-stats">
+						{stats.map((stat) => (
+							<div class="srv-stat">
+								<dt>{stat.label}</dt>
+								<dd>{stat.value}</dd>
+							</div>
+						))}
+					</dl>
+				</div>
+
 				<dl class="srv-specs">
 					{specs.map((spec) => (
 						<div class="srv-spec">
+							<span class="srv-spec-icon" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={spec.icon} /></span>
 							<dt>{spec.label}</dt>
-							<dd>
-								{spec.address ? (
-									<span class="srv-address">
-										<code>{spec.value}</code>
-										<button class="srv-copy" type="button" data-copy-ip={spec.value}>
-											<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
-											<span data-copy-label>Copiar</span>
-										</button>
-									</span>
-								) : (
-									spec.value
-								)}
-							</dd>
+							<dd>{spec.value}</dd>
 						</div>
 					))}
 				</dl>
+
 			</section>
 
 			<section class="container srv-ritmo" aria-labelledby="ritmo">
@@ -95,24 +173,48 @@ const no = [
 				</div>
 
 				<aside class="srv-note">
-					<div class="home-card-icon home-card-icon-lime">
-						<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 9-11.5h-6.5z" /></svg>
+					<div class="home-card-icon home-card-icon-brand">
+						<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2 5-5 2 2-5z" /></svg>
 					</div>
-					<span class="home-kicker">Cliente vanilla</span>
-					<h3>No instalas nada.</h3>
-					<p>El cliente Vanilla normal se conecta sin instalar nada. Fabric y sus mods corren en el servidor para mejorar la comodidad, el mapa y la construcción técnica.</p>
-					<a href="/blog/que-mods-hay-ferreras-smp/">
-						Qué mods hay en Cubusfera
-						<svg class="blog-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
-					</a>
+					<span class="home-kicker">Mapa en 3D</span>
+					<h3>Echa un vistazo antes de entrar.</h3>
+					<p>BlueMap enseña el mundo desde el navegador, tal como está ahora: bases, granjas, caminos y lo que queda por explorar.</p>
+					<a class="button" href="/bluemap/">Abrir el mapa</a>
 				</aside>
 			</section>
 
-			<section class="home-band home-band-lime" aria-labelledby="si-no">
+			<section class="container srv-stack-section" aria-labelledby="stack">
+				<div class="home-head">
+					<div class="home-head-title">
+						<span class="home-kicker">03 — Lo que corre detrás</span>
+						<h2 id="stack">Mods en el servidor. Nada en tu juego.</h2>
+					</div>
+					<p class="home-lead">Fabric y sus mods corren en el servidor, así que entras con el Minecraft Java de siempre, sin modpack ni instalar nada.</p>
+				</div>
+
+				<ul class="srv-stack">
+					{stack.map((item) => (
+						<li class="srv-stack-card">
+							<span class="srv-spec-icon" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={item.icon} /></span>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+							<ul class="srv-mods" aria-label="Mods">
+								{item.mods.map((mod) => <li>{mod}</li>)}
+							</ul>
+						</li>
+					))}
+				</ul>
+
+				<p class="srv-stack-more">
+					<a class="button" href="/blog/que-mods-hay-ferreras-smp/">Ver la lista completa de mods</a>
+				</p>
+			</section>
+
+			<section class="home-band home-band-mint" aria-labelledby="si-no">
 				<div class="container">
 					<div class="home-head">
 						<div class="home-head-title">
-							<span class="home-kicker">03 — Qué sí, qué no</span>
+							<span class="home-kicker">04 — Qué sí, qué no</span>
 							<h2 id="si-no">Qué sí. Qué no.</h2>
 						</div>
 						<p class="home-lead">La lista corta, para que sepas a qué atenerte antes de pedir la whitelist.</p>
@@ -155,4 +257,5 @@ const no = [
 		<SiteFooter />
 	</div>
 	<script is:inline src="/copy-ip.js"></script>
+	<script is:inline src="/server-status.js"></script>
 </Layout>

@@ -25,7 +25,7 @@
 		options.forEach((option) => {
 			option.setAttribute('aria-checked', String(option.dataset.themeOption === preference));
 		});
-		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', document.documentElement.dataset.theme === 'dark' ? '#100f13' : '#7c3aed');
+		document.querySelector('meta[name="theme-color"]')?.setAttribute('content', document.documentElement.dataset.theme === 'dark' ? '#0d1210' : '#00523f');
 
 		if (persist) {
 			try {

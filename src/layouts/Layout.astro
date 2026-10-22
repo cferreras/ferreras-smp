@@ -3,7 +3,7 @@ import '../styles/global.css';
 
 // Una sola og:image: Open Graph no deja que cada plataforma elija la que mejor
 // le encaja, y Discord (entre otras) enseña todas las que haya en galería.
-const DEFAULT_IMAGE = '/images/og-cubusfera-2026-09.jpg';
+const DEFAULT_IMAGE = '/images/og-cubusfera-2026-10.jpg';
 
 interface Props {
 	title?: string;
@@ -79,7 +79,7 @@ const commonSchema = {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<meta name="theme-color" content="#7c3aed" />
+		<meta name="theme-color" content="#00523f" />
 		<meta name="description" content={description} />
 		{/* Las páginas de utilidad (como estado) se marcan con noindex: siguen
 		    siendo útiles para quien navega, pero no aportan contenido suficiente
@@ -89,12 +89,12 @@ const commonSchema = {
 		<meta name="generator" content={Astro.generator} />
 		<link rel="canonical" href={canonical} />
 		{/* El .ico va primero como respaldo para Safari y el rastreador de favicons
-		    de Google, que prefiere ICO o PNG. En el favicon la C ocupa el 68 % del
-		    alto (el 56 % en los iconos de app) para que el bloque ámbar se vea a 16 px. */}
+		    de Google, que prefiere ICO o PNG. El favicon es el isotipo casi a sangre
+		    y sin fondo: sus tres verdes se leen igual en pestañas claras y oscuras. */}
 		<link rel="icon" href="/favicon.ico" sizes="48x48" />
 		<link rel="icon" type="image/svg+xml" href="/images/brand/cubusfera-favicon.svg" />
 		{/* iOS compone el icono sobre negro y no respeta la transparencia, así que
-		    el touch icon va a sangre sobre el violeta de marca. */}
+		    el touch icon va a sangre sobre el verde de marca. */}
 		<link rel="apple-touch-icon" sizes="180x180" href="/images/brand/cubusfera-apple-touch-180.png" />
 		<link rel="manifest" href="/site.webmanifest" />
 		<link rel="sitemap" href="/sitemap-index.xml" />
