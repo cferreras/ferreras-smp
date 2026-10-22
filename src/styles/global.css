@@ -4,34 +4,39 @@
 	--paper: #fdf8ef;
 	--paper-strong: #ffffff;
 	--surface: #ffffff;
-	--ink: #1c1524;
-	--muted: #574d63;
-	--muted-strong: #3d3548;
-	--line: rgba(28, 21, 36, 0.12);
-	--line-strong: rgba(28, 21, 36, 0.24);
+	--ink: #14201a;
+	--muted: #4d5c54;
+	--muted-strong: #34413a;
+	--line: rgba(20, 32, 26, 0.12);
+	--line-strong: rgba(20, 32, 26, 0.24);
 
-	/* Violeta: el de marca es el de los iconos; el de banda baja medio tono
-	   para que el texto blanco encima pase AA (con #8b5cf6 se queda en 4.4). */
-	--violet-brand: #8b5cf6;
-	--violet: #7c3aed;
-	--violet-deep: #5b21b6;
-	--violet-ink: #4c1d95;
-	--violet-soft: #ede4ff;
-	--code-ink: #5b21b6;
-	--on-violet: #ffffff;
-	--on-violet-2: #e6dcff;
-	--on-violet-3: #ddd0ff;
+	/* Esmeralda: la banda es más oscura que las caras del logo para que el
+	   isotipo destaque encima (su cara derecha, #12804c, se perdería sobre un
+	   verde medio) y el texto blanco pase AA con holgura. */
+	--brand: #0e5234;
+	--brand-deep: #0a3d26;
+	--brand-ink: #0b2e1e;
+	--brand-soft: #dcf5e7;
+	/* Verde para texto e iconos sobre papel: la cara derecha del logo. */
+	--brand-accent: #12804c;
+	--code-ink: #0e5234;
+	--on-brand: #ffffff;
+	--on-brand-2: #d3eedf;
+	--on-brand-3: #c2e6d2;
 
-	--lime: #7bc043;
-	--lime-deep: #4c8a25;
-	--lime-soft: #e4f6d5;
-	--on-lime: #16250c;
-	--on-lime-2: #29400f;
+	/* Menta: la cara superior del logo, para la banda secundaria. */
+	--mint: #45d98a;
+	--on-mint: #0b2e1e;
+	--on-mint-2: #134a30;
+
+	/* Lapislázuli: tercer tono de las tarjetas, para no tener tres verdes. */
+	--lapis-deep: #2a56a0;
+	--lapis-soft: #e1ebfa;
 
 	--amber: #f6b93b;
 	--amber-deep: #b57d0a;
 	--amber-soft: #fdeecd;
-	--on-amber: #1c1524;
+	--on-amber: #14201a;
 	--on-amber-2: #4a3405;
 
 	--coral-soft: #fde5e0;
@@ -40,22 +45,22 @@
 	--green: #5da551;
 	--yellow: #f1b718;
 
-	--ip-panel: #16250c;
-	--ip-label: #a8d97e;
-	--ip-note: #b9dc9a;
+	--ip-panel: #0b2e1e;
+	--ip-label: #6ee8a8;
+	--ip-note: #a9dcc0;
 
-	--footer-bg: #1c1524;
+	--footer-bg: #14201a;
 	--footer-ink: #ffffff;
-	--footer-link: #d9d2e0;
-	--footer-muted: #a99fb4;
-	--footer-faint: #7d7488;
+	--footer-link: #d2ddd6;
+	--footer-muted: #9fb0a6;
+	--footer-faint: #7a8b81;
 	--footer-line: rgba(255, 255, 255, 0.12);
 
 	--radius-band: 3.5rem;
 	--radius-card: 1.875rem;
 	--radius-soft: 1.375rem;
-	--shadow-card: 0 0.75rem 1.875rem rgba(28, 21, 36, 0.07);
-	--shadow: 0 1rem 2.5rem rgba(35, 25, 62, 0.14);
+	--shadow-card: 0 0.75rem 1.875rem rgba(20, 32, 26, 0.07);
+	--shadow: 0 1rem 2.5rem rgba(10, 46, 30, 0.14);
 
 	--display: 'Fredoka', 'Trebuchet MS', sans-serif;
 	--body: 'Nunito', 'Segoe UI', sans-serif;
@@ -64,32 +69,34 @@
 }
 
 html[data-theme='dark'] {
-	--paper: #100f13;
-	--paper-strong: #1b1922;
-	--surface: #1b1922;
-	--ink: #f6f2ec;
-	--muted: #b1a8bc;
-	--muted-strong: #d3ccdb;
-	--line: rgba(246, 242, 236, 0.14);
-	--line-strong: rgba(246, 242, 236, 0.28);
+	--paper: #0d1210;
+	--paper-strong: #161d19;
+	--surface: #161d19;
+	--ink: #f2f5f0;
+	--muted: #a9b8af;
+	--muted-strong: #ccd8d0;
+	--line: rgba(242, 245, 240, 0.14);
+	--line-strong: rgba(242, 245, 240, 0.28);
 
 	/* Las bandas no se apagan, se hunden: mismo tono, menos luz, para que la
 	   pantalla no queme de noche y el texto siga pasando AA. */
-	--violet: #6d28d9;
-	--violet-soft: #2c1d55;
-	/* El chip de código va sobre --violet-soft: en oscuro necesita tinta clara
-	   o queda violeta sobre violeta. */
-	--code-ink: #cbb4ff;
-	/* --violet-ink NO se invierte: solo se usa como texto sobre las píldoras
+	--brand: #0b3f28;
+	--brand-soft: #173a28;
+	--brand-accent: #6ee8a8;
+	/* El chip de código va sobre --brand-soft: en oscuro necesita tinta clara
+	   o queda verde sobre verde. */
+	--code-ink: #9ff0c4;
+	/* --brand-ink NO se invierte: solo se usa como texto sobre las píldoras
 	   blancas y doradas, que siguen siendo claras en modo oscuro. */
-	--on-violet-2: #ded1ff;
-	--on-violet-3: #cbb8ff;
+	--on-brand-2: #cdeedb;
+	--on-brand-3: #b5e3c9;
 
-	--lime: #3f7a1e;
-	--lime-deep: #a7d97e;
-	--lime-soft: #22331a;
-	--on-lime: #eaf7dc;
-	--on-lime-2: #cfe6b6;
+	--mint: #155c3a;
+	--on-mint: #e3f7ec;
+	--on-mint-2: #bfe6cf;
+
+	--lapis-deep: #9cc0f5;
+	--lapis-soft: #1a2740;
 
 	--amber: #9a6d12;
 	--amber-deep: #f0c368;
@@ -100,9 +107,9 @@ html[data-theme='dark'] {
 	--coral-soft: #3a1f19;
 	--coral-ink: #f0a894;
 
-	--ip-panel: #0e1a07;
+	--ip-panel: #07170f;
 
-	--footer-bg: #0a090c;
+	--footer-bg: #080c0a;
 	--shadow-card: 0 0.75rem 1.875rem rgba(0, 0, 0, 0.4);
 	--shadow: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.45);
 	color-scheme: dark;
@@ -177,14 +184,14 @@ img {
 	margin-inline: auto;
 }
 
-/* ---------- Cabecera: vive dentro de la banda violeta ---------- */
+/* ---------- Cabecera: vive dentro de la banda de marca ---------- */
 
 .topband {
 	position: relative;
 	z-index: 20;
-	background: var(--violet);
+	background: var(--brand);
 	border-radius: 0 0 var(--radius-band) var(--radius-band);
-	color: var(--on-violet);
+	color: var(--on-brand);
 }
 
 .topbar {
@@ -199,15 +206,15 @@ img {
 	min-width: max-content;
 	align-items: center;
 	gap: 0.75rem;
-	color: var(--on-violet);
+	color: var(--on-brand);
 }
 
-/* Wordmark vectorial: las letras heredan el color del enlace y el bloque de la C va en ámbar. */
+/* Wordmark vectorial: las letras heredan el color del enlace y el isotipo lleva sus verdes. */
 .brand-wordmark {
 	display: block;
 	width: auto;
-	height: 1.5rem;
-	aspect-ratio: 10044 / 1622;
+	height: 2rem;
+	aspect-ratio: 6141 / 1426;
 }
 
 
@@ -223,7 +230,7 @@ img {
 .mobile-menu-panel > a:not(.header-cta) {
 	position: relative;
 	padding-block: 0.375rem;
-	color: var(--on-violet-3);
+	color: var(--on-brand-3);
 	font-size: 1rem;
 	font-weight: 700;
 	white-space: nowrap;
@@ -250,7 +257,7 @@ img {
 .mobile-menu-panel > a:not(.header-cta):focus-visible,
 .desktop-nav a[aria-current='page'],
 .mobile-menu-panel > a:not(.header-cta)[aria-current='page'] {
-	color: var(--on-violet);
+	color: var(--on-brand);
 }
 
 .desktop-nav a:hover::after,
@@ -274,7 +281,7 @@ img {
 	padding-inline: 2rem;
 	border: none;
 	border-radius: 999px;
-	background: var(--violet);
+	background: var(--brand);
 	color: #ffffff;
 	font-family: var(--body);
 	font-size: 1.125rem;
@@ -287,7 +294,7 @@ img {
 	min-height: 3rem;
 	padding-inline: 1.375rem;
 	background: #ffffff;
-	color: var(--violet-ink);
+	color: var(--brand-ink);
 	font-size: 0.9375rem;
 }
 
@@ -305,33 +312,33 @@ img {
 .button:hover,
 .header-cta:hover {
 	transform: translateY(-1px);
-	background: var(--violet-deep);
+	background: var(--brand-deep);
 	color: #ffffff;
 }
 
 .header-cta:hover {
 	background: var(--gold);
-	color: var(--violet-ink);
+	color: var(--brand-ink);
 }
 
-/* Sobre la banda violeta el primario se invierte: blanco con tinta violeta. */
-.button-on-violet {
+/* Sobre la banda de marca el primario se invierte: blanco con tinta verde. */
+.button-on-brand {
 	background: #ffffff;
-	color: var(--violet-ink);
-	box-shadow: 0 0.625rem 1.5rem rgba(38, 8, 92, 0.28);
+	color: var(--brand-ink);
+	box-shadow: 0 0.625rem 1.5rem rgba(4, 32, 20, 0.28);
 }
 
-.button-on-violet:hover {
+.button-on-brand:hover {
 	background: var(--gold);
-	color: var(--violet-ink);
+	color: var(--brand-ink);
 }
 
-.button-on-lime {
+.button-on-mint {
 	background: var(--ip-panel);
 	color: #ffffff;
 }
 
-.button-on-lime:hover {
+.button-on-mint:hover {
 	background: var(--ink);
 	color: #ffffff;
 }
@@ -342,7 +349,7 @@ img {
 }
 
 .button-on-amber:hover {
-	background: var(--violet-deep);
+	background: var(--brand-deep);
 	color: #ffffff;
 }
 
@@ -361,22 +368,22 @@ img {
 }
 
 .button-ghost:hover {
-	border-color: var(--violet);
-	color: var(--violet);
+	border-color: var(--brand);
+	color: var(--brand);
 }
 
-.button-ghost-on-violet {
+.button-ghost-on-brand {
 	border-color: rgba(255, 255, 255, 0.45);
-	color: var(--on-violet);
+	color: var(--on-brand);
 }
 
-.button-ghost-on-violet:hover {
+.button-ghost-on-brand:hover {
 	border-color: #ffffff;
 	color: var(--gold);
 }
 
 .button-ghost-on-amber {
-	border-color: rgba(28, 21, 36, 0.3);
+	border-color: rgba(20, 32, 26, 0.3);
 	color: var(--on-amber);
 }
 
@@ -411,7 +418,7 @@ img {
 	border: 2px solid rgba(255, 255, 255, 0.35);
 	border-radius: 999px;
 	background: transparent;
-	color: var(--on-violet);
+	color: var(--on-brand);
 	cursor: pointer;
 	transition: border-color 160ms ease, background-color 160ms ease;
 }
@@ -461,7 +468,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	opacity: 1;
 }
 
-/* Selector de tema: mismo panel violeta que el menú móvil, anclado al botón. */
+/* Selector de tema: mismo panel verde que el menú móvil, anclado al botón. */
 .theme-menu {
 	position: relative;
 	display: inline-flex;
@@ -482,7 +489,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	min-width: 11.5rem;
 	padding: 0.5rem;
 	border-radius: var(--radius-soft);
-	background: var(--violet-deep);
+	background: var(--brand-deep);
 	box-shadow: var(--shadow);
 }
 
@@ -499,7 +506,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	border: none;
 	border-radius: 0.75rem;
 	background: transparent;
-	color: var(--on-violet-3);
+	color: var(--on-brand-3);
 	font: inherit;
 	font-size: 1rem;
 	font-weight: 700;
@@ -511,7 +518,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 .theme-menu-option:hover,
 .theme-menu-option:focus-visible {
 	background: rgba(255, 255, 255, 0.12);
-	color: var(--on-violet);
+	color: var(--on-brand);
 	outline: none;
 }
 
@@ -521,7 +528,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 .theme-menu-option[aria-checked='true'] {
 	background: rgba(255, 255, 255, 0.18);
-	color: var(--on-violet);
+	color: var(--on-brand);
 }
 
 /* Punto dorado a la derecha para marcar la opción activa. */
@@ -553,7 +560,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	border: none;
 	border-radius: 999px;
 	background: rgba(255, 255, 255, 0.18);
-	color: var(--on-violet);
+	color: var(--on-brand);
 	cursor: pointer;
 	list-style: none;
 }
@@ -585,7 +592,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	min-width: 15rem;
 	padding: 1rem;
 	border-radius: var(--radius-soft);
-	background: var(--violet-deep);
+	background: var(--brand-deep);
 	box-shadow: var(--shadow);
 }
 
@@ -615,9 +622,9 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	height: 3.25rem;
 	border: none;
 	border-radius: 999px;
-	background: var(--violet);
+	background: var(--brand);
 	color: #ffffff;
-	box-shadow: 0 0 0 3px var(--paper), 0 0.625rem 1.5rem rgba(38, 8, 92, 0.28);
+	box-shadow: 0 0 0 3px var(--paper), 0 0.625rem 1.5rem rgba(4, 32, 20, 0.28);
 	cursor: pointer;
 	opacity: 0;
 	visibility: hidden;
@@ -634,7 +641,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 .back-to-top:hover {
 	background: var(--gold);
-	color: var(--violet-ink);
+	color: var(--brand-ink);
 }
 
 .back-to-top:focus-visible {
@@ -694,7 +701,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	}
 }
 
-/* ---------- Hero (dentro de la banda violeta) ---------- */
+/* ---------- Hero (dentro de la banda de marca) ---------- */
 
 .hero {
 	display: flex;
@@ -705,7 +712,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 .hero h1 {
 	margin-top: 1.625rem;
-	color: var(--on-violet);
+	color: var(--on-brand);
 	font-size: clamp(2.6rem, 5.4vw, 4.875rem);
 	line-height: 1.02;
 }
@@ -719,14 +726,14 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	align-items: center;
 	gap: 0.75rem;
 	margin: 1.875rem 0 0;
-	color: var(--on-violet-2);
+	color: var(--on-brand-2);
 	font-size: 1rem;
 	font-weight: 700;
 }
 
 .hero-status .status-dot {
-	background: #b6f36a;
-	box-shadow: 0 0 0 0.3125rem rgba(182, 243, 106, 0.22);
+	background: #6ee8a8;
+	box-shadow: 0 0 0 0.3125rem rgba(110, 232, 168, 0.22);
 }
 
 /* ---------- IP del servidor ---------- */
@@ -740,8 +747,8 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	padding-inline: 1.625rem;
 	border: none;
 	border-radius: 999px;
-	background: var(--lime);
-	color: var(--on-lime);
+	background: var(--mint);
+	color: var(--on-mint);
 	font-family: var(--body);
 	font-size: 1.0625rem;
 	font-weight: 800;
@@ -919,7 +926,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	}
 
 	.brand-wordmark {
-		height: 1.375rem;
+		height: 1.875rem;
 	}
 
 	.desktop-nav,
@@ -964,7 +971,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	}
 
 	.brand-wordmark {
-		height: 1.25rem;
+		height: 1.6875rem;
 	}
 
 
