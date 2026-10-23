@@ -11,124 +11,417 @@ export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'Normas' }])];
 
-const rules = [
+type Item = string | { title: string; text: string };
+type Group = { kind: 'yes' | 'maybe' | 'no'; label: string; items: Item[] };
+type Norm = {
+	id: string;
+	short: string;
+	summary: string;
+	kicker: string;
+	title: string;
+	icon: string;
+	tone: 'brand' | 'lapis' | 'amber';
+	lead: string;
+	callout?: { title: string; text: string };
+	groups?: Group[];
+	stats?: { label: string; value: string; text: string }[];
+	note?: string;
+};
+
+// Cada norma separa lo que se puede, lo que solo vale con condiciones y lo
+// que no, para que nadie tenga que deducir una regla a partir de otra.
+const norms: Norm[] = [
 	{
-		icon: 'chat',
-		tone: 'brand',
+		id: 'convivencia',
+		short: 'Convivencia',
+		summary: 'Respeto en el juego, en el chat y en Discord.',
+		kicker: 'Convivencia',
 		title: 'Trato y convivencia',
-		items: [
-			'No se permiten trampas, toxicidad, spam ni faltas de respeto.',
-			'Habla con otras personas como te gustaría que hablaran contigo.',
-			'Si hay un conflicto, pide ayuda antes de escalarlo en público.',
-		],
-	},
-	{
-		icon: 'home',
-		tone: 'lapis',
-		title: 'Construcciones y objetos',
-		items: [
-			'No robes objetos de las casas de otras personas.',
-			'Los objetos abandonados en cofres fuera de casas o en shulkers tiradas sí pueden ser robados. Guarda lo importante en un Ender Chest.',
-			'No construyas demasiado cerca de una zona ya construida sin preguntar antes.',
-			'Respeta el trabajo, los caminos y el espacio de quienes llegaron antes.',
-		],
-	},
-	{
-		icon: 'copy',
-		tone: 'amber',
-		title: 'Duplicación',
-		items: [
-			'No se pueden duplicar objetos renovables.',
-			'Sí se permite duplicar recursos no renovables, como TNT o arena.',
-			'La diferencia depende de si el recurso puede volver a obtenerse de forma natural.',
-		],
-	},
-	{
-		icon: 'sword',
+		icon: '<path d="M20 12.5a7 7 0 0 1-7 7H8l-4 2.5.9-3.4A7 7 0 0 1 11 4.5h2a7 7 0 0 1 7 7z" />',
 		tone: 'brand',
-		title: 'PvP',
-		items: [
-			'Está habilitado técnicamente, pero no es una conducta normal.',
-			'Dos miembros pueden acordar pelearse y matarse.',
-			'Nadie puede quedarse con los objetos de la otra persona.',
+		lead: 'Somos una comunidad pequeña y todo se nota. Trata a los demás como te gustaría que te trataran, en el juego, en el chat y en Discord.',
+		groups: [
+			{
+				kind: 'yes',
+				label: 'Se puede',
+				items: [
+					'Bromear con quien sabes que se lo toma bien. Si alguien te pide que pares, se para.',
+					'Discrepar y debatir con respeto, también con la administración.',
+					'Avisar a la administración por privado si ves a alguien saltarse las normas o si surge un conflicto.',
+				],
+			},
+			{
+				kind: 'no',
+				label: 'No se puede',
+				items: [
+					'Insultar, amenazar, acosar o humillar a nadie, en público o por privado.',
+					'Discriminar por origen, género, orientación, religión o cualquier otro motivo.',
+					'Hacer spam: mensajes repetidos, flood, mayúsculas sin parar o publicidad de otros servidores.',
+					'Publicar contenido sexual, violento o de mal gusto, ya sea en el chat, en carteles, en libros, en nombres o en construcciones.',
+					'Compartir datos personales de otra persona o capturas de conversaciones privadas sin su permiso.',
+					'Llevar un conflicto o una acusación al chat público en lugar de hablarlo con la administración.',
+				],
+			},
 		],
+	},
+	{
+		id: 'trampas',
+		short: 'Trampas y mods',
+		summary: 'Qué mods puedes usar y qué cuenta como trampa.',
+		kicker: 'Juego limpio',
+		title: 'Trampas, mods y exploits',
+		icon: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />',
+		tone: 'lapis',
+		lead: 'Puedes usar mods en tu juego siempre que no te den ventaja sobre el resto. La regla de fondo: es trampa todo lo que te deja ver a través de los bloques, juega por ti o hace algo que Minecraft Vanilla no permite.',
+		callout: {
+			title: '¿Y si el servidor ya tiene AntiXray?',
+			text: 'Sigue siendo trampa. AntiXray dificulta encontrar minerales, pero no convierte el x-ray en algo permitido: se sanciona usarlo, encuentres algo o no.',
+		},
+		groups: [
+			{
+				kind: 'yes',
+				label: 'Se puede',
+				items: [
+					{ title: 'Rendimiento y gráficos', text: 'Sodium, Iris, OptiFine, shaders y packs de texturas, siempre que no vuelvan transparentes los bloques ni resalten minerales.' },
+					{ title: 'Interfaz', text: 'Mod Menu, buscadores de recetas (JEI, REI o EMI), información del bloque que miras (Jade o WTHIT), AppleSkin y zoom.' },
+					{ title: 'Inventario', text: 'Ordenarlo y mover objetos más rápido con Mouse Tweaks, Item Scroller o Inventory Profiles Next.' },
+					{ title: 'Construcción y redstone', text: 'Litematica, MiniHUD y Tweakeroo, con los límites del bloque siguiente.' },
+					{ title: 'Brillo', text: 'Subir el gamma o usar fullbright. Ilumina lo que ya tienes delante, pero no deja ver a través de los bloques.' },
+				],
+			},
+			{
+				kind: 'maybe',
+				label: 'Solo con condiciones',
+				items: [
+					{ title: 'Minimapas', text: 'Xaero’s, JourneyMap y similares, sin radar de jugadores ni de criaturas y sin modo cueva.' },
+					{ title: 'Freecam', text: 'Para revisar tus construcciones y granjas. Usarla para atravesar el terreno buscando cuevas, minerales o estructuras, o para mirar dentro de bases ajenas, cuenta como x-ray.' },
+					{ title: 'Litematica', text: 'Proyectar esquemas y colocar bloques con Easy Place, sí. Las impresoras que construyen solas, no.' },
+					{ title: 'Granjas AFK', text: 'Quedarte AFK o mantener el clic pulsado, con un peso o con Tweakeroo, está bien. Los bots que se mueven, minan o construyen por ti, como Baritone, no.' },
+				],
+			},
+			{
+				kind: 'no',
+				label: 'Es trampa',
+				items: [
+					{ title: 'X-ray en cualquier forma', text: 'Mods de x-ray, packs de texturas que vuelven transparente la piedra o resaltan minerales, shaders que dejan ver a través de los bloques y el modo cueva de los minimapas.' },
+					{ title: 'Ver a través de las paredes', text: 'ESP, tracers y radares que muestran jugadores, criaturas, cofres o spawners que no tienes a la vista.' },
+					{ title: 'Clientes de hacks', text: 'Meteor, Wurst, LiquidBounce y similares, aunque solo actives funciones que parezcan inofensivas.' },
+					{ title: 'Movimiento imposible', text: 'Volar sin élitros, ir más rápido de lo normal, anular el daño por caída, caminar sobre el agua o atravesar bloques.' },
+					{ title: 'Combate y automatización', text: 'Kill aura, alcance ampliado, auto-tótem, autoclickers para pelear y mods que minan o rompen bloques en masa por ti.' },
+					{ title: 'Usar la semilla', text: 'Crackear la semilla del mundo con SeedCrackerX o similares, o usarla para localizar minerales, escombros ancestrales o botín.' },
+					{ title: 'Exploits', text: 'Aprovechar bugs para conseguir objetos o ventajas que el juego no da, crashear el servidor o a otros jugadores, o construir máquinas pensadas para provocar lag.' },
+				],
+			},
+		],
+		note: '<strong>¿Tu mod no aparece?</strong> Pregunta en Discord antes de usarlo. Preguntar no te compromete a nada, y «no sabía que era trampa» no evita la sanción.',
+	},
+	{
+		id: 'duplicacion',
+		short: 'Duplicación',
+		summary: 'Qué se puede duplicar y qué hay que farmear.',
+		kicker: 'Duplicación',
+		title: 'Duplicación de recursos',
+		icon: '<rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" />',
+		tone: 'amber',
+		lead: 'Si un recurso se puede farmear, se farmea. Solo se duplica lo que no se puede renovar de forma natural, y siempre con máquinas de redstone, nunca con glitches.',
+		groups: [
+			{
+				kind: 'yes',
+				label: 'Se puede',
+				items: [
+					{ title: 'TNT', text: 'Duplicadores de TNT para excavar, abrir túneles o vaciar zonas enteras.' },
+					{ title: 'Arena', text: 'Duplicadores de bloques con gravedad para arena, tanto normal como roja.' },
+				],
+			},
+			{
+				kind: 'no',
+				label: 'No se puede',
+				items: [
+					{ title: 'Recursos renovables', text: 'Alfombras, raíles, lana o cualquier cosa que se pueda conseguir con una granja: la lana sale de las ovejas y el hierro, de los gólems.' },
+					{ title: 'Glitches de duplicación', text: 'Duplicar objetos con cofres, shulkers, animales de carga, portales, desconexiones o lag, sea cual sea el objeto.' },
+				],
+			},
+		],
+		note: '<strong>¿Otro recurso?</strong> Si no aparece aquí, pregunta antes de construir el duplicador.',
+	},
+	{
+		id: 'granjas',
+		short: 'Granjas',
+		summary: 'Cuándo construir una y dónde proponerla.',
+		kicker: 'Granjas',
+		title: 'Construir granjas',
+		icon: '<path d="M12 20.5V10" /><path d="M12 10C12 6.5 9.5 4 5.5 4c0 3.5 2.5 6 6.5 6z" /><path d="M12 14c0-3 2.5-5.5 6.5-5.5 0 3-2.5 5.5-6.5 5.5z" /><path d="M7 20.5h10" />',
+		tone: 'lapis',
+		lead: 'Las granjas automáticas y AFK están permitidas si funcionan con mecánicas de Minecraft Vanilla, pero se hablan antes de construirlas. Si ya hay una que hace lo mismo, colabora en ella o propón una mejor en lugar de levantar otra copia.',
+		groups: [
+			{
+				kind: 'yes',
+				label: 'Se puede',
+				items: [
+					{ title: 'Granjas pequeñas para ti', text: 'Huertos, corrales o campos de cultivo para tu propio uso dentro de tu base. No hace falta avisar, aunque ya haya otros iguales. Si es automática o produce para más gente, sigue el resto de este apartado.' },
+					{ title: 'Colaborar', text: 'Ayudar a construir, ampliar o reparar una granja que ya existe, con el permiso de quien la lleva.' },
+					{ title: 'Proponer', text: 'Compartir ideas, diseños o mejoras en #charla-tecnica de Discord, aunque no vayas a construirlas tú.' },
+				],
+			},
+			{
+				kind: 'maybe',
+				label: 'Solo con condiciones',
+				items: [
+					{ title: 'Una granja mejor', text: 'Construir una versión más eficiente de una granja que ya existe, si antes lo has hablado en #charla-tecnica y hay acuerdo.' },
+					{ title: 'Una granja nueva', text: 'Construir una granja de algo que todavía no se produce en el servidor, avisando antes en #charla-tecnica y acordando dónde va.' },
+				],
+			},
+			{
+				kind: 'no',
+				label: 'No se puede',
+				items: [
+					{ title: 'Granjas repetidas', text: 'Construir otra granja de lo mismo que ya produce una existente, salvo que sea una versión mejor acordada en #charla-tecnica. Si cada persona levanta la suya, el mapa se llena de la misma granja repetida.' },
+					{ title: 'Granjas sin avisar', text: 'Levantar una granja donde te parezca sin haberlo comentado antes en #charla-tecnica ni tener permiso para usar esa zona.' },
+					{ title: 'Máquinas que hunden el servidor', text: 'Si una granja hace caer los TPS de forma notable, te pediremos que la ajustes o la apagues.' },
+				],
+			},
+		],
+		note: '<strong>¿No sabes si ya existe?</strong> Pregunta en #charla-tecnica antes de empezar o búscala en el <a href="/bluemap/">mapa del servidor</a>.',
+	},
+	{
+		id: 'construcciones',
+		short: 'Construcciones',
+		summary: 'Distancias, permisos y qué cuenta como griefing.',
+		kicker: 'Construcciones',
+		title: 'Construcciones y espacio',
+		icon: '<path d="M3.5 10.5 12 3.5l8.5 7" /><path d="M5.5 9.5v10h13v-10" /><path d="M9.75 19.5v-5.5h4.5v5.5" />',
+		tone: 'brand',
+		lead: 'El mundo es para mucho tiempo, así que el espacio se respeta. Quien llegó antes a una zona tiene preferencia sobre ella.',
+		groups: [
+			{
+				kind: 'yes',
+				label: 'Se puede',
+				items: [
+					'Construir donde quieras mientras no te pegues a una zona ya construida.',
+					'Instalarte cerca de otra persona si te ha dado permiso antes, por Discord o en el juego.',
+					'Sumarte a proyectos de otras personas cuando te inviten a participar.',
+				],
+			},
+			{
+				kind: 'no',
+				label: 'No se puede',
+				items: [
+					{ title: 'Griefing', text: 'Destruir, quemar, inundar o llenar de lava lo de otra persona, o matar sus mascotas, animales o aldeanos.' },
+					{ title: 'Tocar lo ajeno', text: 'Romper o modificar construcciones, granjas o caminos de otra persona sin su permiso.' },
+					{ title: 'Construir encima', text: 'Levantar algo demasiado cerca de una zona ya construida sin preguntar. Si se ve desde la base de otra persona o entra en lo que considera su zona, pregunta antes.' },
+					{ title: 'Dejar destrozos', text: 'Cráteres, árboles a medio talar o agujeros sin tapar junto a zonas habitadas o caminos.' },
+				],
+			},
+		],
+	},
+	{
+		id: 'objetos',
+		short: 'Objetos y robos',
+		summary: 'Qué es de alguien y qué se considera abandonado.',
+		kicker: 'Objetos',
+		title: 'Objetos y robos',
+		icon: '<rect x="3.5" y="6.5" width="17" height="13" rx="2" /><path d="M3.5 11.5h17" /><path d="M10.5 11.5v2.5h3v-2.5" />',
+		tone: 'lapis',
+		lead: 'Lo que está dentro de una base es de su dueño, esté cerrado o no. Cuenta como base cualquier construcción que alguien use: casa, granja, almacén o taller, aunque esté lejos o a medio hacer.',
+		groups: [
+			{
+				kind: 'yes',
+				label: 'Se puede',
+				items: [
+					'Coger objetos de cofres abandonados fuera de cualquier base.',
+					'Recoger shulkers tiradas en el suelo.',
+					'Usar los cofres o granjas que su dueño haya dejado abiertos para todo el mundo.',
+				],
+			},
+			{
+				kind: 'no',
+				label: 'No se puede',
+				items: [
+					'Coger nada de una base ajena: cofres, barriles, shulkers colocadas, hornos, marcos o cualquier otro contenedor, aunque no tenga puerta.',
+					'Llevarte lo que produce una granja ajena sin permiso de su dueño.',
+					'Responder a un robo robando. Si te quitan algo, avisa y lo revisamos.',
+				],
+			},
+		],
+		note: '<strong>Lo importante, en un Ender Chest.</strong> Es el único almacenamiento que nadie más puede abrir. Si aun así te falta algo, escríbenos por Discord y lo comprobamos con Ledger.',
+	},
+	{
+		id: 'pvp',
+		short: 'PvP',
+		summary: 'Solo cuando las dos personas lo acuerdan.',
+		kicker: 'Combate',
+		title: 'PvP',
+		icon: '<path d="M20.5 3.5v4l-9 9-4-4 9-9z" /><path d="M7.5 12.5 4 16l4 4 3.5-3.5" /><path d="M3.5 20.5 6 18" />',
+		tone: 'amber',
+		lead: 'El PvP está activado en el servidor, pero no forma parte del juego normal. Solo vale cuando las dos personas lo han acordado antes.',
+		groups: [
+			{
+				kind: 'yes',
+				label: 'Se puede',
+				items: [
+					'Pelear con otra persona si las dos lo habéis acordado antes.',
+					'Organizar duelos o eventos en los que todo el mundo participa por voluntad propia.',
+				],
+			},
+			{
+				kind: 'no',
+				label: 'No se puede',
+				items: [
+					'Atacar o matar a alguien que no ha aceptado pelear, aunque sea en broma.',
+					'Quedarte con los objetos de la otra persona. Se devuelven siempre, gane quien gane.',
+					'Matar de forma indirecta: trampas, lava, empujones al vacío o criaturas atraídas hacia alguien.',
+				],
+			},
+		],
+	},
+	{
+		id: 'actividad',
+		short: 'Actividad',
+		summary: 'Las horas mínimas para conservar la plaza.',
+		kicker: 'Actividad',
+		title: 'Actividad mínima',
+		icon: '<circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" />',
+		tone: 'brand',
+		lead: 'Hay 20 plazas como mucho y cada una cuenta. Cuenta el tiempo conectado, hagas lo que hagas, y quien no llega al mínimo deja su plaza libre para otra persona.',
+		stats: [
+			{ label: 'Día 7', value: '2 h', text: 'jugadas en la primera semana del periodo de prueba.' },
+			{ label: 'Día 14', value: '5 h', text: 'en total al acabar la prueba. Con ellas pasas a ser miembro.' },
+			{ label: 'Miembros', value: '4 h', text: 'en los últimos 45 días, contados cada día.' },
+		],
+		note: '<strong>¿Vas a estar fuera una temporada?</strong> Avísalo en Discord antes de irte: es mejor hablarlo que desaparecer sin más. Lo contamos con detalle en <a href="/blog/como-evitar-expulsion-inactividad/">cómo evitar que te saquen por inactividad</a>.',
 	},
 ];
 
-// Qué pasa cuando algo sale mal: cada garantía con un título corto para que
-// se lean como pasos de la misma red de seguridad.
-const safety = [
-	{ title: 'Registros', text: 'Usamos Ledger para consultar qué acciones se hicieron y cuándo.' },
-	{ title: 'Copias de seguridad', text: 'Hay copias de seguridad del mundo para revertir un destrozo.' },
-	{ title: 'Apelación', text: 'El incumplimiento puede provocar una expulsión, y quien la recibe puede apelar: el caso se revisa.' },
+// Qué pasa cuando alguien se salta una norma: cuatro pasos de la misma red
+// de seguridad, de la comprobación a la apelación.
+const sanctions = [
+	{ title: 'Revisión', text: 'Usamos Ledger para consultar qué acciones se hicieron, quién las hizo y cuándo.' },
+	{ title: 'Sanción', text: 'Va de un aviso a la expulsión, según la gravedad y el historial. Las trampas, el griefing y los robos pueden acabar en expulsión directa.' },
+	{ title: 'Reparación', text: 'Las copias de seguridad permiten revertir un destrozo, y lo conseguido con trampas o robos se retira o se devuelve.' },
+	{ title: 'Apelación', text: 'Quien recibe una sanción puede apelar por Discord. El caso se revisa de nuevo, con las pruebas delante.' },
 ];
+
+const pad = (value: number) => String(value).padStart(2, '0');
+
+const index = [
+	...norms.map((norm, i) => ({ id: norm.id, number: pad(i + 1), short: norm.short, summary: norm.summary })),
+	{ id: 'sanciones', number: pad(norms.length + 1), short: 'Sanciones', summary: 'Cómo revisamos un caso y cómo apelar.' },
+];
+
+const marks = {
+	yes: '<path d="M5 12.5 10 17.5 19 7" />',
+	maybe: '<path d="M12 6.5v7" /><path d="M12 17.5v.01" />',
+	no: '<path d="M7 7l10 10M17 7 7 17" />',
+};
 ---
 
 <Layout
 	title="Normas — Cubusfera"
-	description="Normas de convivencia, construcciones, robos, duplicaciones y PvP de Cubusfera, en cuatro bloques."
+	description="Normas de Cubusfera: convivencia, mods permitidos y trampas, duplicación, granjas, construcciones, robos, PvP, actividad mínima, sanciones y apelaciones."
 	structuredData={structuredData}
 >
 	<div class="phi">
 		<SiteHeader>
 			<InnerHero
-				chip="Convivencia"
+				chip="Normas del servidor"
 				title="Construimos juntos."
-				highlight="Respetamos el espacio."
-				lead="Las normas no están para llenar una página: están para que el trabajo de una persona siga siendo suyo y el mundo compartido se mantenga agradable con el tiempo."
+				highlight="Jugamos limpio."
+				lead="Las normas existen para que el trabajo de cada persona siga siendo suyo y el mundo compartido merezca la pena dentro de años. Cada apartado dice qué se puede hacer y qué no, sin letra pequeña."
 			/>
 		</SiteHeader>
 
 		<main>
-			<section class="container home-section" aria-labelledby="bloques">
+			<section class="container home-section" aria-labelledby="indice">
 				<div class="home-head">
 					<div class="home-head-title">
-						<span class="home-kicker">01 — Las normas</span>
-						<h2 id="bloques">Cuatro bloques, nada más.</h2>
+						<span class="home-kicker">Índice</span>
+						<h2 id="indice">Todo por escrito.</h2>
 					</div>
-					<p class="home-lead">Si dudas sobre una situación concreta, pregunta antes de actuar. El contexto importa más que encontrar un hueco en la redacción.</p>
+					<div>
+						<p class="home-lead">Al pedir la whitelist aceptas estas normas, y no conocerlas no evita la sanción. Si una situación no aparece aquí, pregunta en Discord antes de actuar: el contexto importa más que buscar un hueco en la redacción.</p>
+						<p class="norm-updated">Última actualización: <time datetime="2026-10-23">23 de octubre de 2026</time></p>
+					</div>
 				</div>
 
-				<div class="rule-grid">
-					{rules.map((rule) => (
-						<article class="home-card">
-							<div class={`home-card-icon home-card-icon-${rule.tone}`}>
-								{rule.icon === 'chat' && (
-									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12.5a7 7 0 0 1-7 7H8l-4 2.5.9-3.4A7 7 0 0 1 11 4.5h2a7 7 0 0 1 7 7z" /></svg>
-								)}
-								{rule.icon === 'home' && (
-									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10.5 12 3.5l8.5 7" /><path d="M5.5 9.5v10h13v-10" /><path d="M9.75 19.5v-5.5h4.5v5.5" /></svg>
-								)}
-								{rule.icon === 'copy' && (
-									<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
-								)}
-								{rule.icon === 'sword' && (
-									<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5v4l-9 9-4-4 9-9z" /><path d="M7.5 12.5 4 16l4 4 3.5-3.5" /><path d="M3.5 20.5 6 18" /></svg>
-								)}
-							</div>
-							<h3>{rule.title}</h3>
-							<ul class="rule-list">
-								{rule.items.map((item) => <li>{item}</li>)}
-							</ul>
-						</article>
-					))}
-				</div>
+				<nav class="norm-index" aria-label="Apartados de las normas">
+					<ol>
+						{index.map((entry) => (
+							<li>
+								<a href={`#${entry.id}`}>
+									<span class="norm-index-number">{entry.number}</span>
+									<strong>{entry.short}</strong>
+									<span class="norm-index-text">{entry.summary}</span>
+								</a>
+							</li>
+						))}
+					</ol>
+				</nav>
 			</section>
 
-			<section class="home-band home-band-mint" aria-labelledby="si-sale-mal">
+			<div class="container norms">
+				{norms.map((norm, i) => (
+					<article class="norm" id={norm.id} aria-labelledby={`${norm.id}-titulo`}>
+						<header class="norm-head">
+							<div class={`home-card-icon home-card-icon-${norm.tone}`}>
+								<svg viewBox="0 0 24 24" aria-hidden="true" set:html={norm.icon} />
+							</div>
+							<span class="home-kicker">{pad(i + 1)} — {norm.kicker}</span>
+							<h2 id={`${norm.id}-titulo`}>{norm.title}</h2>
+							<p class="norm-lead">{norm.lead}</p>
+							{norm.callout && (
+								<div class="norm-callout">
+									<strong>{norm.callout.title}</strong>
+									<p>{norm.callout.text}</p>
+								</div>
+							)}
+						</header>
+
+						<div class="norm-body">
+							{norm.groups?.map((group) => (
+								<div class={`norm-group norm-group-${group.kind}`}>
+									<h3>{group.label}</h3>
+									<ul>
+										{group.items.map((item) => (
+											<li>
+												<span class="norm-mark" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={marks[group.kind]} /></span>
+												<p>{typeof item === 'string' ? item : <><strong>{item.title}.</strong> {item.text}</>}</p>
+											</li>
+										))}
+									</ul>
+								</div>
+							))}
+
+							{norm.stats && (
+								<dl class="norm-stats">
+									{norm.stats.map((stat) => (
+										<div class="norm-stat">
+											<dt>{stat.label}</dt>
+											<dd><strong>{stat.value}</strong> {stat.text}</dd>
+										</div>
+									))}
+								</dl>
+							)}
+
+							{norm.note && <p class="norm-note" set:html={norm.note} />}
+						</div>
+					</article>
+				))}
+			</div>
+
+			<section class="home-band home-band-mint" id="sanciones" aria-labelledby="sanciones-titulo">
 				<div class="container">
 					<div class="home-head">
 						<div class="home-head-title">
-							<span class="home-kicker">02 — Incidencias</span>
-							<h2 id="si-sale-mal">Si algo sale mal.</h2>
+							<span class="home-kicker">{pad(norms.length + 1)} — Sanciones</span>
+							<h2 id="sanciones-titulo">Si algo sale mal.</h2>
 						</div>
-						<p class="home-lead">Podemos comprobar lo que pasó antes de decidir nada, y una expulsión no es el final de la conversación.</p>
+						<p class="home-lead">Antes de decidir nada comprobamos lo que pasó, y una sanción no es el final de la conversación.</p>
 					</div>
 
-					<ol class="home-steps">
-						{safety.map((item, index) => (
+					<ol class="home-steps home-steps-4">
+						{sanctions.map((item, i) => (
 							<li class="home-step">
-								<span class="home-step-number">{String(index + 1).padStart(2, '0')}</span>
+								<span class="home-step-number">{pad(i + 1)}</span>
 								<strong class="home-step-title">{item.title}</strong>
 								<p>{item.text}</p>
 							</li>
@@ -138,8 +431,8 @@ const safety = [
 			</section>
 
 			<CtaBand
-				title="¿Todo claro? Nos vemos en Discord."
-				lead="Ahí se resuelven las dudas y se abre la whitelist."
+				title="¿Te queda alguna duda? Pregunta en Discord."
+				lead="Mejor una pregunta antes que una explicación después. Ahí también se abre la whitelist."
 				secondary={{ href: '/como-entrar/', label: 'Ver cómo entrar' }}
 			/>
 		</main>
