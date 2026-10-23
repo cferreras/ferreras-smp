@@ -2592,11 +2592,297 @@ a.home-video-player:focus-visible .home-video-play {
 
 /* ---------- Normas ---------- */
 
-.rule-grid {
+.norm-updated {
+	margin-top: var(--s-3);
+	color: var(--muted);
+	font-family: var(--mono);
+	font-size: var(--t-xs);
+	line-height: var(--t-md);
+}
+
+/* Índice: nueve fichas (3 × 3) que llevan a cada apartado. */
+.norm-index ol {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: var(--gutter);
 	margin-top: var(--s-6);
+	padding: 0;
+	list-style: none;
+}
+
+.norm-index a {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	padding: var(--s-3);
+	border: 1px solid var(--line);
+	border-radius: var(--r-md);
+	background: var(--surface);
+	transition: border-color 160ms ease;
+}
+
+.norm-index a:hover {
+	border-color: var(--home-accent);
+}
+
+.norm-index a:focus-visible {
+	outline: 3px solid var(--gold);
+	outline-offset: 3px;
+}
+
+.norm-index-number {
+	color: var(--muted);
+	font-family: var(--mono);
+	font-size: var(--t-xs);
+	font-weight: 600;
+	line-height: 1;
+}
+
+.norm-index strong {
+	margin-top: var(--s-3);
+	font-family: var(--display);
+	font-size: var(--t-md);
+	font-weight: 600;
+	line-height: var(--t-lg);
+	transition: color 160ms ease;
+}
+
+.norm-index a:hover strong {
+	color: var(--home-accent);
+}
+
+.norm-index-text {
+	margin-top: var(--s-1);
+	color: var(--muted-strong);
+	font-size: var(--t-sm);
+	line-height: var(--t-lg);
+}
+
+/* Cada norma: cabecera en la columna estrecha (449) y las listas en la
+   ancha (727), al revés que las cabeceras de sección. */
+.norms {
+	padding-bottom: var(--s-7);
+}
+
+.norm {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.618fr);
+	gap: var(--gutter);
+	align-items: start;
+	padding-block: var(--s-6);
+	border-top: 1px solid var(--line);
+	scroll-margin-top: var(--s-4);
+}
+
+.norm:first-child {
+	padding-top: 0;
+	border-top: 0;
+}
+
+.norm:last-child {
+	padding-bottom: 0;
+}
+
+.norm-head {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+/* La cabecera acompaña a las listas largas solo si cabe entera en pantalla. */
+@media (min-height: 50rem) {
+	.norm-head {
+		position: sticky;
+		top: var(--s-4);
+	}
+}
+
+.norm-head .home-kicker {
+	margin-top: var(--s-4);
+}
+
+.norm-head h2 {
+	margin-top: var(--s-2);
+	font-size: var(--t-xl);
+	line-height: 2.625rem;
+	letter-spacing: -0.02em;
+}
+
+.norm-lead {
+	margin-top: var(--s-3);
+	color: var(--muted-strong);
+	font-size: var(--t-md);
+	line-height: var(--s-4);
+}
+
+.norm-callout {
+	margin-top: var(--s-4);
+	padding: var(--s-3);
+	border-radius: var(--r-md);
+	background: var(--coral-soft);
+}
+
+.norm-callout strong {
+	color: var(--coral-ink);
+	font-size: var(--t-sm);
+	font-weight: 800;
+	line-height: var(--t-lg);
+}
+
+.norm-callout p {
+	margin-top: var(--s-1);
+	color: var(--ink);
+	font-size: var(--t-sm);
+	line-height: var(--t-lg);
+}
+
+.norm-body {
+	display: grid;
+	gap: var(--s-2);
+}
+
+/* Se puede (verde), solo con condiciones (ámbar) y no se puede (coral). */
+.norm-group {
+	--norm-soft: var(--brand-soft);
+	--norm-mark: var(--brand-accent);
+	--norm-label: var(--brand-accent);
+
+	padding: var(--s-4);
+	border: 1px solid var(--line);
+	border-radius: var(--r-md);
+	background: var(--surface);
+}
+
+.norm-group-maybe {
+	--norm-soft: var(--amber-soft);
+	--norm-mark: var(--amber-deep);
+	--norm-label: var(--on-amber-2);
+}
+
+.norm-group-no {
+	--norm-soft: var(--coral-soft);
+	--norm-mark: var(--coral-ink);
+	--norm-label: var(--coral-ink);
+}
+
+.norm-group h3 {
+	color: var(--norm-label);
+	font-family: var(--mono);
+	font-size: var(--t-xs);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.norm-group ul {
+	margin-top: var(--s-2);
+	padding: 0;
+	list-style: none;
+}
+
+.norm-group li {
+	display: flex;
+	gap: var(--s-2);
+	padding-block: var(--s-2);
+	color: var(--muted-strong);
+	font-size: var(--t-sm);
+	line-height: var(--t-lg);
+}
+
+.norm-group li:last-child {
+	padding-bottom: 0;
+}
+
+.norm-group li + li {
+	border-top: 1px solid var(--line);
+}
+
+.norm-group li strong {
+	color: var(--ink);
+	font-weight: 800;
+}
+
+.norm-mark {
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: var(--t-lg);
+	height: var(--t-lg);
+	border-radius: 999px;
+	background: var(--norm-soft);
+	color: var(--norm-mark);
+}
+
+.norm-mark svg {
+	width: var(--t-sm);
+	height: var(--t-sm);
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2.4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.norm-stats {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--s-2);
+}
+
+.norm-stat {
+	padding: var(--s-4) var(--s-3);
+	border: 1px solid var(--line);
+	border-radius: var(--r-md);
+	background: var(--surface);
+}
+
+.norm-stat dt {
+	color: var(--home-accent);
+	font-family: var(--mono);
+	font-size: var(--t-xs);
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	line-height: 1;
+	text-transform: uppercase;
+}
+
+.norm-stat dd {
+	margin: var(--s-3) 0 0;
+	color: var(--muted-strong);
+	font-size: var(--t-sm);
+	line-height: var(--t-lg);
+}
+
+.norm-stat dd strong {
+	display: block;
+	margin-bottom: var(--s-1);
+	color: var(--ink);
+	font-family: var(--display);
+	font-size: var(--t-xl);
+	font-weight: 600;
+	line-height: 1;
+}
+
+.norm-note {
+	padding: var(--s-3) var(--s-4);
+	border-radius: var(--r-md);
+	background: var(--brand-soft);
+	color: var(--ink);
+	font-size: var(--t-sm);
+	line-height: var(--t-lg);
+}
+
+.norm-note strong {
+	font-weight: 800;
+}
+
+.norm-note a {
+	color: var(--code-ink);
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 3px;
 }
 
 .rule-list {
@@ -3169,8 +3455,28 @@ a.home-video-player:focus-visible .home-video-play {
 		position: static;
 	}
 
-	.rule-grid {
+	.norm-index ol {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 		margin-top: var(--s-5);
+	}
+
+	/* Con dos columnas, la última ficha impar ocupa la fila entera. */
+	.norm-index li:last-child:nth-child(odd) {
+		grid-column: 1 / -1;
+	}
+
+	.norms {
+		padding-bottom: var(--s-6);
+	}
+
+	.norm {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--s-4);
+		padding-block: var(--s-5);
+	}
+
+	.norm-head {
+		position: static;
 	}
 
 	.article-main {
@@ -3187,10 +3493,61 @@ a.home-video-player:focus-visible .home-video-play {
 }
 
 @media (max-width: 620px) {
-	.rule-grid,
 	.gal-grid {
 		grid-template-columns: minmax(0, 1fr);
 		gap: var(--s-2);
+	}
+
+	/* En el móvil el índice se queda en número y título. */
+	.norm-index ol {
+		gap: var(--s-1);
+	}
+
+	.norm-index a {
+		padding: var(--s-2);
+		border-radius: var(--r-sm);
+	}
+
+	.norm-index strong {
+		margin-top: var(--s-1);
+		font-size: var(--t-sm);
+		line-height: var(--t-md);
+	}
+
+	.norm-index-text {
+		display: none;
+	}
+
+	.norm-head .home-card-icon {
+		width: 2.75rem;
+		height: 2.75rem;
+	}
+
+	.norm-head .home-kicker {
+		margin-top: var(--s-3);
+	}
+
+	.norm-head h2 {
+		font-size: var(--t-lg);
+		line-height: var(--s-4);
+	}
+
+	.norm-lead {
+		font-size: var(--t-sm);
+		line-height: var(--t-lg);
+	}
+
+	.norm-group,
+	.norm-note {
+		padding: var(--s-3);
+	}
+
+	.norm-stats {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.norm-stat {
+		padding: var(--s-3);
 	}
 
 	.gal-grid figure {
