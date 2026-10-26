@@ -49,6 +49,16 @@
 	--ip-label: #6ee8a8;
 	--ip-note: #a9dcc0;
 
+	/* Cabecera en cápsula: verde casi negro con el botón en la cara menta del
+	   logo. El borde solo se ve en oscuro, donde la cápsula pierde contraste. */
+	--nav-bg: #0b2e1e;
+	--nav-border: #0b2e1e;
+	--nav-link: #cfe9da;
+	--nav-link-active: #ffffff;
+	--nav-cta: #45d98a;
+	--nav-cta-hover: #6ee8a8;
+	--on-nav-cta: #0b2e1e;
+
 	--footer-bg: #14201a;
 	--footer-ink: #ffffff;
 	--footer-link: #d2ddd6;
@@ -108,6 +118,11 @@ html[data-theme='dark'] {
 	--coral-ink: #f0a894;
 
 	--ip-panel: #051711;
+
+	/* --nav-cta se queda en menta: el botón sigue siendo el punto de luz. */
+	--nav-bg: #12201a;
+	--nav-border: #22382c;
+	--nav-link: #b9cfc2;
 
 	--footer-bg: #080c0a;
 	--shadow-card: 0 0.75rem 1.875rem rgba(0, 0, 0, 0.4);
@@ -230,7 +245,7 @@ img {
 .mobile-menu-panel > a:not(.header-cta) {
 	position: relative;
 	padding-block: 0.375rem;
-	color: var(--on-brand-3);
+	color: var(--nav-link);
 	font-size: 1rem;
 	font-weight: 700;
 	white-space: nowrap;
@@ -257,7 +272,7 @@ img {
 .mobile-menu-panel > a:not(.header-cta):focus-visible,
 .desktop-nav a[aria-current='page'],
 .mobile-menu-panel > a:not(.header-cta)[aria-current='page'] {
-	color: var(--on-brand);
+	color: var(--nav-link-active);
 }
 
 .desktop-nav a:hover::after,
@@ -293,8 +308,8 @@ img {
 .header-cta {
 	min-height: 3rem;
 	padding-inline: 1.375rem;
-	background: #ffffff;
-	color: var(--brand-ink);
+	background: var(--nav-cta);
+	color: var(--on-nav-cta);
 	font-size: 0.9375rem;
 }
 
@@ -317,8 +332,8 @@ img {
 }
 
 .header-cta:hover {
-	background: var(--gold);
-	color: var(--brand-ink);
+	background: var(--nav-cta-hover);
+	color: var(--on-nav-cta);
 }
 
 /* Sobre la banda de marca el primario se invierte: blanco con tinta verde. */
@@ -468,7 +483,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	opacity: 1;
 }
 
-/* Selector de tema: mismo panel verde que el menú móvil, anclado al botón. */
+/* Selector de tema: mismo panel que el menú móvil, del color de la cápsula. */
 .theme-menu {
 	position: relative;
 	display: inline-flex;
@@ -488,8 +503,9 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	gap: 0.25rem;
 	min-width: 11.5rem;
 	padding: 0.5rem;
+	border: 1px solid var(--nav-border);
 	border-radius: var(--radius-soft);
-	background: var(--brand-deep);
+	background: var(--nav-bg);
 	box-shadow: var(--shadow);
 }
 
@@ -506,7 +522,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	border: none;
 	border-radius: 0.75rem;
 	background: transparent;
-	color: var(--on-brand-3);
+	color: var(--nav-link);
 	font: inherit;
 	font-size: 1rem;
 	font-weight: 700;
@@ -531,13 +547,13 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	color: var(--on-brand);
 }
 
-/* Punto dorado a la derecha para marcar la opción activa. */
+/* Punto menta a la derecha para marcar la opción activa. */
 .theme-menu-option[aria-checked='true']::after {
 	width: 0.5rem;
 	height: 0.5rem;
 	margin-left: auto;
 	border-radius: 50%;
-	background: var(--gold);
+	background: var(--nav-cta);
 	content: '';
 }
 
@@ -591,8 +607,9 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	gap: 0.25rem;
 	min-width: 15rem;
 	padding: 1rem;
+	border: 1px solid var(--nav-border);
 	border-radius: var(--radius-soft);
-	background: var(--brand-deep);
+	background: var(--nav-bg);
 	box-shadow: var(--shadow);
 }
 
