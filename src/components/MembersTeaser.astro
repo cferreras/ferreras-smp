@@ -1,0 +1,50 @@
+---
+import HomeCommunity from './HomeCommunity.astro';
+import { getMembers } from '../lib/members';
+
+// Adelanto de /comunidad/ en la portada. La portada es estática, así que esto va
+// como server island (server:defer): se pide aparte y la CDN lo guarda un
+// minuto, como la página entera. Si el panel no responde no se pinta la sección.
+const { ok, members, maxSlots, onlineFresh } = await getMembers();
+
+Astro.response.headers.set(
+	'Cache-Control',
+	ok ? 'public, max-age=0, s-maxage=60, stale-while-revalidate=60' : 'public, max-age=0, s-maxage=10',
+);
+
+const freeSlots = maxSlots ? Math.max(maxSlots - members.length, 0) : 0;
+const onlineCount = onlineFresh ? members.filter((member) => member.online).length : 0;
+const summary = maxSlots
+	? `${members.length} de ${maxSlots} plazas ocupadas.`
+	: `${members.length} ${members.length === 1 ? 'persona' : 'personas'} en la whitelist.`;
+
+function headLabel(name: string, online: boolean, away: boolean) {
+	if (online) return `${name}, jugando ahora`;
+	if (away) return `${name}, ausente`;
+	return name;
+}
+---
+
+{ok && members.length > 0 && (
+	<HomeCommunity>
+		<div class="home-members">
+			<ul class="home-members-heads">
+				{members.map((member) => {
+					const online = onlineFresh && member.online;
+					const away = member.status === 'absence';
+					return (
+						<li class:list={['home-members-head', { 'is-online': online, 'is-away': away }]}>
+							<img src={`/api/cabeza/${encodeURIComponent(member.name)}.png`} alt={headLabel(member.name, online, away)} width="8" height="8" decoding="async" />
+						</li>
+					);
+				})}
+				{Array.from({ length: freeSlots }, () => <li class="home-members-head is-free" aria-hidden="true"></li>)}
+			</ul>
+			<p class="home-members-text">
+				<strong>{summary}</strong>
+				{onlineCount > 0 && <span class="home-members-online"><span class="home-members-dot" aria-hidden="true"></span>{onlineCount} jugando ahora</span>}
+			</p>
+			<a class="button" href="/comunidad/">Ver la comunidad</a>
+		</div>
+	</HomeCommunity>
+)}

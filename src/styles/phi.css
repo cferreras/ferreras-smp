@@ -3716,3 +3716,270 @@ a.home-video-player:focus-visible .home-video-play {
 		bottom: var(--s-2);
 	}
 }
+
+/* ==========================================================================
+   Comunidad
+   ========================================================================== */
+
+/* Tablero de plazas: 5 × 4 a 1440, con las libres en discontinuo para que se
+   vea de un vistazo cuánto queda. */
+.members-grid {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(0, 1fr));
+	/* Todas las filas al alto de la más alta: una fila solo de plazas libres
+	   (sin fecha ni etiquetas) quedaría más baja que las demás. */
+	grid-auto-rows: 1fr;
+	gap: var(--s-2);
+	margin: var(--s-5) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.member {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	padding: var(--s-3);
+	border: 1px solid var(--line);
+	border-radius: var(--r-md);
+	background: var(--surface);
+}
+
+/* La cabeza llega a 8 px y se escala sin suavizar, como en el juego: 56 = 7 × 8. */
+.member-head {
+	display: block;
+	width: 3.5rem;
+	height: 3.5rem;
+	border-radius: 0.25rem;
+	image-rendering: pixelated;
+}
+
+.member-name {
+	margin-top: var(--s-2);
+	font-size: var(--t-sm);
+	font-weight: 800;
+	line-height: var(--s-3);
+	overflow-wrap: anywhere;
+}
+
+.member-since {
+	margin-top: 0.125rem;
+	color: var(--muted);
+	font-size: var(--t-xs);
+	font-weight: 600;
+	line-height: var(--s-3);
+	text-wrap: balance;
+}
+
+.member-tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s-1);
+	margin-top: var(--s-2);
+}
+
+.member-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	min-height: 1.5rem;
+	padding-inline: var(--s-1);
+	border-radius: 999px;
+	background: var(--line);
+	color: var(--muted-strong);
+	font-size: var(--t-xs);
+	font-weight: 700;
+	line-height: 1;
+}
+
+.member-tag-online {
+	background: var(--brand-soft);
+	color: var(--code-ink);
+}
+
+.member-tag-trial {
+	background: var(--amber-soft);
+	color: var(--on-amber-2);
+}
+
+/* Staff en lapislázuli, el tercer tono de la web, para no confundirlo con los
+   verdes de «jugando» ni con el ámbar de la prueba. */
+.member-tag-staff {
+	background: var(--lapis-soft);
+	color: var(--lapis-deep);
+}
+
+.member-dot {
+	width: 0.4375rem;
+	height: 0.4375rem;
+	border-radius: 50%;
+	background: var(--brand-accent);
+}
+
+/* De ausencia: sigue en su plaza, pero en segundo plano. */
+.member-away .member-head {
+	opacity: 0.55;
+	filter: grayscale(1);
+}
+
+.member-away .member-name {
+	color: var(--muted);
+}
+
+.member-free {
+	border: 1.5px dashed var(--line-strong);
+	background: transparent;
+}
+
+.member-free .member-head {
+	border: 1.5px dashed var(--line-strong);
+}
+
+.member-free .member-name {
+	color: var(--muted);
+	font-weight: 700;
+}
+
+@media (max-width: 1100px) {
+	.members-grid {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 940px) {
+	.members-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		margin-top: var(--s-4);
+	}
+}
+
+@media (max-width: 620px) {
+	.members-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--s-1);
+	}
+
+	.member {
+		padding: var(--s-2);
+	}
+
+	/* 48 = 6 × 8. */
+	.member-head {
+		width: 3rem;
+		height: 3rem;
+	}
+}
+
+/* ---------- Adelanto en la portada (02 — La comunidad) ---------- */
+
+.home-members {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	align-items: center;
+	gap: var(--s-4);
+	margin-top: var(--s-5);
+}
+
+/* Las 20 plazas en una fila a 1440 (40 = 5 × 8 px); en dos de 10 al estrechar. */
+.home-members-heads {
+	display: grid;
+	grid-column: 1 / -1;
+	grid-template-columns: repeat(20, minmax(0, 2.5rem));
+	gap: var(--s-2);
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.home-members-head {
+	position: relative;
+	aspect-ratio: 1;
+	border-radius: 0.25rem;
+}
+
+.home-members-head img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	border-radius: inherit;
+	image-rendering: pixelated;
+}
+
+.home-members-head.is-free {
+	border: 1.5px dashed var(--line-strong);
+}
+
+.home-members-head.is-loading {
+	background: var(--line);
+}
+
+.home-members-head.is-away img {
+	opacity: 0.55;
+	filter: grayscale(1);
+}
+
+/* Punto de «jugando», con un anillo del color del papel que lo separa de la cabeza. */
+.home-members-dot,
+.home-members-head.is-online::after {
+	width: 0.625rem;
+	height: 0.625rem;
+	flex: 0 0 auto;
+	border-radius: 50%;
+	background: var(--brand-accent);
+	box-shadow: 0 0 0 2px var(--paper);
+}
+
+.home-members-head.is-online::after {
+	position: absolute;
+	right: -0.1875rem;
+	bottom: -0.1875rem;
+	content: '';
+}
+
+.home-members-text {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--s-1) var(--s-3);
+	color: var(--muted);
+	font-size: var(--t-md);
+	font-weight: 600;
+	line-height: var(--s-4);
+}
+
+.home-members-text strong {
+	color: var(--ink);
+	font-weight: 800;
+}
+
+.home-members-online {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s-1);
+}
+
+@media (max-width: 940px) {
+	.home-members-heads {
+		grid-template-columns: repeat(10, minmax(0, 2.5rem));
+	}
+}
+
+@media (max-width: 620px) {
+	.home-members {
+		grid-template-columns: minmax(0, 1fr);
+		gap: var(--s-3);
+	}
+
+	.home-members-heads {
+		gap: var(--s-1);
+	}
+
+	.home-members .button {
+		justify-self: start;
+	}
+
+	.home-members-text {
+		font-size: var(--t-sm);
+		line-height: var(--t-lg);
+	}
+}

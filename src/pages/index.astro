@@ -6,6 +6,8 @@ import SiteHeader from '../components/SiteHeader.astro';
 import DiscordIcon from '../components/DiscordIcon.astro';
 import YouTubeIcon from '../components/YouTubeIcon.astro';
 import CtaBand from '../components/CtaBand.astro';
+import HomeCommunity from '../components/HomeCommunity.astro';
+import MembersTeaser from '../components/MembersTeaser.astro';
 import { formatDate, slugify } from '../lib/blog';
 import { heroShots } from '../lib/gallery';
 import '../styles/phi.css';
@@ -221,11 +223,25 @@ const structuredData = [
 				</div>
 			</section>
 
+			{/* Mientras llega la lista, la misma sección con 20 casillas vacías para
+			    que la página no salte. */}
+			<MembersTeaser server:defer>
+				<HomeCommunity slot="fallback">
+					<div class="home-members" aria-hidden="true">
+						<ul class="home-members-heads">
+							{Array.from({ length: 20 }, () => <li class="home-members-head is-loading"></li>)}
+						</ul>
+						<p class="home-members-text">Comprobando plazas…</p>
+						<a class="button" href="/comunidad/" tabindex="-1">Ver la comunidad</a>
+					</div>
+				</HomeCommunity>
+			</MembersTeaser>
+
 			<section class="home-band home-band-mint" id="como-entrar">
 				<div class="container">
 					<div class="home-head">
 						<div class="home-head-title">
-							<span class="home-kicker">02 — Cómo entrar</span>
+							<span class="home-kicker">03 — Cómo entrar</span>
 							<h2>Entrar cuesta tres pasos.</h2>
 							<p class="home-lead">Todo pasa en Discord. Ahí ves cómo hablamos antes de decidir nada.</p>
 						</div>
@@ -260,7 +276,7 @@ const structuredData = [
 				<div class="container">
 					<div class="home-head">
 						<div class="home-head-title">
-							<span class="home-kicker">03 — El mundo</span>
+							<span class="home-kicker">04 — El mundo</span>
 							<h2>Así se ve el mundo ahora mismo.</h2>
 						</div>
 						<p class="home-links">
