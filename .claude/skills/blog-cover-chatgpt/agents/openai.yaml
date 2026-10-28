@@ -1,0 +1,4 @@
+interface:
+  display_name: "Blog Cover ChatGPT"
+  short_description: "Prompt de ChatGPT para la portada de cada post"
+  default_prompt: "Usa $blog-cover-chatgpt para preparar la portada del último post del blog."

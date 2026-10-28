@@ -8,6 +8,10 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+## Blog
+
+Every new post in `src/content/blog` needs a cover made in ChatGPT. Use the `blog-cover-chatgpt` skill to write the prompt and install the image.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
