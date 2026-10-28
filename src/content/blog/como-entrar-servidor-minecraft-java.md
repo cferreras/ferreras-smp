@@ -2,7 +2,7 @@
 title: "Cómo entrar a un servidor de Minecraft Java paso a paso"
 description: "Aprende a añadir un servidor de Minecraft Java, conectarte y resolver las dudas básicas antes de entrar por primera vez."
 publishedAt: 2026-07-14
-updatedAt: 2026-09-05
+updatedAt: 2026-10-28
 author: "Carlos Ferreras"
 category: "Guías"
 tags:
@@ -76,6 +76,12 @@ Guarda, selecciona el servidor en la lista y pulsa **Entrar al servidor**. Si so
 En Cubusfera no. Entras y juegas sin descargar un modpack ni herramientas aparte.
 
 Lo que hace falta para la protección, el mapa y la convivencia ya está en el servidor. Tu cliente vanilla se conecta sin tocar nada. Si te interesa el detalle, lo contamos en [qué mods hay en Cubusfera](/blog/que-mods-hay-ferreras-smp/).
+
+## ¿Necesito una cuenta premium?
+
+Depende del servidor: muchos solo aceptan cuentas premium, las compradas en Minecraft.net, y otros admiten también las no premium.
+
+En Cubusfera valen las dos. Con una cuenta premium entras directamente, sin contraseña. Con una no premium, la primera vez el servidor te pide crear una contraseña con `/register` y después la escribes con `/login` cada vez que te conectas. Lo explicamos con más detalle en [cómo entrar a Cubusfera sin cuenta premium](/blog/servidor-minecraft-no-premium/).
 
 ## Antes de construir nada
 

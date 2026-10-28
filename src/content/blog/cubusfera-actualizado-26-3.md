@@ -67,6 +67,6 @@ Tengo en mente un diseño de un redstoner conocido, con su vídeo explicándolo 
 
 ## En resumen
 
-Cubusfera está en la 26.3 desde hoy, y es el mismo survival técnico de siempre en la versión nueva: ninguna granja importante rota, ningún mod importante perdido y el mismo mundo. Actualiza tu juego, entra en `play.cubusfera.com` y, si te apetece, pásate por #charla-tecnica para empezar la granja de lana.
+Cubusfera está en la 26.3 desde hoy, y es el mismo [survival técnico](/blog/que-es-minecraft-tecnico/) de siempre en la versión nueva: ninguna granja importante rota, ningún mod importante perdido y el mismo mundo. Actualiza tu juego, entra en `play.cubusfera.com` y, si te apetece, pásate por #charla-tecnica para empezar la granja de lana.
 
 Nos vemos dentro.

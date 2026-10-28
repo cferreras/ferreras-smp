@@ -76,6 +76,6 @@ Si nunca has añadido una dirección, la guía de [cómo entrar a un servidor de
 
 ## Cómo lo planteamos en Cubusfera
 
-Cubusfera es un survival de Minecraft Java en español, sin modpack obligatorio y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
+Cubusfera es un [survival técnico](/blog/que-es-minecraft-tecnico/) de Minecraft Java en español, sin modpack obligatorio y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
 
 Si te suena bien, mira [cómo entrar](/como-entrar/): la whitelist se pide desde Discord y la revisamos a mano.
