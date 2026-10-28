@@ -3,7 +3,7 @@ title: "Qué mods hay en Cubusfera y cómo mantenemos una experiencia cercana a 
 seoTitle: "Qué mods hay en Cubusfera y por qué no necesitas modpack"
 description: "Conoce los mods server-side y datapacks de Cubusfera, para qué sirven y por qué puedes jugar sin instalar un modpack."
 publishedAt: 2026-07-19
-updatedAt: 2026-09-23
+updatedAt: 2026-10-28
 author: "Carlos Ferreras"
 category: "Servidor"
 tags:
@@ -54,7 +54,7 @@ Las piezas que más importan cuando varias personas comparten construcciones y r
 - [Ledger](https://modrinth.com/mod/ledger) registra las acciones del mundo para poder investigar un cambio o un destrozo. [Ledger Databases](https://modrinth.com/mod/ledger-databases) amplía dónde se guardan esos registros.
 - [AntiXray](https://modrinth.com/mod/anti-xray) dificulta localizar minerales con ventaja.
 - [BanHammer](https://modrinth.com/mod/banhammer) y [LuckPerms](https://modrinth.com/mod/luckperms) son las herramientas de moderación y permisos.
-- [EasyAuth](https://modrinth.com/mod/easyauth) gestiona la autenticación.
+- [EasyAuth](https://modrinth.com/mod/easyauth) gestiona la autenticación: las cuentas no premium entran con contraseña y las premium se reconocen solas y entran sin ella.
 - [No Chat Reports](https://modrinth.com/mod/no-chat-reports) cambia el sistema de firma y reporte del chat cuando es posible.
 
 La tecnología ayuda, pero no sustituye a las [normas](/normas/). Los registros y la moderación son la red de seguridad; la convivencia sigue dependiendo de respetar el trabajo de los demás.
