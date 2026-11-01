@@ -1,17 +1,15 @@
 (() => {
 	const button = document.querySelector('[data-back-to-top]');
-	const topbar = document.querySelector('.topbar');
 
-	if (!button || !topbar) return;
+	if (!button) return;
 
-	// Solo se enseña cuando la cabecera ha quedado por encima de la pantalla,
-	// no cuando aún no ha llegado a verse (por ejemplo, al cargar con un ancla).
-	const observer = new IntersectionObserver(([entry]) => {
-		const passed = !entry.isIntersecting && entry.boundingClientRect.bottom < 0;
-		button.toggleAttribute('data-visible', passed);
-	});
+	// Solo se enseña cuando ya ha pasado la primera pantalla. La cabecera es
+	// fija y el hero de la portada se queda pegado arriba, así que la pista es
+	// lo que se ha bajado, no si la cabecera se ve.
+	const update = () => button.toggleAttribute('data-visible', window.scrollY > window.innerHeight * 0.9);
 
-	observer.observe(topbar);
+	window.addEventListener('scroll', update, { passive: true });
+	update();
 
 	button.addEventListener('click', () => {
 		// behavior 'auto' respeta el scroll-behavior del CSS, que ya se apaga

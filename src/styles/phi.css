@@ -37,15 +37,12 @@
 	--r-md: 1.3125rem;
 	--r-lg: 2.125rem;
 
-	/* Las bandas flotan separadas del borde de la ventana 13 px. */
-	--inset: var(--s-2);
 	--golden: minmax(0, 1.618fr) minmax(0, 1fr);
 	--home-accent: var(--brand-accent);
 
+	/* Las bandas van a sangre y se tocan, sin margen alrededor. */
 	display: flex;
 	flex-direction: column;
-	gap: var(--inset);
-	padding: var(--inset);
 }
 
 .phi [hidden] {
@@ -55,15 +52,13 @@
 .phi main {
 	display: flex;
 	flex-direction: column;
-	gap: var(--inset);
 }
 
 .phi :where(h1, h2, h3, p, figure, ol, ul) {
 	margin: 0;
 }
 
-/* El contenedor queda a 120 px del borde de la ventana a 1440:
-   13 de inset + 107 dentro de la banda. */
+/* El contenedor queda a 120 px del borde de la ventana a 1440. */
 .phi .container {
 	width: min(75rem, 100% - 13.375rem);
 	margin-inline: auto;
@@ -97,8 +92,9 @@
 
 .phi h2 {
 	font-size: var(--t-2xl);
+	font-weight: 700;
 	line-height: 1.055;
-	letter-spacing: -0.025em;
+	letter-spacing: -0.03em;
 }
 
 .home-lead {
@@ -172,71 +168,49 @@
 
 /* ---------- Cabecera (componente compartido, solo retocado aquí) ---------- */
 
+/* ---------- Cajas montadas ---------- */
+
+/* Cada caja se monta sobre la de arriba: sus esquinas redondeadas dejan ver
+   el color de la caja anterior, no el papel. Por eso ninguna redondea abajo:
+   - si lo siguiente es otra caja de color (o el pie), sube r-lg y la tapa;
+   - si lo siguiente es papel, la caja dibuja abajo una lengüeta de papel
+     redondeada, como si el papel fuera otra caja encima.
+   La banda de cabecera toca el borde de arriba y no redondea nada; su
+   relleno de abajo deja sitio a lo que se le monta encima. */
+.phi .topband,
+.phi .home-band,
+.phi .site-footer {
+	position: relative;
+}
+
 .phi .topband {
-	border-radius: var(--r-lg);
+	border-radius: 0;
 }
 
-/* La barra entera es una cápsula oscura que flota dentro de la banda: marca,
-   enlaces y acciones en una sola píldora. Las medidas salen tal cual del
-   diseño («La web pasa a verde»), no de la escala φ. El activo solo pasa a
-   blanco. */
-.phi .topbar {
-	gap: 1.25rem;
-	margin-top: 1.75rem;
-	padding: 0.625rem 0.75rem 0.625rem 1.125rem;
-	border: 1px solid var(--nav-border);
-	border-radius: 999px;
-	background: var(--nav-bg);
+.phi .topband:not(.topband-video) {
+	padding-bottom: var(--r-lg);
 }
 
-.phi .brand {
-	gap: var(--s-2);
+.phi .home-band {
+	border-radius: var(--r-lg) var(--r-lg) 0 0;
 }
 
-.phi .brand-wordmark {
-	height: 2.375rem; /* el isotipo mide 38 y las letras quedan a 26, paso √φ de la escala */
+.phi .home-band + .home-band,
+.phi .topband ~ main > .home-band:first-child,
+.phi .site-footer {
+	margin-top: calc(-1 * var(--r-lg));
 }
 
-.phi .desktop-nav {
-	flex: 1;
-	gap: 1.125rem;
-	margin-left: 0;
-}
-
-.phi .desktop-nav a {
-	font-size: 0.875rem;
-	transition: color 160ms ease;
-}
-
-.phi .desktop-nav a::after {
-	content: none;
-}
-
-.phi .desktop-nav a:focus-visible {
-	outline: 2px solid #ffffff;
-	outline-offset: 0.25rem;
-	border-radius: 0.25rem;
-}
-
-/* El menú móvil marca el activo con el mismo relleno en vez de un subrayado
-   que ocupaba todo el ancho del panel. */
-.phi .mobile-menu-panel > a:not(.header-cta)::after {
-	content: none;
-}
-
-.phi .mobile-menu-panel > a:not(.header-cta) {
-	transition: background-color 160ms ease, color 160ms ease;
-}
-
-.phi .mobile-menu-panel > a:not(.header-cta):hover,
-.phi .mobile-menu-panel > a:not(.header-cta):focus-visible {
-	background: rgba(255, 255, 255, 0.12);
-}
-
-.phi .mobile-menu-panel > a:not(.header-cta)[aria-current='page'] {
-	background: #ffffff;
-	color: var(--brand-ink);
-	font-weight: 800;
+.phi .topband:has(~ main > :first-child:not(.home-band))::after,
+.phi .home-band:has(+ :not(.home-band, .site-footer))::after {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: var(--r-lg);
+	border-radius: var(--r-lg) var(--r-lg) 0 0;
+	background: var(--paper);
+	content: '';
 }
 
 .phi .topbar > .header-cta {
@@ -246,29 +220,11 @@
 	font-size: 0.875rem;
 }
 
-/* El tema no está en el diseño: va como icono suelto delante de Discord, para
-   que el botón cierre la cápsula. El margen negativo deja el icono a la misma
-   distancia visual del botón que los enlaces entre sí. */
+/* El tema va como icono suelto delante de Discord, para que el botón cierre
+   la cápsula. El margen negativo deja el icono a la misma distancia visual
+   del botón que los enlaces entre sí. */
 .phi .topbar > .theme-menu + .header-cta {
 	margin-left: -0.75rem;
-}
-
-.phi .theme-toggle,
-.phi .mobile-menu summary {
-	width: 2.75rem;
-	height: 2.75rem;
-}
-
-.phi .theme-toggle {
-	border: none;
-	color: var(--nav-link);
-	transition: color 160ms ease, background-color 160ms ease;
-}
-
-.phi .theme-toggle:hover,
-.phi .theme-toggle[aria-expanded='true'] {
-	background: rgba(255, 255, 255, 0.1);
-	color: var(--nav-link-active);
 }
 
 .phi .theme-icon,
@@ -278,14 +234,47 @@
 	height: var(--t-md);
 }
 
-/* ---------- Hero ---------- */
+/* ---------- Hero con vídeo (portada) ---------- */
+
+/* El hero se queda pegado arriba a pantalla completa mientras la hoja sube
+   y lo tapa. */
+.phi .topband-video {
+	position: sticky;
+	top: 0;
+	display: flex;
+	align-items: flex-end;
+	height: 100svh;
+	min-height: 38rem;
+	padding-top: 0;
+	overflow: clip;
+	border-radius: 0;
+	background: var(--brand-ink);
+}
+
+.home-hero-video {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Velo para leer encima del vídeo: un poco arriba, por la barra, y sobre
+   todo abajo, donde va el titular. */
+.topband-video::after {
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(180deg, rgba(4, 20, 14, 0.55) 0%, rgba(4, 20, 14, 0) 22%),
+		linear-gradient(0deg, rgba(4, 20, 14, 0.92) 0%, rgba(4, 20, 14, 0.6) 38%, rgba(4, 20, 14, 0) 72%);
+	content: '';
+	pointer-events: none;
+}
 
 .home-hero {
-	display: grid;
-	grid-template-columns: var(--golden);
-	gap: var(--gutter);
-	align-items: center;
-	padding-block: var(--s-5) var(--s-6);
+	position: relative;
+	z-index: 1;
+	padding-block: 0 var(--s-6);
 }
 
 .home-hero-copy {
@@ -308,6 +297,8 @@
 	font-weight: 600;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
 }
 
 .home-chip-dot {
@@ -319,11 +310,12 @@
 }
 
 .home-hero h1 {
-	margin-top: var(--s-4);
-	color: var(--on-brand);
-	font-size: var(--t-3xl);
-	line-height: 1;
-	letter-spacing: -0.03em;
+	margin-top: var(--s-3);
+	color: #ffffff;
+	font-size: clamp(3.4375rem, 7.2vw, 8.5rem);
+	font-weight: 700;
+	line-height: 0.96;
+	letter-spacing: -0.035em;
 }
 
 .home-hero h1 span {
@@ -343,18 +335,34 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--s-2);
-	margin-top: var(--s-5);
+	margin-top: var(--s-4);
+}
+
+/* Estado del servidor y pausa del vídeo, abajo a la derecha a la altura de
+   los botones: así el titular tiene todo el ancho. */
+.home-hero-aside {
+	position: absolute;
+	right: 0;
+	bottom: var(--s-6);
+	display: flex;
+	align-items: center;
+	gap: var(--s-2);
 }
 
 .home-hero .hero-status {
 	display: flex;
 	align-items: center;
 	gap: var(--s-1);
-	margin-top: var(--s-4);
+	min-height: 2.75rem;
+	padding-inline: var(--s-3);
+	border-radius: 999px;
+	background: rgba(4, 20, 14, 0.45);
 	color: var(--on-brand-2);
-	font-size: var(--t-sm);
+	font-size: var(--t-xs);
 	font-weight: 700;
-	line-height: var(--t-lg);
+	line-height: 1.2;
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
 }
 
 .home-hero .hero-status .status-dot {
@@ -367,18 +375,144 @@
 	box-shadow: 0 0 0 3px rgba(110, 232, 168, 0.28);
 }
 
-.home-hero-visual {
-	position: relative;
-	aspect-ratio: 1 / 1.618; /* rectángulo áureo vertical: 449 × 727 */
-	overflow: hidden;
-	border-radius: var(--r-md);
-	box-shadow: 0 var(--s-3) var(--s-5) rgba(4, 32, 20, 0.35);
+.home-hero-pause {
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 1px solid rgba(255, 255, 255, 0.22);
+	border-radius: 999px;
+	background: rgba(4, 20, 14, 0.45);
+	color: #ffffff;
+	cursor: pointer;
+	-webkit-backdrop-filter: blur(12px);
+	backdrop-filter: blur(12px);
+	transition: background-color 160ms ease, border-color 160ms ease;
 }
 
-.home-hero-visual img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
+.home-hero-pause:hover {
+	border-color: rgba(255, 255, 255, 0.5);
+	background: rgba(4, 20, 14, 0.7);
+}
+
+.home-hero-pause:focus-visible {
+	outline: 2px solid #ffffff;
+	outline-offset: 3px;
+}
+
+.home-hero-pause svg {
+	width: 1rem;
+	height: 1rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2.4;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.home-hero-pause .icon-play {
+	fill: currentColor;
+	stroke-width: 1.5;
+}
+
+.home-hero-pause .icon-play,
+.home-hero-pause[data-paused] .icon-pause {
+	display: none;
+}
+
+.home-hero-pause[data-paused] .icon-play {
+	display: block;
+}
+
+/* La hoja: todo el contenido de la portada, con las esquinas de arriba
+   redondeadas y una sombra que la despega del vídeo. */
+.home-sheet {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	border-radius: var(--r-lg) var(--r-lg) 0 0;
+	background: var(--paper);
+	box-shadow: 0 -1.25rem 3rem rgba(4, 20, 14, 0.3);
+}
+
+/* ---------- Presentación: la frase que se marca y las cifras ---------- */
+
+.home-intro {
+	padding-block: var(--s-7) var(--s-6);
+}
+
+.home-reveal {
+	max-width: 30ch;
+	font-family: var(--display);
+	font-size: clamp(1.75rem, 4.2vw, 4.25rem);
+	font-weight: 600;
+	line-height: 1.12;
+	letter-spacing: -0.03em;
+	text-wrap: pretty;
+}
+
+.home-reveal [data-word] {
+	transition: opacity 240ms ease;
+}
+
+/* scroll-reveal.js apaga las palabras al arrancar y las va encendiendo. */
+.home-reveal[data-reveal-ready] [data-word]:not([data-lit]) {
+	opacity: 0.16;
+}
+
+/* El isotipo en una cápsula del verde de la banda, como una palabra más. */
+.home-reveal-logo {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.9em;
+	height: 0.95em;
+	border-radius: 999px;
+	background: linear-gradient(180deg, var(--brand), var(--brand-deep));
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+	vertical-align: -0.12em;
+}
+
+.home-reveal-logo img {
+	width: auto;
+	height: 0.66em;
+}
+
+.home-stats {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: var(--gutter);
+	margin-top: var(--s-6);
+}
+
+/* La cifra va primero a la vista y la etiqueta después, pero en el HTML el
+   término precede al valor. */
+.home-stat {
+	display: flex;
+	flex-direction: column-reverse;
+	justify-content: flex-end;
+	gap: var(--s-1);
+}
+
+.home-stat dd {
+	margin: 0;
+	color: var(--brand-accent);
+	font-family: var(--display);
+	font-size: clamp(3.4375rem, 6.6vw, 6.5rem);
+	font-weight: 700;
+	line-height: 0.9;
+	letter-spacing: -0.04em;
+}
+
+.home-stat dt {
+	color: var(--muted);
+	font-size: var(--t-sm);
+	font-weight: 700;
+	line-height: var(--t-lg);
 }
 
 /* ---------- 01 · El servidor ---------- */
@@ -397,6 +531,7 @@
 	border: 1px solid var(--line);
 	border-radius: var(--r-md);
 	background: var(--surface);
+	box-shadow: var(--shadow-card);
 }
 
 .home-card-icon {
@@ -745,73 +880,6 @@ a.home-video-player:focus-visible .home-video-play {
 	transform: translate(-50%, -50%) scale(1.06);
 }
 
-/* Acceso al vídeo desde el hero: una miniatura vertical del Short con su play,
-   a la altura de los botones, para que se lea como vídeo y no como un enlace más. */
-.home-hero-video-link {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--s-2);
-	margin-left: var(--s-1);
-	color: var(--on-brand);
-}
-
-.home-hero-video-thumb {
-	position: relative;
-	display: grid;
-	place-items: center;
-	flex-shrink: 0;
-	width: 2.125rem; /* 34 × 55: el 9:16 del Short a la altura de los botones */
-	height: var(--s-5);
-	overflow: hidden;
-	border: 2px solid rgba(255, 255, 255, 0.7);
-	border-radius: var(--r-sm);
-	box-shadow: 0 0.5rem 1.25rem rgba(4, 32, 20, 0.3);
-	transition: transform 0.2s ease, border-color 0.2s ease;
-}
-
-.home-hero-video-thumb img {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-	object-position: center 40%; /* la granja, no el subtítulo del vídeo */
-}
-
-.home-hero-video-thumb svg {
-	position: relative;
-	width: 1rem;
-	height: 1rem;
-	fill: #ffffff;
-	filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
-}
-
-.home-hero-video-text {
-	display: flex;
-	flex-direction: column;
-	line-height: 1.2;
-}
-
-.home-hero-video-label {
-	font-size: var(--t-sm);
-	font-weight: 800;
-}
-
-.home-hero-video-meta {
-	opacity: 0.75;
-	font-size: var(--t-xs);
-	font-weight: 700;
-}
-
-.home-hero-video-link:hover {
-	color: var(--gold);
-}
-
-.home-hero-video-link:hover .home-hero-video-thumb {
-	border-color: var(--gold);
-	transform: rotate(-4deg) scale(1.06);
-}
-
 .home-blog {
 	margin-top: var(--s-6);
 }
@@ -938,8 +1006,9 @@ a.home-video-player:focus-visible .home-video-play {
 
 /* ---------- Pie (componente compartido, solo retocado aquí) ---------- */
 
+/* El pie cierra la página: sin esquinas abajo, que quedarían al aire. */
 .phi .site-footer {
-	border-radius: var(--r-lg);
+	border-radius: var(--r-lg) var(--r-lg) 0 0;
 	padding-block: var(--s-6) var(--s-5);
 }
 
@@ -996,28 +1065,6 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 }
 
-/* Por debajo de esto la cápsula ya no respira: pasa al menú desplegable. */
-@media (max-width: 1100px) {
-	.phi .desktop-nav,
-	.phi .topbar > .header-cta {
-		display: none;
-	}
-
-	.phi .mobile-menu {
-		display: block;
-	}
-
-	.phi .topbar {
-		gap: var(--s-1);
-	}
-
-	/* Sin navegación que empuje, la marca ocupa el hueco y los dos botones
-	   quedan juntos a la derecha. */
-	.phi .brand {
-		margin-right: auto;
-	}
-}
-
 @media (max-width: 940px) {
 	.phi .container {
 		width: calc(100% - 4.25rem);
@@ -1042,13 +1089,21 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 
 	.home-hero {
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-5);
-		padding-block: var(--s-4) var(--s-4);
+		padding-bottom: var(--s-5);
 	}
 
-	.home-hero-visual {
-		aspect-ratio: 1.618 / 1;
+	.home-hero-aside {
+		position: static;
+		margin-top: var(--s-4);
+	}
+
+	.home-intro {
+		padding-block: var(--s-6) var(--s-5);
+	}
+
+	.home-stats {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		row-gap: var(--s-4);
 	}
 
 	.home-claims,
@@ -1144,12 +1199,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 @media (max-width: 620px) {
 	.phi {
-		--inset: var(--s-1);
 		--r-lg: var(--s-3);
-	}
-
-	.home-hero-video-link {
-		margin-left: 0;
 	}
 
 	/* En el móvil el Short ocupa el ancho de la columna, como las capturas,
@@ -1175,8 +1225,8 @@ a.home-video-player:focus-visible .home-video-play {
 		line-height: var(--t-md);
 	}
 
-	/* 8 de inset + 21 dentro de la banda = 29 px de margen lateral: con 13 el
-	   texto quedaba pegado al borde de las cajas de color. */
+	/* 21 px de margen lateral: con 13 el texto quedaba pegado al borde de las
+	   cajas de color. */
 	.phi .container {
 		width: calc(100% - 2 * var(--s-3));
 	}
@@ -1222,15 +1272,13 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 
 	.home-hero {
-		gap: var(--s-3);
-		padding-block: var(--s-4) var(--s-2);
+		padding-bottom: var(--s-4);
 	}
 
 	.home-hero h1 {
-		margin-top: var(--s-3);
-		font-size: 2.625rem; /* 42 */
-		line-height: 1.05;
-		letter-spacing: -0.025em;
+		font-size: 3rem; /* 48 */
+		line-height: 1;
+		letter-spacing: -0.03em;
 	}
 
 	.home-hero-lead {
@@ -1245,18 +1293,28 @@ a.home-video-player:focus-visible .home-video-play {
 		margin-top: var(--s-4);
 	}
 
-	.home-hero .hero-status {
+	.home-hero-aside {
+		justify-content: space-between;
 		margin-top: var(--s-3);
+	}
+
+	.home-intro {
+		padding-block: var(--s-5) var(--s-4);
+	}
+
+	.home-stats {
+		margin-top: var(--s-5);
+	}
+
+	.home-stat dd {
+		font-size: 3.4375rem;
+	}
+
+	.home-stat dt {
 		font-size: var(--t-xs);
-		line-height: var(--s-3);
+		line-height: var(--t-md);
 	}
 
-	.home-hero-visual {
-		border-radius: var(--r-sm);
-		box-shadow: none;
-	}
-
-	.home-hero-visual .home-caption,
 	.home-mosaic-side .home-caption {
 		display: none;
 	}
@@ -1462,8 +1520,9 @@ a.home-video-player:focus-visible .home-video-play {
 	margin-top: var(--s-4);
 	color: var(--on-brand);
 	font-size: var(--t-page);
+	font-weight: 700;
 	line-height: 1;
-	letter-spacing: -0.03em;
+	letter-spacing: -0.035em;
 }
 
 .inner-hero h1 span {
@@ -1761,8 +1820,8 @@ a.home-video-player:focus-visible .home-video-play {
 	   el borde de la pantalla y arranca alineada con el texto. */
 	.blog-filter-group {
 		flex-wrap: nowrap;
-		margin-inline: calc(-1 * (var(--inset) + var(--s-3)));
-		padding-inline: calc(var(--inset) + var(--s-3));
+		margin-inline: calc(-1 * var(--s-3));
+		padding-inline: var(--s-3);
 		overflow-x: auto;
 		scrollbar-width: none;
 	}
@@ -2655,7 +2714,7 @@ a.home-video-player:focus-visible .home-video-play {
 @media (min-height: 50rem) {
 	.norm-head {
 		position: sticky;
-		top: var(--s-4);
+		top: var(--nav-clearance);
 	}
 }
 
@@ -2975,7 +3034,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 .faq-aside {
 	position: sticky;
-	top: var(--s-4);
+	top: var(--nav-clearance);
 }
 
 /* ---------- Galería ---------- */
@@ -3219,7 +3278,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 .article-aside {
 	position: sticky;
-	top: var(--s-4);
+	top: var(--nav-clearance);
 	display: grid;
 	gap: var(--s-3);
 }
@@ -3571,149 +3630,6 @@ a.home-video-player:focus-visible .home-video-play {
 		padding: var(--s-3);
 		font-size: var(--t-sm);
 		line-height: var(--t-lg);
-	}
-}
-
-/* ==========================================================================
-   Carrusel de capturas del hero de la portada
-   ========================================================================== */
-
-/* Las diapositivas se apilan dentro del marco áureo y se funden entre sí. */
-.hero-slide {
-	position: absolute;
-	inset: 0;
-	opacity: 0;
-	transition: opacity 700ms ease;
-}
-
-.hero-slide[data-active] {
-	opacity: 1;
-}
-
-.hero-slides-controls {
-	position: absolute;
-	right: var(--s-3);
-	bottom: var(--s-3);
-	z-index: 2;
-	display: flex;
-	align-items: center;
-	gap: 0.3125rem;
-	min-height: var(--s-4);
-	padding-inline: var(--s-1);
-	border-radius: 999px;
-	background: rgba(20, 32, 26, 0.72);
-}
-
-.hero-slides-pause,
-.hero-slides-dot {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: var(--t-lg);
-	padding: 0;
-	border: 0;
-	background: none;
-	color: #ffffff;
-	cursor: pointer;
-}
-
-.hero-slides-pause {
-	width: var(--t-lg);
-}
-
-.hero-slides-pause svg {
-	width: 0.875rem;
-	height: 0.875rem;
-	fill: none;
-	stroke: currentColor;
-	stroke-width: 2.4;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-}
-
-.hero-slides-pause .icon-play {
-	fill: currentColor;
-	stroke-width: 1.5;
-}
-
-.hero-slides-pause .icon-play,
-[data-paused] .hero-slides-pause .icon-pause {
-	display: none;
-}
-
-[data-paused] .hero-slides-pause .icon-play {
-	display: block;
-}
-
-.hero-slides-dot {
-	width: var(--s-2);
-	transition: width 300ms ease;
-}
-
-.hero-slides-dot::before {
-	width: var(--s-1);
-	height: var(--s-1);
-	border-radius: 999px;
-	background: rgba(255, 255, 255, 0.5);
-	content: '';
-	transition: width 300ms ease, background-color 300ms ease;
-}
-
-.hero-slides-dot[aria-current='true'] {
-	width: var(--t-lg);
-}
-
-.hero-slides-dot[aria-current='true']::before {
-	width: var(--s-3);
-	background: #ffffff;
-}
-
-/* Mientras corre el tiempo, el punto activo es una pista que se va llenando. */
-.hero-slides-dot {
-	position: relative;
-}
-
-.hero-slides-dot[data-running]::before {
-	background: rgba(255, 255, 255, 0.35);
-}
-
-.hero-slides-dot[data-running]::after {
-	position: absolute;
-	top: calc(50% - var(--s-1) / 2);
-	left: calc(50% - var(--s-3) / 2);
-	width: 0;
-	height: var(--s-1);
-	border-radius: 999px;
-	background: #ffffff;
-	content: '';
-	animation: hero-slide-progress var(--slide-duration, 4500ms) linear forwards;
-}
-
-@keyframes hero-slide-progress {
-	to {
-		width: var(--s-3);
-	}
-}
-
-.hero-slides-pause:focus-visible,
-.hero-slides-dot:focus-visible {
-	border-radius: 999px;
-	outline: 2px solid var(--gold);
-	outline-offset: 1px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	.hero-slide,
-	.hero-slides-dot,
-	.hero-slides-dot::before {
-		transition: none;
-	}
-}
-
-@media (max-width: 620px) {
-	.hero-slides-controls {
-		right: var(--s-2);
-		bottom: var(--s-2);
 	}
 }
 

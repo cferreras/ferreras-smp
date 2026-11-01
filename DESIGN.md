@@ -14,7 +14,7 @@ Vive en `src/styles/phi.css` y cuelga de la clase `.phi`, que envuelve cada pág
 - **Espacios:** solo Fibonacci — 8 · 13 · 21 · 34 · 55 · 89 · 144 px (`--s-1` a `--s-7`). Secciones a 144, cabecera a contenido 89, relleno de tarjeta 34.
 - **Tipografía:** 16 px multiplicado por potencias de √φ — 13 · 16 · 21 · 26 · 34 · 55 · 68 · 89. Cuerpo 16/26, entradillas 21/34, títulos de sección 55, titular de página interior 68, titular de portada 89. El cuerpo de los artículos usa un cuarto de paso (18/29).
 - **Radios:** 13 · 21 · 34.
-- **Bandas:** redondeadas (34 px) y separadas 13 px del borde de la ventana (8 px en móvil); el contenido queda a 120 px del borde a 1440 y a 21 px en móvil.
+- **Bandas:** redondeadas (34 px; 21 en móvil) y a sangre, sin margen alrededor ni entre ellas desde noviembre de 2026; cada caja redondea solo arriba y se monta sobre la anterior (ver «Cajas montadas»). El contenido queda a 120 px del borde a 1440 y a 21 px en móvil.
 - **Escala:** todo en rem; a 1440 px 1rem = 16 px y el diseño cuadra al píxel, por encima crece con la raíz.
 - **Piezas compartidas:** `InnerHero` (hero de páginas interiores), `CtaBand` (banda ámbar final), `PostCard` (tarjeta de artículo) y `src/lib/blog.ts` (slug de categoría, fecha, tiempo de lectura).
 - **Etiquetas del blog:** la categoría de cada artículo es su etiqueta y su color — Novedades `#00523f`, Guías `#2f5fa8`, Servidor `#f6b93b`. Una categoría nueva sale en gris hasta que se le añade su regla `[data-tag]` en `phi.css`.
@@ -28,6 +28,17 @@ Vive en `src/styles/phi.css` y cuelga de la clase `.phi`, que envuelve cada pág
 - **Color de la web:** la banda de marca (`--brand`, `#00523F`) es más oscura que cualquier cara del logo para que el isotipo destaque encima sin borde. `--brand-accent` (`#12804C`) es el verde de texto e iconos sobre papel. La banda secundaria es `--mint` (`#45D98A`, la cara superior). El tercer tono de tarjeta es lapislázuli (`--lapis-*`) para no juntar tres verdes. El ámbar y el dorado se quedan como acentos cálidos. Los neutros tiran a verde (`--ink: #14201A`).
 - **Ficheros** (`public/images/brand/`): `cubusfera-wordmark.svg` (tinta) y `-white.svg`; `cubusfera-monogram.svg` (el isotipo solo); `cubusfera-favicon.svg` (isotipo al 96 %, sin fondo) y `/favicon.ico` (16, 32 y 48 px); iconos de app a 192/512 (sin fondo), maskable (50 %) y touch icon (62 %) a sangre sobre `#00523F`; avatares de Discord `cubusfera-discord-light` (sobre `#FDF8EF`) y `-dark` (sobre `#0D1210`), en SVG y PNG de 1024 px, con el isotipo al 56 % para el recorte circular; y `cubusfera-server-icon-64.png`, el `server-icon.png` del servidor de Minecraft.
 - **No hacer:** cambiar los colores de las caras, añadir un borde o contorno al isotipo, ni ponerlo sobre un verde medio donde se pierda su cara derecha.
+
+## Portada con vídeo y barra flotante (noviembre 2026)
+
+Estética limpia y bold inspirada en netsu.es, sin tocar tipografías ni logo.
+
+- **Barra flotante** (`SiteHeader.astro`, `site-nav.js`): fija arriba en todas las páginas, fuera de la banda. Mientras va sobre la banda (el vídeo o el verde) es transparente y se alinea con el contenido; cuando el contenido claro llega a tocarla se encoge a una cápsula de `--nav-glass` con desenfoque. Cada enlace lleva una «/» delante, que se enciende en menta en la página activa. `--nav-clearance` es el hueco que deja para anclas y columnas pegajosas.
+- **Hero de la portada** (`<SiteHeader variant="video">`): vídeo a sangre y a pantalla completa, pegado arriba (`sticky`) mientras la hoja de contenido (`.home-sheet`, esquinas de arriba redondeadas) sube y lo tapa. Titular en Fredoka 700 a 7,2 vw. `home-video.js` solo reproduce sin movimiento reducido ni ahorro de datos, ofrece pausa y lo para cuando la hoja lo cubre. El vídeo actual es provisional (el de netsu.es) hasta tener la grabación del servidor con shaders; al cambiarlo, el póster debe ser su primer fotograma.
+- **Frase que se marca** (`scroll-reveal.js`): la presentación se lee palabra a palabra al hacer scroll (las apagadas al 16 %), con el isotipo en una cápsula `--brand` como una palabra más. Sin JavaScript o con movimiento reducido se ve entera.
+- **Cifras**: cuatro datos honestos (versión, plazas, mods, edad) en Fredoka 700 en `--brand-accent`.
+- **Cajas montadas**: solo el hero se queda pegado. El resto de cajas no se pegan, pero cada una se monta sobre la de arriba: sus esquinas redondeadas dejan ver el color de la anterior. Una caja de color sube un radio sobre la caja de color que tiene encima (y el pie sobre la última); bajo una caja de color seguida de papel se dibuja una lengüeta de papel redondeada. Ninguna caja redondea abajo.
+- **Titulares**: `h2` y titular de página interior pasan a peso 700.
 
 ## 0. Propósito y fuente de verdad
 
