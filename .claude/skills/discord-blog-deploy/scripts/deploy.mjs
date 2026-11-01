@@ -102,7 +102,8 @@ const deploy = async () => {
   if (pending.length) throw new Error("confirma los blogs nuevos en Git antes de desplegar");
   const base = tryGit(["rev-parse", "--verify", deployRef]) ?? tryGit(["rev-parse", "HEAD^"]) ?? git(["mktree"], root, "");
   const files = addedBlogFiles(base);
-  const result = spawnSync("pnpm", ["exec", "vercel", "deploy", "--prod", "--yes"], { cwd: root, stdio: "inherit" });
+  // The Vercel CLI isn't a project dependency, so pnpm fetches it on the fly.
+  const result = spawnSync("pnpm", ["dlx", "vercel", "deploy", "--prod", "--yes"], { cwd: root, stdio: "inherit" });
   if (result.status !== 0) process.exit(result.status ?? 1);
   try { await notify(announcements(files)); } catch (error) {
     console.warn(`Discord: ${error instanceof Error ? error.message : "error desconocido"}`);

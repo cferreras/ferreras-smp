@@ -11,7 +11,7 @@ Run deployment and Discord announcement logic through `scripts/deploy.mjs`.
 
 1. Ensure new files under `src/content/blog` are committed.
 2. Ensure `DISCORD_BLOG_WEBHOOK_URL` is exported or present in `.env.local`.
-3. Run `pnpm deploy` from the repository root.
+3. Run `pnpm run deploy` from the repository root. Plain `pnpm deploy` is pnpm's own workspace command and never reaches the script.
 4. Treat Vercel failures as deployment failures. Treat Discord failures as warnings after a successful deployment.
 
 The script compares `HEAD` with the private Git ref `refs/ferreras-smp/last-discord-blog-deploy`. On first use it compares with `HEAD^`. It announces only added, non-draft `.md` or `.mdx` files, then advances the ref after a successful Vercel deployment.
@@ -37,7 +37,7 @@ Never print or commit the webhook URL.
 Run the deterministic self-check without contacting Vercel or Discord:
 
 ```bash
-node .agents/skills/discord-blog-deploy/scripts/deploy.mjs --self-test
+node .claude/skills/discord-blog-deploy/scripts/deploy.mjs --self-test
 ```
 
 Run `quick_validate.py` against this skill after changing its metadata or structure.
