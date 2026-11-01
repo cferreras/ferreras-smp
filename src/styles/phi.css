@@ -40,6 +40,11 @@
 	--golden: minmax(0, 1.618fr) minmax(0, 1fr);
 	--home-accent: var(--brand-accent);
 
+	/* Doble bisel de las tarjetas (ver el final del archivo): bandeja de 5 px
+	   y filo de 1. Va aquí y no en :root para que el móvil pueda estrecharla. */
+	--bezel-w: 0.3125rem;
+	--bezel: 0 0 0 var(--bezel-w) var(--bezel-tint), inset 0 1px 0 var(--tile-highlight), var(--tile-shadow);
+
 	/* Las bandas van a sangre y se tocan, sin margen alrededor. */
 	display: flex;
 	flex-direction: column;
@@ -66,6 +71,8 @@
 
 /* ---------- Piezas comunes ---------- */
 
+/* Etiqueta de un dato (Dirección, En este artículo…). Nunca va encima de un
+   titular de sección. */
 .home-kicker {
 	display: block;
 	color: var(--home-accent);
@@ -92,9 +99,17 @@
 
 .phi h2 {
 	font-size: var(--t-2xl);
-	font-weight: 700;
+	font-weight: 600;
 	line-height: 1.055;
 	letter-spacing: -0.03em;
+	text-wrap: balance;
+}
+
+/* En la portada los titulares de sección van grandes, casi como el hero. */
+.home-sheet .home-head h2 {
+	font-size: var(--t-3xl);
+	line-height: 1;
+	letter-spacing: -0.035em;
 }
 
 .home-lead {
@@ -120,23 +135,54 @@
 	height: var(--t-md);
 }
 
+/* Botón dentro de las tarjetas de la banda de marca: la menta de la cápsula. */
+.phi .button-on-path {
+	min-height: 3rem;
+	gap: 0.625rem;
+	padding-inline: 1.5rem;
+	background: var(--nav-cta);
+	color: var(--on-nav-cta);
+	font-size: 0.9375rem;
+}
+
+.phi .button-on-path:hover {
+	background: var(--nav-cta-hover);
+	color: var(--on-nav-cta);
+}
+
+.phi .button-on-path .discord-icon {
+	width: 1.1875rem;
+	height: 1.1875rem;
+}
+
 .home-section {
 	padding-block: var(--s-7);
 }
 
+/* Sección seguida de otra sobre papel: el aire lo pone la de abajo. */
+.home-section-tight {
+	padding-bottom: 0;
+}
+
+/* Abajo suma la lengüeta de r-lg que tapa lo que viene después, para que el
+   aire visible sea el mismo arriba y abajo. */
 .home-band {
 	border-radius: var(--r-lg);
-	padding-block: var(--s-7);
+	padding-block: var(--s-7) calc(var(--s-7) + var(--r-lg));
 }
 
-.home-band-mint {
-	background: var(--mint);
-	color: var(--on-mint);
+/* Banda de marca: el mismo verde que la cápsula de la cabecera. */
+.home-band-brand {
+	background: var(--brand);
+	color: var(--on-brand);
 }
 
-.home-band-mint .home-kicker,
-.home-band-mint .home-lead {
-	color: var(--on-mint-2);
+.home-band-brand h2 span {
+	color: var(--gold);
+}
+
+.home-band-brand .home-lead {
+	color: var(--on-brand-2);
 }
 
 .home-band-amber {
@@ -145,7 +191,6 @@
 	text-align: center;
 }
 
-.home-band-amber .home-kicker,
 .home-band-amber .home-lead {
 	color: var(--on-amber-2);
 }
@@ -201,6 +246,12 @@
 	margin-top: calc(-1 * var(--r-lg));
 }
 
+/* La banda de marca justo debajo de la cabecera es el mismo verde: sigue el
+   hero sin juntar dos rellenos enteros. */
+.phi .topband ~ main > .home-band-brand:first-child {
+	padding-top: var(--s-4);
+}
+
 .phi .topband:has(~ main > :first-child:not(.home-band))::after,
 .phi .home-band:has(+ :not(.home-band, .site-footer))::after {
 	position: absolute;
@@ -234,7 +285,7 @@
 	height: var(--t-md);
 }
 
-/* ---------- Hero con vídeo (portada) ---------- */
+/* ---------- Hero con foto (portada) ---------- */
 
 /* El hero se queda pegado arriba a pantalla completa mientras la hoja sube
    y lo tapa. */
@@ -251,15 +302,16 @@
 	background: var(--brand-ink);
 }
 
-.home-hero-video {
+.home-hero-image {
 	position: absolute;
 	inset: 0;
 	width: 100%;
+	max-width: none;
 	height: 100%;
 	object-fit: cover;
 }
 
-/* Velo para leer encima del vídeo: un poco arriba, por la barra, y sobre
+/* Velo para leer encima de la foto: un poco arriba, por la barra, y sobre
    todo abajo, donde va el titular. */
 .topband-video::after {
 	position: absolute;
@@ -283,39 +335,13 @@
 	align-items: flex-start;
 }
 
-.home-chip {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--s-1);
-	min-height: var(--s-4);
-	padding-inline: var(--s-2);
-	border-radius: 999px;
-	background: rgba(255, 255, 255, 0.14);
-	color: var(--on-brand);
-	font-family: var(--mono);
-	font-size: var(--t-xs);
-	font-weight: 600;
-	letter-spacing: 0.06em;
-	text-transform: uppercase;
-	-webkit-backdrop-filter: blur(12px);
-	backdrop-filter: blur(12px);
-}
-
-.home-chip-dot {
-	width: var(--s-1);
-	height: var(--s-1);
-	border-radius: 999px;
-	background: #6ee8a8;
-	box-shadow: 0 0 0 3px rgba(110, 232, 168, 0.28);
-}
-
 .home-hero h1 {
-	margin-top: var(--s-3);
 	color: #ffffff;
-	font-size: clamp(3.4375rem, 7.2vw, 8.5rem);
-	font-weight: 700;
+	font-size: clamp(3.25rem, 7.2vw, 6.5rem); /* 104 a 1440 */
+	font-weight: 600;
 	line-height: 0.96;
 	letter-spacing: -0.035em;
+	text-wrap: balance;
 }
 
 .home-hero h1 span {
@@ -338,8 +364,8 @@
 	margin-top: var(--s-4);
 }
 
-/* Estado del servidor y pausa del vídeo, abajo a la derecha a la altura de
-   los botones: así el titular tiene todo el ancho. */
+/* Estado del servidor abajo a la derecha, a la altura de los botones: así el
+   titular tiene todo el ancho. */
 .home-hero-aside {
 	position: absolute;
 	right: 0;
@@ -375,60 +401,8 @@
 	box-shadow: 0 0 0 3px rgba(110, 232, 168, 0.28);
 }
 
-.home-hero-pause {
-	display: inline-flex;
-	flex-shrink: 0;
-	align-items: center;
-	justify-content: center;
-	width: 2.75rem;
-	height: 2.75rem;
-	padding: 0;
-	border: 1px solid rgba(255, 255, 255, 0.22);
-	border-radius: 999px;
-	background: rgba(4, 20, 14, 0.45);
-	color: #ffffff;
-	cursor: pointer;
-	-webkit-backdrop-filter: blur(12px);
-	backdrop-filter: blur(12px);
-	transition: background-color 160ms ease, border-color 160ms ease;
-}
-
-.home-hero-pause:hover {
-	border-color: rgba(255, 255, 255, 0.5);
-	background: rgba(4, 20, 14, 0.7);
-}
-
-.home-hero-pause:focus-visible {
-	outline: 2px solid #ffffff;
-	outline-offset: 3px;
-}
-
-.home-hero-pause svg {
-	width: 1rem;
-	height: 1rem;
-	fill: none;
-	stroke: currentColor;
-	stroke-width: 2.4;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-}
-
-.home-hero-pause .icon-play {
-	fill: currentColor;
-	stroke-width: 1.5;
-}
-
-.home-hero-pause .icon-play,
-.home-hero-pause[data-paused] .icon-pause {
-	display: none;
-}
-
-.home-hero-pause[data-paused] .icon-play {
-	display: block;
-}
-
 /* La hoja: todo el contenido de la portada, con las esquinas de arriba
-   redondeadas y una sombra que la despega del vídeo. */
+   redondeadas y una sombra que la despega de la foto. */
 .home-sheet {
 	position: relative;
 	z-index: 1;
@@ -448,7 +422,7 @@
 .home-reveal {
 	max-width: 30ch;
 	font-family: var(--display);
-	font-size: clamp(1.75rem, 4.2vw, 4.25rem);
+	font-size: clamp(1.75rem, 4.2vw, 4rem);
 	font-weight: 600;
 	line-height: 1.12;
 	letter-spacing: -0.03em;
@@ -464,24 +438,6 @@
 	opacity: 0.16;
 }
 
-/* El isotipo en una cápsula del verde de la banda, como una palabra más. */
-.home-reveal-logo {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	width: 1.9em;
-	height: 0.95em;
-	border-radius: 999px;
-	background: linear-gradient(180deg, var(--brand), var(--brand-deep));
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-	vertical-align: -0.12em;
-}
-
-.home-reveal-logo img {
-	width: auto;
-	height: 0.66em;
-}
-
 .home-stats {
 	display: grid;
 	grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -495,15 +451,17 @@
 	display: flex;
 	flex-direction: column-reverse;
 	justify-content: flex-end;
-	gap: var(--s-1);
+	gap: var(--s-2);
+	padding-top: var(--s-3);
+	border-top: 1px solid var(--line);
 }
 
 .home-stat dd {
 	margin: 0;
 	color: var(--brand-accent);
 	font-family: var(--display);
-	font-size: clamp(3.4375rem, 6.6vw, 6.5rem);
-	font-weight: 700;
+	font-size: clamp(3.4375rem, 7.2vw, 6.5rem);
+	font-weight: 600;
 	line-height: 0.9;
 	letter-spacing: -0.04em;
 }
@@ -515,7 +473,7 @@
 	line-height: var(--t-lg);
 }
 
-/* ---------- 01 · El servidor ---------- */
+/* ---------- Tarjetas de las páginas interiores ---------- */
 
 .home-claims {
 	display: grid;
@@ -528,19 +486,19 @@
 	display: flex;
 	flex-direction: column;
 	padding: var(--s-4);
-	border: 1px solid var(--line);
-	border-radius: var(--r-md);
 	background: var(--surface);
-	box-shadow: var(--shadow-card);
 }
 
+/* Icono en un círculo con su filo, como los del raíl de pasos. */
 .home-card-icon {
 	display: flex;
+	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
 	width: var(--s-5);
 	height: var(--s-5);
-	border-radius: var(--r-sm);
+	border-radius: 999px;
+	box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 40%, transparent);
 }
 
 .home-card-icon svg {
@@ -589,150 +547,387 @@
 	text-underline-offset: 3px;
 }
 
-.home-no-fit {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--s-2);
+/* ---------- Portada: lo que hay y lo que no ---------- */
+
+/* Bento áureo: la tarjeta grande en 1,618 y dos apiladas en 1; debajo, a
+   todo el ancho, la franja oscura de «no encajas si…». */
+.home-bento {
+	display: grid;
+	grid-template-columns: var(--golden);
+	gap: var(--gutter);
 	margin-top: var(--s-5);
-	padding-top: var(--s-4);
-	border-top: 1px solid var(--line);
 }
 
-.home-no-fit ul {
+.home-bento-side {
 	display: flex;
-	flex-wrap: wrap;
-	gap: var(--s-2);
-	padding: 0;
-	list-style: none;
+	flex-direction: column;
+	gap: var(--gutter);
 }
 
-.home-no-fit-label {
-	margin-right: var(--s-1);
+.home-bento-side .home-tile {
+	flex: 1 1 auto;
+}
+
+.home-tile {
+	display: flex;
+	flex-direction: column;
+	gap: var(--s-2);
+	padding: var(--s-4);
+	background: var(--surface);
+}
+
+.home-tile h3 {
+	font-size: var(--t-lg);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+}
+
+.home-tile p {
+	color: var(--muted-strong);
 	font-size: var(--t-sm);
-	font-weight: 800;
 	line-height: var(--t-lg);
 }
 
-.home-no-fit li {
+.home-tile p a {
+	color: var(--home-accent);
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.home-tile-lead {
+	gap: var(--s-3);
+	min-height: 28.25rem; /* 452 */
+}
+
+.home-tile-lead h3 {
+	font-size: 2.875rem; /* 46 */
+	line-height: 1.04;
+	letter-spacing: -0.025em;
+}
+
+.home-tile-lead p {
+	max-width: 36ch;
+	font-size: 1.1875rem; /* 19 */
+	line-height: 1.875rem; /* 30 */
+}
+
+.home-tile-brand,
+.home-tile-dark {
+	color: #ffffff;
+}
+
+.home-tile-brand {
+	background: var(--brand);
+}
+
+.home-tile-dark {
+	background: var(--tile-dark);
+}
+
+.home-tile-brand p,
+.home-tile-dark p {
+	color: var(--on-brand-2);
+}
+
+.home-tile-brand p a,
+.home-tile-dark p a {
+	color: #ffffff;
+}
+
+/* Píldoras de detalle al pie de cada tarjeta. */
+.home-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--s-1);
+	margin-top: auto;
+	padding: var(--s-1) 0 0;
+	list-style: none;
+}
+
+.home-chips li {
 	display: inline-flex;
 	align-items: center;
 	gap: var(--s-1);
-	min-height: var(--s-4);
-	padding: 0 var(--s-2) 0 var(--s-1);
+	min-height: 1.875rem; /* 30 */
+	padding-inline: var(--s-2);
 	border-radius: 999px;
-	background: var(--coral-soft);
-	color: var(--coral-ink);
-	font-size: var(--t-sm);
+	background: var(--paper);
+	box-shadow: inset 0 0 0 1px var(--line);
+	color: var(--muted-strong);
+	font-size: var(--t-xs);
 	font-weight: 700;
+	line-height: 1.2;
+}
+
+.home-tile-lead .home-chips {
+	padding-top: var(--t-lg);
+}
+
+.home-tile-lead .home-chips li {
+	min-height: 2.375rem; /* 38 */
+	padding-inline: 1rem;
+	font-size: 0.875rem;
+}
+
+:is(.home-tile-brand, .home-tile-dark, .home-path-card) .home-chips li {
+	background: rgba(255, 255, 255, 0.1);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+	color: #ffffff;
+}
+
+.home-no-fit {
+	grid-column: 1 / -1;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--s-3) var(--s-4);
+	padding-block: 1.875rem;
+}
+
+.home-no-fit .home-no-fit-label {
+	color: #ffffff;
+	font-family: var(--display);
+	font-size: var(--t-lg);
+	font-weight: 600;
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+}
+
+.home-no-fit .home-chips {
+	margin: 0;
+	padding: 0;
+}
+
+.home-no-fit .home-chips li {
+	min-height: var(--s-4);
+	padding: 0 0.9375rem 0 0.6875rem;
+	background: rgba(255, 255, 255, 0.06);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+	color: #e3f1e9;
+	font-size: 0.875rem;
 }
 
 .home-no-fit svg {
-	width: 1.125rem;
-	height: 1.125rem;
+	width: 1rem;
+	height: 1rem;
 	fill: none;
-	stroke: currentColor;
-	stroke-width: 2.2;
+	stroke: #f0a894;
+	stroke-width: 2.4;
 	stroke-linecap: round;
 }
 
-/* ---------- 02 · Cómo entrar ---------- */
+/* ---------- Banda de marca: el camino de entrada ---------- */
 
-.home-band-mint .home-head-action {
-	justify-self: end;
-}
-
-.home-steps {
+/* Sin números: un raíl de iconos encima de cada tarjeta marca el orden y el
+   último termina en el visto bueno. */
+.home-path {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: var(--gutter);
-	margin-top: var(--s-6);
+	margin-top: var(--s-5);
 	padding: 0;
 	list-style: none;
 }
 
-.home-step {
+.home-path-4 {
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.home-path-step {
 	display: flex;
 	flex-direction: column;
-	padding-top: var(--s-4);
-	border-top: 2px solid color-mix(in srgb, var(--on-mint) 28%, transparent);
+	gap: var(--s-3);
 }
 
-.home-step-number {
-	color: var(--on-mint-2);
-	font-family: var(--display);
-	font-size: var(--t-2xl);
-	font-weight: 500;
-	line-height: 1;
+.home-path-rail {
+	display: flex;
+	align-items: center;
+	gap: var(--s-2);
 }
 
-.home-step-title {
-	margin-top: var(--s-3);
-	font-family: var(--display);
+.home-path-icon {
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	width: 2.5rem;
+	height: 2.5rem;
+	border-radius: 999px;
+	background: rgba(69, 217, 138, 0.14);
+	box-shadow: inset 0 0 0 1.5px rgba(69, 217, 138, 0.6);
+	color: var(--nav-cta);
+}
+
+.home-path-icon svg {
+	width: 1.1875rem;
+	height: 1.1875rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 2;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.home-path-icon .discord-icon {
+	width: 1.125rem;
+	height: 1.125rem;
+	fill: currentColor;
+	stroke: none;
+}
+
+.home-path-line {
+	flex: 1;
+	border-top: 1.5px dashed rgba(110, 232, 168, 0.45);
+}
+
+/* Sin visto bueno al final, el último tramo no lleva a ningún sitio. */
+.home-path-step:last-child .home-path-line:last-child {
+	visibility: hidden;
+}
+
+.home-path-done {
+	display: flex;
+	flex: 0 0 auto;
+	align-items: center;
+	justify-content: center;
+	width: 1.625rem;
+	height: 1.625rem;
+	border-radius: 999px;
+	background: var(--nav-cta);
+	color: var(--brand-ink);
+}
+
+.home-path-done svg {
+	width: 0.9375rem;
+	height: 0.9375rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 3;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+/* Tarjeta de cristal oscuro con el mismo doble bisel, en blanco tenue. */
+.home-path-card {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: var(--s-2);
+	padding: 1.875rem;
+	border-radius: var(--r-md);
+	background: rgba(2, 24, 16, 0.45);
+	box-shadow:
+		0 0 0 var(--bezel-w) rgba(255, 255, 255, 0.05),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08),
+		0 1.5rem 3rem -1.875rem rgba(2, 16, 11, 0.8);
+	outline: 1px solid rgba(255, 255, 255, 0.1);
+	outline-offset: var(--bezel-w);
+	container-type: inline-size;
+}
+
+.home-path-card h3 {
 	font-size: var(--t-lg);
-	font-weight: 600;
-	line-height: var(--s-4);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
 }
 
-.home-step p {
-	margin-top: var(--s-2);
-	max-width: 21.25rem;
-	color: var(--on-mint-2);
+.home-path-card p {
+	color: var(--on-brand-2);
 	font-size: var(--t-sm);
 	line-height: var(--t-lg);
 }
 
-.home-ip {
-	display: grid;
-	grid-template-columns: 28.0625rem minmax(0, 1fr) auto; /* 449 */
-	gap: var(--s-4);
-	align-items: center;
-	margin-top: var(--s-6);
-	padding: var(--s-4);
-	border-radius: var(--r-md);
-	background: var(--ip-panel);
+.home-path-card .button-on-path {
+	align-self: flex-start;
+	margin-top: auto;
 }
 
-.home-ip-address {
+.home-path-ip {
 	display: flex;
 	flex-direction: column;
 	gap: var(--s-1);
+	margin-top: auto;
 }
 
-.home-ip .home-kicker {
-	color: var(--ip-label);
+/* La IP y el botón en una sola píldora. */
+.home-path-address {
+	display: flex;
+	align-items: center;
+	gap: var(--s-1);
+	padding: 0.3125rem 0.3125rem 0.3125rem 1.125rem;
+	border-radius: 999px;
+	background: rgba(2, 20, 13, 0.55);
+	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
 }
 
-.home-ip-value {
+.home-path-address > span {
+	flex: 1;
+	min-width: 0;
+	overflow: hidden;
 	color: #ffffff;
-	font-family: var(--display);
-	font-size: var(--t-xl);
+	font-family: var(--mono);
+	font-size: 0.9375rem;
 	font-weight: 600;
-	letter-spacing: -0.01em;
-	line-height: 2.625rem;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
-.home-ip-note {
-	color: var(--ip-note);
-	font-size: var(--t-sm);
-	line-height: var(--t-lg);
-}
-
-.phi .home-ip .copy-ip {
-	min-height: var(--s-5);
+.phi .home-path-address .copy-ip {
+	flex: 0 0 auto;
+	min-height: 2.75rem;
 	gap: var(--s-1);
 	margin: 0;
-	padding-inline: var(--s-4);
-	font-size: var(--t-sm);
+	padding-inline: 1.125rem;
+	background: var(--nav-cta);
+	color: var(--on-nav-cta);
+	font-size: 0.875rem;
 }
 
-.phi .home-ip .copy-ip svg {
-	width: var(--t-md);
-	height: var(--t-md);
-	stroke-width: 1.9;
+.phi .home-path-address .copy-ip:hover,
+.phi .home-path-address .copy-ip[data-copied='true'] {
+	background: var(--gold);
+	color: var(--ink);
 }
 
-/* ---------- 03 · El mundo ---------- */
+.phi .home-path-address .copy-ip svg {
+	width: 1.0625rem;
+	height: 1.0625rem;
+}
+
+.home-path-card .home-path-note {
+	padding-left: 1.125rem;
+	color: var(--ip-note);
+	font-size: var(--t-xs);
+	line-height: 1.25rem;
+}
+
+/* En columnas estrechas (cuatro pasos, tablet) la IP y el botón no caben en
+   una píldora: van uno encima del otro. */
+@container (max-width: 20rem) {
+	.home-path-address {
+		flex-direction: column;
+		align-items: stretch;
+		padding: var(--s-1);
+		border-radius: var(--r-sm);
+	}
+
+	.home-path-address > span {
+		padding: 0.3125rem var(--s-1) 0;
+		text-align: center;
+	}
+
+	.phi .home-path-address .copy-ip {
+		justify-content: center;
+	}
+
+	.home-path-card .home-path-note {
+		padding-left: 0;
+	}
+}
+
+/* ---------- Portada: el mundo ---------- */
 
 /* Accesos de cabecera de sección: botones rellenos compactos, a la altura del
    botón de Discord de la navbar. */
@@ -749,17 +944,19 @@
 	white-space: nowrap;
 }
 
+/* Mosaico áureo: la foto grande en 1,618 con dos apiladas al lado y una fila
+   de tres debajo, cada una en su bandeja. */
 .home-mosaic {
 	display: grid;
 	grid-template-columns: var(--golden);
 	gap: var(--gutter);
-	margin-top: var(--s-6);
+	margin-top: var(--s-5);
 }
 
 .home-mosaic figure {
 	position: relative;
 	overflow: hidden;
-	border-radius: var(--r-md);
+	padding: 0;
 }
 
 .home-mosaic img {
@@ -771,7 +968,7 @@
 }
 
 .home-mosaic-main {
-	aspect-ratio: 1.618 / 1; /* rectángulo áureo: 727 × 449 */
+	aspect-ratio: 1.618 / 1;
 }
 
 .home-mosaic-side {
@@ -780,44 +977,55 @@
 	gap: var(--gutter);
 }
 
-.home-mosaic-side .home-caption {
-	left: var(--s-2);
-	bottom: var(--s-2);
-}
-
-/* Short vertical junto a su texto: el vídeo no pasa de 300 de ancho para que
-   el 9:16 no se coma la sección. */
-.home-video {
+.home-mosaic-row {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) 18.75rem;
-	gap: var(--s-5);
+	grid-column: 1 / -1;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: var(--gutter);
+}
+
+.home-mosaic-row figure {
+	aspect-ratio: 1.272 / 1; /* √φ */
+}
+
+/* Short vertical en una tarjeta oscura junto a su texto: no pasa de 214 de
+   ancho para que el 9:16 no se coma la sección. */
+.home-video {
+	flex-direction: row;
+	flex-wrap: wrap;
 	align-items: center;
-	margin-top: var(--s-6);
+	gap: var(--s-4) var(--s-5);
+	margin-top: var(--gutter);
+	padding: var(--s-4) var(--s-4) var(--s-4) var(--s-5);
 }
 
-.home-video .home-kicker {
-	color: var(--muted);
+.home-video-copy {
+	display: flex;
+	flex: 1.618 1 26.25rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--s-2);
+	min-width: 0;
 }
 
-.home-video-title {
-	margin-top: var(--s-3);
-	font-family: var(--display);
-	font-size: var(--t-xl);
-	font-weight: 700;
-	line-height: 1.12;
-	letter-spacing: -0.02em;
+.home-video .home-video-title {
+	font-size: clamp(1.875rem, 3.8vw, 3.4375rem);
+	line-height: 1.02;
+	letter-spacing: -0.03em;
+	text-wrap: balance;
 }
 
-.home-video .home-lead {
-	max-width: 34rem;
-	margin-top: var(--s-3);
+.home-video .home-video-copy p {
+	max-width: 40ch;
+	font-size: 1.125rem;
+	line-height: 1.8125rem;
 }
 
 .home-video-actions {
 	display: flex;
 	flex-wrap: wrap;
 	gap: var(--s-2);
-	margin-top: var(--s-4);
+	margin-top: var(--s-3);
 }
 
 .phi .home-video-actions .youtube-icon {
@@ -828,10 +1036,13 @@
 .home-video-player {
 	position: relative;
 	display: block;
+	flex: 0 0 auto;
+	width: 13.375rem; /* 214 */
 	overflow: hidden;
 	aspect-ratio: 9 / 16;
 	border-radius: var(--r-md);
 	background: #14201a;
+	box-shadow: 0 0 0 0.375rem rgba(255, 255, 255, 0.06);
 }
 
 .home-video-player img,
@@ -854,19 +1065,19 @@
 	left: 50%;
 	display: grid;
 	place-items: center;
-	width: var(--s-6);
-	height: var(--s-6);
+	width: 4rem;
+	height: 4rem;
 	border-radius: 999px;
-	background: rgba(20, 32, 26, 0.72);
+	background: rgba(4, 20, 14, 0.62);
 	color: #ffffff;
 	transform: translate(-50%, -50%);
 	transition: transform 0.2s ease, background 0.2s ease;
 }
 
 .home-video-play svg {
-	width: var(--s-4);
-	height: var(--s-4);
-	margin-left: 0.25rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin-left: 0.1875rem;
 	fill: currentColor;
 }
 
@@ -876,71 +1087,70 @@ a.home-video-player:hover img {
 
 a.home-video-player:hover .home-video-play,
 a.home-video-player:focus-visible .home-video-play {
-	background: var(--home-accent);
+	background: var(--brand-accent);
 	transform: translate(-50%, -50%) scale(1.06);
 }
 
+/* ---------- Portada: lo último del blog ---------- */
+
 .home-blog {
-	margin-top: var(--s-6);
-}
-
-.home-blog .home-kicker {
-	color: var(--muted);
-}
-
-/* Kicker a la izquierda y enlace al blog a la derecha, en la misma línea. */
-.home-blog-head {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--s-3);
-}
-
-.home-blog ul {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: var(--gutter);
-	margin-top: var(--s-3);
+	margin-top: var(--s-5);
 	padding: 0;
 	list-style: none;
 }
 
-.home-blog li > a {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
-	align-items: start;
-	gap: var(--s-2);
+.home-blog li {
+	display: flex;
+}
+
+.home-blog a.home-tile {
+	flex: 1;
+	gap: 0;
+	padding: 0;
+	overflow: hidden;
+	color: var(--ink);
+	transition: transform 160ms ease;
 }
 
 .home-blog-thumb {
-	grid-column: 1 / -1;
 	width: 100%;
 	height: auto;
-	aspect-ratio: 1.618 / 1;
+	aspect-ratio: 3 / 2;
 	object-fit: cover;
-	border-radius: var(--r-md);
-	transition: opacity 160ms ease;
 }
 
-.home-blog li > a:hover .home-blog-thumb {
-	opacity: 0.88;
+.home-blog-body {
+	display: flex;
+	flex-direction: column;
+	gap: 0.625rem;
+	padding: var(--s-3) var(--t-lg) var(--t-lg);
 }
 
-/* «Categoría ·» y la fecha no se parten por dentro: si no caben, la fecha
-   baja entera a la línea siguiente en vez de apilarse palabra a palabra. */
+/* «Categoría» y la fecha no se parten por dentro: si no caben, la fecha baja
+   entera a la línea siguiente. */
 .home-blog-meta {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 0 var(--s-1);
-	white-space: nowrap;
+	gap: 0 var(--s-2);
 	color: var(--muted);
 	font-family: var(--mono);
-	font-size: var(--t-xs);
+	font-size: 0.75rem;
 	font-weight: 600;
 	letter-spacing: 0.06em;
 	line-height: var(--s-3);
 	text-transform: uppercase;
+	white-space: nowrap;
+}
+
+.home-blog-tag {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.375rem;
+	color: var(--ink);
 }
 
 .home-blog-dot {
@@ -952,37 +1162,23 @@ a.home-video-player:focus-visible .home-video-play {
 }
 
 .home-blog-title {
-	display: block;
-	margin-top: var(--s-1);
 	font-family: var(--display);
 	font-size: var(--t-md);
 	font-weight: 600;
-	line-height: var(--t-lg);
+	line-height: 1.22;
+	letter-spacing: -0.01em;
 	transition: color 160ms ease;
 }
 
-.home-blog li svg {
-	flex-shrink: 0;
-	width: var(--t-md);
-	height: var(--t-md);
-	margin-top: 2rem;
-	fill: none;
-	stroke: var(--home-accent);
-	stroke-width: 2;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-	transition: transform 160ms ease;
+.home-blog a.home-tile:hover {
+	transform: translateY(-2px);
 }
 
-.home-blog li > a:hover .home-blog-title {
+.home-blog a.home-tile:hover .home-blog-title {
 	color: var(--home-accent);
 }
 
-.home-blog li > a:hover svg {
-	transform: translate(2px, -2px);
-}
-
-/* ---------- 04 · Siguiente paso ---------- */
+/* ---------- Siguiente paso ---------- */
 
 .home-band-amber .container {
 	display: flex;
@@ -991,13 +1187,20 @@ a.home-video-player:focus-visible .home-video-play {
 }
 
 .home-band-amber h2 {
-	max-width: 45.4375rem; /* 727 */
-	margin-top: var(--s-3);
+	max-width: 14ch;
+	font-size: var(--t-3xl);
+	line-height: 0.95;
+	letter-spacing: -0.04em;
+}
+
+/* En la portada cierra a lo grande: 121 a 1440. */
+.home-sheet .home-band-amber h2 {
+	font-size: clamp(3.5rem, 8.4vw, 7.5625rem);
 }
 
 .home-band-amber .home-lead {
-	max-width: 34.6875rem; /* 555 */
-	margin-top: var(--s-3);
+	max-width: 34ch;
+	margin-top: var(--s-4);
 }
 
 .home-band-amber .home-hero-actions {
@@ -1055,13 +1258,9 @@ a.home-video-player:focus-visible .home-video-play {
 /* ---------- Tablet ---------- */
 
 @media (max-width: 1100px) {
-	.home-ip {
-		grid-template-columns: minmax(0, 1fr) auto;
-	}
-
-	.home-ip-note {
-		grid-column: 1 / -1;
-		grid-row: 2;
+	.home-path-4 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		row-gap: var(--s-4);
 	}
 }
 
@@ -1070,18 +1269,21 @@ a.home-video-player:focus-visible .home-video-play {
 		width: calc(100% - 4.25rem);
 	}
 
-	.home-section,
-	.home-band {
+	.home-section {
 		padding-block: var(--s-6);
+	}
+
+	.home-section-tight {
+		padding-bottom: 0;
+	}
+
+	.home-band {
+		padding-block: var(--s-6) calc(var(--s-6) + var(--r-lg));
 	}
 
 	.home-head {
 		grid-template-columns: minmax(0, 1fr);
 		gap: var(--s-3);
-	}
-
-	.home-band-mint .home-head-action {
-		justify-self: start;
 	}
 
 	.home-links {
@@ -1106,86 +1308,73 @@ a.home-video-player:focus-visible .home-video-play {
 		row-gap: var(--s-4);
 	}
 
-	.home-claims,
-	.home-steps {
+	.home-claims {
 		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-2);
+		gap: var(--s-3);
 		margin-top: var(--s-5);
 	}
 
-	.home-steps {
-		gap: var(--s-4);
+	.home-bento {
+		grid-template-columns: minmax(0, 1fr);
 	}
 
-	.home-step {
-		display: grid;
-		grid-template-columns: var(--s-5) minmax(0, 1fr);
-		column-gap: var(--s-2);
-		padding-top: var(--s-3);
+	.home-tile-lead {
+		min-height: 0;
 	}
 
-	.home-step-number {
-		grid-row: 1 / span 2;
-		font-size: var(--t-xl);
-	}
-
-	.home-step-title {
-		margin-top: 0;
-		font-size: var(--t-md);
-		line-height: var(--t-lg);
-	}
-
-	.home-step p {
-		max-width: none;
-		margin-top: var(--s-1);
+	.home-path,
+	.home-path-4 {
+		grid-template-columns: minmax(0, 1fr);
+		row-gap: var(--s-4);
 	}
 
 	.home-mosaic {
 		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-2);
-		margin-top: var(--s-4);
 	}
 
 	.home-mosaic-side {
 		grid-template-columns: 1fr 1fr;
 		grid-template-rows: none;
-		gap: var(--s-2);
 	}
 
 	.home-mosaic-side figure {
+		aspect-ratio: 1.272 / 1;
+	}
+
+	/* La fila pasa a dos columnas con la primera foto a todo el ancho, para
+	   alternar grande y pequeñas. */
+	.home-mosaic-row {
+		grid-template-columns: 1fr 1fr;
+	}
+
+	.home-mosaic-row figure:first-child {
+		grid-column: 1 / -1;
 		aspect-ratio: 1.618 / 1;
 	}
 
 	.home-video {
-		margin-top: var(--s-5);
+		padding: var(--s-4);
 	}
 
-	.home-blog ul {
+	.home-blog {
 		grid-template-columns: minmax(0, 1fr);
-		gap: 0;
+		gap: var(--s-3);
 	}
 
-	.home-blog li {
-		border-top: 1px solid var(--line-strong);
-	}
-
-	.home-blog li:last-child {
-		border-bottom: 1px solid var(--line-strong);
-	}
-
-	.home-blog li > a {
-		grid-template-columns: var(--s-6) minmax(0, 1fr) auto;
+	.home-blog a.home-tile {
+		flex-direction: row;
 		align-items: center;
-		padding-block: var(--s-2);
 	}
 
 	.home-blog-thumb {
-		grid-column: auto;
-		border-radius: var(--r-sm);
+		flex: 0 0 9rem;
+		width: 9rem;
+		align-self: stretch;
+		aspect-ratio: auto;
 	}
 
-	.home-blog li svg {
-		margin-top: 0;
+	.home-blog-body {
+		padding: var(--s-2) var(--s-3);
 	}
 
 	.phi .footer-grid {
@@ -1200,29 +1389,7 @@ a.home-video-player:focus-visible .home-video-play {
 @media (max-width: 620px) {
 	.phi {
 		--r-lg: var(--s-3);
-	}
-
-	/* En el móvil el Short ocupa el ancho de la columna, como las capturas,
-	   en vez de quedarse centrado con un margen propio. */
-	.home-video {
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-4);
-	}
-
-	/* Toda la fila es el enlace: sin la flecha, el título gana el ancho que
-	   le faltaba y no se va a cinco líneas. */
-	.home-blog li > a {
-		grid-template-columns: var(--s-6) minmax(0, 1fr);
-		column-gap: var(--s-2);
-	}
-
-	.home-blog li > a > svg {
-		display: none;
-	}
-
-	.home-blog-title {
-		font-size: var(--t-sm);
-		line-height: var(--t-md);
+		--bezel-w: 0.25rem;
 	}
 
 	/* 21 px de margen lateral: con 13 el texto quedaba pegado al borde de las
@@ -1244,6 +1411,12 @@ a.home-video-player:focus-visible .home-video-play {
 		font-size: var(--t-xl);
 		line-height: 1.12;
 		letter-spacing: -0.02em;
+	}
+
+	.home-sheet .home-head h2 {
+		font-size: 2.625rem; /* 42 */
+		line-height: 1.04;
+		letter-spacing: -0.03em;
 	}
 
 	.home-head {
@@ -1315,11 +1488,8 @@ a.home-video-player:focus-visible .home-video-play {
 		line-height: var(--t-md);
 	}
 
-	.home-mosaic-side .home-caption {
-		display: none;
-	}
-
-	.home-card {
+	.home-card,
+	.home-tile {
 		padding: var(--s-3);
 	}
 
@@ -1343,74 +1513,101 @@ a.home-video-player:focus-visible .home-video-play {
 		margin-top: var(--s-1);
 	}
 
+	.home-bento,
+	.home-bento-side,
+	.home-mosaic,
+	.home-mosaic-side,
+	.home-mosaic-row,
+	.home-path {
+		gap: var(--s-3);
+	}
+
+	.home-tile-lead h3 {
+		font-size: var(--t-xl);
+	}
+
+	.home-tile-lead p {
+		font-size: var(--t-sm);
+		line-height: var(--t-lg);
+	}
+
+	.home-tile-lead .home-chips {
+		padding-top: var(--s-1);
+	}
+
+	.home-tile-lead .home-chips li {
+		min-height: 1.875rem;
+		padding-inline: var(--s-2);
+		font-size: var(--t-xs);
+	}
+
 	.home-no-fit {
 		flex-direction: column;
 		align-items: flex-start;
-		gap: var(--s-1);
-		margin-top: var(--s-4);
-		padding-top: var(--s-3);
+		padding-block: var(--s-3);
 	}
 
-	.home-no-fit-label {
-		margin: 0 0 0.3125rem;
+	.home-no-fit .home-no-fit-label {
+		font-size: var(--t-md);
 	}
 
-	.home-no-fit ul {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: var(--s-1);
-	}
-
-	.home-band-mint .home-head-action {
-		justify-self: stretch;
-		margin-top: var(--s-3);
-	}
-
-	.home-ip {
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-2);
-		margin-top: var(--s-5);
+	.home-path-card {
 		padding: var(--s-3);
 	}
 
-	.home-ip-note {
-		grid-row: auto;
+	.home-mosaic-side .home-caption,
+	.home-mosaic-row figure:not(:first-child) .home-caption {
+		display: none;
 	}
 
-	.home-ip-value {
-		font-size: var(--t-lg);
-		line-height: var(--s-4);
-	}
-
-	.phi .home-ip .copy-ip {
-		width: 100%;
-		margin-top: var(--s-1);
-	}
-
-	.home-mosaic-main {
-		border-radius: var(--r-sm);
-	}
-
-	.home-mosaic figure {
-		border-radius: var(--r-sm);
-	}
-
-	.home-mosaic-main .home-caption {
+	.home-mosaic .home-caption {
 		left: var(--s-2);
 		bottom: var(--s-2);
 	}
 
-	.home-blog {
-		margin-top: var(--s-5);
+	/* En el móvil el Short ocupa el ancho de la tarjeta, como las fotos. */
+	.home-video {
+		gap: var(--s-4);
+		margin-top: var(--s-3);
+		padding: var(--s-3);
 	}
 
-	.home-blog ul {
-		margin-top: var(--s-2);
+	.home-video-copy {
+		flex-basis: 100%;
+	}
+
+	.home-video .home-video-copy p {
+		font-size: var(--t-sm);
+		line-height: var(--t-lg);
+	}
+
+	.home-video-actions {
+		align-self: stretch;
+	}
+
+	.home-video-player {
+		width: 100%;
+	}
+
+	.home-blog-thumb {
+		flex-basis: var(--s-6);
+		width: var(--s-6);
+	}
+
+	.home-blog-title {
+		font-size: var(--t-sm);
+		line-height: var(--t-md);
 	}
 
 	.home-band-amber h2,
+	.home-sheet .home-band-amber h2 {
+		font-size: 2.625rem;
+		line-height: 1;
+		letter-spacing: -0.03em;
+	}
+
 	.home-band-amber .home-lead {
-		margin-top: var(--s-2);
+		margin-top: var(--s-3);
 	}
 
 	.home-band-amber .home-hero-actions {
@@ -1517,10 +1714,9 @@ a.home-video-player:focus-visible .home-video-play {
 }
 
 .inner-hero h1 {
-	margin-top: var(--s-4);
 	color: var(--on-brand);
 	font-size: var(--t-page);
-	font-weight: 700;
+	font-weight: 600;
 	line-height: 1;
 	letter-spacing: -0.035em;
 }
@@ -1674,13 +1870,17 @@ a.home-video-player:focus-visible .home-video-play {
 	border-top: 1px solid var(--line);
 }
 
-.blog-read {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--s-1);
-	color: var(--home-accent);
-	font-weight: 800;
-	line-height: var(--t-lg);
+/* Toda la tarjeta es el enlace: el botón solo lo señala, compacto como los
+   accesos de sección. */
+.phi .blog-read {
+	width: auto;
+	min-height: 2.75rem;
+	padding-inline: var(--s-3);
+	white-space: nowrap;
+}
+
+.blog-featured:hover .blog-read {
+	background: var(--brand-deep);
 }
 
 .blog-arrow {
@@ -1700,7 +1900,6 @@ a.home-video-player:focus-visible .home-video-play {
 	color: var(--home-accent);
 }
 
-.blog-featured:hover .blog-arrow,
 .blog-card a:hover .blog-arrow {
 	transform: translate(2px, -2px);
 }
@@ -1857,7 +2056,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 	.blog-grid {
 		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-2);
+		gap: var(--s-3);
 	}
 
 	.blog-card p {
@@ -2023,7 +2222,8 @@ a.home-video-player:focus-visible .home-video-play {
 	justify-content: center;
 	width: var(--s-5);
 	height: var(--s-5);
-	border-radius: var(--r-sm);
+	border-radius: 999px;
+	box-shadow: inset 0 0 0 1.5px color-mix(in srgb, currentColor 40%, transparent);
 	background: var(--brand-soft);
 	color: var(--brand-accent);
 }
@@ -2400,7 +2600,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 	.srv-specs {
 		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-2);
+		gap: var(--s-3);
 		margin-top: var(--s-2);
 	}
 
@@ -2443,7 +2643,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 	.srv-stack {
 		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-2);
+		gap: var(--s-3);
 		margin-top: var(--s-3);
 	}
 
@@ -2559,14 +2759,6 @@ a.home-video-player:focus-visible .home-video-play {
 	text-underline-offset: 3px;
 }
 
-.home-steps-4 {
-	grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.srv-panel-paper {
-	border: 1px solid var(--line);
-}
-
 .srv-panel ol {
 	padding: 0;
 	list-style: none;
@@ -2574,13 +2766,6 @@ a.home-video-player:focus-visible .home-video-play {
 
 .srv-panel h3 + :is(ul, ol) {
 	margin-top: var(--s-3);
-}
-
-.srv-mark-number {
-	background: var(--brand-soft);
-	color: var(--code-ink);
-	font-size: var(--t-xs);
-	font-weight: 800;
 }
 
 .srv-note .button {
@@ -2597,10 +2782,6 @@ a.home-video-player:focus-visible .home-video-play {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-}
-
-.phi-aside-copy h2 {
-	margin-top: var(--s-3);
 }
 
 .phi-aside-copy .home-lead {
@@ -2651,12 +2832,26 @@ a.home-video-player:focus-visible .home-video-play {
 	outline-offset: 3px;
 }
 
-.norm-index-number {
-	color: var(--muted);
-	font-family: var(--mono);
-	font-size: var(--t-xs);
-	font-weight: 600;
-	line-height: 1;
+.norm-index-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	border-radius: 999px;
+	background: var(--brand-soft);
+	box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--brand-accent) 40%, transparent);
+	color: var(--brand-accent);
+}
+
+.norm-index-icon svg {
+	width: 1.25rem;
+	height: 1.25rem;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
 }
 
 .norm-index strong {
@@ -2718,12 +2913,8 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 }
 
-.norm-head .home-kicker {
-	margin-top: var(--s-4);
-}
-
 .norm-head h2 {
-	margin-top: var(--s-2);
+	margin-top: var(--s-4);
 	font-size: var(--t-xl);
 	line-height: 2.625rem;
 	letter-spacing: -0.02em;
@@ -2759,7 +2950,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 .norm-body {
 	display: grid;
-	gap: var(--s-2);
+	gap: var(--gutter);
 }
 
 /* Se puede (verde), solo con condiciones (ámbar) y no se puede (coral). */
@@ -2849,7 +3040,7 @@ a.home-video-player:focus-visible .home-video-play {
 .norm-stats {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
-	gap: var(--s-2);
+	gap: var(--gutter);
 }
 
 .norm-stat {
@@ -2945,7 +3136,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 .faq summary {
 	display: grid;
-	grid-template-columns: var(--s-5) minmax(0, 1fr) auto;
+	grid-template-columns: minmax(0, 1fr) auto;
 	align-items: center;
 	gap: var(--s-2);
 	padding-block: var(--s-3);
@@ -2960,13 +3151,6 @@ a.home-video-player:focus-visible .home-video-play {
 .faq summary:focus-visible {
 	outline: 3px solid var(--gold);
 	outline-offset: 3px;
-}
-
-.faq-number {
-	color: var(--muted);
-	font-family: var(--mono);
-	font-size: var(--t-xs);
-	font-weight: 600;
 }
 
 .faq summary h2 {
@@ -3009,7 +3193,7 @@ a.home-video-player:focus-visible .home-video-play {
 
 .faq details p {
 	max-width: 38rem;
-	padding: 0 0 var(--s-4) calc(var(--s-5) + var(--s-2));
+	padding: 0 0 var(--s-4);
 	color: var(--muted-strong);
 	font-size: var(--t-sm);
 	line-height: var(--t-lg);
@@ -3035,63 +3219,6 @@ a.home-video-player:focus-visible .home-video-play {
 .faq-aside {
 	position: sticky;
 	top: var(--nav-clearance);
-}
-
-/* ---------- Galería ---------- */
-
-/* Tres pistas (588 · 115 · 449 a 1200) que dan a la vez el reparto áureo
-   (588 + 115 + hueco = 727 | 449) y dos mitades iguales (588 | 588). */
-.gal-grid {
-	display: grid;
-	grid-template-columns: 588fr 115fr 449fr;
-	gap: var(--gutter);
-}
-
-.gal-grid figure {
-	position: relative;
-	overflow: hidden;
-	border-radius: var(--r-md);
-	background: var(--line);
-}
-
-.gal-grid img {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.gal-main {
-	grid-column: 1 / 3;
-	aspect-ratio: 1.618 / 1;
-}
-
-.gal-side {
-	grid-column: 3 / 4;
-}
-
-.gal-wide,
-.gal-half {
-	aspect-ratio: 1800 / 716;
-}
-
-.gal-wide {
-	grid-column: 1 / -1;
-}
-
-.gal-half:nth-child(even) {
-	grid-column: 1 / 2;
-}
-
-.gal-half:nth-child(odd) {
-	grid-column: 2 / 4;
-}
-
-/* Botón que cierra una sección de imagen (galería, mapa), alineado a la derecha. */
-.gal-more {
-	margin-top: var(--s-5);
-	text-align: right;
 }
 
 /* ---------- Estado ---------- */
@@ -3170,6 +3297,12 @@ a.home-video-player:focus-visible .home-video-play {
 }
 
 /* ---------- BlueMap ---------- */
+
+/* Botón que cierra la sección del mapa, alineado a la derecha. */
+.gal-more {
+	margin-top: var(--s-5);
+	text-align: right;
+}
 
 /* El visor de BlueMap ocupa todo el contenedor en rectángulo áureo
    apaisado. En móvil el áureo queda demasiado bajo para navegar, así que
@@ -3467,10 +3600,6 @@ a.home-video-player:focus-visible .home-video-play {
 		padding-bottom: var(--s-6);
 	}
 
-	.home-steps-4 {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
 	.faq-aside,
 	.article-aside {
 		position: static;
@@ -3514,14 +3643,9 @@ a.home-video-player:focus-visible .home-video-play {
 }
 
 @media (max-width: 620px) {
-	.gal-grid {
-		grid-template-columns: minmax(0, 1fr);
-		gap: var(--s-2);
-	}
-
 	/* En el móvil el índice se queda en número y título. */
 	.norm-index ol {
-		gap: var(--s-1);
+		gap: var(--s-3);
 	}
 
 	.norm-index a {
@@ -3542,10 +3666,6 @@ a.home-video-player:focus-visible .home-video-play {
 	.norm-head .home-card-icon {
 		width: 2.75rem;
 		height: 2.75rem;
-	}
-
-	.norm-head .home-kicker {
-		margin-top: var(--s-3);
 	}
 
 	.norm-head h2 {
@@ -3571,34 +3691,8 @@ a.home-video-player:focus-visible .home-video-play {
 		padding: var(--s-3);
 	}
 
-	.gal-grid figure {
-		grid-column: auto !important;
-		border-radius: var(--r-sm);
-	}
-
-	.gal-side {
-		aspect-ratio: 1.618 / 1;
-	}
-
-	.gal-grid .home-caption {
-		left: var(--s-2);
-		bottom: var(--s-2);
-	}
-
 	.gal-more {
 		text-align: left;
-	}
-
-	.faq summary {
-		grid-template-columns: minmax(0, 1fr) auto;
-	}
-
-	.faq-number {
-		display: none;
-	}
-
-	.faq details p {
-		padding-left: 0;
 	}
 
 	.status-panel,
@@ -3645,7 +3739,7 @@ a.home-video-player:focus-visible .home-video-play {
 	/* Todas las filas al alto de la más alta: una fila solo de plazas libres
 	   (sin fecha ni etiquetas) quedaría más baja que las demás. */
 	grid-auto-rows: 1fr;
-	gap: var(--s-2);
+	gap: var(--gutter);
 	margin: var(--s-5) 0 0;
 	padding: 0;
 	list-style: none;
@@ -3772,7 +3866,7 @@ a.home-video-player:focus-visible .home-video-play {
 @media (max-width: 620px) {
 	.members-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: var(--s-1);
+		gap: var(--s-3);
 	}
 
 	.member {
@@ -3786,22 +3880,82 @@ a.home-video-player:focus-visible .home-video-play {
 	}
 }
 
-/* ---------- Adelanto en la portada (02 — La comunidad) ---------- */
+/* ---------- Adelanto en la portada (Quién juega aquí) ---------- */
 
 .home-members {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
+	flex-direction: row;
+	flex-wrap: wrap;
 	align-items: center;
-	gap: var(--s-4);
+	gap: var(--s-4) var(--s-5);
 	margin-top: var(--s-5);
 }
 
-/* Las 20 plazas en una fila a 1440 (40 = 5 × 8 px); en dos de 10 al estrechar. */
+.home-members-summary {
+	display: flex;
+	flex: 1 1 15rem;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: var(--s-1);
+	min-width: 0;
+}
+
+.home-members .home-members-count {
+	color: var(--muted);
+	font-family: var(--display);
+	font-size: var(--s-5);
+	font-weight: 600;
+	letter-spacing: -0.04em;
+	line-height: 0.9;
+}
+
+.home-members-count strong {
+	color: var(--brand-accent);
+	font-size: var(--s-6);
+	font-weight: inherit;
+}
+
+.home-members-count span {
+	opacity: 0.7;
+}
+
+.home-members .home-members-label {
+	color: var(--muted);
+	font-weight: 700;
+}
+
+.home-members .home-members-online {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--s-1);
+	min-height: 1.875rem;
+	margin-top: var(--s-1);
+	padding-inline: var(--s-2);
+	border-radius: 999px;
+	background: var(--brand-soft);
+	color: var(--code-ink);
+	font-size: var(--t-xs);
+	font-weight: 800;
+}
+
+.home-members-dot {
+	flex: 0 0 auto;
+	width: var(--s-1);
+	height: var(--s-1);
+	border-radius: 50%;
+	background: #1fae68;
+}
+
+.home-members .button {
+	margin-top: var(--s-3);
+}
+
+/* Las 20 plazas en dos filas de 10; cinco por fila en el móvil. */
 .home-members-heads {
 	display: grid;
-	grid-column: 1 / -1;
-	grid-template-columns: repeat(20, minmax(0, 2.5rem));
-	gap: var(--s-2);
+	flex: 2.4 1 28.75rem;
+	grid-template-columns: repeat(10, minmax(0, 1fr));
+	gap: 0.625rem;
+	min-width: 0;
 	margin: 0;
 	padding: 0;
 	list-style: none;
@@ -3810,7 +3964,7 @@ a.home-video-player:focus-visible .home-video-play {
 .home-members-head {
 	position: relative;
 	aspect-ratio: 1;
-	border-radius: 0.25rem;
+	border-radius: 0.5625rem;
 }
 
 .home-members-head img {
@@ -3818,15 +3972,13 @@ a.home-video-player:focus-visible .home-video-play {
 	width: 100%;
 	height: 100%;
 	border-radius: inherit;
+	box-shadow: 0 0.375rem 0.75rem -0.375rem rgba(20, 32, 26, 0.45);
 	image-rendering: pixelated;
 }
 
-.home-members-head.is-free {
-	border: 1.5px dashed var(--line-strong);
-}
-
-.home-members-head.is-loading {
-	background: var(--line);
+/* Quien está jugando lleva un anillo verde separado por el color de la tarjeta. */
+.home-members-head.is-online {
+	box-shadow: 0 0 0 3px var(--surface), 0 0 0 5px #1fae68;
 }
 
 .home-members-head.is-away img {
@@ -3834,68 +3986,96 @@ a.home-video-player:focus-visible .home-video-play {
 	filter: grayscale(1);
 }
 
-/* Punto de «jugando», con un anillo del color del papel que lo separa de la cabeza. */
-.home-members-dot,
-.home-members-head.is-online::after {
-	width: 0.625rem;
-	height: 0.625rem;
-	flex: 0 0 auto;
-	border-radius: 50%;
-	background: var(--brand-accent);
-	box-shadow: 0 0 0 2px var(--paper);
-}
-
-.home-members-head.is-online::after {
-	position: absolute;
-	right: -0.1875rem;
-	bottom: -0.1875rem;
-	content: '';
-}
-
-.home-members-text {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: var(--s-1) var(--s-3);
-	color: var(--muted);
-	font-size: var(--t-md);
-	font-weight: 600;
-	line-height: var(--s-4);
-}
-
-.home-members-text strong {
-	color: var(--ink);
-	font-weight: 800;
-}
-
-.home-members-online {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--s-1);
-}
-
-@media (max-width: 940px) {
-	.home-members-heads {
-		grid-template-columns: repeat(10, minmax(0, 2.5rem));
-	}
+.home-members-head.is-free,
+.home-members-head.is-loading {
+	background: color-mix(in srgb, var(--paper) 70%, transparent);
+	box-shadow: inset 0 0 0 1.5px var(--line);
 }
 
 @media (max-width: 620px) {
 	.home-members {
-		grid-template-columns: minmax(0, 1fr);
 		gap: var(--s-3);
 	}
 
+	.home-members .home-members-count {
+		font-size: var(--t-xl);
+	}
+
+	.home-members-count strong {
+		font-size: var(--s-5);
+	}
+
 	.home-members-heads {
+		flex-basis: 100%;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
 		gap: var(--s-1);
 	}
+}
 
-	.home-members .button {
-		justify-self: start;
-	}
+/* ==========================================================================
+   Doble bisel: todas las tarjetas sobre papel
+   --------------------------------------------------------------------------
+   Una bandeja tenue con su filo y, dentro, la tarjeta. Va en un solo
+   elemento: la bandeja es una sombra sin desenfoque y el filo un outline
+   separado de ella, así no hay que envolver cada tarjeta en otra caja. Ocupa
+   6 px por fuera, de modo que con 24 de hueco entre tarjetas quedan 12
+   entre bandejas. Va al final para ganar a los bordes de cada componente.
+   ========================================================================== */
 
-	.home-members-text {
-		font-size: var(--t-sm);
-		line-height: var(--t-lg);
-	}
+.home-tile,
+.home-card,
+.blog-featured,
+.blog-card a,
+.srv-spec,
+.srv-note,
+.srv-stack-card,
+.srv-panel-paper,
+.norm-index a,
+.norm-group,
+.norm-stat,
+.status-panel,
+.map-frame,
+.article-toc,
+.member {
+	border: 0;
+	border-radius: var(--r-md);
+	box-shadow: var(--bezel);
+	outline: 1px solid var(--bezel-line);
+	outline-offset: var(--bezel-w);
+}
+
+.home-tile-brand {
+	box-shadow:
+		0 0 0 var(--bezel-w) var(--bezel-tint),
+		inset 0 1px 0 rgba(255, 255, 255, 0.14),
+		0 1.5rem 3rem -1.875rem rgba(4, 46, 35, 0.7);
+}
+
+.home-tile-dark {
+	box-shadow:
+		0 0 0 var(--bezel-w) var(--bezel-tint),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1),
+		0 1.5rem 3rem -1.875rem rgba(4, 20, 14, 0.7);
+}
+
+/* Las plazas libres no son tarjetas: solo el hueco discontinuo. */
+.member.member-free {
+	background: transparent;
+	box-shadow: none;
+	outline: 1.5px dashed var(--line-strong);
+	outline-offset: 0;
+}
+
+/* Las que son enlace marcan el filo al pasar por encima. */
+:is(a.home-tile, .blog-featured, .blog-card a, .norm-index a) {
+	transition: outline-color 160ms ease, transform 160ms ease;
+}
+
+:is(a.home-tile, .blog-featured, .blog-card a, .norm-index a):hover {
+	outline-color: color-mix(in srgb, var(--home-accent) 55%, transparent);
+}
+
+:is(a.home-tile, .blog-featured, .blog-card a, .norm-index a):focus-visible {
+	outline: 3px solid var(--gold);
+	outline-offset: var(--bezel-w);
 }

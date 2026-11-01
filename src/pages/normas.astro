@@ -17,7 +17,6 @@ type Norm = {
 	id: string;
 	short: string;
 	summary: string;
-	kicker: string;
 	title: string;
 	icon: string;
 	tone: 'brand' | 'lapis' | 'amber';
@@ -35,7 +34,6 @@ const norms: Norm[] = [
 		id: 'convivencia',
 		short: 'Convivencia',
 		summary: 'Respeto en el juego, en el chat y en Discord.',
-		kicker: 'Convivencia',
 		title: 'Trato y convivencia',
 		icon: '<path d="M20 12.5a7 7 0 0 1-7 7H8l-4 2.5.9-3.4A7 7 0 0 1 11 4.5h2a7 7 0 0 1 7 7z" />',
 		tone: 'brand',
@@ -68,7 +66,6 @@ const norms: Norm[] = [
 		id: 'trampas',
 		short: 'Trampas y mods',
 		summary: 'Qué mods puedes usar y qué cuenta como trampa.',
-		kicker: 'Juego limpio',
 		title: 'Trampas, mods y exploits',
 		icon: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />',
 		tone: 'lapis',
@@ -119,7 +116,6 @@ const norms: Norm[] = [
 		id: 'duplicacion',
 		short: 'Duplicación',
 		summary: 'Qué se puede duplicar y qué hay que farmear.',
-		kicker: 'Duplicación',
 		title: 'Duplicación de recursos',
 		icon: '<rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" />',
 		tone: 'amber',
@@ -148,7 +144,6 @@ const norms: Norm[] = [
 		id: 'granjas',
 		short: 'Granjas',
 		summary: 'Cuándo construir una y dónde proponerla.',
-		kicker: 'Granjas',
 		title: 'Construir granjas',
 		icon: '<path d="M12 20.5V10" /><path d="M12 10C12 6.5 9.5 4 5.5 4c0 3.5 2.5 6 6.5 6z" /><path d="M12 14c0-3 2.5-5.5 6.5-5.5 0 3-2.5 5.5-6.5 5.5z" /><path d="M7 20.5h10" />',
 		tone: 'lapis',
@@ -187,7 +182,6 @@ const norms: Norm[] = [
 		id: 'construcciones',
 		short: 'Construcciones',
 		summary: 'Distancias, permisos y qué cuenta como griefing.',
-		kicker: 'Construcciones',
 		title: 'Construcciones y espacio',
 		icon: '<path d="M3.5 10.5 12 3.5l8.5 7" /><path d="M5.5 9.5v10h13v-10" /><path d="M9.75 19.5v-5.5h4.5v5.5" />',
 		tone: 'brand',
@@ -218,7 +212,6 @@ const norms: Norm[] = [
 		id: 'objetos',
 		short: 'Objetos y robos',
 		summary: 'Qué es de alguien y qué se considera abandonado.',
-		kicker: 'Objetos',
 		title: 'Objetos y robos',
 		icon: '<rect x="3.5" y="6.5" width="17" height="13" rx="2" /><path d="M3.5 11.5h17" /><path d="M10.5 11.5v2.5h3v-2.5" />',
 		tone: 'lapis',
@@ -249,7 +242,6 @@ const norms: Norm[] = [
 		id: 'pvp',
 		short: 'PvP',
 		summary: 'Solo cuando las dos personas lo acuerdan.',
-		kicker: 'Combate',
 		title: 'PvP',
 		icon: '<path d="M20.5 3.5v4l-9 9-4-4 9-9z" /><path d="M7.5 12.5 4 16l4 4 3.5-3.5" /><path d="M3.5 20.5 6 18" />',
 		tone: 'amber',
@@ -278,7 +270,6 @@ const norms: Norm[] = [
 		id: 'actividad',
 		short: 'Actividad',
 		summary: 'Las horas mínimas para conservar la plaza.',
-		kicker: 'Actividad',
 		title: 'Actividad mínima',
 		icon: '<circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" />',
 		tone: 'brand',
@@ -295,17 +286,16 @@ const norms: Norm[] = [
 // Qué pasa cuando alguien se salta una norma: cuatro pasos de la misma red
 // de seguridad, de la comprobación a la apelación.
 const sanctions = [
-	{ title: 'Revisión', text: 'Usamos Ledger para consultar qué acciones se hicieron, quién las hizo y cuándo.' },
-	{ title: 'Sanción', text: 'Va de un aviso a la expulsión, según la gravedad y el historial. Las trampas, el griefing y los robos pueden acabar en expulsión directa.' },
-	{ title: 'Reparación', text: 'Las copias de seguridad permiten revertir un destrozo, y lo conseguido con trampas o robos se retira o se devuelve.' },
-	{ title: 'Apelación', text: 'Quien recibe una sanción puede apelar por Discord. El caso se revisa de nuevo, con las pruebas delante.' },
+	{ icon: '<circle cx="11" cy="11" r="6.5" /><path d="m16 16 4.5 4.5" />', title: 'Revisión', text: 'Usamos Ledger para consultar qué acciones se hicieron, quién las hizo y cuándo.' },
+	{ icon: '<path d="M12 3 4.5 6v5.5c0 4.4 3.2 8.1 7.5 9.5 4.3-1.4 7.5-5.1 7.5-9.5V6z" />', title: 'Sanción', text: 'Va de un aviso a la expulsión, según la gravedad y el historial. Las trampas, el griefing y los robos pueden acabar en expulsión directa.' },
+	{ icon: '<path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5" /><path d="M4 4v4.5h4.5" />', title: 'Reparación', text: 'Las copias de seguridad permiten revertir un destrozo, y lo conseguido con trampas o robos se retira o se devuelve.' },
+	{ icon: '<path d="M4 5.5h16v10.5H10l-6 4.5z" />', title: 'Apelación', text: 'Quien recibe una sanción puede apelar por Discord. El caso se revisa de nuevo, con las pruebas delante.' },
 ];
 
-const pad = (value: number) => String(value).padStart(2, '0');
-
+// Cada ficha del índice lleva el icono de su apartado en vez de un número.
 const index = [
-	...norms.map((norm, i) => ({ id: norm.id, number: pad(i + 1), short: norm.short, summary: norm.summary })),
-	{ id: 'sanciones', number: pad(norms.length + 1), short: 'Sanciones', summary: 'Cómo revisamos un caso y cómo apelar.' },
+	...norms.map((norm) => ({ id: norm.id, icon: norm.icon, short: norm.short, summary: norm.summary })),
+	{ id: 'sanciones', icon: sanctions[1].icon, short: 'Sanciones', summary: 'Cómo revisamos un caso y cómo apelar.' },
 ];
 
 const marks = {
@@ -323,7 +313,6 @@ const marks = {
 	<div class="phi">
 		<SiteHeader>
 			<InnerHero
-				chip="Normas del servidor"
 				title="Construimos juntos."
 				highlight="Jugamos limpio."
 				lead="Las normas existen para que el trabajo de cada persona siga siendo suyo y el mundo compartido merezca la pena dentro de años. Cada apartado dice qué se puede hacer y qué no, sin letra pequeña."
@@ -334,7 +323,6 @@ const marks = {
 			<section class="container home-section" aria-labelledby="indice">
 				<div class="home-head">
 					<div class="home-head-title">
-						<span class="home-kicker">Índice</span>
 						<h2 id="indice">Todo por escrito.</h2>
 					</div>
 					<div>
@@ -348,7 +336,7 @@ const marks = {
 						{index.map((entry) => (
 							<li>
 								<a href={`#${entry.id}`}>
-									<span class="norm-index-number">{entry.number}</span>
+									<span class="norm-index-icon" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={entry.icon} /></span>
 									<strong>{entry.short}</strong>
 									<span class="norm-index-text">{entry.summary}</span>
 								</a>
@@ -359,13 +347,12 @@ const marks = {
 			</section>
 
 			<div class="container norms">
-				{norms.map((norm, i) => (
+				{norms.map((norm) => (
 					<article class="norm" id={norm.id} aria-labelledby={`${norm.id}-titulo`}>
 						<header class="norm-head">
 							<div class={`home-card-icon home-card-icon-${norm.tone}`}>
 								<svg viewBox="0 0 24 24" aria-hidden="true" set:html={norm.icon} />
 							</div>
-							<span class="home-kicker">{pad(i + 1)} — {norm.kicker}</span>
 							<h2 id={`${norm.id}-titulo`}>{norm.title}</h2>
 							<p class="norm-lead">{norm.lead}</p>
 							{norm.callout && (
@@ -408,22 +395,26 @@ const marks = {
 				))}
 			</div>
 
-			<section class="home-band home-band-mint" id="sanciones" aria-labelledby="sanciones-titulo">
+			<section class="home-band home-band-brand" id="sanciones" aria-labelledby="sanciones-titulo">
 				<div class="container">
 					<div class="home-head">
 						<div class="home-head-title">
-							<span class="home-kicker">{pad(norms.length + 1)} — Sanciones</span>
-							<h2 id="sanciones-titulo">Si algo sale mal.</h2>
+							<h2 id="sanciones-titulo">Si algo <span>sale mal.</span></h2>
 						</div>
 						<p class="home-lead">Antes de decidir nada comprobamos lo que pasó, y una sanción no es el final de la conversación.</p>
 					</div>
 
-					<ol class="home-steps home-steps-4">
-						{sanctions.map((item, i) => (
-							<li class="home-step">
-								<span class="home-step-number">{pad(i + 1)}</span>
-								<strong class="home-step-title">{item.title}</strong>
-								<p>{item.text}</p>
+					<ol class="home-path home-path-4">
+						{sanctions.map((item) => (
+							<li class="home-path-step">
+								<span class="home-path-rail" aria-hidden="true">
+									<span class="home-path-icon"><svg viewBox="0 0 24 24" set:html={item.icon} /></span>
+									<span class="home-path-line"></span>
+								</span>
+								<div class="home-path-card">
+									<h3>{item.title}</h3>
+									<p>{item.text}</p>
+								</div>
 							</li>
 						))}
 					</ol>

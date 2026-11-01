@@ -78,6 +78,15 @@
 	--shadow-card: 0 0.75rem 1.875rem rgba(20, 32, 26, 0.07);
 	--shadow: 0 1rem 2.5rem rgba(4, 46, 35, 0.14);
 
+	/* Doble bisel: bandeja tenue, su filo y la tarjeta con luz arriba y una
+	   sombra larga y suave debajo. */
+	--bezel-tint: rgba(20, 32, 26, 0.035);
+	--bezel-line: rgba(20, 32, 26, 0.09);
+	--tile-highlight: rgba(255, 255, 255, 0.95);
+	--tile-shadow: 0 1px 2px rgba(20, 32, 26, 0.05), 0 1.5rem 3rem -2.25rem rgba(20, 32, 26, 0.35);
+	/* Tarjeta oscura: el verde casi negro de la cápsula. */
+	--tile-dark: #0b2e1e;
+
 	--display: 'Fredoka', 'Trebuchet MS', sans-serif;
 	--body: 'Nunito', 'Segoe UI', sans-serif;
 	--mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
@@ -135,6 +144,11 @@ html[data-theme='dark'] {
 	--footer-bg: #080c0a;
 	--shadow-card: 0 0.75rem 1.875rem rgba(0, 0, 0, 0.4);
 	--shadow: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.45);
+	--bezel-tint: rgba(242, 245, 240, 0.03);
+	--bezel-line: rgba(242, 245, 240, 0.1);
+	--tile-highlight: rgba(255, 255, 255, 0.04);
+	--tile-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1.5rem 3rem -2.25rem rgba(0, 0, 0, 0.9);
+	--tile-dark: #10261b;
 	color-scheme: dark;
 }
 
@@ -410,16 +424,6 @@ img {
 .button-on-brand:hover {
 	background: var(--gold);
 	color: var(--brand-ink);
-}
-
-.button-on-mint {
-	background: var(--ip-panel);
-	color: #ffffff;
-}
-
-.button-on-mint:hover {
-	background: var(--ink);
-	color: #ffffff;
 }
 
 .button-on-amber {
