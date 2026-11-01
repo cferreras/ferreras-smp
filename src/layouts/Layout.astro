@@ -60,7 +60,7 @@ const commonSchema = {
 				height: 512,
 			},
 			description: 'Servidor de Minecraft Java survival en español, vanilla técnico y comunitario, con whitelist.',
-			sameAs: ['https://discord.com/invite/xW7yyHRJvE'],
+			sameAs: ['https://discord.com/invite/xW7yyHRJvE', 'https://ko-fi.com/cubusfera'],
 		},
 		{
 			'@type': 'WebSite',
@@ -141,6 +141,7 @@ const commonSchema = {
 	</head>
 	<body>
 		<slot />
+		<script is:inline src="/site-nav.js"></script>
 		<script is:inline src="/theme-toggle.js"></script>
 		<script is:inline src="/back-to-top.js"></script>
 	</body>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Discord Blog Deploy"
+  short_description: "Anuncia nuevos blogs después del deploy"
+  default_prompt: "Usa $discord-blog-deploy para configurar o comprobar los avisos de blogs nuevos en Discord."

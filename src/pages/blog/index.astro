@@ -42,7 +42,6 @@ const countLabel = (count: number) => `${count} ${count === 1 ? 'artículo' : 'a
 	<div class="phi">
 		<SiteHeader>
 			<InnerHero
-				chip={`Blog · ${countLabel(posts.length)}`}
 				title="Entender el mundo"
 				highlight="antes de entrar."
 				lead="Guías, respuestas y decisiones de diseño para que puedas decidir si Cubusfera es el servidor que buscas. Si algo no está confirmado, lo decimos."
@@ -72,16 +71,12 @@ const countLabel = (count: number) => `${count} ${count === 1 ? 'artículo' : 'a
 						<div class="blog-featured-body">
 							<span class="blog-featured-kicker">
 								<span class="blog-tag" data-tag={featured.tag}>{featured.category}</span>
-								<span class="home-kicker">Lo último</span>
 							</span>
 							<h2>{featured.title}</h2>
 							<p>{featured.description}</p>
 							<div class="blog-featured-foot">
 								<span class="blog-meta">{featured.meta}</span>
-								<span class="blog-read">
-									Leer artículo
-									<svg class="blog-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
-								</span>
+								<span class="button blog-read">Leer artículo</span>
 							</div>
 						</div>
 					</a>
@@ -89,7 +84,6 @@ const countLabel = (count: number) => `${count} ${count === 1 ? 'artículo' : 'a
 
 				<div class="home-head blog-archive-head" data-blog-lead>
 					<div class="home-head-title">
-						<span class="home-kicker">Archivo</span>
 						<h2>Todos los artículos.</h2>
 					</div>
 					<p class="home-lead">Guías para empezar, cómo funciona el servidor y lo que va cambiando en la comunidad.</p>

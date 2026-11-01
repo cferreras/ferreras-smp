@@ -14,9 +14,9 @@ Astro.response.headers.set(
 
 const freeSlots = maxSlots ? Math.max(maxSlots - members.length, 0) : 0;
 const onlineCount = onlineFresh ? members.filter((member) => member.online).length : 0;
-const summary = maxSlots
-	? `${members.length} de ${maxSlots} plazas ocupadas.`
-	: `${members.length} ${members.length === 1 ? 'persona' : 'personas'} en la whitelist.`;
+const label = maxSlots
+	? members.length === 1 ? 'plaza ocupada' : 'plazas ocupadas'
+	: `${members.length === 1 ? 'persona' : 'personas'} en la whitelist`;
 
 function headLabel(name: string, online: boolean, away: boolean) {
 	if (online) return `${name}, jugando ahora`;
@@ -27,7 +27,13 @@ function headLabel(name: string, online: boolean, away: boolean) {
 
 {ok && members.length > 0 && (
 	<HomeCommunity>
-		<div class="home-members">
+		<div class="home-tile home-members">
+			<div class="home-members-summary">
+				<p class="home-members-count"><strong>{members.length}</strong>{maxSlots && <span>/{maxSlots}</span>}</p>
+				<p class="home-members-label">{label}</p>
+				{onlineCount > 0 && <p class="home-members-online"><span class="home-members-dot" aria-hidden="true"></span>{onlineCount} jugando ahora</p>}
+				<a class="button" href="/comunidad/">Ver la comunidad</a>
+			</div>
 			<ul class="home-members-heads">
 				{members.map((member) => {
 					const online = onlineFresh && member.online;
@@ -40,11 +46,6 @@ function headLabel(name: string, online: boolean, away: boolean) {
 				})}
 				{Array.from({ length: freeSlots }, () => <li class="home-members-head is-free" aria-hidden="true"></li>)}
 			</ul>
-			<p class="home-members-text">
-				<strong>{summary}</strong>
-				{onlineCount > 0 && <span class="home-members-online"><span class="home-members-dot" aria-hidden="true"></span>{onlineCount} jugando ahora</span>}
-			</p>
-			<a class="button" href="/comunidad/">Ver la comunidad</a>
 		</div>
 	</HomeCommunity>
 )}

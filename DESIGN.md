@@ -14,7 +14,7 @@ Vive en `src/styles/phi.css` y cuelga de la clase `.phi`, que envuelve cada pág
 - **Espacios:** solo Fibonacci — 8 · 13 · 21 · 34 · 55 · 89 · 144 px (`--s-1` a `--s-7`). Secciones a 144, cabecera a contenido 89, relleno de tarjeta 34.
 - **Tipografía:** 16 px multiplicado por potencias de √φ — 13 · 16 · 21 · 26 · 34 · 55 · 68 · 89. Cuerpo 16/26, entradillas 21/34, títulos de sección 55, titular de página interior 68, titular de portada 89. El cuerpo de los artículos usa un cuarto de paso (18/29).
 - **Radios:** 13 · 21 · 34.
-- **Bandas:** redondeadas (34 px) y separadas 13 px del borde de la ventana (8 px en móvil); el contenido queda a 120 px del borde a 1440 y a 21 px en móvil.
+- **Bandas:** redondeadas (34 px; 21 en móvil) y a sangre, sin margen alrededor ni entre ellas desde noviembre de 2026; cada caja redondea solo arriba y se monta sobre la anterior (ver «Cajas montadas»). El contenido queda a 120 px del borde a 1440 y a 21 px en móvil.
 - **Escala:** todo en rem; a 1440 px 1rem = 16 px y el diseño cuadra al píxel, por encima crece con la raíz.
 - **Piezas compartidas:** `InnerHero` (hero de páginas interiores), `CtaBand` (banda ámbar final), `PostCard` (tarjeta de artículo) y `src/lib/blog.ts` (slug de categoría, fecha, tiempo de lectura).
 - **Etiquetas del blog:** la categoría de cada artículo es su etiqueta y su color — Novedades `#00523f`, Guías `#2f5fa8`, Servidor `#f6b93b`. Una categoría nueva sale en gris hasta que se le añade su regla `[data-tag]` en `phi.css`.
@@ -25,9 +25,26 @@ Vive en `src/styles/phi.css` y cuelga de la clase `.phi`, que envuelve cada pág
 - **Isotipo «Esmeralda»:** un cubo isométrico de esmeralda con un hueco esférico tallado en el centro (el cubo y la esfera de «Cubusfera»). Hexágono con las esquinas exteriores redondeadas; caras `#45D98A` (arriba), `#1FAE68` (izquierda) y `#12804C` (derecha); el hueco invierte la luz: `#0A4D2E` arriba, `#0F6B40` a la izquierda y `#6EE8A8` a la derecha. Cada color sale de un material del juego: no se recolorea con otros tonos.
 - **Wordmark:** isotipo + «Cubusfera» en contornos de Fredoka 700 (la tipografía de titulares de la web), con su kerning y un apretado de −1 %. El isotipo mide 1,43 em y el texto se centra en él por la altura de mayúsculas. El lema que lo acompaña cuando hace falta es «SMP · VANILLA · TÉCNICO».
 - **Uso en la web:** `BrandWordmark.astro` dibuja el wordmark en línea; el isotipo lleva sus verdes y las letras toman `currentColor` (blanco en la banda y en el pie). Isotipo de 38 px en la cabecera.
-- **Color de la web:** la banda de marca (`--brand`, `#00523F`) es más oscura que cualquier cara del logo para que el isotipo destaque encima sin borde. `--brand-accent` (`#12804C`) es el verde de texto e iconos sobre papel. La banda secundaria es `--mint` (`#45D98A`, la cara superior). El tercer tono de tarjeta es lapislázuli (`--lapis-*`) para no juntar tres verdes. El ámbar y el dorado se quedan como acentos cálidos. Los neutros tiran a verde (`--ink: #14201A`).
+- **Color de la web:** la banda de marca (`--brand`, `#00523F`) es más oscura que cualquier cara del logo para que el isotipo destaque encima sin borde. `--brand-accent` (`#12804C`) es el verde de texto e iconos sobre papel. La menta (`--nav-cta`, `#45D98A`, la cara superior) queda para el botón de la cápsula, los iconos del raíl de pasos y los botones dentro de la banda de marca; ya no hay banda menta. El tercer tono de tarjeta es lapislázuli (`--lapis-*`) para no juntar tres verdes. El ámbar y el dorado se quedan como acentos cálidos. Los neutros tiran a verde (`--ink: #14201A`).
 - **Ficheros** (`public/images/brand/`): `cubusfera-wordmark.svg` (tinta) y `-white.svg`; `cubusfera-monogram.svg` (el isotipo solo); `cubusfera-favicon.svg` (isotipo al 96 %, sin fondo) y `/favicon.ico` (16, 32 y 48 px); iconos de app a 192/512 (sin fondo), maskable (50 %) y touch icon (62 %) a sangre sobre `#00523F`; avatares de Discord `cubusfera-discord-light` (sobre `#FDF8EF`) y `-dark` (sobre `#0D1210`), en SVG y PNG de 1024 px, con el isotipo al 56 % para el recorte circular; y `cubusfera-server-icon-64.png`, el `server-icon.png` del servidor de Minecraft.
 - **No hacer:** cambiar los colores de las caras, añadir un borde o contorno al isotipo, ni ponerlo sobre un verde medio donde se pierda su cara derecha.
+
+## Portada, tarjetas con doble bisel y sin numeración (noviembre 2026)
+
+Estética limpia y bold inspirada en netsu.es, sin tocar tipografías ni logo. La portada se diseñó primero en un canvas y el resto de páginas heredan sus piezas.
+
+- **Barra flotante** (`SiteHeader.astro`, `site-nav.js`): fija arriba en todas las páginas, fuera de la banda. Mientras va sobre la banda (la foto o el verde) es transparente y se alinea con el contenido; cuando el contenido claro llega a tocarla se encoge a una cápsula de `--nav-glass` con desenfoque. Cada enlace lleva una «/» delante, que se enciende en menta en la página activa. `--nav-clearance` es el hueco que deja para anclas y columnas pegajosas.
+- **Hero de la portada** (`<SiteHeader variant="video">`, el nombre se queda aunque ya no haya vídeo): la foto de redstone con bloques de nota (`hero-redstone-bloques-de-nota.webp`) a sangre y a pantalla completa, pegada arriba (`sticky`) mientras la hoja de contenido (`.home-sheet`, esquinas de arriba redondeadas) sube y la tapa. Sin chip encima del titular; el estado del servidor va abajo a la derecha.
+- **Frase que se marca** (`scroll-reveal.js`): la presentación se lee palabra a palabra al hacer scroll (las apagadas al 16 %). Sin JavaScript o con movimiento reducido se ve entera.
+- **Cifras**: cuatro datos honestos (versión, plazas, mods, edad) en `--brand-accent`, cada una con un filo encima.
+- **Doble bisel** (final de `phi.css`): todas las tarjetas sobre papel (las de la portada, `home-card`, fichas del servidor, normas, estado, blog, miembros, índice del artículo…) van en una bandeja tenue con su filo. Es un solo elemento: la bandeja es una sombra sin desenfoque de `--bezel-w` (5 px; 4 en móvil) y el filo un `outline` separado de ella. Con 24 px de hueco entre tarjetas quedan 12 entre bandejas; no se juntan tarjetas con menos hueco. Tokens: `--bezel-tint`, `--bezel-line`, `--tile-highlight`, `--tile-shadow` y `--tile-dark` en `global.css`, con su versión oscura.
+- **Bento de la portada**: tarjeta grande en 1,618 («Vanilla de verdad»), dos apiladas en 1 (la de marca en verde) y la franja oscura de «Seguramente no encajas si…» a todo el ancho. Los detalles van en píldoras (`.home-chips`).
+- **Banda de marca** (`.home-band-brand`): el verde de la cápsula sustituye a la banda menta. Los pasos van en tarjetas de cristal oscuro con el mismo doble bisel y, encima, un raíl de iconos con línea discontinua que termina en un visto bueno (`.home-path`, `.home-path-4` para cuatro pasos). Se usa en la portada, en cómo entrar y en las sanciones de las normas.
+- **Sin numeración ni etiquetas sobre los titulares**: nada de «01 —», «/ Sección» ni pasos 01/02/03. El orden lo dan los iconos (raíl, índice de normas, interrogantes de las preguntas). `.home-kicker` queda solo como etiqueta de un dato (Dirección, En este artículo, Escrito por).
+- **El mundo**: mosaico áureo (grande en 1,618, dos apiladas, fila de tres en √φ) con las capturas de `public/images/mundo/`, y el Short de Opinacraft en una tarjeta oscura con fachada (`video-facade.js`). La página `/galeria/` se retiró: redirige a la portada (`vercel.json`) y sus capturas antiguas solo las usa el blog.
+- **Cajas montadas**: solo el hero se queda pegado. El resto de cajas no se pegan, pero cada una se monta sobre la de arriba: sus esquinas redondeadas dejan ver el color de la anterior. Una caja de color sube un radio sobre la caja de color que tiene encima (y el pie sobre la última); bajo una caja de color seguida de papel se dibuja una lengüeta de papel redondeada. Ninguna caja redondea abajo, y el relleno de abajo de las bandas suma esa lengüeta para que el aire visible sea igual arriba y abajo.
+- **Titulares**: todos en Fredoka 600. Los `h2` de la portada van a 89 px (`--t-3xl`) y el cierre ámbar a 121; en las interiores, `h2` a 55 y el cierre ámbar a 89.
+- **Botones**: las llamadas a la acción son siempre botones rellenos, nunca «Texto →». En tarjetas que ya son enlace (artículo destacado) el botón es un `span.button` compacto.
 
 ## 0. Propósito y fuente de verdad
 
@@ -129,12 +146,11 @@ La cabecera mantiene una navegación corta y prioriza las rutas de decisión. El
 | --- | --- | --- | --- |
 | `/` | Entrada editorial y filtro de compatibilidad | Hero visual + bloques editoriales | Entrar en Discord |
 | `/servidor/` | Explicar filosofía, Vanilla, Fabric y permanencia | Page hero + prosa + ilustración lateral | Ver cómo entrar |
-| `/como-entrar/` | Reducir incertidumbre sobre whitelist y pasos | Page hero + lista numerada + ilustración | Entrar en Discord |
+| `/como-entrar/` | Reducir incertidumbre sobre whitelist y pasos | Page hero + banda de marca con raíl de iconos | Entrar en Discord |
 | `/normas/` | Hacer explícitas las reglas de convivencia | Page hero + prosa estructurada | Preguntar en Discord si hay dudas |
 | `/preguntas-frecuentes/` | Resolver objeciones antes del contacto | Page hero + acordeón `details` | Ir a Discord si queda una duda |
 | `/blog/` | Dar contexto y captar búsquedas informativas | Page hero + grid de artículos | Leer un artículo o ir a Discord |
 | `/blog/[slug]/` | Profundizar en un tema concreto | Cabecera de artículo + portada + prosa | Enlaces relacionados / acceso |
-| `/galeria/` | Mostrar el mundo y su ambiente real | Mosaico editorial de capturas | Conocer el servidor / Discord |
 | `/estado/` | Responder “¿puedo conectarme ahora?” | Tarjeta de estado + explicación | Cómo entrar |
 | `/bluemap/` | Explorar el mundo y localizar estructuras | Visor BlueMap incrustado + capas de marcadores | Pantalla completa / Discord |
 
@@ -163,7 +179,7 @@ flowchart LR
 - La ruta activa se expresa con color de tinta y una línea violeta inferior.
 - La cabecera tiene fondo semitransparente del color de papel y `backdrop-filter: blur(18px)`.
 
-La cabecera no debe convertirse en un listado de todas las páginas. `Normas`, `Preguntas frecuentes`, `Galería`, `Estado` y `BlueMap` se descubren desde el pie, los enlaces contextuales y el contenido.
+La cabecera no debe convertirse en un listado de todas las páginas. `Normas`, `Preguntas frecuentes`, `Estado` y `BlueMap` se descubren desde el pie, los enlaces contextuales y el contenido.
 
 #### Cabecera mobile
 
@@ -423,13 +439,13 @@ La marca de trigo y tierra introduce la idea de mundo cuidado. El texto explica 
 
 #### Proceso de acceso
 
-Fondo `--paper-invert`, texto `--ink-invert` y tres filas numeradas:
+Banda de marca con tres tarjetas en fila y un raíl de iconos encima, sin números:
 
-1. Entrar en Discord.
-2. Completar el formulario.
-3. Hablar con el equipo.
+- Entrar en Discord (con su botón menta).
+- Completar el formulario (con píldoras de lo que se pregunta).
+- Hablar con el equipo (con la IP para copiar y el visto bueno al final del raíl).
 
-La estructura en filas permite comparar cada paso de un vistazo. Los enlaces de cada fila son secundarios y no deben competir con el CTA del hero.
+Los botones de cada tarjeta son secundarios y no deben competir con el CTA del hero.
 
 #### Base técnica
 
@@ -501,18 +517,9 @@ El Markdown debe mantener:
 - enlaces internos a normas, FAQ y acceso;
 - una portada que represente el tema sin repetir el hero de la web.
 
-### 6.8 Galería `/galeria/`
+### 6.8 Galería (retirada)
 
-La galería usa un grid de 12 columnas:
-
-- primera imagen: 5 columnas;
-- segunda: 7 columnas;
-- tercera: desplazada a partir de la columna 2 y ocupa 7;
-- siguientes: continúan el ritmo editorial.
-
-Cada item tiene altura mínima de 310 px, imagen a `object-fit: cover` y caption flotante con fondo negro translúcido. En mobile todo pasa a una columna de 240 px mínimos.
-
-La selección de imágenes es manual y debe priorizar variedad: fortaleza, costa, Nether, caminos, casas y refugios.
+La página `/galeria/` se retiró en noviembre de 2026: las capturas del mundo viven en el mosaico de la portada y la ruta redirige a `/` desde `vercel.json`. Las imágenes de `public/images/gallery/` se conservan porque las usa el blog.
 
 ### 6.9 Estado `/estado/`
 

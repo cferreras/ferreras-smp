@@ -4,10 +4,12 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import InnerHero from '../components/InnerHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import KofiIcon from '../components/KofiIcon.astro';
 import { breadcrumbSchema } from '../lib/schema';
 import '../styles/phi.css';
 
 const serverAddress = 'play.cubusfera.com';
+const kofiUrl = 'https://ko-fi.com/cubusfera';
 export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'El servidor' }])];
@@ -114,7 +116,6 @@ const no = [
 	<div class="phi">
 		<SiteHeader>
 			<InnerHero
-				chip="El servidor"
 				title="Minecraft Java vanilla,"
 				highlight="sin adornos."
 				lead="Fabric está aquí para que el mundo funcione mejor, no para convertir Minecraft en otra cosa. Caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo."
@@ -133,7 +134,6 @@ const no = [
 				</figure>
 
 				<div class="home-head-title">
-					<span class="home-kicker">01 — Ficha</span>
 					<h2 id="ficha">Ficha del servidor.</h2>
 				</div>
 
@@ -175,7 +175,6 @@ const no = [
 			<section class="container srv-ritmo" aria-labelledby="ritmo">
 				<div>
 					<div class="home-head-title">
-						<span class="home-kicker">02 — El ritmo</span>
 						<h2 id="ritmo">Una partida que no tiene prisa por terminar.</h2>
 					</div>
 					<p class="home-lead">Un mundo survival en español, abierto a proyectos individuales y colectivos, con las herramientas suficientes para convivir y sin una capa de sistemas que te obligue a jugar de una manera concreta.</p>
@@ -187,7 +186,6 @@ const no = [
 					<div class="home-card-icon home-card-icon-brand">
 						<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="m15.5 8.5-2 5-5 2 2-5z" /></svg>
 					</div>
-					<span class="home-kicker">Mapa en 3D</span>
 					<h3>Echa un vistazo antes de entrar.</h3>
 					<p>BlueMap enseña el mundo desde el navegador, tal como está ahora: bases, granjas, caminos y lo que queda por explorar.</p>
 					<a class="button" href="/bluemap/">Abrir el mapa</a>
@@ -197,7 +195,6 @@ const no = [
 			<section class="container srv-stack-section" aria-labelledby="stack">
 				<div class="home-head">
 					<div class="home-head-title">
-						<span class="home-kicker">03 — Lo que corre detrás</span>
 						<h2 id="stack">Mods en el servidor. Nada en tu juego.</h2>
 					</div>
 					<p class="home-lead">Fabric y sus mods corren en el servidor, así que entras con el Minecraft Java de siempre, sin modpack ni instalar nada.</p>
@@ -221,11 +218,10 @@ const no = [
 				</p>
 			</section>
 
-			<section class="home-band home-band-mint" aria-labelledby="si-no">
+			<section class="home-band home-band-brand" aria-labelledby="si-no">
 				<div class="container">
 					<div class="home-head">
 						<div class="home-head-title">
-							<span class="home-kicker">04 — Qué sí, qué no</span>
 							<h2 id="si-no">Qué sí. Qué no.</h2>
 						</div>
 						<p class="home-lead">La lista corta, para que sepas a qué atenerte antes de pedir la whitelist.</p>
@@ -254,6 +250,15 @@ const no = [
 								))}
 							</ul>
 						</div>
+					</div>
+
+					{/* Justo debajo del «sin Pay2Win»: se puede donar, pero no comprar nada. */}
+					<div class="srv-support">
+						<div class="srv-support-copy">
+							<h3>¿Quieres echar una mano?</h3>
+							<p>El servidor ya corre en un hosting de pago, modesto por ahora. Las donaciones en Ko-fi ayudan a pagarlo y a mejorarlo con el tiempo, y no dan ninguna ventaja en el juego.</p>
+						</div>
+						<a class="button button-on-path" href={kofiUrl} target="_blank" rel="noopener noreferrer"><KofiIcon /> <span>Apoyar en Ko-fi</span></a>
 					</div>
 				</div>
 			</section>

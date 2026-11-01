@@ -1,9 +1,11 @@
 ---
 import BrandWordmark from './BrandWordmark.astro';
 import DiscordIcon from './DiscordIcon.astro';
+import KofiIcon from './KofiIcon.astro';
 
 const year = new Date().getFullYear();
 const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
+const kofiUrl = 'https://ko-fi.com/cubusfera';
 ---
 
 <footer class="site-footer">
@@ -31,7 +33,6 @@ const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 					<p class="footer-heading" id="footer-ver">Ver</p>
 					<ul class="footer-links">
 						<li><a href="/blog/">Blog</a></li>
-						<li><a href="/galeria/">Galería</a></li>
 						<li><a href="/estado/">Estado</a></li>
 						<li><a href="/bluemap/">BlueMap</a></li>
 					</ul>
@@ -40,7 +41,8 @@ const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 					<p class="footer-heading">Entrar</p>
 					<ul class="footer-links">
 						<li><span class="footer-ip">play.cubusfera.com</span></li>
-						<li><a class="footer-discord" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Discord de Cubusfera</span></a></li>
+						<li><a class="footer-external" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Discord de Cubusfera</span></a></li>
+						<li><a class="footer-external" href={kofiUrl} target="_blank" rel="noopener noreferrer"><KofiIcon /> <span>Apoyar en Ko-fi</span></a></li>
 					</ul>
 				</div>
 			</div>

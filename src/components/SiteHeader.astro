@@ -3,6 +3,14 @@ import BrandWordmark from './BrandWordmark.astro';
 import DiscordIcon from './DiscordIcon.astro';
 import ThemeIcon from './ThemeIcon.astro';
 
+interface Props {
+	// `video`: la banda es el hero a pantalla completa de la portada, con la
+	// foto de fondo (el nombre viene del vídeo que llevaba antes); `band`: la
+	// banda verde de las páginas interiores.
+	variant?: 'band' | 'video';
+}
+
+const { variant = 'band' } = Astro.props;
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/';
 const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 const links = [
@@ -25,10 +33,11 @@ const isCurrent =(href: string) => {
 };
 ---
 
-{/* La cabecera vive dentro de la banda de marca: el slot recibe la entradilla de
-    la página para que titular y navegación compartan el mismo bloque de color. */}
-<div class="topband">
-	<header class="container topbar">
+{/* La navegación flota fija sobre la página: transparente encima de la banda y
+    cápsula oscura translúcida en cuanto se hace scroll (site-nav.js). Va fuera
+    de la banda para que el hero de la portada pueda quedarse pegado debajo. */}
+<header class="site-nav" data-site-nav>
+	<div class="topbar">
 		<a class="brand" href="/" aria-label="Cubusfera, inicio">
 			<BrandWordmark class="brand-wordmark" />
 		</a>
@@ -74,12 +83,15 @@ const isCurrent =(href: string) => {
 				<a class="header-cta" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 			</nav>
 		</details>
-	</header>
+	</div>
+</header>
 
+{/* La banda recibe la entradilla de la página por el slot. */}
+<div class:list={['topband', { 'topband-video': variant === 'video' }]}>
 	<slot />
 </div>
 
-{/* Aparece cuando la cabecera sale de la vista (lo gestiona back-to-top.js). */}
+{/* Aparece cuando la primera pantalla ha quedado atrás (lo gestiona back-to-top.js). */}
 <button class="back-to-top" type="button" data-back-to-top aria-label="Volver arriba">
 	<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5.5 11.5 12 5l6.5 6.5" /></svg>
 </button>

@@ -3,6 +3,7 @@ title: "Ya puedes votar por Cubusfera: cómo funciona el nuevo sistema de votos"
 seoTitle: "Cómo votar por Cubusfera en 40servidoresmc y Opinacraft"
 description: "Cubusfera ya está en 40servidoresmc y Opinacraft. Te contamos dónde votar, cada cuánto puedes hacerlo y cómo ver que tu voto ha llegado con /votar."
 publishedAt: 2026-10-03
+updatedAt: 2026-11-01
 author: "Carlos Ferreras"
 category: "Novedades"
 tags:
@@ -74,3 +75,5 @@ Cuando votas, **sale un mensaje en el chat confirmando el voto**.
 - Usa `/votar` en el juego para tener los enlaces a mano y fíjate en el mensaje del chat que confirma tu voto.
 
 Votar te lleva un minuto al día y es la forma más directa de ayudar a que Cubusfera siga creciendo con gente que encaja. Gracias por echarnos una mano.
+
+Si además quieres ayudar con los costes, tenemos un [Ko-fi](https://ko-fi.com/cubusfera) con donaciones voluntarias que ayudan a pagar el hosting. Como los votos, donar no da ninguna ventaja en el juego.

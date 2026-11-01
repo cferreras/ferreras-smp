@@ -9,69 +9,72 @@ import CtaBand from '../components/CtaBand.astro';
 import HomeCommunity from '../components/HomeCommunity.astro';
 import MembersTeaser from '../components/MembersTeaser.astro';
 import { formatDate, slugify } from '../lib/blog';
-import { heroShots } from '../lib/gallery';
 import '../styles/phi.css';
 
 const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 export const prerender = true;
 
-const claims = [
-	{
-		icon: 'cube',
-		tone: 'brand',
-		title: 'Vanilla de verdad',
-		text: 'Nada de economía, rangos ni tiendas. El Minecraft que ya conoces, con <a href="/servidor/">granjas técnicas y proyectos libres</a>.',
-	},
-	{
-		icon: 'bolt',
-		tone: 'lapis',
-		title: 'Entras y juegas',
-		text: 'No instalas nada y vale cuenta premium o <a href="/blog/servidor-minecraft-no-premium/">no premium</a>. Fabric corre en el servidor: abres el juego y te conectas.',
-	},
-	{
-		icon: 'people',
-		tone: 'amber',
-		title: 'Como mucho, 20',
-		text: 'Una comunidad pequeña, mayor de 16 años. Leemos cada solicitud a mano y respondemos por Discord.',
-	},
+// La frase que se va marcando al hacer scroll, palabra a palabra.
+const revealWords =
+	'Somos Cubusfera, un survival de Minecraft Java pequeño y en español. Vanilla de verdad, sin Pay2Win ni economía, para construir sin prisas en un mundo pensado para durar.'.split(' ');
+
+const stats = [
+	{ value: '26.3', label: 'versión de Minecraft Java' },
+	{ value: '20', label: 'jugadores como máximo' },
+	{ value: '0', label: 'mods que instalar' },
+	{ value: '16', label: 'años, la edad mínima' },
 ];
 
 const noFit = ['buscas un servidor grande', 'quieres plugins y economía', 'vienes a probar y ya'];
 
-const steps = [
+// La primera captura ocupa el rectángulo áureo grande del mosaico, las dos
+// siguientes se apilan en la columna estrecha y las tres últimas van en fila.
+const [mainShot, ...restShots] = [
 	{
-		title: 'Entra en Discord',
-		text: 'El punto de encuentro. Presentamos el servidor y resolvemos dudas sin compromiso.',
+		image: '/images/mundo/ciudad-semaforos.webp',
+		alt: 'Calles de ladrillo con semáforos, pasos de cebra y un puente',
+		caption: 'Una ciudad con sus calles y semáforos',
+		width: 1600,
+		height: 900,
 	},
 	{
-		title: 'Rellena el formulario',
-		text: 'Tu edad, qué buscas y cómo te gusta jugar. No es un examen: es contexto.',
-	},
-	{
-		title: 'Hablamos y entras',
-		text: 'Revisamos cada solicitud a mano. Si encaja, te añadimos a la whitelist el mismo día.',
-	},
-];
-
-// La primera captura ocupa el rectángulo áureo grande del mosaico; las otras
-// dos se apilan en la columna estrecha. Ninguna repite las del carrusel del hero.
-const [mainShot, ...sideShots] = [
-	{
-		image: '/images/gallery/casas-frente-al-mar.jpg',
-		alt: 'Dos casas de madera y piedra frente al mar',
-		caption: 'Casas frente al mar y granja de hierro',
-	},
-	{
-		image: '/images/gallery/casa-entre-bambus.jpg',
-		alt: 'Casa de ladrillo cubierta de vegetación junto a un bambusal',
+		image: '/images/mundo/trading-hall-aldeanos.webp',
+		alt: 'Aldeanos en fila, cada uno en su puesto de trabajo',
 		caption: 'Trading hall para aldeanos',
+		width: 1600,
+		height: 900,
 	},
 	{
-		image: '/images/gallery/veronicucha-bosque.jpg',
-		alt: 'Veronicucha junto a un árbol en un bosque con caminos de tierra',
-		caption: 'Un rincón entre los árboles',
+		image: '/images/mundo/chiringuito-playa.webp',
+		alt: 'Jugador sentado en un banco junto a un chiringuito de madera en la playa',
+		caption: 'Un chiringuito en la playa',
+		width: 1600,
+		height: 900,
+	},
+	{
+		image: '/images/mundo/granja-de-hierro-aldea.webp',
+		alt: 'Jugador con armadura de diamante frente a una granja de hierro junto a una aldea',
+		caption: 'Granja de hierro junto a la aldea',
+		width: 1600,
+		height: 856,
+	},
+	{
+		image: '/images/mundo/redstone-desde-arriba.webp',
+		alt: 'Vista desde arriba de una máquina de redstone con cofres y tolvas',
+		caption: 'Redstone vista desde arriba',
+		width: 1600,
+		height: 856,
+	},
+	{
+		image: '/images/mundo/granja-shulkers-end.webp',
+		alt: 'Granja de shulkers de varias plantas sobre el vacío del End',
+		caption: 'Granja de shulkers',
+		width: 1600,
+		height: 856,
 	},
 ];
+const sideShots = restShots.slice(0, 2);
+const rowShots = restShots.slice(2);
 
 const video = {
 	title: 'Un servidor donde mandan las granjas',
@@ -112,7 +115,7 @@ const structuredData = [
 		about: { '@id': 'https://cubusfera.com/#organization' },
 		primaryImageOfPage: {
 			'@type': 'ImageObject',
-			url: 'https://cubusfera.com/images/gallery/jugador-ovejas-aldea.webp',
+			url: 'https://cubusfera.com/images/hero-redstone-bloques-de-nota.webp',
 		},
 	},
 ];
@@ -124,11 +127,11 @@ const structuredData = [
 	structuredData={structuredData}
 >
 	<div class="phi">
-		<SiteHeader>
+		<SiteHeader variant="video">
+			<img class="home-hero-image" src="/images/hero-redstone-bloques-de-nota.webp" alt="" width="2000" height="1070" fetchpriority="high" decoding="async" />
+
 			<div class="container home-hero" id="inicio">
 				<div class="home-hero-copy">
-					<span class="home-chip"><span class="home-chip-dot" aria-hidden="true"></span> Java 26.3 · Whitelist abierta</span>
-
 					<h1>Minecraft survival, hecho <span>en comunidad.</span></h1>
 
 					<p class="home-hero-lead">Un survival pequeño y en español para construir sin prisas. Sin Pay2Win, sin economía y sin modpack obligatorio.</p>
@@ -136,227 +139,258 @@ const structuredData = [
 					<div class="home-hero-actions">
 						<a class="button button-on-brand" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
 						<a class="button-ghost button-ghost-on-brand" href="/como-entrar/">Cómo entrar</a>
-						<a class="home-hero-video-link" href="#video">
-							<span class="home-hero-video-thumb" aria-hidden="true">
-								<img src={video.poster} alt="" width="540" height="960" decoding="async" />
-								<svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg>
-							</span>
-							<span class="home-hero-video-text">
-								<span class="home-hero-video-label">Ver el vídeo</span>
-								<span class="home-hero-video-meta">Short de {video.author}</span>
-							</span>
-						</a>
 					</div>
+				</div>
 
+				<div class="home-hero-aside">
 					<p class="hero-status" data-server-status="hero" data-status-state="loading" role="status">
 						<span class="status-dot" aria-hidden="true"></span>
 						<span data-server-status-text>Comprobando servidor…</span>
 					</p>
 				</div>
-
-				{/* Carrusel de capturas: fundido lento cada 6 s, con pausa. Sin JavaScript
-				    se ve solo la primera; el resto se descarga cuando la página ya ha
-				    cargado (data-src) para no competir con ella. */}
-				<div class="home-hero-visual hero-slides" data-hero-slides role="group" aria-roledescription="carrusel" aria-label="Capturas reales del mundo">
-					{heroShots.map((shot, index) => (
-						<figure class="hero-slide" data-slide aria-roledescription="diapositiva" aria-label={`${index + 1} de ${heroShots.length}`} aria-hidden={index === 0 ? undefined : 'true'} data-active={index === 0 ? '' : undefined}>
-							{index === 0 ? (
-								<img src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} fetchpriority="high" style={`object-position: ${shot.hero?.position}`} />
-							) : (
-								<img data-src={shot.src} alt={shot.alt} width={shot.width} height={shot.height} decoding="async" style={`object-position: ${shot.hero?.position}`} />
-							)}
-							<figcaption class="home-caption">{shot.caption.replace(/\.$/, '')}</figcaption>
-						</figure>
-					))}
-					<div class="hero-slides-controls" data-slides-controls hidden>
-						<button class="hero-slides-pause" type="button" data-slides-pause aria-label="Pausar las capturas">
-							<svg class="icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6v12M15 6v12" /></svg>
-							<svg class="icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5z" /></svg>
-						</button>
-						{heroShots.map((_, index) => (
-							<button class="hero-slides-dot" type="button" data-slide-to={index} aria-label={`Ver captura ${index + 1} de ${heroShots.length}`} aria-current={index === 0 ? 'true' : undefined}></button>
-						))}
-					</div>
-				</div>
 			</div>
 		</SiteHeader>
 
-		<main>
-			<section class="home-section" id="servidor">
-				<div class="container">
-					<div class="home-head">
-						<div class="home-head-title">
-							<span class="home-kicker">01 — El servidor</span>
-							<h2>Esto es lo que hay. Y lo que no.</h2>
-						</div>
-						<p class="home-lead">Preferimos contarlo antes de que entres, para que no pierdas el tiempo si buscas otra cosa.</p>
-					</div>
-
-					<div class="home-claims">
-						{claims.map((claim) => (
-							<article class="home-card">
-								<div class={`home-card-icon home-card-icon-${claim.tone}`}>
-									{claim.icon === 'cube' && (
-										<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6 20.5 7v10L12 21.4 3.5 17V7z" /><path d="M3.5 7 12 11.6 20.5 7" /><path d="M12 11.6V21.4" /></svg>
-									)}
-									{claim.icon === 'bolt' && (
-										<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4.5 13.5H11l-1 8.5 9-11.5h-6.5z" /></svg>
-									)}
-									{claim.icon === 'people' && (
-										<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2" /><path d="M2.8 20c0-3.4 2.8-5.6 6.2-5.6s6.2 2.2 6.2 5.6" /><path d="M16.4 5.2a3.2 3.2 0 0 1 0 6" /><path d="M18 14.8c2 .7 3.2 2.5 3.2 5.2" /></svg>
-									)}
-								</div>
-								<h3>{claim.title}</h3>
-								<p set:html={claim.text}></p>
-							</article>
-						))}
-					</div>
-
-					<div class="home-no-fit">
-						<p class="home-no-fit-label">Seguramente no encajes si…</p>
-						<ul>
-							{noFit.map((reason) => (
-								<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>{reason}</li>
-							))}
-						</ul>
-					</div>
-				</div>
-			</section>
-
-			{/* Mientras llega la lista, la misma sección con 20 casillas vacías para
-			    que la página no salte. */}
-			<MembersTeaser server:defer>
-				<HomeCommunity slot="fallback">
-					<div class="home-members" aria-hidden="true">
-						<ul class="home-members-heads">
-							{Array.from({ length: 20 }, () => <li class="home-members-head is-loading"></li>)}
-						</ul>
-						<p class="home-members-text">Comprobando plazas…</p>
-						<a class="button" href="/comunidad/" tabindex="-1">Ver la comunidad</a>
-					</div>
-				</HomeCommunity>
-			</MembersTeaser>
-
-			<section class="home-band home-band-mint" id="como-entrar">
-				<div class="container">
-					<div class="home-head">
-						<div class="home-head-title">
-							<span class="home-kicker">03 — Cómo entrar</span>
-							<h2>Entrar cuesta tres pasos.</h2>
-							<p class="home-lead">Todo pasa en Discord. Ahí ves cómo hablamos antes de decidir nada.</p>
-						</div>
-						<a class="button button-on-mint home-head-action" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-					</div>
-
-					<ol class="home-steps">
-						{steps.map((step, index) => (
-							<li class="home-step">
-								<span class="home-step-number">{String(index + 1).padStart(2, '0')}</span>
-								<strong class="home-step-title">{step.title}</strong>
-								<p>{step.text}</p>
-							</li>
-						))}
-					</ol>
-
-					<div class="home-ip">
-						<div class="home-ip-address">
-							<p class="home-kicker">IP del servidor</p>
-							<p class="home-ip-value" data-server-address>play.cubusfera.com</p>
-						</div>
-						<p class="home-ip-note">Pégala en «Multijugador → Añadir servidor». Solo conecta si ya estás en la whitelist.</p>
-						<button class="copy-ip" type="button" data-copy-ip="play.cubusfera.com">
-							<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
-							<span data-copy-label>Copiar IP</span>
-						</button>
-					</div>
-				</div>
-			</section>
-
-			<section class="home-section" id="mundo">
-				<div class="container">
-					<div class="home-head">
-						<div class="home-head-title">
-							<span class="home-kicker">04 — El mundo</span>
-							<h2>Así se ve el mundo ahora mismo.</h2>
-						</div>
-						<p class="home-links">
-							<a class="button" href="/galeria/">Ver la galería</a>
-							<a class="button" href="/bluemap/">Abrir el mapa</a>
+		{/* La hoja de contenido sube por encima del hero, que se queda pegado. */}
+		<div class="home-sheet">
+			<main>
+				<section class="home-intro" aria-label="Qué es Cubusfera">
+					<div class="container">
+						{/* Sin JavaScript o con movimiento reducido se lee entera desde el
+						    principio: scroll-reveal.js apaga las palabras al arrancar. */}
+						<p class="home-reveal" data-reveal>
+							{revealWords.map((word) => <><span data-word>{word}</span>{' '}</>)}
 						</p>
-					</div>
 
-					<div class="home-mosaic">
-						<figure class="home-mosaic-main">
-							<img src={mainShot.image} alt={mainShot.alt} width="1200" height="800" loading="lazy" />
-							<figcaption class="home-caption">{mainShot.caption}</figcaption>
-						</figure>
-						<div class="home-mosaic-side">
-							{sideShots.map((shot) => (
-								<figure>
-									<img src={shot.image} alt={shot.alt} width="1200" height="800" loading="lazy" />
-									<figcaption class="home-caption">{shot.caption}</figcaption>
-								</figure>
+						<dl class="home-stats">
+							{stats.map((stat) => (
+								<div class="home-stat">
+									<dt>{stat.label}</dt>
+									<dd>{stat.value}</dd>
+								</div>
 							))}
-						</div>
+						</dl>
 					</div>
+				</section>
 
-					{/* Fachada del Short: sin JavaScript es un enlace a YouTube; con él, el
-					    reproductor (youtube-nocookie) solo se carga al pulsar, para no
-					    pesar en la portada ni poner cookies antes de tiempo. */}
-					<div class="home-video" id="video">
-						<div class="home-video-copy">
-							<h3 class="home-kicker">En vídeo</h3>
-							<p class="home-video-title">{video.title}</p>
-							<p class="home-lead">Un minuto entre las granjas técnicas que tenemos funcionando, contado por {video.author}.</p>
-							<div class="home-video-actions">
-								<a class="button" href={video.url} target="_blank" rel="noopener noreferrer"><YouTubeIcon /> <span>Ver en YouTube</span></a>
-								<a class="button-ghost" href={video.channelUrl} target="_blank" rel="noopener noreferrer"><YouTubeIcon /> <span>Canal de {video.author}</span></a>
+				<section class="home-section home-section-tight" id="servidor">
+					<div class="container">
+						<div class="home-head">
+							<h2>Esto es lo que hay. Y lo que no.</h2>
+							<p class="home-lead">Preferimos contarlo antes de que entres, para que no pierdas el tiempo si buscas otra cosa.</p>
+						</div>
+
+						<div class="home-bento">
+							<article class="home-tile home-tile-lead">
+								<h3>Vanilla de verdad</h3>
+								<p>Nada de economía, rangos ni tiendas. El Minecraft que ya conoces, con <a href="/servidor/">granjas técnicas y proyectos libres</a>.</p>
+								<ul class="home-chips">
+									<li>Sin economía</li>
+									<li>Sin rangos</li>
+									<li>Granjas técnicas</li>
+									<li>Proyectos libres</li>
+								</ul>
+							</article>
+
+							<div class="home-bento-side">
+								<article class="home-tile home-tile-brand">
+									<h3>Entras y juegas</h3>
+									<p>No instalas nada y vale cuenta premium o <a href="/blog/servidor-minecraft-no-premium/">no premium</a>. Fabric corre en el servidor: abres el juego y te conectas.</p>
+									<ul class="home-chips">
+										<li>Premium</li>
+										<li>No premium</li>
+										<li>Sin modpack</li>
+									</ul>
+								</article>
+
+								<article class="home-tile">
+									<h3>Como mucho, 20</h3>
+									<p>Una comunidad pequeña, mayor de 16 años. Leemos cada solicitud a mano y respondemos por Discord.</p>
+									<ul class="home-chips">
+										<li>+16 años</li>
+										<li>Revisión a mano</li>
+									</ul>
+								</article>
+							</div>
+
+							<div class="home-tile home-tile-dark home-no-fit">
+								<p class="home-no-fit-label">Seguramente no encajas si…</p>
+								<ul class="home-chips">
+									{noFit.map((reason) => (
+										<li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17" /></svg>{reason}</li>
+									))}
+								</ul>
 							</div>
 						</div>
-						<a class="home-video-player" href={video.url} target="_blank" rel="noopener noreferrer" data-video-embed={video.embedUrl} data-video-title={video.title} aria-label={`Reproducir el vídeo «${video.title}»`}>
-							<img src={video.poster} alt="" width="540" height="960" loading="lazy" decoding="async" />
-							<span class="home-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg></span>
-						</a>
 					</div>
+				</section>
 
-					<div class="home-blog">
-						<div class="home-blog-head">
-							<h3 class="home-kicker">Del blog</h3>
-							<p class="home-links"><a class="button" href="/blog/">Ver más del blog</a></p>
+				{/* Mientras llega la lista, la misma tarjeta con 20 casillas vacías para
+				    que la página no salte. */}
+				<MembersTeaser server:defer>
+					<HomeCommunity slot="fallback">
+						<div class="home-tile home-members" aria-hidden="true">
+							<div class="home-members-summary">
+								<p class="home-members-count"><strong>–</strong><span>/20</span></p>
+								<p class="home-members-label">Comprobando plazas…</p>
+								<a class="button" href="/comunidad/" tabindex="-1">Ver la comunidad</a>
+							</div>
+							<ul class="home-members-heads">
+								{Array.from({ length: 20 }, () => <li class="home-members-head is-loading"></li>)}
+							</ul>
 						</div>
-						<ul>
+					</HomeCommunity>
+				</MembersTeaser>
+
+				<section class="home-band home-band-brand" id="como-entrar">
+					<div class="container">
+						<div class="home-head">
+							<h2>Entrar cuesta <span>tres pasos.</span></h2>
+							<p class="home-lead">Todo pasa en Discord. Ahí ves cómo hablamos antes de decidir nada.</p>
+						</div>
+
+						{/* Sin números: el raíl de iconos marca el orden (Discord, formulario,
+						    charla) y termina en el visto bueno. */}
+						<ol class="home-path">
+							<li class="home-path-step">
+								<span class="home-path-rail" aria-hidden="true">
+									<span class="home-path-icon"><DiscordIcon /></span>
+									<span class="home-path-line"></span>
+								</span>
+								<div class="home-path-card">
+									<h3>Entra en Discord</h3>
+									<p>El punto de encuentro. Presentamos el servidor y resolvemos dudas sin compromiso.</p>
+									<a class="button button-on-path" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+								</div>
+							</li>
+							<li class="home-path-step">
+								<span class="home-path-rail" aria-hidden="true">
+									<span class="home-path-icon"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.5" /><path d="M9 4V3h6v1M8.5 10h7M8.5 14h7M8.5 18h4" /></svg></span>
+									<span class="home-path-line"></span>
+								</span>
+								<div class="home-path-card">
+									<h3>Rellena el formulario</h3>
+									<p>No es un examen: es contexto para conocerte antes de abrirte la puerta.</p>
+									<ul class="home-chips">
+										<li>Tu edad</li>
+										<li>Qué buscas</li>
+										<li>Cómo te gusta jugar</li>
+									</ul>
+								</div>
+							</li>
+							<li class="home-path-step">
+								<span class="home-path-rail" aria-hidden="true">
+									<span class="home-path-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H10l-6 4.5z" /></svg></span>
+									<span class="home-path-line"></span>
+									<span class="home-path-done"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7" /></svg></span>
+								</span>
+								<div class="home-path-card">
+									<h3>Hablamos y entras</h3>
+									<p>Revisamos cada solicitud a mano. Si encaja, te añadimos a la whitelist el mismo día.</p>
+									<div class="home-path-ip">
+										<p class="home-path-address">
+											<span data-server-address>play.cubusfera.com</span>
+											<button class="copy-ip" type="button" data-copy-ip="play.cubusfera.com">
+												<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+												<span data-copy-label>Copiar IP</span>
+											</button>
+										</p>
+										<p class="home-path-note">Pégala en «Multijugador → Añadir servidor».</p>
+									</div>
+								</div>
+							</li>
+						</ol>
+					</div>
+				</section>
+
+				<section class="home-section home-section-tight" id="mundo">
+					<div class="container">
+						<div class="home-head">
+							<h2>Así se ve el mundo ahora mismo.</h2>
+							<p class="home-links"><a class="button" href="/bluemap/">Abrir el mapa</a></p>
+						</div>
+
+						<div class="home-mosaic">
+							<figure class="home-tile home-mosaic-main">
+								<img src={mainShot.image} alt={mainShot.alt} width={mainShot.width} height={mainShot.height} loading="lazy" decoding="async" />
+								<figcaption class="home-caption">{mainShot.caption}</figcaption>
+							</figure>
+							<div class="home-mosaic-side">
+								{sideShots.map((shot) => (
+									<figure class="home-tile">
+										<img src={shot.image} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" />
+										<figcaption class="home-caption">{shot.caption}</figcaption>
+									</figure>
+								))}
+							</div>
+							<div class="home-mosaic-row">
+								{rowShots.map((shot) => (
+									<figure class="home-tile">
+										<img src={shot.image} alt={shot.alt} width={shot.width} height={shot.height} loading="lazy" decoding="async" />
+										<figcaption class="home-caption">{shot.caption}</figcaption>
+									</figure>
+								))}
+							</div>
+						</div>
+
+						{/* Fachada del Short: sin JavaScript es un enlace a YouTube; con él, el
+						    reproductor (youtube-nocookie) solo se carga al pulsar, para no
+						    pesar en la portada ni poner cookies antes de tiempo. */}
+						<div class="home-tile home-tile-dark home-video" id="video">
+							<div class="home-video-copy">
+								<h3 class="home-video-title">{video.title}</h3>
+								<p>Un minuto entre las granjas técnicas que tenemos funcionando, contado por {video.author}.</p>
+								<div class="home-video-actions">
+									<a class="button button-on-brand" href={video.url} target="_blank" rel="noopener noreferrer"><YouTubeIcon /> <span>Ver en YouTube</span></a>
+									<a class="button-ghost button-ghost-on-brand" href={video.channelUrl} target="_blank" rel="noopener noreferrer">Canal de {video.author}</a>
+								</div>
+							</div>
+							<a class="home-video-player" href={video.url} target="_blank" rel="noopener noreferrer" data-video-embed={video.embedUrl} data-video-title={video.title} aria-label={`Reproducir el vídeo «${video.title}»`}>
+								<img src={video.poster} alt="" width="540" height="960" loading="lazy" decoding="async" />
+								<span class="home-video-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" /></svg></span>
+							</a>
+						</div>
+					</div>
+				</section>
+
+				<section class="home-section" id="blog">
+					<div class="container">
+						<div class="home-head">
+							<h2>Lo último del blog.</h2>
+							<p class="home-links"><a class="button" href="/blog/">Ver todo el blog</a></p>
+						</div>
+
+						<ul class="home-blog">
 							{posts.map((post) => (
 								<li data-tag={post.tag}>
-									<a href={post.href}>
+									<a class="home-tile" href={post.href}>
 										<img class="home-blog-thumb" src={post.image} alt={post.imageAlt} width="1200" height="800" loading="lazy" />
 										<span class="home-blog-body">
 											<span class="home-blog-meta">
-												<span class="home-blog-dot" aria-hidden="true"></span>
-												{post.category} · <time datetime={post.date.toISOString().slice(0, 10)}>{formatDate(post.date)}</time>
+												<span class="home-blog-tag"><span class="home-blog-dot" aria-hidden="true"></span>{post.category}</span>
+												<time datetime={post.date.toISOString().slice(0, 10)}>{formatDate(post.date)}</time>
 											</span>
 											<span class="home-blog-title">{post.title}</span>
 										</span>
-										<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" /></svg>
 									</a>
 								</li>
 							))}
 						</ul>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			<CtaBand
-				kicker="04 — Siguiente paso"
-				title="¿Te encaja? Nos vemos dentro."
-				lead="La whitelist se abre desde Discord y te contesta una persona, no un bot."
-				secondary={{ href: '/normas/', label: 'Leer las normas' }}
-			/>
-		</main>
+				<CtaBand
+					title="¿Te encaja? Nos vemos dentro."
+					lead="La whitelist se abre desde Discord y te contesta una persona, no un bot."
+					secondary={{ href: '/normas/', label: 'Leer las normas' }}
+				/>
+			</main>
 
-		<SiteFooter />
+			<SiteFooter />
+		</div>
 	</div>
 	<script is:inline src="/server-status.js"></script>
 	<script is:inline src="/copy-ip.js"></script>
-	<script is:inline src="/hero-slides.js"></script>
+	<script is:inline src="/scroll-reveal.js"></script>
 	<script is:inline src="/video-facade.js"></script>
 </Layout>
