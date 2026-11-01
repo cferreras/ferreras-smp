@@ -4,10 +4,12 @@ import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import InnerHero from '../components/InnerHero.astro';
 import CtaBand from '../components/CtaBand.astro';
+import KofiIcon from '../components/KofiIcon.astro';
 import { breadcrumbSchema } from '../lib/schema';
 import '../styles/phi.css';
 
 const serverAddress = 'play.cubusfera.com';
+const kofiUrl = 'https://ko-fi.com/cubusfera';
 export const prerender = true;
 
 const structuredData = [breadcrumbSchema([{ name: 'El servidor' }])];
@@ -248,6 +250,15 @@ const no = [
 								))}
 							</ul>
 						</div>
+					</div>
+
+					{/* Justo debajo del «sin Pay2Win»: se puede donar, pero no comprar nada. */}
+					<div class="srv-support">
+						<div class="srv-support-copy">
+							<h3>¿Quieres echar una mano?</h3>
+							<p>El servidor ya corre en un hosting de pago, modesto por ahora. Las donaciones en Ko-fi ayudan a pagarlo y a mejorarlo con el tiempo, y no dan ninguna ventaja en el juego.</p>
+						</div>
+						<a class="button button-on-path" href={kofiUrl} target="_blank" rel="noopener noreferrer"><KofiIcon /> <span>Apoyar en Ko-fi</span></a>
 					</div>
 				</div>
 			</section>

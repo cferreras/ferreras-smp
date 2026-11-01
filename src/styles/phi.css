@@ -150,7 +150,7 @@
 	color: var(--on-nav-cta);
 }
 
-.phi .button-on-path .discord-icon {
+.phi .button-on-path :is(.discord-icon, .kofi-icon) {
 	width: 1.1875rem;
 	height: 1.1875rem;
 }
@@ -2452,6 +2452,55 @@ a.home-video-player:focus-visible .home-video-play {
 .srv-panel-no {
 	background: var(--ip-panel);
 	color: #ffffff;
+}
+
+/* Ko-fi bajo el «qué no»: la misma tarjeta de cristal que los pasos, en fila. */
+.srv-support {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--s-3) var(--s-5);
+	margin-top: var(--gutter);
+	padding: var(--s-4);
+	border-radius: var(--r-md);
+	background: rgba(2, 24, 16, 0.45);
+	box-shadow:
+		0 0 0 var(--bezel-w) rgba(255, 255, 255, 0.05),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08),
+		0 1.5rem 3rem -1.875rem rgba(2, 16, 11, 0.8);
+	outline: 1px solid rgba(255, 255, 255, 0.1);
+	outline-offset: var(--bezel-w);
+}
+
+.srv-support-copy {
+	flex: 1 1 28rem;
+	min-width: 0;
+}
+
+.srv-support h3 {
+	font-size: var(--t-lg);
+	line-height: 1.15;
+	letter-spacing: -0.015em;
+}
+
+.srv-support p {
+	max-width: 46rem;
+	margin-top: var(--s-2);
+	color: var(--on-brand-2);
+	font-size: var(--t-sm);
+	line-height: var(--t-lg);
+}
+
+.srv-support .button {
+	flex-shrink: 0;
+}
+
+@media (max-width: 620px) {
+	.srv-support {
+		margin-top: var(--s-3);
+		padding: var(--s-3);
+	}
 }
 
 .srv-panel h3 {

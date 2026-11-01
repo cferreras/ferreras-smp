@@ -1001,16 +1001,20 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	font-size: 1rem;
 }
 
-.footer-links .footer-discord {
+.footer-links .footer-external {
 	display: inline-flex;
 	align-items: center;
 	gap: 0.5rem;
 	color: #c4adff;
 }
 
-.footer-discord .discord-icon {
+.footer-external :is(.discord-icon, .kofi-icon) {
 	width: 1.125rem;
 	height: 1.125rem;
+}
+
+.kofi-icon {
+	fill: currentColor;
 }
 
 .footer-bottom {

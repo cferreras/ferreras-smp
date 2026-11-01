@@ -1,0 +1,14 @@
+---
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { faKoFi } from '@fortawesome/free-brands-svg-icons';
+
+const kofiSvg = icon(faKoFi, {
+	attributes: {
+		'aria-hidden': 'true',
+		focusable: 'false',
+	},
+	classes: ['kofi-icon'],
+}).html.join('');
+---
+
+<Fragment set:html={kofiSvg} />
