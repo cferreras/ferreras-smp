@@ -106,7 +106,11 @@ const deploy = async () => {
   const result = spawnSync("pnpm", ["dlx", "vercel", "deploy", "--prod", "--yes"], { cwd: root, stdio: "inherit" });
   if (result.status !== 0) process.exit(result.status ?? 1);
   try { await notify(announcements(files)); } catch (error) {
-    console.warn(`Discord: ${error instanceof Error ? error.message : "error desconocido"}`);
+    // Pin the ref to this deploy's base so the next deploy retries these posts, even on first use when the base was HEAD^.
+    // After a partial failure the posts already sent go out again.
+    tryGit(["update-ref", deployRef, base]);
+    console.warn(`Discord: ${error instanceof Error ? error.message : "error desconocido"}; se reintentará en el próximo deploy`);
+    return;
   }
   try { git(["update-ref", deployRef, "HEAD"]); } catch {
     console.warn("Discord: no se pudo guardar la referencia del deploy");
