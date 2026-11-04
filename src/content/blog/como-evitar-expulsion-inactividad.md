@@ -3,6 +3,7 @@ title: "Cómo evitar que te saquen de Cubusfera por inactividad"
 seoTitle: "Inactividad en Cubusfera: horas mínimas y periodo de prueba"
 description: "Las horas mínimas que pedimos en Cubusfera: 2 horas el día 7, 5 horas el día 14 y, como miembro, 4 horas en los últimos 45 días."
 publishedAt: 2026-10-16
+updatedAt: 2026-11-04
 author: "Carlos Ferreras"
 category: "Servidor"
 tags:
@@ -29,11 +30,11 @@ En Cubusfera somos **20 personas como mucho**, y cada plaza de la whitelist cuen
 
 Las cifras son bajas a propósito. Si juegas aunque sea un rato de vez en cuando, las cumples sin pensarlo.
 
-> Lo que cuenta es el **tiempo conectado al servidor**. Da igual lo que hagas mientras: construir, minar, charlar en el spawn o quedarte AFK en una granja.
+> Lo que cuenta es el **tiempo conectado al servidor**. Da igual lo que hagas mientras: construir, minar, charlar en el spawn o quedarte AFK en una [granja](/blog/que-es-minecraft-tecnico/).
 
 ## El periodo de prueba
 
-Cuando te aceptamos en la whitelist empiezas un periodo de prueba de dos semanas. En ese tiempo hay dos comprobaciones:
+Cuando te aceptamos en la [whitelist](/como-entrar/) empiezas un periodo de prueba de dos semanas. En ese tiempo hay dos comprobaciones:
 
 ### Día 7: 2 horas
 
@@ -63,4 +64,4 @@ Para hacerte una idea: 4 horas en 45 días es menos de **40 minutos a la semana*
 - **Día 14:** al menos 5 horas en total.
 - **Miembros:** al menos 4 horas en los últimos 45 días.
 
-Son mínimos pensados para que nadie tenga que forzarse a jugar. Si te gusta el servidor, los vas a cumplir solo con pasarte de vez en cuando.
+Son mínimos pensados para que nadie tenga que forzarse a jugar. Si te gusta [el servidor](/servidor/), los vas a cumplir solo con pasarte de vez en cuando.
