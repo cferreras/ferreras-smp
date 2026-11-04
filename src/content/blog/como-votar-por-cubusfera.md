@@ -3,7 +3,7 @@ title: "Ya puedes votar por Cubusfera: cómo funciona el nuevo sistema de votos"
 seoTitle: "Cómo votar por Cubusfera en 40servidoresmc y Opinacraft"
 description: "Cubusfera ya está en 40servidoresmc y Opinacraft. Te contamos dónde votar, cada cuánto puedes hacerlo y cómo ver que tu voto ha llegado con /votar."
 publishedAt: 2026-10-03
-updatedAt: 2026-11-01
+updatedAt: 2026-11-04
 author: "Carlos Ferreras"
 category: "Novedades"
 tags:
@@ -32,9 +32,9 @@ Cubusfera ya tiene **sistema de votos**. Estamos en dos listas de servidores, [4
 
 ## Por qué nos importan los votos
 
-Las listas de servidores ordenan las fichas por votos. Cuanto más arriba aparece Cubusfera, más fácil es que nos vea alguien que busca un **survival vanilla técnico** y no lo encuentra entre tantos servidores con economía, rangos y tiendas.
+Las listas de servidores ordenan las fichas por votos. Cuanto más arriba aparece Cubusfera, más fácil es que nos vea alguien que busca un **survival vanilla [técnico](/blog/que-es-minecraft-tecnico/)** y no lo encuentra entre tantos servidores con economía, rangos y tiendas.
 
-No buscamos llenar el servidor: seguimos siendo una comunidad de **20 personas como mucho**, con whitelist y solicitudes que leemos a mano. Buscamos que llegue la gente que encaja, y para eso primero tienen que encontrarnos.
+No buscamos llenar el servidor: seguimos siendo una comunidad de **20 personas como mucho**, con whitelist y [solicitudes que leemos a mano](/como-entrar/). Buscamos que llegue la gente que encaja, y para eso primero tienen que encontrarnos.
 
 ## Dónde votar
 
