@@ -87,6 +87,12 @@
 	/* Tarjeta oscura: el verde casi negro de la cápsula. */
 	--tile-dark: #0b2e1e;
 
+	/* Selección de texto: la cara menta del logo con tinta oscura. Se queda
+	   igual en modo oscuro, porque fija también el color del texto y así se
+	   lee sobre papel, bandas verdes y pie. */
+	--selection: #45d98a;
+	--on-selection: #042e23;
+
 	--display: 'Fredoka', 'Trebuchet MS', sans-serif;
 	--body: 'Nunito', 'Segoe UI', sans-serif;
 	--mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
@@ -123,7 +129,9 @@ html[data-theme='dark'] {
 	--lapis-deep: #9cc0f5;
 	--lapis-soft: #1a2740;
 
-	--amber: #9a6d12;
+	/* Lo bastante hundido para que --on-amber y --on-amber-2 pasen AA encima
+	   (5,7:1 y 4,6:1). */
+	--amber: #7f5a0f;
 	--amber-deep: #f0c368;
 	--amber-soft: #38290d;
 	--on-amber: #fdf3e0;
@@ -177,6 +185,11 @@ body {
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 	transition: background-color 180ms ease, color 180ms ease;
+}
+
+::selection {
+	background: var(--selection);
+	color: var(--on-selection);
 }
 
 h1,
@@ -889,9 +902,11 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 	transition: background-color 160ms ease;
 }
 
+/* El dorado no cambia en modo oscuro, así que la tinta tampoco: --ink se
+   vuelve clara y desaparecería sobre él. */
 .copy-ip:hover {
 	background: var(--gold);
-	color: var(--ink);
+	color: var(--brand-ink);
 }
 
 .copy-ip svg {
@@ -906,7 +921,7 @@ html[data-theme-preference='system'] .theme-icon-state .theme-icon-system {
 
 .copy-ip[data-copied='true'] {
 	background: var(--gold);
-	color: var(--ink);
+	color: var(--brand-ink);
 }
 
 /* ---------- Artículo ---------- */
