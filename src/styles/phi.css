@@ -888,7 +888,7 @@
 .phi .home-path-address .copy-ip:hover,
 .phi .home-path-address .copy-ip[data-copied='true'] {
 	background: var(--gold);
-	color: var(--ink);
+	color: var(--brand-ink);
 }
 
 .phi .home-path-address .copy-ip svg {
