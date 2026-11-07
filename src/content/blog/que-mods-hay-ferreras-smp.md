@@ -3,7 +3,7 @@ title: "Qué mods hay en Cubusfera y cómo mantenemos una experiencia cercana a 
 seoTitle: "Qué mods hay en Cubusfera y por qué no necesitas modpack"
 description: "Conoce los mods server-side y datapacks de Cubusfera, para qué sirven y por qué puedes jugar sin instalar un modpack."
 publishedAt: 2026-07-19
-updatedAt: 2026-10-28
+updatedAt: 2026-11-07
 author: "Carlos Ferreras"
 category: "Servidor"
 tags:
@@ -23,11 +23,29 @@ relatedLinks:
     href: "/normas/"
 ---
 
-Cubusfera usa mods y datapacks para proteger el mundo, facilitar la convivencia y que el servidor vaya fino. Casi todos funcionan solo en el servidor, así que entras desde Minecraft Java sin descargar un modpack ni tocar tu cliente.
+Cubusfera usa mods y datapacks para proteger el mundo, facilitar la convivencia y que el servidor vaya fino. Todos corren en el servidor, así que entras con Minecraft Java vanilla, tal cual sale del launcher, sin descargar un modpack ni tocar tu cliente. Solo el chat de voz pide instalar algo en tu juego, y es opcional.
 
 La idea no es convertir Minecraft en otro juego. Seguimos queriendo un survival reconocible: las mejoras están para que el mundo funcione mejor, para poder reparar un destrozo si ocurre y para que algunas tareas pesadas dejen de serlo.
 
 > Si solo quieres jugar, no necesitas leer esta lista. Está aquí porque nos parece justo que sepas qué corre en el servidor donde vas a construir.
+
+## Qué cambia respecto a vanilla
+
+Si buscas un survival vanilla y ver «Fabric» te ha hecho dudar, esto es lo que importa.
+
+**Tu juego no cambia.** Entras con el Minecraft Java oficial, sin Fabric ni ningún mod en tu ordenador. El único que te puede interesar es [Simple Voice Chat](#comunidad-e-información), para hablar por voz con quien tengas cerca, y es opcional. Si quieres usar otros, como Sodium o un buscador de recetas, las [normas](/normas/#trampas) dicen cuáles valen.
+
+**El survival, muy poco.** No hay objetos, bloques ni criaturas nuevas, ni economía, ni rangos, ni una progresión distinta. Casi toda la lista trabaja por detrás y no la notas jugando. Lo que sí notas es esto:
+
+- Basta con que duerma la mitad de los conectados para pasar la noche. Es una regla del propio Minecraft (`playersSleepingPercentage`), solo que puesta al 50&nbsp;%.
+- Los élitros también se pueden fabricar, y en los barcos del End salen de una bóveda para que los consiga más de una persona.
+- Las criaturas pueden soltar su cabeza.
+- En desiertos y sin acceso al agua, los brotes de árbol se convierten en arbustos secos.
+- Se cosecha y se replanta con clic derecho, y los soportes para armaduras pueden llevar brazos.
+- Los orbes de experiencia se juntan en uno y dan lo mismo.
+- Una criatura que recoge un objeto puede desaparecer como cualquier otra, y suelta lo que llevaba. En vanilla se quedaría cargada para siempre.
+
+Si haces redstone fina, un apunte más: el polvo de redstone usa [Alternate Current](https://modrinth.com/mod/alternate-current), que calcula la red de una vez y la actualiza en un orden fijo en lugar del orden según la posición de vanilla. Mantiene el comportamiento de vanilla en casi todo, pero si tu diseño depende del orden de actualización, coméntalo antes en Discord.
 
 ## Qué es un mod server-side
 
@@ -35,7 +53,7 @@ Minecraft separa el cliente —el juego que abres en tu ordenador— del servido
 
 Por eso puedes notar una mejora sin haber descargado nada: el servidor registra quién cambió un bloque, optimiza la generación del mundo o muestra un mapa en la web mientras tu juego sigue siendo el de siempre. La [documentación de Fabric sobre mods server-side](https://wiki.fabricmc.net/community:serverside_mods) explica esa separación.
 
-No todos los mods son así. Algunos cambian gráficos o interfaz y solo funcionan en el cliente; otros hacen falta en ambos lados. Los de esta lista son los del servidor.
+No todos los mods son así. Algunos cambian gráficos o interfaz y solo funcionan en el cliente; otros hacen falta en ambos lados. Los de esta lista son los del servidor, y solo uno, el chat de voz, tiene además una parte opcional para tu juego.
 
 ## En qué se parece a un plugin de Paper o Spigot
 
@@ -61,7 +79,9 @@ La tecnología ayuda, pero no sustituye a las [normas](/normas/). Los registros 
 
 ## Comunidad e información
 
-[Discord MC Chat](https://modrinth.com/mod/discord-mc-chat) conecta el chat del juego con Discord, para no tener que estar conectados a la vez para hablar.
+[Simple Discord Link](https://modrinth.com/mod/sdlink) conecta el chat del juego con Discord, para no tener que estar conectados a la vez para hablar.
+
+[Simple Voice Chat](https://modrinth.com/mod/simple-voice-chat) añade chat de voz de proximidad: oyes a quien tengas cerca en el mundo, más alto cuanto más cerca está. Y si quieres hablar con una o varias personas de forma continua, creáis un grupo de voz: dentro del grupo os oís aunque os alejéis, aunque cada uno esté en una punta del mapa. No es obligatorio, pero si te gusta suele ser una forma muy divertida de jugar con el resto de miembros. Es el único mod de la lista que, para usarlo, también tienes que instalar en tu juego, con Fabric o NeoForge y en la versión para la 26.3. Sin él entras y juegas igual, solo que sin voz.
 
 [BlueMap](https://modrinth.com/mod/bluemap) genera un mapa tridimensional del mundo que se ve desde la web. [TAB](https://modrinth.com/mod/tab-was-taken) organiza la lista de jugadores y [TabTPS](https://modrinth.com/mod/tabtps) muestra datos de rendimiento dentro del juego. [MiniMOTD](https://modrinth.com/mod/minimotd) personaliza el mensaje y el icono que ves en tu lista de servidores.
 
@@ -117,6 +137,6 @@ Es la parte que más se acerca a añadir contenido, pero siguen siendo cambios c
 
 ## Entonces, ¿qué tienes que instalar?
 
-Nada de esta lista. Para jugar solo necesitas una versión compatible de Minecraft Java y la dirección del servidor: los mods y los datapacks ya están donde tienen que estar.
+Para jugar, nada. Solo necesitas una versión compatible de Minecraft Java y la dirección del servidor: los mods y los datapacks ya están donde tienen que estar. Si además quieres el chat de voz, añade Simple Voice Chat a tu juego cuando te apetezca.
 
 El resultado es un survival con protección, herramientas de comunidad y una base técnica cuidada, sin convertir la entrada en la instalación de un modpack. Si quieres probarlo, mira [cómo entrar](/como-entrar/) y añade `play.cubusfera.com` a tu lista.

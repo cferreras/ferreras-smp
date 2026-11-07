@@ -2,7 +2,7 @@
 title: "Qué es un servidor SMP de Minecraft y cómo funciona"
 description: "Descubre qué significa SMP en Minecraft, cómo funciona un mundo survival compartido y qué puedes esperar al entrar por primera vez."
 publishedAt: 2026-07-17
-updatedAt: 2026-09-05
+updatedAt: 2026-11-07
 author: "Carlos Ferreras"
 category: "Guías"
 tags:
@@ -76,6 +76,6 @@ Si nunca has añadido una dirección, la guía de [cómo entrar a un servidor de
 
 ## Cómo lo planteamos en Cubusfera
 
-Cubusfera es un [survival técnico](/blog/que-es-minecraft-tecnico/) de Minecraft Java en español, sin modpack obligatorio y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
+Cubusfera es un [survival técnico](/blog/que-es-minecraft-tecnico/) de Minecraft Java en español, al que entras con el cliente vanilla sin instalar nada y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
 
 Si te suena bien, mira [cómo entrar](/como-entrar/): la whitelist se pide desde Discord y la revisamos a mano.
