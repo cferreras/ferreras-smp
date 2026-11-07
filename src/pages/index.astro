@@ -52,9 +52,9 @@ const [mainShot, ...restShots] = [
 		height: 900,
 	},
 	{
-		image: '/images/mundo/granja-de-hierro-aldea.webp',
-		alt: 'Jugador con armadura de diamante frente a una granja de hierro junto a una aldea',
-		caption: 'Granja de hierro junto a la aldea',
+		image: '/images/mundo/granja-aldea-sabana.webp',
+		alt: 'Jugador con armadura de diamante frente a una granja automática junto a una aldea',
+		caption: 'Una granja junto a la aldea',
 		width: 1600,
 		height: 856,
 	},
@@ -109,7 +109,7 @@ const structuredData = [
 		url: 'https://cubusfera.com/',
 		name: 'Cubusfera — Servidor de Minecraft survival vanilla en español',
 		description:
-			'Servidor de Minecraft Java 26.3 survival en español, vanilla técnico con Fabric del lado del servidor, cuentas premium y no premium, whitelist con revisión manual y un máximo de 20 jugadores.',
+			'Servidor de Minecraft Java 26.3 survival en español, vanilla técnico: entras con el cliente vanilla y los mods de Fabric corren solo en el servidor, cuentas premium y no premium, whitelist con revisión manual y un máximo de 20 jugadores.',
 		inLanguage: 'es-ES',
 		isPartOf: { '@id': 'https://cubusfera.com/#website' },
 		about: { '@id': 'https://cubusfera.com/#organization' },
@@ -134,7 +134,7 @@ const structuredData = [
 				<div class="home-hero-copy">
 					<h1>Minecraft survival, hecho <span>en comunidad.</span></h1>
 
-					<p class="home-hero-lead">Un survival pequeño y en español para construir sin prisas. Sin Pay2Win, sin economía y sin modpack obligatorio.</p>
+					<p class="home-hero-lead">Un survival pequeño y en español para construir sin prisas. Sin Pay2Win, sin economía y sin instalar nada.</p>
 
 					<div class="home-hero-actions">
 						<a class="button button-on-brand" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
@@ -195,11 +195,11 @@ const structuredData = [
 							<div class="home-bento-side">
 								<article class="home-tile home-tile-brand">
 									<h3>Entras y juegas</h3>
-									<p>No instalas nada y vale cuenta premium o <a href="/blog/servidor-minecraft-no-premium/">no premium</a>. Fabric corre en el servidor: abres el juego y te conectas.</p>
+									<p>Te conectas con Minecraft Java vanilla, tal cual sale del launcher. Los mods están en el servidor, no en tu juego, y vale cuenta premium o <a href="/blog/servidor-minecraft-no-premium/">no premium</a>.</p>
 									<ul class="home-chips">
+										<li>Cliente vanilla</li>
 										<li>Premium</li>
 										<li>No premium</li>
-										<li>Sin modpack</li>
 									</ul>
 								</article>
 

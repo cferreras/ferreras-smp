@@ -2,7 +2,7 @@
 title: "Cómo entrar a un servidor de Minecraft Java paso a paso"
 description: "Aprende a añadir un servidor de Minecraft Java, conectarte y resolver las dudas básicas antes de entrar por primera vez."
 publishedAt: 2026-07-14
-updatedAt: 2026-10-28
+updatedAt: 2026-11-07
 author: "Carlos Ferreras"
 category: "Guías"
 tags:
@@ -76,6 +76,8 @@ Guarda, selecciona el servidor en la lista y pulsa **Entrar al servidor**. Si so
 En Cubusfera no. Entras y juegas sin descargar un modpack ni herramientas aparte.
 
 Lo que hace falta para la protección, el mapa y la convivencia ya está en el servidor. Tu cliente vanilla se conecta sin tocar nada. Si te interesa el detalle, lo contamos en [qué mods hay en Cubusfera](/blog/que-mods-hay-ferreras-smp/).
+
+La única excepción es opcional: el chat de voz de proximidad. Si quieres hablar por voz con quien tengas cerca en el mundo, o crear un grupo para seguir hablando con una o varias personas aunque os alejéis, instala [Simple Voice Chat](https://modrinth.com/mod/simple-voice-chat) en tu juego. No es obligatorio, pero si te gusta suele ser una forma muy divertida de jugar con el resto.
 
 ## ¿Necesito una cuenta premium?
 

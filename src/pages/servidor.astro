@@ -49,7 +49,7 @@ const specs = [
 	},
 	{
 		label: 'Mods',
-		value: 'Server-side, sin modpack obligatorio',
+		value: 'Solo en el servidor, nada que instalar',
 		icon: '<path d="M12 3 4 7.5v9L12 21l8-4.5v-9z" /><path d="m4 7.5 8 4.5 8-4.5M12 12v9" />',
 	},
 ];
@@ -69,9 +69,9 @@ const stack = [
 		icon: '<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z" /><circle cx="12" cy="12" r="3" />',
 	},
 	{
-		title: 'Chat con Discord',
-		text: 'El chat del juego y el de Discord van unidos: hablas con quien esté dentro sin conectarte.',
-		mods: ['Discord MC Chat'],
+		title: 'Chat y voz',
+		text: 'El chat del juego y el de Discord van unidos. Y si quieres, hablas por voz con quien tengas cerca o en un grupo, aunque estéis lejos.',
+		mods: ['Simple Discord Link', 'Simple Voice Chat'],
 		icon: '<path d="M20.5 12a8.5 8.5 0 0 1-12.4 7.5L3.5 20.5l1-4.4A8.5 8.5 0 1 1 20.5 12z" />',
 	},
 	{
@@ -88,7 +88,7 @@ const stack = [
 	},
 	{
 		title: 'Datapacks',
-		text: 'Se duerme sin coordinar a todo el servidor y los élitros los puede conseguir más de una persona.',
+		text: 'Basta con que duerma la mitad para pasar la noche, las criaturas pueden soltar su cabeza y los élitros los puede conseguir más de una persona.',
 		mods: ['Server Sleep', 'All Mob Heads', 'Elytra Vaults'],
 		icon: '<path d="m12 3 9 5-9 5-9-5z" /><path d="m3 12.5 9 5 9-5" /><path d="m3 17 9 5 9-5" />',
 	},
@@ -99,11 +99,12 @@ const yes = [
 	'Libertad para construir, explorar, automatizar y colaborar.',
 	'Protección de terrenos, registros y copias de seguridad para resolver incidentes.',
 	'Un espacio de Discord para información, chat y capturas del mundo.',
+	'Chat de voz de proximidad y grupos de voz para quien quiera: no es obligatorio, pero es una forma muy divertida de jugar con el resto.',
 ];
 
 const no = [
 	'Pay2Win, rangos que cambien el juego o una economía artificial.',
-	'Un modpack obligatorio o una lista interminable de plugins.',
+	'Un modpack ni nada que instalar para poder jugar.',
 	'Una comunidad masiva donde nadie conoce el contexto de los proyectos.',
 ];
 ---
@@ -118,7 +119,7 @@ const no = [
 			<InnerHero
 				title="Minecraft Java vanilla,"
 				highlight="sin adornos."
-				lead="Fabric está aquí para que el mundo funcione mejor, no para convertir Minecraft en otra cosa. Caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo."
+				lead="Entras con el Minecraft Java de siempre, sin instalar nada. Los mods cuidan el mundo, no lo convierten en otro juego: caben las granjas técnicas, las construcciones cuidadas y los proyectos que necesitan tiempo."
 			/>
 		</SiteHeader>
 
@@ -197,7 +198,7 @@ const no = [
 					<div class="home-head-title">
 						<h2 id="stack">Mods en el servidor. Nada en tu juego.</h2>
 					</div>
-					<p class="home-lead">Fabric y sus mods corren en el servidor, así que entras con el Minecraft Java de siempre, sin modpack ni instalar nada.</p>
+					<p class="home-lead">Fabric carga mods en el servidor, como Paper carga plugins. Tu Minecraft sigue siendo vanilla, y jugando solo notarás las comodidades y los datapacks de abajo.</p>
 				</div>
 
 				<ul class="srv-stack">

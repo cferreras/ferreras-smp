@@ -3,6 +3,7 @@ title: "Qué es Minecraft técnico y cómo se juega un survival técnico"
 seoTitle: "Qué es Minecraft técnico y cómo se juega — Cubusfera"
 description: "Jugar técnico es entender las mecánicas de Minecraft para montar granjas y redstone. Qué significa, qué se hace y cómo empezar en un survival técnico."
 publishedAt: 2026-10-28
+updatedAt: 2026-11-07
 author: "Carlos Ferreras"
 category: "Guías"
 tags:
@@ -53,7 +54,7 @@ Lo mismo que en cualquier survival, pero a otra escala. Algunos proyectos típic
 - **Excavaciones grandes**, como vaciar una zona entera para que una granja de criaturas rinda más.
 - **Medir y mejorar**: contar cuántos objetos por hora da una granja y cuánto carga al servidor.
 
-<img src="/images/gallery/granja-de-hierro-aldea.jpg" alt="Granja de hierro de Cubusfera junto a una aldea de sabana, con un jugador con armadura de diamante delante de los cofres donde cae el hierro" width="1800" height="962" loading="lazy" decoding="async" />
+<img src="/images/gallery/granja-aldea-sabana.jpg" alt="Granja automática de Cubusfera junto a una aldea de sabana, con un jugador con armadura de diamante delante de los cofres donde cae lo que produce" width="1800" height="962" loading="lazy" decoding="async" />
 
 Todo se hace en survival, con recursos conseguidos jugando. Lo técnico no quita el reto: lo cambia de sitio.
 
