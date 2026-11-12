@@ -1,0 +1,362 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import DiscordIcon from '../components/DiscordIcon.astro';
+import InnerHero from '../components/InnerHero.astro';
+import {
+	ageRanges,
+	checkCode,
+	displayCode,
+	limits,
+	normalizeCode,
+	resultKind,
+	resultKinds,
+	submitJoin,
+	type CodeCheck,
+	type CodeProblem,
+	type JoinField,
+	type ResultKind,
+} from '../lib/join';
+import '../styles/phi.css';
+
+// El formulario de alta. Se llega desde la pantalla de desconexión del
+// servidor, que da un código de un solo uso; el panel decide con lo enviado.
+export const prerender = false;
+Astro.response.headers.set('Cache-Control', 'no-store');
+
+const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
+
+const problemMessages: Record<CodeProblem, string> = {
+	invalid: 'Ese código no existe. Revisa que lo has copiado bien: son 6 caracteres, como K7M-4QX.',
+	expired: 'Ese código ha caducado. Vuelve a conectarte al servidor y te dará uno nuevo.',
+	superseded: 'Ese código ya no vale: el servidor te ha dado otro más reciente. Usa el último que te salió.',
+	redeemed: 'Ese código ya se ha usado. Si enviaste el formulario, ya lo tenemos: no hace falta repetirlo.',
+	invalid_name: 'Tu nombre de Minecraft lleva caracteres que la whitelist no admite (solo letras, números y _, de 3 a 16). Escríbenos por Discord y lo vemos.',
+	rate_limited: 'Demasiados intentos seguidos. Espera una hora y vuelve a probar.',
+	unavailable: 'Ahora mismo no podemos comprobar el código. Prueba de nuevo en unos minutos.',
+};
+
+const fieldMessages: Record<JoinField, string> = {
+	ageRange: 'Elige tu edad.',
+	answer: `La respuesta puede tener como mucho ${limits.answerMax} caracteres.`,
+	plans: `Cuéntanos un poco más: entre ${limits.plansMin} y ${limits.plansMax} caracteres.`,
+	referralSource: `Dinos cómo nos conociste, entre ${limits.referralMin} y ${limits.referralMax} caracteres.`,
+};
+
+interface FormValues {
+	ageRange: string;
+	answer: string;
+	plans: string;
+	referralSource: string;
+}
+
+type View =
+	| { step: 'code'; error: string | null; value: string }
+	| { step: 'form'; check: Extract<CodeCheck, { status: 'ok' }>; errors: JoinField[]; values: FormValues }
+	| { step: 'done'; kind: ResultKind };
+
+const emptyValues: FormValues = { ageRange: '', answer: '', plans: '', referralSource: '' };
+
+function clientAddress(): string | undefined {
+	try {
+		return Astro.clientAddress;
+	} catch {
+		return undefined;
+	}
+}
+
+let view: View = { step: 'code', error: null, value: '' };
+
+const sent = Astro.url.searchParams.get('enviado');
+const sentKind = resultKinds.find((kind) => kind === sent);
+if (Astro.request.method === 'GET' && sentKind) view = { step: 'done', kind: sentKind };
+
+if (Astro.request.method === 'POST') {
+	const data = await Astro.request.formData();
+	const text = (name: string) => {
+		const value = data.get(name);
+		return typeof value === 'string' ? value : '';
+	};
+	const ip = clientAddress();
+
+	// Campo trampa: invisible para las personas. Un bot que lo rellena ve un
+	// «recibido» y no llega al panel.
+	if (text('web')) return Astro.redirect('/entrar/?enviado=revision', 303);
+
+	const typed = text('codigo').slice(0, 20);
+	const code = normalizeCode(typed);
+
+	if (!code) {
+		view = { step: 'code', error: problemMessages.invalid, value: typed };
+	} else if (text('paso') === 'formulario') {
+		const values: FormValues = {
+			ageRange: text('edad'),
+			answer: text('respuesta').slice(0, limits.answerMax * 2),
+			plans: text('planes').slice(0, limits.plansMax * 2),
+			referralSource: text('conociste').slice(0, limits.referralMax * 2),
+		};
+		const result = await submitJoin({ code, ...values }, ip);
+
+		if (result.status === 'ok') return Astro.redirect(`/entrar/?enviado=${resultKind(result.outcome)}`, 303);
+
+		if (result.status === 'invalid_fields') {
+			// Se vuelve a pedir el código al panel para enseñar su pregunta, no la que diga el navegador.
+			const check = await checkCode(code, ip);
+			view =
+				check.status === 'ok'
+					? { step: 'form', check, errors: result.errors, values }
+					: { step: 'code', error: problemMessages[check.status], value: displayCode(code) };
+		} else {
+			view = { step: 'code', error: problemMessages[result.status], value: displayCode(code) };
+		}
+	} else {
+		const check = await checkCode(code, ip);
+		view =
+			check.status === 'ok'
+				? { step: 'form', check, errors: [], values: emptyValues }
+				: { step: 'code', error: problemMessages[check.status], value: displayCode(code) };
+	}
+}
+
+const timeFormat = new Intl.DateTimeFormat('es-ES', {
+	weekday: 'long',
+	hour: '2-digit',
+	minute: '2-digit',
+	timeZone: 'Europe/Madrid',
+});
+
+const results: Record<ResultKind, { title: string; highlight: string; lead: string; notes: string[] }> = {
+	dentro: {
+		title: 'Ya puedes',
+		highlight: 'entrar.',
+		lead: 'Te estamos añadiendo a la whitelist. En un minuto, vuelve a conectarte a play.cubusfera.com.',
+		notes: [
+			'Si todavía no te deja, espera un par de minutos y prueba otra vez. Si sigue sin dejarte, avísanos en Discord.',
+			'Empiezan tus dos semanas de prueba: 2 horas jugadas el día 7 y 5 en total el día 14. Con eso pasas a ser miembro.',
+			'Saluda al llegar: el mundo se comparte y nos gusta saber quién anda por ahí.',
+		],
+	},
+	revision: {
+		title: 'Recibido. Lo revisamos',
+		highlight: 'a mano.',
+		lead: 'Una persona del equipo lee tu solicitud y decide en 48 horas como mucho.',
+		notes: [
+			'No te escribiremos: cuando esté aceptada, el servidor te dejará entrar. Prueba a conectarte pasado ese plazo.',
+			'Si quieres que te avisemos o tienes alguna duda, entra en Discord y dinos tu nick.',
+		],
+	},
+	'no-premium': {
+		title: 'Recibido. Lo revisamos',
+		highlight: 'a mano.',
+		lead: 'Tu cuenta no es premium, así que una persona del equipo revisa tu solicitud: en 48 horas como mucho.',
+		notes: [
+			'No te escribiremos: cuando esté aceptada, el servidor te dejará entrar. Prueba a conectarte pasado ese plazo.',
+			'La primera vez el servidor te pedirá que crees una contraseña con /register. Te lo contamos en la guía para cuentas no premium.',
+			'Si quieres que te avisemos o tienes alguna duda, entra en Discord y dinos tu nick.',
+		],
+	},
+	edad: {
+		title: 'Todavía',
+		highlight: 'no.',
+		lead: 'Cubusfera es para mayores de 16 años, así que por ahora no podemos dejarte entrar.',
+		notes: ['Cuando los cumplas, vuelve a conectarte al servidor: te dará un código nuevo para pedir acceso.'],
+	},
+};
+
+const hero =
+	view.step === 'done'
+		? results[view.kind]
+		: view.step === 'form'
+			? {
+					title: `Hola, ${view.check.minecraftName}. Ya casi`,
+					highlight: 'estás.',
+					lead: 'Cuatro preguntas cortas y listo. No es un examen: queremos saber quién llega y si el sitio le va a gustar.',
+				}
+			: {
+					title: 'Pide acceso con tu',
+					highlight: 'código.',
+					lead: 'Te lo da el servidor al intentar entrar sin estar en la whitelist. Escríbelo aquí y rellena un formulario corto.',
+				};
+
+const fieldError = (field: JoinField) => (view.step === 'form' && view.errors.includes(field) ? fieldMessages[field] : null);
+---
+
+<Layout
+	title="Pedir acceso a Cubusfera — Cubusfera"
+	description="Formulario de alta de Cubusfera: escribe el código que te da el servidor al conectarte y pide entrar en la whitelist."
+	noindex
+>
+	<div class="phi">
+		<SiteHeader>
+			<InnerHero title={hero.title} highlight={hero.highlight} lead={hero.lead} />
+		</SiteHeader>
+
+		<main>
+			<section class="container home-section phi-split join" aria-label="Formulario de alta">
+				{view.step === 'code' && (
+					<>
+						<form class="srv-panel srv-panel-paper join-card" method="post" action="/entrar/">
+							<input type="hidden" name="paso" value="codigo" />
+							<label class="join-field join-field-code">
+								<span class="join-label">Tu código</span>
+								<input
+									class="join-input join-input-code"
+									name="codigo"
+									value={view.value}
+									autocomplete="off"
+									autocapitalize="characters"
+									spellcheck="false"
+									inputmode="text"
+									maxlength="9"
+									placeholder="K7M-4QX"
+									required
+									aria-invalid={view.error ? 'true' : undefined}
+									aria-describedby={view.error ? 'codigo-error' : 'codigo-ayuda'}
+									autofocus
+								/>
+							</label>
+							{view.error ? (
+								<p class="join-error" id="codigo-error" role="alert">{view.error}</p>
+							) : (
+								<p class="join-hint" id="codigo-ayuda">Seis letras y números. No importan las mayúsculas ni el guion.</p>
+							)}
+							<button class="button" type="submit">Comprobar el código</button>
+						</form>
+
+						<aside class="srv-note join-aside">
+							<h3>¿Aún no tienes código?</h3>
+							<p>Abre Minecraft Java, añade el servidor en «Multijugador → Añadir servidor» y conéctate. Como aún no estás en la whitelist, te desconecta y te enseña tu código. Caduca en 24 horas.</p>
+							<p class="home-path-address join-address">
+								<span>play.cubusfera.com</span>
+								<button class="copy-ip" type="button" data-copy-ip="play.cubusfera.com">
+									<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+									<span data-copy-label>Copiar IP</span>
+								</button>
+							</p>
+							<a class="button" href="/como-entrar/">Cómo funciona</a>
+						</aside>
+					</>
+				)}
+
+				{view.step === 'form' && (
+					<>
+						<form class="srv-panel srv-panel-paper join-card" method="post" action="/entrar/">
+							<input type="hidden" name="paso" value="formulario" />
+							<input type="hidden" name="codigo" value={view.check.code} />
+
+							<label class="join-field">
+								<span class="join-label">¿Cuántos años tienes?</span>
+								<select class="join-input" name="edad" required aria-invalid={fieldError('ageRange') ? 'true' : undefined}>
+									<option value="" selected={!view.values.ageRange}>Elige una opción</option>
+									{ageRanges.map((range) => (
+										<option value={range.value} selected={view.values.ageRange === range.value}>{range.label}</option>
+									))}
+								</select>
+								{fieldError('ageRange') && <span class="join-error">{fieldError('ageRange')}</span>}
+							</label>
+
+							{view.check.question && (
+								<label class="join-field">
+									<span class="join-label">{view.check.question}</span>
+									<input
+										class="join-input"
+										name="respuesta"
+										value={view.values.answer}
+										maxlength={limits.answerMax}
+										autocomplete="off"
+										required
+										aria-invalid={fieldError('answer') ? 'true' : undefined}
+									/>
+									<span class="join-hint">La respuesta está en las <a href="/normas/" target="_blank" rel="noopener">normas</a>. Con unas palabras basta.</span>
+									{fieldError('answer') && <span class="join-error">{fieldError('answer')}</span>}
+								</label>
+							)}
+
+							<label class="join-field">
+								<span class="join-label">¿Qué te gustaría construir o aprender aquí?</span>
+								<textarea
+									class="join-input"
+									name="planes"
+									rows="5"
+									minlength={limits.plansMin}
+									maxlength={limits.plansMax}
+									required
+									aria-invalid={fieldError('plans') ? 'true' : undefined}
+								>{view.values.plans}</textarea>
+								<span class="join-hint">Una granja, una ciudad, aprender redstone, jugar con calma… Lo que sea, con tus palabras.</span>
+								{fieldError('plans') && <span class="join-error">{fieldError('plans')}</span>}
+							</label>
+
+							<label class="join-field">
+								<span class="join-label">¿Cómo nos conociste?</span>
+								<input
+									class="join-input"
+									name="conociste"
+									value={view.values.referralSource}
+									minlength={limits.referralMin}
+									maxlength={limits.referralMax}
+									placeholder="Un amigo, un vídeo, una lista de servidores…"
+									required
+									aria-invalid={fieldError('referralSource') ? 'true' : undefined}
+								/>
+								{fieldError('referralSource') && <span class="join-error">{fieldError('referralSource')}</span>}
+							</label>
+
+							<div class="join-honeypot" aria-hidden="true">
+								<label>Web <input name="web" tabindex="-1" autocomplete="off" /></label>
+							</div>
+
+							<p class="join-hint">Al enviarlo aceptas las <a href="/normas/" target="_blank" rel="noopener">normas</a>. Guardamos tu nick, tu edad y tus respuestas para decidir; no pedimos correo ni Discord.</p>
+							<button class="button" type="submit">Enviar solicitud</button>
+						</form>
+
+						<aside class="srv-note join-aside">
+							<h3>Cuenta {view.check.premium ? 'premium' : 'no premium'}</h3>
+							{view.check.premium ? (
+								<p>Si tienes 16 años o más y aciertas la pregunta de las normas, entras en cuanto envíes. Si no, lo revisa una persona en 48 horas como mucho.</p>
+							) : (
+								<p>Las cuentas no premium las revisa siempre una persona, en 48 horas como mucho. Después entrarás con contraseña, como cuenta la <a href="/blog/servidor-minecraft-no-premium/">guía para no premium</a>.</p>
+							)}
+							<p>Tu código, <strong>{displayCode(view.check.code)}</strong>, vale hasta el {timeFormat.format(view.check.expiresAt)} y solo sirve para un envío.</p>
+						</aside>
+					</>
+				)}
+
+				{view.step === 'done' && (
+					<>
+						<div class="srv-panel srv-panel-paper join-card">
+							<ul class="join-notes">
+								{results[view.kind].notes.map((note) => (
+									<li>
+										<span class="srv-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17.5 19 7" /></svg></span>
+										{note}
+									</li>
+								))}
+							</ul>
+							{view.kind === 'no-premium' && <a class="button" href="/blog/servidor-minecraft-no-premium/">Leer la guía</a>}
+							{view.kind === 'dentro' && (
+								<p class="home-path-address join-address">
+									<span>play.cubusfera.com</span>
+									<button class="copy-ip" type="button" data-copy-ip="play.cubusfera.com">
+										<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="3" /><path d="M6 15H4.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V6" /></svg>
+										<span data-copy-label>Copiar IP</span>
+									</button>
+								</p>
+							)}
+						</div>
+
+						<aside class="srv-note join-aside">
+							<h3>Y ahora, Discord</h3>
+							<p>No hace falta para jugar, pero ahí está la comunidad: se proponen proyectos, se avisa de lo que pasa en el mundo y se resuelven dudas.</p>
+							<a class="button" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+						</aside>
+					</>
+				)}
+			</section>
+		</main>
+
+		<SiteFooter />
+	</div>
+	<script is:inline src="/copy-ip.js"></script>
+</Layout>

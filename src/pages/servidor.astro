@@ -17,14 +17,14 @@ const structuredData = [breadcrumbSchema([{ name: 'El servidor' }])];
 // Lo esencial va en el panel de la IP; el resto, en tarjetas debajo.
 const stats = [
 	{ label: 'Versión', value: 'Java 26.3' },
-	{ label: 'Plazas', value: '20 jugadores' },
+	{ label: 'A la vez', value: '20 jugadores' },
 	{ label: 'Cliente', value: 'Vanilla' },
 ];
 
 const specs = [
 	{
 		label: 'Whitelist',
-		value: 'Con Discord, formulario y revisión manual',
+		value: 'Con un código del servidor y un formulario corto',
 		icon: '<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z" /><path d="m8.75 12 2.25 2.25 4.25-4.5" />',
 	},
 	{
@@ -111,7 +111,7 @@ const no = [
 
 <Layout
 	title="El servidor: survival vanilla en Minecraft Java — Cubusfera"
-	description="Ficha de Cubusfera, survival de Minecraft Java 26.3 en español: vanilla técnico con mods solo en el servidor, cuentas premium y no premium y 20 plazas."
+	description="Ficha de Cubusfera, survival de Minecraft Java 26.3 en español: vanilla técnico con mods solo en el servidor, cuentas premium y no premium y hasta 20 jugadores a la vez."
 	structuredData={structuredData}
 >
 	<div class="phi">
@@ -266,8 +266,8 @@ const no = [
 
 			<CtaBand
 				title="¿Te suena bien? Pide la whitelist."
-				lead="Se abre desde Discord, en cuatro pasos y con una persona al otro lado."
-				secondary={{ href: '/como-entrar/', label: 'Ver cómo entrar' }}
+				lead="Te conectas, el servidor te da un código y con él rellenas un formulario corto."
+				secondary={{ href: '/normas/', label: 'Leer las normas' }}
 			/>
 		</main>
 

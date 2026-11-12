@@ -11,7 +11,7 @@ import '../styles/phi.css';
 // Se pinta en cada visita con la lista del panel; la CDN la guarda un minuto.
 export const prerender = false;
 
-const { ok, members, maxSlots, checkedAt, onlineFresh } = await getMembers();
+const { ok, members, checkedAt, onlineFresh } = await getMembers();
 
 Astro.response.headers.set(
 	'Cache-Control',
@@ -26,12 +26,9 @@ const monthFormat = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'num
 const timeFormat = new Intl.DateTimeFormat('es-ES', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Madrid' });
 
 const count = members.length;
-const freeSlots = maxSlots ? Math.max(maxSlots - count, 0) : 0;
 const onlineCount = members.filter((member) => member.online).length;
 
-const heading = maxSlots
-	? `${count} de ${maxSlots} plazas ocupadas.`
-	: `${count} ${count === 1 ? 'persona' : 'personas'} en la whitelist.`;
+const heading = `${count} ${count === 1 ? 'persona' : 'personas'} en la whitelist.`;
 
 let onlineSentence = 'Ahora mismo no podemos comprobar quién está conectado.';
 if (onlineFresh && checkedAt) {
@@ -41,25 +38,15 @@ if (onlineFresh && checkedAt) {
 		: `Ahora mismo hay ${people} jugando (comprobado a las ${timeFormat.format(checkedAt)}).`;
 }
 
-const cta = !ok || !maxSlots
-	? {
-			title: '¿Te apuntas?',
-			lead: 'La whitelist se pide por Discord con un formulario, y cada solicitud se revisa a mano. Las dos primeras semanas son de prueba.',
-		}
-	: freeSlots > 0
-		? {
-				title: freeSlots === 1 ? 'Queda 1 plaza.' : `Quedan ${freeSlots} plazas.`,
-				lead: 'La whitelist se pide por Discord con un formulario, y cada solicitud se revisa a mano. Las dos primeras semanas son de prueba.',
-			}
-		: {
-				title: 'Ahora no quedan plazas.',
-				lead: 'Las plazas se liberan cuando alguien deja de jugar. Pásate por Discord y pregunta: así te enteras cuando haya hueco.',
-			};
+const cta = {
+	title: '¿Te apuntas?',
+	lead: 'Conéctate al servidor, te dará un código y con él rellenas un formulario corto. Las dos primeras semanas son de prueba.',
+};
 ---
 
 <Layout
-	title="Comunidad: miembros y plazas libres — Cubusfera"
-	description={`Quién juega en Cubusfera: los miembros del servidor, quién está conectado ahora y cuántas plazas quedan libres de las ${maxSlots ?? 20}.`}
+	title="Comunidad: miembros del servidor — Cubusfera"
+	description="Quién juega en Cubusfera: los miembros del servidor, quién está en su periodo de prueba y quién está conectado ahora."
 	structuredData={structuredData}
 >
 	<div class="phi">
@@ -67,7 +54,7 @@ const cta = !ok || !maxSlots
 			<InnerHero
 				title="Quién juega en"
 				highlight="Cubusfera."
-				lead={`Cada cabeza es una persona de la whitelist. Somos ${maxSlots ?? 20} como mucho y cada plaza cuenta: cuando una queda libre, es para alguien nuevo.`}
+				lead="Cada cabeza es una persona de la whitelist. Somos una comunidad pequeña: en el servidor caben 20 jugadores a la vez."
 			/>
 		</SiteHeader>
 
@@ -100,13 +87,6 @@ const cta = !ok || !maxSlots
 									)}
 								</li>
 							))}
-							{/* Las plazas libres solo se ven: el titular ya dice cuántas quedan. */}
-							{Array.from({ length: freeSlots }, () => (
-								<li class="member member-free" aria-hidden="true">
-									<span class="member-head"></span>
-									<p class="member-name">Plaza libre</p>
-								</li>
-							))}
 						</ul>
 					</>
 				) : (
@@ -119,7 +99,7 @@ const cta = !ok || !maxSlots
 				)}
 			</section>
 
-			<CtaBand title={cta.title} lead={cta.lead} secondary={{ href: '/como-entrar/', label: 'Cómo entrar' }} />
+			<CtaBand title={cta.title} lead={cta.lead} secondary={{ href: '/normas/', label: 'Leer las normas' }} />
 		</main>
 
 		<SiteFooter />

@@ -1,15 +1,18 @@
 ---
 import DiscordIcon from './DiscordIcon.astro';
 
-// Banda ámbar con la que acaban las páginas: siempre lleva a Discord y, como
-// segunda opción, a la página informativa que toque.
+// Banda ámbar con la que acaban las páginas. Por defecto lleva a pedir acceso
+// (la whitelist se pide desde el juego, sin pasar por Discord) y, como segunda
+// opción, a la página informativa que toque. `primary: 'discord'` la cambia
+// por el enlace a Discord, para las páginas que invitan a preguntar.
 interface Props {
 	title: string;
 	lead: string;
+	primary?: { href: string; label: string } | 'discord';
 	secondary: { href: string; label: string };
 }
 
-const { title, lead, secondary } = Astro.props;
+const { title, lead, primary = { href: '/como-entrar/', label: 'Pedir acceso' }, secondary } = Astro.props;
 const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 ---
 
@@ -18,7 +21,11 @@ const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 		<h2>{title}</h2>
 		<p class="home-lead">{lead}</p>
 		<div class="home-hero-actions">
-			<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+			{primary === 'discord' ? (
+				<a class="button button-on-amber" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+			) : (
+				<a class="button button-on-amber" href={primary.href}>{primary.label}</a>
+			)}
 			<a class="button-ghost button-ghost-on-amber" href={secondary.href}>{secondary.label}</a>
 		</div>
 	</div>

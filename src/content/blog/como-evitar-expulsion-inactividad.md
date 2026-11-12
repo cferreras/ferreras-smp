@@ -26,7 +26,7 @@ relatedLinks:
     href: "/preguntas-frecuentes/"
 ---
 
-En Cubusfera somos **20 personas como mucho**, y cada plaza de la whitelist cuenta. Por eso pedimos un mínimo de actividad: no para obligar a nadie a jugar todos los días, sino para que las plazas las ocupe gente que de verdad está en el mundo.
+En Cubusfera somos una **comunidad pequeña** y queremos que quien está en la whitelist juegue. Por eso pedimos un mínimo de actividad: no para obligar a nadie a jugar todos los días, sino para que la whitelist sea de gente que de verdad está en el mundo.
 
 Las cifras son bajas a propósito. Si juegas aunque sea un rato de vez en cuando, las cumples sin pensarlo.
 

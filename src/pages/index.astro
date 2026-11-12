@@ -20,7 +20,7 @@ const revealWords =
 
 const stats = [
 	{ value: '26.3', label: 'versión de Minecraft Java' },
-	{ value: '20', label: 'jugadores como máximo' },
+	{ value: '20', label: 'jugadores a la vez' },
 	{ value: '0', label: 'mods que instalar' },
 	{ value: '16', label: 'años, la edad mínima' },
 ];
@@ -109,7 +109,7 @@ const structuredData = [
 		url: 'https://cubusfera.com/',
 		name: 'Cubusfera — Servidor de Minecraft survival vanilla en español',
 		description:
-			'Servidor de Minecraft Java 26.3 survival en español, vanilla técnico: entras con el cliente vanilla y los mods de Fabric corren solo en el servidor, cuentas premium y no premium, whitelist con revisión manual y un máximo de 20 jugadores.',
+			'Servidor de Minecraft Java 26.3 survival en español, vanilla técnico: entras con el cliente vanilla y los mods de Fabric corren solo en el servidor, cuentas premium y no premium, whitelist con un formulario corto y hasta 20 jugadores conectados a la vez.',
 		inLanguage: 'es-ES',
 		isPartOf: { '@id': 'https://cubusfera.com/#website' },
 		about: { '@id': 'https://cubusfera.com/#organization' },
@@ -137,8 +137,8 @@ const structuredData = [
 					<p class="home-hero-lead">Un survival pequeño y en español para construir sin prisas. Sin Pay2Win, sin economía y sin instalar nada.</p>
 
 					<div class="home-hero-actions">
-						<a class="button button-on-brand" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-						<a class="button-ghost button-ghost-on-brand" href="/como-entrar/">Cómo entrar</a>
+						<a class="button button-on-brand" href="/como-entrar/">Pedir acceso</a>
+						<a class="button-ghost button-ghost-on-brand" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Discord</span></a>
 					</div>
 				</div>
 
@@ -204,11 +204,11 @@ const structuredData = [
 								</article>
 
 								<article class="home-tile">
-									<h3>Como mucho, 20</h3>
-									<p>Una comunidad pequeña, mayor de 16 años. Leemos cada solicitud a mano y respondemos por Discord.</p>
+									<h3>Pequeño a propósito</h3>
+									<p>Una comunidad mayor de 16 años y hasta 20 jugando a la vez. Para entrar basta un formulario corto, y si hay dudas lo mira una persona.</p>
 									<ul class="home-chips">
 										<li>+16 años</li>
-										<li>Revisión a mano</li>
+										<li>20 a la vez</li>
 									</ul>
 								</article>
 							</div>
@@ -225,14 +225,14 @@ const structuredData = [
 					</div>
 				</section>
 
-				{/* Mientras llega la lista, la misma tarjeta con 20 casillas vacías para
+				{/* Mientras llega la lista, la misma tarjeta con casillas vacías para
 				    que la página no salte. */}
 				<MembersTeaser server:defer>
 					<HomeCommunity slot="fallback">
 						<div class="home-tile home-members" aria-hidden="true">
 							<div class="home-members-summary">
-								<p class="home-members-count"><strong>–</strong><span>/20</span></p>
-								<p class="home-members-label">Comprobando plazas…</p>
+								<p class="home-members-count"><strong>–</strong></p>
+								<p class="home-members-label">Comprobando la whitelist…</p>
 								<a class="button" href="/comunidad/" tabindex="-1">Ver la comunidad</a>
 							</div>
 							<ul class="home-members-heads">
@@ -246,47 +246,20 @@ const structuredData = [
 					<div class="container">
 						<div class="home-head">
 							<h2>Entrar cuesta <span>tres pasos.</span></h2>
-							<p class="home-lead">Todo pasa en Discord. Ahí ves cómo hablamos antes de decidir nada.</p>
+							<p class="home-lead">Sin pasar por Discord: el servidor te da un código y la web hace el resto.</p>
 						</div>
 
-						{/* Sin números: el raíl de iconos marca el orden (Discord, formulario,
-						    charla) y termina en el visto bueno. */}
+						{/* Sin números: el raíl de iconos marca el orden (conectarse, formulario,
+						    entrar) y termina en el visto bueno. */}
 						<ol class="home-path">
 							<li class="home-path-step">
 								<span class="home-path-rail" aria-hidden="true">
-									<span class="home-path-icon"><DiscordIcon /></span>
+									<span class="home-path-icon"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="5" /><path d="M8 10v4M6 12h4M15.5 11.5v.01M17.5 13.5v.01" /></svg></span>
 									<span class="home-path-line"></span>
 								</span>
 								<div class="home-path-card">
-									<h3>Entra en Discord</h3>
-									<p>El punto de encuentro. Presentamos el servidor y resolvemos dudas sin compromiso.</p>
-									<a class="button button-on-path" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
-								</div>
-							</li>
-							<li class="home-path-step">
-								<span class="home-path-rail" aria-hidden="true">
-									<span class="home-path-icon"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.5" /><path d="M9 4V3h6v1M8.5 10h7M8.5 14h7M8.5 18h4" /></svg></span>
-									<span class="home-path-line"></span>
-								</span>
-								<div class="home-path-card">
-									<h3>Rellena el formulario</h3>
-									<p>No es un examen: es contexto para conocerte antes de abrirte la puerta.</p>
-									<ul class="home-chips">
-										<li>Tu edad</li>
-										<li>Qué buscas</li>
-										<li>Cómo te gusta jugar</li>
-									</ul>
-								</div>
-							</li>
-							<li class="home-path-step">
-								<span class="home-path-rail" aria-hidden="true">
-									<span class="home-path-icon"><svg viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H10l-6 4.5z" /></svg></span>
-									<span class="home-path-line"></span>
-									<span class="home-path-done"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7" /></svg></span>
-								</span>
-								<div class="home-path-card">
-									<h3>Hablamos y entras</h3>
-									<p>Revisamos cada solicitud a mano. Si encaja, te añadimos a la whitelist el mismo día.</p>
+									<h3>Conéctate al servidor</h3>
+									<p>Como aún no estás en la whitelist, te desconecta y te enseña un código para pedir acceso.</p>
 									<div class="home-path-ip">
 										<p class="home-path-address">
 											<span data-server-address>play.cubusfera.com</span>
@@ -297,6 +270,33 @@ const structuredData = [
 										</p>
 										<p class="home-path-note">Pégala en «Multijugador → Añadir servidor».</p>
 									</div>
+								</div>
+							</li>
+							<li class="home-path-step">
+								<span class="home-path-rail" aria-hidden="true">
+									<span class="home-path-icon"><svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.5" /><path d="M9 4V3h6v1M8.5 10h7M8.5 14h7M8.5 18h4" /></svg></span>
+									<span class="home-path-line"></span>
+								</span>
+								<div class="home-path-card">
+									<h3>Rellena el formulario</h3>
+									<p>En cubusfera.com/entrar, con tu código. No es un examen: es contexto para conocerte.</p>
+									<ul class="home-chips">
+										<li>Tu edad</li>
+										<li>Una pregunta de las normas</li>
+										<li>Qué quieres construir</li>
+									</ul>
+								</div>
+							</li>
+							<li class="home-path-step">
+								<span class="home-path-rail" aria-hidden="true">
+									<span class="home-path-icon"><svg viewBox="0 0 24 24"><path d="M14 4h4.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H14" /><path d="M4 12h11" /><path d="m11 8 4 4-4 4" /></svg></span>
+									<span class="home-path-line"></span>
+									<span class="home-path-done"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7" /></svg></span>
+								</span>
+								<div class="home-path-card">
+									<h3>Entra a jugar</h3>
+									<p>Con cuenta premium y todo en orden, entras al momento. Si no, lo revisa una persona en 48 horas como mucho.</p>
+									<a class="button button-on-path" href="/como-entrar/">Cómo funciona</a>
 								</div>
 							</li>
 						</ol>
@@ -381,7 +381,7 @@ const structuredData = [
 
 				<CtaBand
 					title="¿Te encaja? Nos vemos dentro."
-					lead="La whitelist se abre desde Discord y te contesta una persona, no un bot."
+					lead="Conéctate, usa el código que te da el servidor y rellena un formulario corto. Sin esperar a Discord."
 					secondary={{ href: '/normas/', label: 'Leer las normas' }}
 				/>
 			</main>

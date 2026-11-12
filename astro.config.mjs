@@ -5,7 +5,7 @@ import vercel from '@astrojs/vercel';
 
 // Rutas con noindex en el layout: se excluyen también del sitemap para no
 // pedirle a Google que rastree lo que luego le decimos que no indexe.
-const noindexRoutes = ['/estado/'];
+const noindexRoutes = ['/estado/', '/entrar/'];
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,6 +20,11 @@ export default defineConfig({
 		schema: {
 			MEMBERS_API_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
 			MEMBERS_API_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
+			// Formulario de alta (/entrar/): canjea en el panel el código que da el
+			// servidor al rechazar a alguien sin whitelist. Sin ellas, /entrar/ avisa
+			// de que ahora no se pueden comprobar códigos.
+			JOIN_API_URL: envField.string({ context: 'server', access: 'secret', optional: true }),
+			JOIN_API_TOKEN: envField.string({ context: 'server', access: 'secret', optional: true }),
 		},
 	},
 	integrations: [

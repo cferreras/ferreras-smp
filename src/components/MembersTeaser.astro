@@ -5,18 +5,16 @@ import { getMembers } from '../lib/members';
 // Adelanto de /comunidad/ en la portada. La portada es estática, así que esto va
 // como server island (server:defer): se pide aparte y la CDN lo guarda un
 // minuto, como la página entera. Si el panel no responde no se pinta la sección.
-const { ok, members, maxSlots, onlineFresh } = await getMembers();
+const { ok, members, onlineFresh } = await getMembers();
 
 Astro.response.headers.set(
 	'Cache-Control',
 	ok ? 'public, max-age=0, s-maxage=60, stale-while-revalidate=60' : 'public, max-age=0, s-maxage=10',
 );
 
-const freeSlots = maxSlots ? Math.max(maxSlots - members.length, 0) : 0;
 const onlineCount = onlineFresh ? members.filter((member) => member.online).length : 0;
-const label = maxSlots
-	? members.length === 1 ? 'plaza ocupada' : 'plazas ocupadas'
-	: `${members.length === 1 ? 'persona' : 'personas'} en la whitelist`;
+// Sin cupo de miembros: el límite de 20 es de jugadores conectados a la vez.
+const label = `${members.length === 1 ? 'persona' : 'personas'} en la whitelist`;
 
 function headLabel(name: string, online: boolean, away: boolean) {
 	if (online) return `${name}, jugando ahora`;
@@ -29,7 +27,7 @@ function headLabel(name: string, online: boolean, away: boolean) {
 	<HomeCommunity>
 		<div class="home-tile home-members">
 			<div class="home-members-summary">
-				<p class="home-members-count"><strong>{members.length}</strong>{maxSlots && <span>/{maxSlots}</span>}</p>
+				<p class="home-members-count"><strong>{members.length}</strong></p>
 				<p class="home-members-label">{label}</p>
 				{onlineCount > 0 && <p class="home-members-online"><span class="home-members-dot" aria-hidden="true"></span>{onlineCount} jugando ahora</p>}
 				<a class="button" href="/comunidad/">Ver la comunidad</a>
@@ -44,7 +42,6 @@ function headLabel(name: string, online: boolean, away: boolean) {
 						</li>
 					);
 				})}
-				{Array.from({ length: freeSlots }, () => <li class="home-members-head is-free" aria-hidden="true"></li>)}
 			</ul>
 		</div>
 	</HomeCommunity>
