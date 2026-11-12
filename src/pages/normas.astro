@@ -270,11 +270,11 @@ const norms: Norm[] = [
 	{
 		id: 'actividad',
 		short: 'Actividad',
-		summary: 'Las horas mínimas para conservar la plaza.',
+		summary: 'Las horas mínimas para seguir en la whitelist.',
 		title: 'Actividad mínima',
 		icon: '<circle cx="12" cy="12" r="8.5" /><path d="M12 7.5V12l3 2" />',
 		tone: 'brand',
-		lead: 'Hay 20 plazas como mucho y cada una cuenta. Cuenta el tiempo conectado, hagas lo que hagas, y quien no llega al mínimo deja su plaza libre para otra persona.',
+		lead: 'Somos una comunidad pequeña y queremos que quien está en la whitelist juegue. Cuenta el tiempo conectado, hagas lo que hagas, y quien no llega al mínimo sale de la whitelist.',
 		stats: [
 			{ label: 'Día 7', value: '2 h', text: 'jugadas en la primera semana del periodo de prueba.' },
 			{ label: 'Día 14', value: '5 h', text: 'en total al acabar la prueba. Con ellas pasas a ser miembro.' },
@@ -328,7 +328,7 @@ const marks = {
 					</div>
 					<div>
 						<p class="home-lead">Al pedir la whitelist aceptas estas normas, y no conocerlas no evita la sanción. Si una situación no aparece aquí, pregunta en Discord antes de actuar: el contexto importa más que buscar un hueco en la redacción.</p>
-						<p class="norm-updated">Última actualización: <time datetime="2026-10-23">23 de octubre de 2026</time></p>
+						<p class="norm-updated">Última actualización: <time datetime="2026-11-12">12 de noviembre de 2026</time></p>
 					</div>
 				</div>
 
@@ -424,7 +424,8 @@ const marks = {
 
 			<CtaBand
 				title="¿Te queda alguna duda? Pregunta en Discord."
-				lead="Mejor una pregunta antes que una explicación después. Ahí también se abre la whitelist."
+				lead="Mejor una pregunta antes que una explicación después."
+				primary="discord"
 				secondary={{ href: '/como-entrar/', label: 'Ver cómo entrar' }}
 			/>
 		</main>

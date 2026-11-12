@@ -15,7 +15,7 @@ imageAlt: "Llave de Minecraft en bloques azules flotando sobre un fondo azul cla
 draft: false
 relatedLinks:
   - title: "Cómo entrar a Cubusfera"
-    description: "La IP y los cuatro pasos para pedir la whitelist desde Discord."
+    description: "La IP y los tres pasos para pedir la whitelist con el código del servidor."
     href: "/como-entrar/"
   - title: "Cómo entrar a un servidor de Minecraft Java"
     description: "Añadir la dirección, conectarte y qué mirar si no entras."
@@ -44,14 +44,14 @@ Los hay, pero casi todos los grandes son redes de minijuegos o PvP. Un survival 
 - **Survival vanilla técnico** en Minecraft Java 26.3, con granjas y proyectos comunitarios.
 - **Sin instalar nada**: los mods están en el servidor, no en tu juego.
 - **Comunidad pequeña**, con un máximo de 20 personas.
-- **Whitelist con revisión manual**: cada solicitud la lee una persona.
+- **Whitelist con revisión manual** para las cuentas no premium: cada solicitud la lee una persona.
 - **Sin Pay2Win**, sin rangos de pago y sin economía.
 
 <img src="/images/gallery/ferreritas-costa-atardecer.jpg" alt="Ferreritas sobre una colina junto a la costa de Cubusfera al atardecer, rodeada de árboles y cultivos" width="1800" height="1343" loading="lazy" decoding="async" />
 
 ## Cómo entrar a Cubusfera con una cuenta no premium
 
-1. **Pide la whitelist.** Es igual para todo el mundo: entras en Discord, lees las normas y rellenas el formulario. Está todo en [cómo entrar](/como-entrar/). Danos tu nombre de usuario tal cual lo usas en el juego.
+1. **Pide la whitelist.** Conéctate a `play.cubusfera.com` con el nombre que vas a usar: el servidor te desconecta y te da un código. Con él rellenas el formulario de [cubusfera.com/entrar](/entrar/). Las cuentas no premium las revisa siempre una persona, en 48 horas como mucho. Está todo en [cómo entrar](/como-entrar/).
 2. **Añade el servidor.** Cuando te confirmemos el acceso, ve a Multijugador → Añadir servidor y escribe `play.cubusfera.com`. Si nunca lo has hecho, [esta guía](/blog/como-entrar-servidor-minecraft-java/) lo explica paso a paso.
 3. **Regístrate la primera vez.** Al conectarte, el servidor te pide que crees una contraseña con `/register`. Hasta que lo haces no puedes jugar.
 4. **Inicia sesión en cada conexión.** A partir de ahí, cada vez que entres escribes `/login` y tu contraseña.
@@ -79,6 +79,6 @@ La seguridad del mundo no depende del tipo de cuenta. Depende de la whitelist, d
 
 ## En resumen
 
-Cubusfera admite cuentas premium y no premium. Con una premium entras sin más; con una no premium te registras la primera vez con `/register` y después entras con `/login`. En los dos casos el primer paso es el mismo: [pedir la whitelist desde Discord](/como-entrar/).
+Cubusfera admite cuentas premium y no premium. Con una premium entras sin más; con una no premium te registras la primera vez con `/register` y después entras con `/login`. En los dos casos el primer paso es el mismo: [pedir la whitelist con el código que te da el servidor](/como-entrar/).
 
 Si buscas un survival tranquilo, en español y donde se construye en comunidad, nos vemos dentro.

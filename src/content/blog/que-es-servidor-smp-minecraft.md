@@ -78,4 +78,4 @@ Si nunca has añadido una dirección, la guía de [cómo entrar a un servidor de
 
 Cubusfera es un [survival técnico](/blog/que-es-minecraft-tecnico/) de Minecraft Java en español, al que entras con el cliente vanilla sin instalar nada y con la comunidad limitada a 20 personas. El mundo tiene protección de terrenos, y las dudas y los problemas se resuelven en Discord.
 
-Si te suena bien, mira [cómo entrar](/como-entrar/): la whitelist se pide desde Discord y la revisamos a mano.
+Si te suena bien, mira [cómo entrar](/como-entrar/): te conectas, el servidor te da un código y con él pides acceso en un formulario corto.

@@ -4128,3 +4128,135 @@ a.home-video-player:focus-visible .home-video-play {
 	outline: 3px solid var(--gold);
 	outline-offset: var(--bezel-w);
 }
+
+/* ==========================================================================
+   Formulario de alta (/entrar/)
+   --------------------------------------------------------------------------
+   Sin JavaScript: dos envíos al servidor (código y formulario). Los campos
+   usan los mismos tokens que el resto, así el modo oscuro sale solo.
+   ========================================================================== */
+
+.join-card {
+	display: flex;
+	flex-direction: column;
+	gap: var(--s-3);
+}
+
+.join-card .button {
+	align-self: flex-start;
+}
+
+.join-field {
+	display: flex;
+	flex-direction: column;
+	gap: var(--s-1);
+}
+
+.join-label {
+	color: var(--ink);
+	font-size: var(--t-sm);
+	font-weight: 800;
+	line-height: 1.4;
+}
+
+.join-input {
+	width: 100%;
+	min-height: 3rem;
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--line-strong);
+	border-radius: 0.875rem;
+	background: var(--paper-strong);
+	color: var(--ink);
+	font: inherit;
+	font-size: var(--t-sm);
+	line-height: 1.5;
+}
+
+textarea.join-input {
+	min-height: 8rem;
+	resize: vertical;
+}
+
+select.join-input {
+	cursor: pointer;
+}
+
+.join-input:focus-visible {
+	outline: 3px solid var(--gold);
+	outline-offset: 2px;
+}
+
+.join-input[aria-invalid='true'] {
+	border-color: var(--coral-ink);
+}
+
+/* El código se lee como en la pantalla del juego: grande y espaciado. */
+.join-input-code {
+	min-height: 4rem;
+	font-family: var(--mono);
+	font-size: var(--t-lg);
+	font-weight: 700;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+.join-input-code::placeholder {
+	color: var(--line-strong);
+}
+
+.join-hint {
+	color: var(--muted);
+	font-size: var(--t-xs);
+	line-height: 1.5;
+}
+
+.join-hint a,
+.join-aside p a {
+	color: var(--home-accent);
+	font-weight: 700;
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.join-error {
+	padding: 0.625rem 0.875rem;
+	border-radius: 0.75rem;
+	background: var(--coral-soft);
+	color: var(--coral-ink);
+	font-size: var(--t-xs);
+	font-weight: 700;
+	line-height: 1.5;
+}
+
+/* Campo trampa para bots: fuera de la vista y del orden de tabulación. */
+.join-honeypot {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.join-notes {
+	margin-top: 0;
+}
+
+.join-card .join-notes li:first-child {
+	padding-top: 0;
+}
+
+/* La píldora de la IP, como en el camino de la portada pero sobre papel. */
+.join-address {
+	margin-top: var(--s-3);
+	background: var(--ip-panel);
+}
+
+.join-card .join-address {
+	align-self: stretch;
+	margin-top: 0;
+}
+
+.join-aside .button {
+	align-self: flex-start;
+}

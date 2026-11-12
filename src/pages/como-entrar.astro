@@ -2,59 +2,51 @@
 import Layout from '../layouts/Layout.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import DiscordIcon from '../components/DiscordIcon.astro';
 import InnerHero from '../components/InnerHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import { breadcrumbSchema } from '../lib/schema';
 import '../styles/phi.css';
 
-const discordUrl = 'https://discord.com/invite/xW7yyHRJvE';
 export const prerender = true;
 
 // El orden lo marca el raíl de iconos, sin números.
 const path = [
 	{
-		icon: 'discord',
-		title: 'Entra en Discord',
-		text: 'Es el punto de encuentro. Puedes mirar sin decir nada y ver cómo hablamos entre nosotros.',
-	},
-	{
-		icon: 'book',
-		title: 'Lee la información',
-		text: 'El canal de información y las normas de convivencia. Cinco minutos que evitan malentendidos.',
+		icon: 'play',
+		title: 'Conéctate al servidor',
+		text: 'Añade play.cubusfera.com en Minecraft Java y conéctate. Como aún no estás en la whitelist, te desconecta y te enseña un código de 6 caracteres.',
 	},
 	{
 		icon: 'form',
 		title: 'Rellena el formulario',
-		text: 'Está en su propio canal. Contesta con calma: no buscamos una respuesta preparada.',
+		text: 'En cubusfera.com/entrar, con tu código. Son cuatro preguntas cortas y una de ellas va sobre las normas.',
 	},
 	{
-		icon: 'chat',
-		title: 'Hablamos y entras',
-		text: 'Leemos cada solicitud a mano. Si encaja, seguimos por Discord y te añadimos a la whitelist.',
+		icon: 'door',
+		title: 'Entra a jugar',
+		text: 'Con cuenta premium, 16 años o más y la pregunta bien contestada, entras al momento. Si no, lo revisa una persona en 48 horas como mucho.',
 	},
 ];
 
 const questions = [
-	'Tu edad y cómo quieres que te llamemos.',
+	'Tu edad: el servidor es para mayores de 16 años.',
+	'Una pregunta sobre las normas, distinta en cada formulario.',
 	'Qué te gustaría construir o aprender aquí.',
-	'Si has jugado antes en servidores y qué convivencia buscas.',
-	'Si has leído las normas y aceptas que el mundo se comparte.',
 	'Cómo nos conociste.',
 ];
 
 const doubts = [
 	{
 		title: '¿Cuánto tardáis en contestar?',
-		text: 'No hay reloj automático: alguien tiene que leer tu solicitud con atención. Si pasan varios días, escribe otra vez en el mismo canal y la recuperamos.',
+		text: 'Si tu cuenta es premium y todo encaja, nada: entras en cuanto envías. Si no, una persona lo revisa en 48 horas como mucho. No te escribimos: cuando esté aceptado, el servidor te deja entrar.',
 	},
 	{
 		title: '¿Cuándo decís que no?',
-		text: 'Cuando la solicitud llega vacía, cuando se ve que las normas dan igual o cuando buscas un servidor masivo y competitivo. Preferimos decirlo antes que después.',
+		text: 'Si tienes menos de 16 años, si la solicitud llega vacía o si buscas un servidor masivo y competitivo. Preferimos decirlo antes que después.',
 	},
 	{
-		title: '¿Y si me aprobáis?',
-		text: 'Te lo confirmamos por Discord y añadimos tu cuenta. Ya solo queda abrir Minecraft, añadir el servidor y saludar al llegar. Si tu cuenta no es premium, el servidor te pedirá una contraseña la primera vez.',
+		title: '¿Y si mi cuenta no es premium?',
+		text: 'También vale. Tu solicitud la revisa siempre una persona y, la primera vez que entres, el servidor te pedirá que crees una contraseña con /register.',
 	},
 ];
 
@@ -62,7 +54,7 @@ const needs = [
 	'Minecraft Java compatible con la 26.3.',
 	'Cuenta premium o no premium: las dos sirven.',
 	'Más de 16 años y ganas de quedarte.',
-	'Nada más: no se instalan mods para entrar.',
+	'Nada más: ni mods que instalar ni Discord obligatorio.',
 ];
 
 const structuredData = [
@@ -70,7 +62,7 @@ const structuredData = [
 		'@context': 'https://schema.org',
 		'@type': 'HowTo',
 		name: 'Cómo entrar en Cubusfera',
-		description: 'El acceso a Cubusfera se pide desde Discord y se revisa a mano antes de añadir la cuenta a la whitelist.',
+		description: 'Para entrar en Cubusfera te conectas al servidor, usas el código que te da en el formulario de cubusfera.com/entrar y, si todo encaja, entras en la whitelist.',
 		step: path.map((item, index) => ({
 			'@type': 'HowToStep',
 			position: index + 1,
@@ -84,15 +76,15 @@ const structuredData = [
 
 <Layout
 	title="Cómo entrar al servidor: IP y whitelist — Cubusfera"
-	description="Cuatro pasos para entrar en Cubusfera: Discord, normas, formulario y revisión manual antes de la whitelist. Sirve cuenta premium o no premium."
+	description="Tres pasos para entrar en Cubusfera: conéctate a play.cubusfera.com, usa el código que te da el servidor en el formulario y entra. Sirve cuenta premium o no premium."
 	structuredData={structuredData}
 >
 	<div class="phi">
 		<SiteHeader>
 			<InnerHero
-				title="Cuatro pasos y"
-				highlight="una conversación."
-				lead="No hay registro automático ni formulario escondido. Entras en Discord, nos cuentas cómo juegas y te contestamos a mano."
+				title="Tres pasos y"
+				highlight="un código."
+				lead="Te conectas, el servidor te da un código y con él rellenas un formulario corto. Si todo encaja entras al momento; si no, te contesta una persona en 48 horas."
 			/>
 		</SiteHeader>
 
@@ -103,18 +95,17 @@ const structuredData = [
 						<div class="home-head-title">
 							<h2 id="camino">El camino hasta la <span>whitelist.</span></h2>
 						</div>
-						<p class="home-lead">Todo pasa en Discord. Ahí ves cómo hablamos antes de decidir nada.</p>
+						<p class="home-lead">Todo pasa entre el juego y esta web. Discord es opcional: ahí está la comunidad, pero no hace falta para entrar.</p>
 					</div>
 
-					<ol class="home-path home-path-4">
+					<ol class="home-path">
 						{path.map((step, index) => (
 							<li class="home-path-step">
 								<span class="home-path-rail" aria-hidden="true">
 									<span class="home-path-icon">
-										{step.icon === 'discord' && <DiscordIcon />}
-										{step.icon === 'book' && <svg viewBox="0 0 24 24"><path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z" /></svg>}
+										{step.icon === 'play' && <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="5" /><path d="M8 10v4M6 12h4M15.5 11.5v.01M17.5 13.5v.01" /></svg>}
 										{step.icon === 'form' && <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2.5" /><path d="M9 4V3h6v1M8.5 10h7M8.5 14h7M8.5 18h4" /></svg>}
-										{step.icon === 'chat' && <svg viewBox="0 0 24 24"><path d="M4 5.5h16v10.5H10l-6 4.5z" /></svg>}
+										{step.icon === 'door' && <svg viewBox="0 0 24 24"><path d="M14 4h4.5A1.5 1.5 0 0 1 20 5.5v13a1.5 1.5 0 0 1-1.5 1.5H14" /><path d="M4 12h11" /><path d="m11 8 4 4-4 4" /></svg>}
 									</span>
 									<span class="home-path-line"></span>
 									{index === path.length - 1 && <span class="home-path-done"><svg viewBox="0 0 24 24"><path d="M5 12.5 10 17 19 7" /></svg></span>}
@@ -122,10 +113,10 @@ const structuredData = [
 								<div class="home-path-card">
 									<h3>{step.title}</h3>
 									<p>{step.text}</p>
-									{step.icon === 'discord' && (
-										<a class="button button-on-path" href={discordUrl} target="_blank" rel="noopener noreferrer"><DiscordIcon /> <span>Entrar en Discord</span></a>
+									{step.icon === 'form' && (
+										<a class="button button-on-path" href="/entrar/">Ir al formulario</a>
 									)}
-									{index === path.length - 1 && (
+									{step.icon === 'play' && (
 										<div class="home-path-ip">
 											<p class="home-path-address">
 												<span>play.cubusfera.com</span>
@@ -134,7 +125,7 @@ const structuredData = [
 													<span data-copy-label>Copiar IP</span>
 												</button>
 											</p>
-											<p class="home-path-note">Pégala en «Multijugador → Añadir servidor». Conecta una vez estás en la whitelist.</p>
+											<p class="home-path-note">Pégala en «Multijugador → Añadir servidor» y conéctate: el código sale en la pantalla de desconexión.</p>
 										</div>
 									)}
 								</div>
@@ -147,7 +138,7 @@ const structuredData = [
 			<section class="container home-section phi-split" aria-labelledby="preguntas">
 				<div class="home-head-title">
 					<h2 id="preguntas">Qué te preguntamos.</h2>
-					<p class="home-lead">Cinco preguntas cortas. No es un examen: solo queremos saber quién llega y si el sitio le va a gustar.</p>
+					<p class="home-lead">Cuatro preguntas cortas. No es un examen: queremos saber quién llega, si el sitio le va a gustar y que ha leído las normas.</p>
 				</div>
 
 				<div class="srv-panel srv-panel-paper">
@@ -200,8 +191,9 @@ const structuredData = [
 			</section>
 
 			<CtaBand
-				title="Empieza por Discord."
-				lead="Es el único sitio desde el que se abre la whitelist. Te contesta una persona, no un bot."
+				title="Empieza por el juego."
+				lead="Conéctate a play.cubusfera.com para conseguir tu código. Si ya lo tienes, ve directo al formulario."
+				primary={{ href: '/entrar/', label: 'Ya tengo código' }}
 				secondary={{ href: '/normas/', label: 'Leer las normas' }}
 			/>
 		</main>

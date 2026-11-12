@@ -101,4 +101,4 @@ Las granjas están muy bien, pero en Cubusfera creemos que tienen que servir par
 
 Por eso no hace falta saber de técnico para jugar con nosotros. Muchos jugadores de Cubusfera no saben gran cosa de redstone, pero les encanta construir, y son igual de bienvenidos. Como las granjas se comparten, cualquiera tiene materiales para sus proyectos, sepa cómo funcionan o no.
 
-Somos una comunidad pequeña, de un máximo de 20 personas, y entras con tu Minecraft Java de siempre, premium o no premium. Si quieres saber más, mira la [ficha del servidor](/servidor/) o [cómo pedir la whitelist](/como-entrar/).
+Somos una comunidad pequeña, de hasta 20 jugadores a la vez, y entras con tu Minecraft Java de siempre, premium o no premium. Si quieres saber más, mira la [ficha del servidor](/servidor/) o [cómo pedir la whitelist](/como-entrar/).
