@@ -33,12 +33,10 @@ export const GET: APIRoute = async ({ params }) => {
 		heads.set(name, { png: result, expiresAt: Date.now() + DAY_MS });
 		// Sin cuenta premium o sin skin propia: Steve, que es lo que ve el juego.
 		return result ? png(result, 86400) : steve(86400);
-	} catch {
-		// Mojang limita las peticiones (429) cuando se piden muchas cabezas a la
-		// vez. Mientras, la de minotar, que casi siempre acierta, o Steve; con
-		// poca caché para volver a preguntar a Mojang pronto.
-		const fallback = await minotarHead(name).catch(() => null);
-		return fallback ? png(fallback, 300) : steve(300);
+	} catch (error) {
+		// Ni Mojang ni playerdb responden: Steve con poca caché para reintentar.
+		console.warn(`cabeza ${name}:`, error instanceof Error ? error.message : error);
+		return steve(300);
 	}
 };
 
@@ -63,13 +61,6 @@ function steve(maxAge: number): Response {
 	});
 }
 
-async function minotarHead(name: string): Promise<Buffer | null> {
-	const response = await fetch(`https://minotar.net/helm/${encodeURIComponent(name)}/8.png`, {
-		signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
-	});
-	return response.ok ? Buffer.from(await response.arrayBuffer()) : null;
-}
-
 async function fetchMojang(url: string): Promise<Response | null> {
 	const response = await fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
 	// 204/404: ese nombre no es una cuenta premium.
@@ -82,6 +73,27 @@ async function fetchMojang(url: string): Promise<Response | null> {
 async function mojangSkin(name: string): Promise<Buffer | null> {
 	if (!PREMIUM_NAME.test(name)) return null;
 
+	// Mojang limita (429) o rechaza a menudo las IP de la nube donde corre la
+	// web; entonces se pregunta a playerdb, que hace de caché de Mojang.
+	let url: string | null;
+	try {
+		url = await skinUrlFromMojang(name);
+	} catch (error) {
+		console.warn(`cabeza ${name}: Mojang`, error instanceof Error ? error.message : error);
+		url = await skinUrlFromPlayerdb(name);
+	}
+	if (!url) return null;
+
+	// Solo el servidor de texturas de Mojang.
+	const skinUrl = new URL(url);
+	if (skinUrl.hostname !== 'textures.minecraft.net') return null;
+	skinUrl.protocol = 'https:';
+
+	const skin = await fetchMojang(skinUrl.toString());
+	return skin ? Buffer.from(await skin.arrayBuffer()) : null;
+}
+
+async function skinUrlFromMojang(name: string): Promise<string | null> {
 	const profile = await fetchMojang(`https://api.mojang.com/users/profiles/minecraft/${name}`);
 	if (!profile) return null;
 	const { id } = (await profile.json()) as { id: string };
@@ -95,16 +107,29 @@ async function mojangSkin(name: string): Promise<Buffer | null> {
 	const textures = JSON.parse(Buffer.from(encoded, 'base64').toString('utf8')) as {
 		textures?: { SKIN?: { url?: string } };
 	};
-	const url = textures.textures?.SKIN?.url;
-	if (!url) return null;
+	return textures.textures?.SKIN?.url ?? null;
+}
 
-	// Solo el servidor de texturas de Mojang.
-	const skinUrl = new URL(url);
-	if (skinUrl.hostname !== 'textures.minecraft.net') return null;
-	skinUrl.protocol = 'https:';
+async function skinUrlFromPlayerdb(name: string): Promise<string | null> {
+	const response = await fetch(`https://playerdb.co/api/player/minecraft/${name}`, {
+		headers: { 'User-Agent': 'cubusfera.com' },
+		signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
+	});
+	const body = (await response.json()) as {
+		code?: string;
+		data?: { player?: { skin_texture?: string; properties?: { name: string; value: string }[] } };
+	};
+	// Ese nombre no es una cuenta premium.
+	if (body.code === 'minecraft.invalid_username' || body.code === 'player.not_found') return null;
+	if (body.code !== 'player.found') throw new Error(`playerdb_${response.status}_${body.code ?? ''}`);
 
-	const skin = await fetchMojang(skinUrl.toString());
-	return skin ? Buffer.from(await skin.arrayBuffer()) : null;
+	// skin_texture trae la skin por defecto si no tiene propia: se mira la de verdad.
+	const encoded = body.data?.player?.properties?.find((property) => property.name === 'textures')?.value;
+	if (!encoded) return null;
+	const textures = JSON.parse(Buffer.from(encoded, 'base64').toString('utf8')) as {
+		textures?: { SKIN?: { url?: string } };
+	};
+	return textures.textures?.SKIN?.url ?? null;
 }
 
 /** Cara (8,8) con el sombrero (40,8) encima, en un PNG de 8 × 8. */
