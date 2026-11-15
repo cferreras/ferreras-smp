@@ -4228,6 +4228,146 @@ select.join-input {
 	line-height: 1.5;
 }
 
+/* Test de las normas: cada pregunta, numerada, con sus opciones en tarjetas
+   que se pulsan enteras. Sin JavaScript: radios nativos con `required`. */
+.join-quiz {
+	display: flex;
+	flex-direction: column;
+	gap: var(--s-2);
+	padding: var(--s-3);
+	border: 1px solid var(--line);
+	border-radius: var(--r-md);
+	background: color-mix(in srgb, var(--brand-soft) 45%, transparent);
+}
+
+.join-quiz-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: var(--s-2);
+}
+
+.join-quiz-count {
+	color: var(--muted);
+	font-size: var(--t-xs);
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.join-questions {
+	display: flex;
+	flex-direction: column;
+	gap: var(--s-3);
+	margin: var(--s-1) 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Anula el `li` genérico de .srv-panel (flex y relleno de lista de notas). */
+.join-questions .join-question {
+	display: block;
+	padding: 0;
+	color: var(--ink);
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.join-questions .join-question + .join-question {
+	padding-top: var(--s-3);
+	border-top: 1px solid var(--line);
+}
+
+.join-question fieldset {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	min-width: 0;
+}
+
+.join-question-prompt {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.625rem;
+	margin-bottom: var(--s-1);
+	padding: 0;
+	color: var(--ink);
+	font-size: var(--t-sm);
+	font-weight: 700;
+	line-height: 1.45;
+}
+
+.join-question-number {
+	display: inline-grid;
+	flex: none;
+	place-items: center;
+	width: 1.625rem;
+	height: 1.625rem;
+	border-radius: 999px;
+	background: var(--ink);
+	color: var(--paper);
+	font-family: var(--mono);
+	font-size: var(--t-xs);
+	font-weight: 700;
+	line-height: 1;
+}
+
+.join-options {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: var(--s-1);
+}
+
+.join-option {
+	display: flex;
+	align-items: flex-start;
+	gap: 0.625rem;
+	min-height: 3rem;
+	padding: 0.75rem 0.875rem;
+	border: 1px solid var(--line-strong);
+	border-radius: 0.875rem;
+	background: var(--paper-strong);
+	color: var(--ink);
+	font-size: var(--t-xs);
+	font-weight: 600;
+	line-height: 1.45;
+	cursor: pointer;
+	transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.join-option input {
+	flex: none;
+	width: 1.0625rem;
+	height: 1.0625rem;
+	margin: 0.0625rem 0 0;
+	accent-color: var(--brand-accent);
+	cursor: pointer;
+}
+
+.join-option:hover {
+	border-color: color-mix(in srgb, var(--brand-accent) 55%, var(--line-strong));
+}
+
+.join-option:has(input:checked) {
+	border-color: var(--brand-accent);
+	background: var(--brand-soft);
+	box-shadow: inset 0 0 0 1px var(--brand-accent);
+}
+
+.join-option:has(input:focus-visible) {
+	outline: 3px solid var(--gold);
+	outline-offset: 2px;
+}
+
+@media (max-width: 40rem) {
+	.join-quiz {
+		padding: var(--s-2);
+	}
+
+	.join-options {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
 /* Campo trampa para bots: fuera de la vista y del orden de tabulación. */
 .join-honeypot {
 	position: absolute;
