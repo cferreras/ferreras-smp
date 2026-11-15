@@ -10,6 +10,7 @@ import {
 	displayCode,
 	limits,
 	normalizeCode,
+	readAnswers,
 	resultKind,
 	resultKinds,
 	submitJoin,
@@ -39,14 +40,14 @@ const problemMessages: Record<CodeProblem, string> = {
 
 const fieldMessages: Record<JoinField, string> = {
 	ageRange: 'Elige tu edad.',
-	answer: `La respuesta puede tener como mucho ${limits.answerMax} caracteres.`,
+	answers: 'Te falta alguna pregunta del test: elige una opción en cada una.',
 	plans: `Cuéntanos un poco más: entre ${limits.plansMin} y ${limits.plansMax} caracteres.`,
 	referralSource: `Dinos cómo nos conociste, entre ${limits.referralMin} y ${limits.referralMax} caracteres.`,
 };
 
 interface FormValues {
 	ageRange: string;
-	answer: string;
+	answers: (number | null)[];
 	plans: string;
 	referralSource: string;
 }
@@ -56,7 +57,7 @@ type View =
 	| { step: 'form'; check: Extract<CodeCheck, { status: 'ok' }>; errors: JoinField[]; values: FormValues }
 	| { step: 'done'; kind: ResultKind };
 
-const emptyValues: FormValues = { ageRange: '', answer: '', plans: '', referralSource: '' };
+const emptyValues: FormValues = { ageRange: '', answers: [], plans: '', referralSource: '' };
 
 function clientAddress(): string | undefined {
 	try {
@@ -92,20 +93,23 @@ if (Astro.request.method === 'POST') {
 	} else if (text('paso') === 'formulario') {
 		const values: FormValues = {
 			ageRange: text('edad'),
-			answer: text('respuesta').slice(0, limits.answerMax * 2),
+			answers: readAnswers(text, Number(text('preguntas')) || 0),
 			plans: text('planes').slice(0, limits.plansMax * 2),
 			referralSource: text('conociste').slice(0, limits.referralMax * 2),
 		};
-		const result = await submitJoin({ code, ...values }, ip);
+		// Una pregunta en blanco no se manda: el panel la contaría como fallada.
+		const result = values.answers.includes(null)
+			? ({ status: 'invalid_fields', errors: ['answers'] } as const)
+			: await submitJoin({ code, ...values }, ip);
 
 		if (result.status === 'ok') return Astro.redirect(`/entrar/?enviado=${resultKind(result.outcome)}`, 303);
 
 		if (result.status === 'invalid_fields') {
-			// Se vuelve a pedir el código al panel para enseñar su pregunta, no la que diga el navegador.
+			// Se vuelve a pedir el código al panel para enseñar su test, no el que diga el navegador.
 			const check = await checkCode(code, ip);
 			view =
 				check.status === 'ok'
-					? { step: 'form', check, errors: result.errors, values }
+					? { step: 'form', check, errors: [...result.errors], values }
 					: { step: 'code', error: problemMessages[check.status], value: displayCode(code) };
 		} else {
 			view = { step: 'code', error: problemMessages[result.status], value: displayCode(code) };
@@ -171,7 +175,10 @@ const hero =
 			? {
 					title: `Hola, ${view.check.minecraftName}. Ya casi`,
 					highlight: 'estás.',
-					lead: 'Cuatro preguntas cortas y listo. No es un examen: queremos saber quién llega y si el sitio le va a gustar.',
+					lead:
+						view.check.questions.length > 0
+							? 'Tu edad, un test corto sobre las normas y dos preguntas sobre ti. Puedes tener las normas abiertas mientras contestas.'
+							: 'Tres preguntas cortas y listo: queremos saber quién llega y si el sitio le va a gustar.',
 				}
 			: {
 					title: 'Pide acceso con tu',
@@ -210,6 +217,7 @@ const fieldError = (field: JoinField) => (view.step === 'form' && view.errors.in
 									inputmode="text"
 									maxlength="9"
 									placeholder="K7M-4QX"
+									data-join-code
 									required
 									aria-invalid={view.error ? 'true' : undefined}
 									aria-describedby={view.error ? 'codigo-error' : 'codigo-ayuda'}
@@ -256,21 +264,44 @@ const fieldError = (field: JoinField) => (view.step === 'form' && view.errors.in
 								{fieldError('ageRange') && <span class="join-error">{fieldError('ageRange')}</span>}
 							</label>
 
-							{view.check.question && (
-								<label class="join-field">
-									<span class="join-label">{view.check.question}</span>
-									<input
-										class="join-input"
-										name="respuesta"
-										value={view.values.answer}
-										maxlength={limits.answerMax}
-										autocomplete="off"
-										required
-										aria-invalid={fieldError('answer') ? 'true' : undefined}
-									/>
-									<span class="join-hint">La respuesta está en las <a href="/normas/" target="_blank" rel="noopener">normas</a>. Con unas palabras basta.</span>
-									{fieldError('answer') && <span class="join-error">{fieldError('answer')}</span>}
-								</label>
+							<input type="hidden" name="preguntas" value={view.check.questions.length} />
+							{view.check.questions.length > 0 && (
+								<div class="join-quiz" role="group" aria-labelledby="test-titulo" aria-describedby="test-ayuda">
+									<div class="join-quiz-head">
+										<span class="join-label" id="test-titulo">Test de las normas</span>
+										<span class="join-quiz-count">{view.check.questions.length} preguntas</span>
+									</div>
+									<p class="join-hint" id="test-ayuda">
+										Todas las respuestas están en las <a href="/normas/" target="_blank" rel="noopener">normas</a>. Si las aciertas todas y tu cuenta es premium, entras sin esperar.
+									</p>
+									{fieldError('answers') && <p class="join-error" role="alert">{fieldError('answers')}</p>}
+									<ol class="join-questions">
+										{view.check.questions.map((question, index) => (
+											<li class="join-question">
+												<fieldset>
+													<legend class="join-question-prompt">
+														<span class="join-question-number" aria-hidden="true">{index + 1}</span>
+														<span>{question.prompt}</span>
+													</legend>
+													<div class="join-options">
+														{question.options.map((option, optionIndex) => (
+															<label class="join-option">
+																<input
+																	type="radio"
+																	name={`respuesta-${index}`}
+																	value={optionIndex}
+																	checked={view.values.answers[index] === optionIndex}
+																	required
+																/>
+																<span>{option}</span>
+															</label>
+														))}
+													</div>
+												</fieldset>
+											</li>
+										))}
+									</ol>
+								</div>
 							)}
 
 							<label class="join-field">
@@ -314,9 +345,9 @@ const fieldError = (field: JoinField) => (view.step === 'form' && view.errors.in
 						<aside class="srv-note join-aside">
 							<h3>Cuenta {view.check.premium ? 'premium' : 'no premium'}</h3>
 							{view.check.premium ? (
-								<p>Si tienes 16 años o más y aciertas la pregunta de las normas, entras en cuanto envíes. Si no, lo revisa una persona en 48 horas como mucho.</p>
+								<p>Si tienes 16 años o más y aciertas todas las preguntas del test, entras en cuanto envíes. Si fallas alguna, no pasa nada: lo revisa una persona en 48 horas como mucho.</p>
 							) : (
-								<p>Las cuentas no premium las revisa siempre una persona, en 48 horas como mucho. Después entrarás con contraseña, como cuenta la <a href="/blog/servidor-minecraft-no-premium/">guía para no premium</a>.</p>
+								<p>Las cuentas no premium las revisa siempre una persona, aunque aciertes todo el test, en 48 horas como mucho. Después entrarás con contraseña, como cuenta la <a href="/blog/servidor-minecraft-no-premium/">guía para no premium</a>.</p>
 							)}
 							<p>Tu código, <strong>{displayCode(view.check.code)}</strong>, vale hasta el {timeFormat.format(view.check.expiresAt)} y solo sirve para un envío.</p>
 						</aside>
@@ -359,4 +390,5 @@ const fieldError = (field: JoinField) => (view.step === 'form' && view.errors.in
 		<SiteFooter />
 	</div>
 	<script is:inline src="/copy-ip.js"></script>
+	<script is:inline src="/join-code.js"></script>
 </Layout>

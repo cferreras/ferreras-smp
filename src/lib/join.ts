@@ -19,17 +19,25 @@ export const ageRanges: ReadonlyArray<{ value: AgeRange; label: string }> = [
 ];
 
 export const limits = {
-	answerMax: 120,
 	plansMin: 10,
 	plansMax: 1500,
 	referralMin: 2,
 	referralMax: 300,
+	/** El panel manda como mucho 5 preguntas de 5 opciones. */
+	quizQuestionsMax: 5,
+	quizOptionsMax: 5,
 } as const;
 
 export type CodeProblem = 'invalid' | 'expired' | 'superseded' | 'redeemed' | 'invalid_name' | 'rate_limited' | 'unavailable';
 
+/** Una pregunta del test de las normas: el enunciado y las opciones, ya barajadas por el panel. */
+export interface QuizQuestion {
+	prompt: string;
+	options: string[];
+}
+
 export type CodeCheck =
-	| { status: 'ok'; code: string; minecraftName: string; premium: boolean; expiresAt: Date; question: string | null }
+	| { status: 'ok'; code: string; minecraftName: string; premium: boolean; expiresAt: Date; questions: QuizQuestion[] }
 	| { status: CodeProblem };
 
 export type JoinOutcome =
@@ -40,7 +48,7 @@ export type JoinOutcome =
 	| 'pending_history'
 	| 'rejected_underage';
 
-export type JoinField = 'ageRange' | 'answer' | 'plans' | 'referralSource';
+export type JoinField = 'ageRange' | 'answers' | 'plans' | 'referralSource';
 
 export type SubmitResult =
 	| { status: 'ok'; outcome: JoinOutcome }
@@ -56,7 +64,7 @@ const outcomes: readonly JoinOutcome[] = [
 	'pending_history',
 	'rejected_underage',
 ];
-const fields: readonly JoinField[] = ['ageRange', 'answer', 'plans', 'referralSource'];
+const fields: readonly JoinField[] = ['ageRange', 'answers', 'plans', 'referralSource'];
 
 /** Lo que alguien teclea a partir de la pantalla de desconexión: minúsculas, espacios y guion. */
 export function normalizeCode(input: unknown): string | null {
@@ -95,23 +103,53 @@ export async function checkCode(code: string, ip: string | undefined): Promise<C
 	const data = await call({ action: 'check', code, ip });
 	if (!data || data.status !== 'ok') return { status: problem(data?.status) };
 
-	const { minecraftName, premium, expiresAt, question } = data;
+	const { minecraftName, premium, expiresAt, questions } = data;
 	const expires = typeof expiresAt === 'string' ? new Date(expiresAt) : null;
 	if (typeof minecraftName !== 'string' || typeof premium !== 'boolean' || !expires || Number.isNaN(expires.getTime())) {
 		return { status: 'unavailable' };
 	}
-	const prompt =
-		question && typeof question === 'object' && typeof (question as { prompt?: unknown }).prompt === 'string'
-			? (question as { prompt: string }).prompt
-			: null;
 
-	return { status: 'ok', code, minecraftName, premium, expiresAt: expires, question: prompt };
+	return { status: 'ok', code, minecraftName, premium, expiresAt: expires, questions: parseQuestions(questions) };
+}
+
+/**
+ * El test tal como llega del panel. Las respuestas se corrigen por posición,
+ * así que ante una sola pregunta mal formada no se enseña ninguna: el panel
+ * lo trata como suspendido y lo revisa una persona.
+ */
+function parseQuestions(value: unknown): QuizQuestion[] {
+	if (!Array.isArray(value) || value.length > limits.quizQuestionsMax) return [];
+	const questions: QuizQuestion[] = [];
+	for (const item of value) {
+		const { prompt, options } = (item ?? {}) as { prompt?: unknown; options?: unknown };
+		if (
+			typeof prompt !== 'string' ||
+			!Array.isArray(options) ||
+			options.length < 2 ||
+			options.length > limits.quizOptionsMax ||
+			!options.every((option): option is string => typeof option === 'string')
+		) {
+			return [];
+		}
+		questions.push({ prompt, options });
+	}
+	return questions;
+}
+
+/** Lee la opción elegida de cada pregunta (`respuesta-0`, `respuesta-1`…); `null` si quedó en blanco. */
+export function readAnswers(read: (name: string) => string, count: number): (number | null)[] {
+	return Array.from({ length: Math.min(count, limits.quizQuestionsMax) }, (_, index) => {
+		const value = read(`respuesta-${index}`);
+		const option = /^[0-9]$/.test(value) ? Number(value) : NaN;
+		return option < limits.quizOptionsMax ? option : null;
+	});
 }
 
 export interface JoinRequest {
 	code: string;
 	ageRange: string;
-	answer: string;
+	/** Opción elegida en cada pregunta, por posición; `null` si quedó en blanco. */
+	answers: (number | null)[];
 	plans: string;
 	referralSource: string;
 }
